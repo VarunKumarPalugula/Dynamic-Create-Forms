@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-sm-7">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title" *ngIf="cardBodyTittle">{{cardBodyTittle}}</h6>
+        <button *ngIf="loginUser =='Client'" class="float-right btn-secondary" type="button"
+          (click)="changeInfo()">Change Info</button>
+        <p class="card-text">{{contactInfo.FirstName}} {{contactInfo.MiddleName}} {{contactInfo.LastName}} </p>
+        <p class="card-text"> {{contactInfo.JobTitle}}</p>
+        <p class="card-text normalTextFormat">{{contactInfo.Email}}</p>
+        <div class="row">
+          <div class="col-sm-6">
+            <label><b>Daytime phone</b></label>
+            <p class="card-text"> {{contactInfo.DayTimePhone}}</p>
+          </div>
+          <div class="col-sm-6">
+            <label><b>Mobile phone</b></label>
+            <p class="card-text"> {{contactInfo.MobilePhone}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

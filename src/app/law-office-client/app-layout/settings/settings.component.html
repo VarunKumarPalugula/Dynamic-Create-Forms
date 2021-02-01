@@ -1,0 +1,37 @@
+<div class="container-fluid  pt-70 pb-20 pl-0">
+  <div class="col-sm-12">
+    <!-- *ngIf="isAuthorize && isSubAdminAuthorize" -->
+    <div class="card mb-20">
+      <div class="card-body">
+        <ngb-tabset class="navtabs-modified">
+          <ngb-tab title="{{title}}">
+            <ng-template ngbTabContent>
+              <div *ngIf="isAuthorize && isSubAdminAuthorize">
+                <client-org-profile-details [isAuthorize]="isAuthorize" [isSubAdminAuthorize]="isSubAdminAuthorize">
+                </client-org-profile-details>
+              </div>
+              <div *ngIf="isOnlyForApplicant">
+                <applicant-profile-details></applicant-profile-details>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Permissions" *ngIf="isAuthorize">
+            <ng-template ngbTabContent>
+              <client-permissions></client-permissions>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Accounts">
+            <ng-template ngbTabContent>
+              <account-details></account-details>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Billings" *ngIf="isAuthorize && isSubAdminAuthorize">
+            <ng-template ngbTabContent>
+              <client-billings></client-billings>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+    </div>
+  </div>
+</div>

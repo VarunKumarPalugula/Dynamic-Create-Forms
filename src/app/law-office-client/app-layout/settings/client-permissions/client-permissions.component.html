@@ -1,0 +1,407 @@
+<div class="row mt-20">
+  <div class="col-sm-4">
+    <div class="fs-14 mt-16">1.Choose Team Member Role</div>
+    <div class="form-group mt-5">
+      <label for="sel1">Choose Role</label>
+      <select class="form-control lo-select" (change)="GetTeambersOnTeamMemberStatus($event)" [(ngModel)]="selectedRole"
+        id="role">
+        <option [value]="item.RoleId" *ngFor="let item of clientMembersRoles">
+          {{item.Name}}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="teamMembersList.length>0">
+  <div class="col-sm-4">
+    <div class="fs-14 mt-16">2. Select primary Team Member Users</div>
+    <div class="card mt-15">
+      <div class="card-body">
+        <div class="row p-5" *ngFor="let team of teamMembersList;let i=index"
+          [ngClass]="{'text-success':team.LawOfficeClientId === AdminID}">
+          <span>
+            <img src="../../../assets/applicant.png" class="lo-profile--image extrasmall ml-5">
+          </span>
+          <span class="fs-12 ml-10">
+            <b>{{team.UserName}}</b><br>
+            <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==1"> Primary Admin</p>
+            <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==2"> Sub Admin</p>
+            <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==3"> Team Member</p>
+          </span>
+          <span class="float-right ml-97">
+            <i class="fa fa-eye pointer" (click)="viewTeamMember(team.LawOfficeClientId,i,team.TeamMemberStatus)"
+              aria-hidden="true"></i>
+            <!-- <i class="fas fa-pencil-alt pl-20 pointer" aria-hidden="true" (click)="Modelsent(sent)"></i> -->
+          </span>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8" *ngIf="loadPermissions">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="fs-14 mt-14">3. Configure Permissions for selected Users</div>
+      </div>
+      <div class="col-md-6">
+
+      </div>
+    </div>
+    <div class="row mt-10">
+      <div class="col-md-12">
+        <ng-container *ngIf="!isTeamMember">
+          <div class="card">
+            <div class="card-header bg-white pointer" (click)="toggler($event,'one')">
+              <strong>Team Mangement Permissions</strong><i class="fa fa-chevron-down float-right"
+                aria-hidden="true"></i>
+            </div>
+            <div class="card-body d-n" id="one">
+              <!-- <ng-container *ngFor="let teamPermission of teamMemberPermissions;let ind=index"> -->
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="11" [(ngModel)]="teamMemberPermissions.CanInviteConnections">
+                  <label for="11" class="checkbox"></label>
+                  Can Invite Connections
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="t15" [(ngModel)]="teamMemberPermissions.CanDeleteConnections">
+                  <label for="t15" class="checkbox"></label>
+                  Can Deactivate Connections
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="t16" [(ngModel)]="teamMemberPermissions.CanViewProfileOfConnections">
+                  <label for="t16" class="checkbox"></label>
+                  Can View Profile Of Connections
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="12" [(ngModel)]="teamMemberPermissions.CanInviteTeamMembers">
+                  <label for="12" class="checkbox"></label>
+                  Can Invite TeamMembers
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="t13" [(ngModel)]="teamMemberPermissions.CanDeleteTeamMembers">
+                  <label for="t13" class="checkbox"></label>
+                  Can Deactivate TeamMembers
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="t14" [(ngModel)]="teamMemberPermissions.CanViewProfileOfTeamMembers">
+                  <label for="t14" class="checkbox"></label>
+                  Can View Profile Of TeamMembers
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="t145" [(ngModel)]="teamMemberPermissions.CanInviteApplicants">
+                  <label for="t145" class="checkbox"></label>
+                  Can Invite Applicants
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 float-right">
+                  <button class="btn btn-outline float-right">Reset To Default</button>
+                  <button class="btn btn-primary float-right mr-5"
+                    (click)="SetTeamManagementPermissions(teamMemberPermissions)">Save Changes
+                  </button>
+                </div>
+              </div>
+              <!-- </ng-container> -->
+
+            </div>
+          </div>
+          <div class="card mt-10">
+            <div class="card-header bg-white pointer" (click)="toggler($event,'4')">
+              <strong>Template Permissions</strong><i class="fa fa-chevron-down float-right" aria-hidden="true"></i>
+            </div>
+            <div class="card-body d-n" id="4">
+              <!-- <ng-container *ngFor="let templatePermission of TemplatePermissions;let tempind=index"> -->
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="28" [(ngModel)]="TemplatePermissions.CanCreateTemplates">
+                  <label for="28" class="checkbox"></label>
+                  Can Create Templates
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="29" [(ngModel)]="TemplatePermissions.CanEditTemplates">
+                  <label for="29" class="checkbox"></label>
+                  Can Edit Templates
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 float-right">
+                  <button class="btn btn-outline float-right">Reset To Default</button>
+                  <button class="btn btn-primary float-right mr-5"
+                    (click)="SetTemplatePermissions(TemplatePermissions)">
+                    Save
+                    Changes
+                  </button>
+                </div>
+              </div>
+              <!-- </ng-container> -->
+            </div>
+          </div>
+          <div class="card mt-10">
+            <div class="card-header bg-white pointer" (click)="toggler($event,'5')">
+              <strong>Document Library Permissions</strong><i class="fa fa-chevron-down float-right"
+                aria-hidden="true"></i>
+            </div>
+            <div class="card-body d-n" id="5">
+              <!-- <ng-containe  *ngFor="let templateDocPermission of DocumentLibraryPermissions;let tempdocind=index"> -->
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="30" [(ngModel)]="DocumentLibraryPermissions.CanDeleteFilesFromDocLibrary">
+                  <label for="30" class="checkbox"></label>
+                  Can Delete Files From Doc Library
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="31" [(ngModel)]="DocumentLibraryPermissions.CanEditFileInfoInDocLibrary">
+                  <label for="31" class="checkbox"></label>
+                  Can Edit File Info In Doc Library
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="checkbox" id="32" [(ngModel)]="DocumentLibraryPermissions.CanUploadFileToDocLibrary">
+                  <label for="32" class="checkbox"></label>
+                  Can Upload File To Doc Library
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 float-right">
+                  <button class="btn btn-outline float-right">Reset To Default</button>
+                  <button class="btn btn-primary float-right mr-5"
+                    (click)="SetDocumentLibraryPermissions(DocumentLibraryPermissions)">
+                    Save
+                    Changes
+                  </button>
+                </div>
+              </div>
+              <!-- </ng-container> -->
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="card mt-10">
+          <div class="card-header bg-white pointer" (click)="toggler($event,'2')">
+            <strong>Filings Permissions</strong><i class="fa fa-chevron-down float-right" aria-hidden="true"></i>
+          </div>
+          <div class="card-body d-n" id="2">
+            <!-- <ng-container *ngFor="let teamFillingPermission of FillingsPermissions;let ind=index"> -->
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="13" [(ngModel)]="teamFillingPermission.CanCreateNewFilings">
+                <label for="13" class="checkbox"></label>
+                Can Create New Filings
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="14" [(ngModel)]="teamFillingPermission.CanDeleteEmptyFilings">
+                <label for="14" class="checkbox"></label>
+                Can Delete Empty Filings
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="15" [(ngModel)]="teamFillingPermission.CanAddFilesToFilings">
+                <label for="15" class="checkbox"></label>
+                Can Add Files To Filings
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="16" [(ngModel)]="teamFillingPermission.CanDeleteFilesuploadedByThem">
+                <label for="16" class="checkbox"></label>
+                Can Delete Files Uploaded By Them
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="24" [(ngModel)]="teamFillingPermission.CanDownloadFilesFromFiling">
+                <label for="24" class="checkbox"></label>
+                Can Download Files From Filing
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="25" [(ngModel)]="teamFillingPermission.CanPrintFile">
+                <label for="25" class="checkbox"></label>
+                Can Print File
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="17" [(ngModel)]="teamFillingPermission.CanCreateTasks">
+                <label for="17" class="checkbox"></label>
+                Can Create Tasks
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="18" [(ngModel)]="teamFillingPermission.CanEditTasks">
+                <label for="18" class="checkbox"></label>
+                Can Edit Tasks
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="f18" [(ngModel)]="teamFillingPermission.CanDeleteTasks">
+                <label for="f18" class="checkbox"></label>
+                Can Delete Tasks
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="19" [(ngModel)]="teamFillingPermission.CanCreateSubTasks">
+                <label for="19" class="checkbox"></label>
+                Can Create SubTasks
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="20" [(ngModel)]="teamFillingPermission.CanEditSubTasks">
+                <label for="20" class="checkbox"></label>
+                Can Edit SubTasks
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="f19" [(ngModel)]="teamFillingPermission.CanDeleteSubTasks">
+                <label for="f19" class="checkbox"></label>
+                Can Delete SubTasks
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="21" [(ngModel)]="teamFillingPermission.CanReplyToConnections">
+                <label for="21" class="checkbox"></label>
+                Can Reply To Connections
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="f22" [(ngModel)]="teamFillingPermission.CanDeleteMessage">
+                <label for="f22" class="checkbox"></label>
+                Can Delete Message
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="22" [(ngModel)]="teamFillingPermission.CanReplyToApplicants">
+                <label for="22" class="checkbox"></label>
+                Can Reply To Applicants
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="23" [(ngModel)]="teamFillingPermission.CanUpdateFilingStatus">
+                <label for="23" class="checkbox"></label>
+                Can Update Filing Status
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="26" [(ngModel)]="teamFillingPermission.CanAddEditShippingOutDetailsToFiling">
+                <label for="26" class="checkbox"></label>
+                Can Add Edit ShippingOut Details To Filing
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="checkbox" id="27" [(ngModel)]="teamFillingPermission.CanAddEditReceiptNumberToFiling">
+                <label for="27" class="checkbox"></label>
+                Can Add Edit ReceiptNumber To Filing
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 float-right">
+                <button class="btn btn-outline float-right">Reset To Default</button>
+                <button class="btn btn-primary float-right mr-5" (click)="SetFilingPermissions(teamFillingPermission)">
+                  Save
+                  Changes
+                </button>
+              </div>
+            </div>
+            <!-- </ng-container> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="teamMembersList.length==0 &&selectedRole">
+  <div class="col-md-6 mx-auto text-align">
+    <p class="fs-28"> Looks like there are no settings</p>
+    <p classs="fs-16">
+      no settings found
+    </p>
+  </div>
+</div>
+<ng-template #sent let-d="dismiss" id="Modelsent" class="w-400">
+  <div class="gl-modal--header p-20 bg-model text-white text-align">
+    <p class="fs-16 mb-0 d-ib">Edit Role</p>
+    <span class="modal-close close" (click)="Closesent('close click')">
+      <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-20">
+    <div class="row">
+      <div class="col-sm-1">
+        <img src="../../../assets/applicant.png" class="lo-profile--image extrasmall" />
+      </div>
+      <div class="col-sm-10 fs-13 ml-20">
+        <p><b>Herman Back </b></p>
+        <p class="fs-14">Primay Admin</p>
+        <p class="fs-14 mt-5">Paralagal Associate</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Choose Role</label>
+          <select class="form-control lo-select" id="sel1">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label>Job Title</label>
+            <div class="form-group">
+              <input type="text" class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="button" class="btn btn-outline">Cancel</button>
+    <button type="button" class="btn btn-primary">Save Changes</button>
+  </div>
+</ng-template>

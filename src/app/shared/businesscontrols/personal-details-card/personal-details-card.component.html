@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-sm-7">
+        <div class="card">
+            <div class="card-body">
+                <button *ngIf="loginUser =='Client'" class="float-right btn-secondary" type="button"
+                    (click)="changeInfo()">Change Info</button>
+                <div class="row">
+                    <div class="col-sm-12 p-0">
+                        <label><b>Full Name</b></label>
+                        <p class="card-text">{{personalInfo.FirstName}} {{personalInfo.MiddleName}}
+                            {{personalInfo.LastName}} </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label><b>USSSN</b></label>
+                        <p class="card-text">{{personalInfo.USSSN}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <label><b>Date Of Birth</b></label>
+                        <p class="card-text">{{personalInfo.DateOfBirth | date}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label><b>Province Of Birth</b></label>
+                        <p class="card-text">{{personalInfo.ProvinceOfBirth}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <label><b>Country Of CitizenShip</b></label>
+                        <p class="card-text">{{personalInfo.CountryOfCitizenShip }}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

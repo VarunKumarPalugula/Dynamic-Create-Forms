@@ -1,0 +1,240 @@
+<!-- <div class="container-fluid mt-90 mb-20 ">
+  <form #teaminvite="ngForm">
+    <div class="card p-10">
+      <div class="card-body">
+        <label class="fs-18">Invite Team Members </label>
+        <div class="container">
+          <div class="col-sm-11">
+            <div class="row mt-30" *ngFor="let choice of choices;let i=index;">
+              <div class="col-sm-4">
+                <div class="form-group" *ngIf="roleId == '3'">
+                  <label>Choose Role</label>
+                  <label class="d-block">
+                    <select class="form-control" id="sel1" [(ngModel)]="choice.TeamMemberType" #TeamMemberType="ngModel" required name="TeamMemberType">
+                      <option value="1">Admin</option>
+                      <option value="2">SubAdmin</option>
+                      <option value="3">Team member</option>
+                      <option value="4">Applicant</option>
+                    </select>
+                    <span *ngIf="TeamMemberType.touched&&TeamMemberType.invalid" style="color:red">
+                      <span *ngIf="TeamMemberType.errors.required">
+                        Please Select Role
+                      </span>
+                    </span>
+                  </label>
+                </div>
+                <div class="form-group" *ngIf="roleId == '4'">
+                  <label>Choose Role</label>
+                  <label class="d-block">
+                    <select class="form-control" id="sel1" [(ngModel)]="choice.TeamMemberType" #TeamMemberType="ngModel" required name="TeamMemberType">
+                      <option value="2">SubAdmin</option>
+                      <option value="3">Team member</option>
+                      <option value="4">Applicant</option>
+                    </select>
+                    <span *ngIf="TeamMemberType.touched&&TeamMemberType.invalid" style="color:red">
+                      <span *ngIf="TeamMemberType.errors.required">
+                        Please Select Role
+                      </span>
+                    </span>
+                  </label>
+                </div>
+                <div class="form-group" *ngIf="roleId == '5'">
+                  <label>Choose Role</label>
+                  <label class="d-block">
+                    <select class="form-control" id="sel1" [(ngModel)]="choice.TeamMemberType" #TeamMemberType="ngModel" required name="TeamMemberType">
+                      <option value="3">Team member</option>
+                      <option value="4">Applicant</option>
+                    </select>
+                    <span *ngIf="TeamMemberType.touched&&TeamMemberType.invalid" style="color:red">
+                      <span *ngIf="TeamMemberType.errors.required">
+                        Please Select Role
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label>Full Name</label>
+                  <label class="d-block">
+                    <input type="text" class="form-control lo-input" placeholder="Full Name" name="fullname" [(ngModel)]="choice.FullName" #fullname="ngModel"
+                      minlength="3" required />
+                    <span *ngIf="fullname.touched&&fullname.invalid" style="color:red">
+                      <span *ngIf="fullname.errors.required">
+                        please provide some value
+                      </span>
+                      <span *ngIf="fullname.errors.minlength">
+                        minimum 3 characters required
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <label>Email</label>
+                  <label class="d-block">
+                    <input type="text" class="form-control lo-input" placeholder="Email Address" name="email" [(ngModel)]="choice.Email" (blur)="checkClientOrganisationEmailExistency(choice.Email,orgNameInput)"
+                      #email="ngModel" minlength="3" required/>
+                    <span *ngIf="email.touched&&email.invalid" style="color:red">
+                      <span *ngIf="email.errors.required">
+                        please provide some value
+                      </span>
+                      <span *ngIf="email.errors.minlength">
+                        minimum 3 characters required
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+              <i class="fa fa-times mt-36 ml-14 fs-12 text-red pointer" aria-hidden="true" (click)="removeChoice(i)"></i>
+            </div>
+            <div class="row text-primary pointer ml-0">
+              <i class="fa fa-plus-circle text-primary" aria-hidden="true" (click)="addNewChoice()"></i> &nbsp;Add more
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-sm-8 mx-auto">
+        <div class="pt-20 p-20 pl-0">
+          <button class="btn btn-primary ml-20 fs-12 float-right" [disabled]="!teaminvite.valid" (click)="SendInvitation()">Send Invite</button>
+          <div class="btn btn-outline fs-12 float-right" routerLink="/client/applayout/team">Cancel</div>
+        </div>
+      </div>
+    </div>
+  </form> -->
+
+
+  <div class="container-fluid mt-100 mb-20">
+    <form [formGroup]="teamInviteForm" autocomplete="off" (ngSubmit)="sendInvitation()">
+      <div class="card bg-faded">
+        <div class="card-block px-20">
+          <div class="col-sm-6 pt-30">
+            <h3>Invite Team Members</h3>
+          </div>
+          <div formArrayName="teamInvite"
+            *ngFor="let skill of teamInviteForm.get('teamInvite')['controls']; let i = index">
+            <hr *ngIf="i>0">
+            <div [formGroupName]="i">
+              <div class="row pt-20">
+                  <div class="col-sm-1"></div>
+                <div class="col-sm-8">
+                <label class="control-label">Team Member Type:</label>
+                  <div class="form-group mt-2"
+                       [ngClass]="{'has-error':skill.get('TeamMemberType').invalid && skill.get('TeamMemberType').touched}">
+                    <label class="teammembertype" *ngIf="isSubAdminAcess">
+                      <input type="radio" class="radio-inline" value="2" formControlName="TeamMemberType">
+                      Sub-Admin&nbsp;
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="teammembertype ml-15">
+                      <input type="radio" class="radio-inline" type="radio" value="3" formControlName="TeamMemberType">
+                      Team-Member &nbsp;
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="teammembertype">
+                      <input type="radio" class="radio-inline" value="4" formControlName="TeamMemberType">
+
+                      &nbsp;Applicant&nbsp;
+                      <span class="checkmark"></span>
+                    </label>
+                    <span class="text-danger" *ngIf="skill.get('TeamMemberType').errors?.required &&
+                                              skill.get('TeamMemberType').touched">
+                                              Team Member Type is required
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="row pt-0">
+                  <div class="col-sm-1"></div>
+                <div class="col-sm-3">
+                  <div class="form-group"
+                    [ngClass]="{'has-error':skill.get('Email').invalid && skill.get('Email').touched}">
+                    <label class="control-label" [attr.for]="'Email'+i">
+                      Email
+                    </label>
+                    <input type="email" class="form-control" [id]="'Email'+i" formControlName="Email"
+                      placeholder="ex:example@email.com">
+                    <span class="text-danger" *ngIf="skill.get('Email').errors?.required &&
+                                              skill.get('Email').touched">
+                      Email is required
+                    </span>
+                    <small class="text-danger" *ngIf="skill.get('Email').hasError('pattern')">Enter Valid Email
+                      ID</small>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group"
+                      [ngClass]="{'has-error':skill.get('JobCardTitle').invalid && skill.get('JobCardTitle').touched}">
+    
+                      <label class="control-label" [attr.for]="'JobCardTitle'+i">
+                        Job Card Title
+                      </label>
+                      <input type="text" class="form-control" [id]="'JobCardTitle'+i" formControlName="JobCardTitle"
+                        placeholder="JobCardTitle">
+                      <span class="text-danger" *ngIf="skill.get('JobCardTitle').errors?.required &&
+                                skill.get('JobCardTitle').touched">
+                        Job Card Title is required.
+                      </span>
+                      <small class="text-danger" *ngIf="
+                      skill.get('JobCardTitle').hasError('maxlength')  
+                            ">Maximum 25 characters.</small>
+                            <small class="text-danger" *ngIf="
+                            skill.get('JobCardTitle').hasError('minlength')  
+                                  ">Minimum 3 characters.</small>
+                                  <small class="text-danger" *ngIf="skill.get('JobCardTitle').hasError('pattern')">Invalid job card title</small>
+                    </div>
+                  </div>
+                <div class="col-sm-3">
+                  <div class="form-group"
+                    [ngClass]="{'has-error':skill.get('FullName').invalid && skill.get('FullName').touched}">
+                    <label class="control-label" [attr.for]="'FullName'+i">
+                      Full Name
+                    </label>
+                    <input type="text" class="form-control" (input)="validateFullname($event)" [id]="'FullName'+i" formControlName="FullName"
+                      placeholder="eg: John doe" required>
+                    <span class="text-danger" *ngIf="isValidFullName">Enter Valid Data</span>
+                    <span class="text-danger"
+                      *ngIf="((skill.get('FullName').touched ||skill.get('FullName').dirty) &&skill.get('FullName').errors)">
+                      <span *ngIf="skill.get('FullName').errors.required">
+                        Full Name is required
+                      </span>
+                      <small class="text-danger" *ngIf="skill.get('FullName').hasError('pattern')">Enter only
+                        characters</small>
+                      <span *ngIf="skill.get('FullName').errors.minlength || skill.get('FullName').errors.maxlength">
+                        Full Name must be greater than 2 characters and less than 20 characters
+                      </span>
+                      <span class="text-danger" *ngIf="skill.hasError('whitespace')">Enter Valid Full Name</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-sm-1" *ngIf="teamInviteForm.get('teamInvite').length>1">
+                    <i class="fa fa-times mt-36 fs-12 text-red pointer" (click)="removeTeamMember(i)"
+                      aria-hidden="true"></i>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="offset-md-1 col-md-4">
+              <button type="button" class="btn btn-outline ml-15" (click)="addTeamMember()"
+                [disabled]="teamInviteForm.get('teamInvite').invalid">
+                <i class="text-primary fa fa-plus-circle"></i> Add Team Member
+              </button>
+          </div>
+        </div>
+        <div class="panel-footer p-20">
+          <div class="col-sm-10">
+            <div class="btn-group float-right">
+              <button class="btn btn-primary mr-2" type="submit"
+                [disabled]="teamInviteForm.get('teamInvite').invalid">Send
+                Invitation</button>
+                <button class="ml-10 btn btn-light" [routerLink]="['/client/applayout/team']">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>

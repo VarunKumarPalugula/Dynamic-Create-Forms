@@ -1,0 +1,17 @@
+@mixin button($bg, $c, $b) {
+  color: $c !important;
+  background-color: $bg !important;
+  border-color: $b !important;
+}
+
+@mixin link($c, $td) {
+  color: $c;
+  text-decoration: $td;
+  font-weight: 300 !important;
+  &:hover,
+  &:active,
+  &:visited {
+    color: $c;
+    text-decoration: $td;
+  }
+}

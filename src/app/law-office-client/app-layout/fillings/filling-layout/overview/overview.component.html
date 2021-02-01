@@ -1,0 +1,807 @@
+<!-- *********** Assign Aapplicant state ******************* -->
+
+<div class="row mt-100" *ngIf="filingName=='InComplete' && IsClientInitiated">
+  <div class="col-sm-4 mx-auto">
+    <div class="text-center">
+      <!-- <i class="fas fa-user-plus fs-100 addusericon"></i> -->
+      <p class="fs-18 mt-20"></p>
+      <p class="fs-14"> Please wait for the Admin approval.</p>
+    </div>
+
+
+  </div>
+</div>
+
+
+<!-- <div class="row mt-100" *ngIf="!overviewSection"></div> -->
+
+
+<div class="row mt-100" *ngIf="filingName=='InComplete' && !IsClientInitiated">
+  <div class="col-sm-4 mx-auto">
+    <div class="text-center">
+      <i class="fas fa-user-plus fs-100 addusericon"></i>
+      <p class="fs-18 mt-20">Get started by assigning an applicant</p>
+      <p class="fs-14"> You need to assign an applicant to get started with his incomplete filings</p>
+    </div>
+    <table class="invitedapplicants mt-20" *ngIf="isLetClientInviteApplicant">
+      <tr class="firsttr">
+        <th class="p-5"> Email</th>
+        <th class="float-right p-5"> Full Name</th>
+      </tr>
+      <tr>
+        <td class="p-5 normalTextFormat">{{applicantData?.Email}}</td>
+        <td class="float-right p-5">{{applicantData?.FirstName}} {{applicantData?.LastName}}
+          <!-- <span (click)="openApplicants(AssignApplicant)">
+            <i class="far fa-edit"></i>
+          </span>  -->
+        </td>
+      </tr>
+    </table>
+    <div class="text-center fs-12 mt-30" *ngIf="isLetClientInviteApplicant">
+      <button class="btn btn-primary px-20 py-4" (click)="approveModel(approve)">Approve</button>
+      <button class="btn btn-outline px-20 ml-20 py-4" routerLink="/client/applayout/fillings"> Cancel</button>
+    </div>
+    <div class="text-center fs-12 mt-30" *ngIf="!isLetClientInviteApplicant">
+      <button class="btn btn-primary px-20 py-4" (click)="openApplicants(AssignApplicant)"> Assign</button>
+      <button class="btn btn-outline px-20 ml-20 py-4" routerLink="/client/applayout/fillings"> Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- /end  -->
+
+
+<!-- inviet client member -->
+<ng-template #invitenew let-d="dismiss" id="invitenewteammember">
+  <form [formGroup]="InviteForm">
+    <div class="gl-modal-header p-20 bg-model text-white text-align">
+      <span class="fs-16 mb-0 d-ib">Invite New Applicant Member</span>
+      <span class="modal-close close" (click)="Closeinvitenewteammember('close')">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body pt-20 pb-40 px-10">
+      <div class="form-group">
+        <label for="">Full Name</label>
+        <input type="text" class="form-control" placeholder="eg. John Smith" name="FullName"
+          formControlName="FullName" />
+        <small *ngIf="
+        InviteForm.controls['FullName'].errors && 
+        (InviteForm.controls['FullName'].dirty || InviteForm.controls['FullName'].touched)
+      ">
+          <small class="text-danger" *ngIf="InviteForm.get('FullName').hasError('required')">Full Name is
+            required
+          </small>
+          <small class="text-danger" *ngIf="
+          InviteForm.get('FullName').hasError('minlength') &&
+          !InviteForm.get('FullName').hasError('pattern')
+        ">Minimum 2 characters</small>
+          <small class="text-danger" *ngIf="InviteForm.get('FullName').hasError('pattern')">Enter only
+            Characters and Numbers</small>
+        </small>
+      </div>
+      <div class="form-group">
+        <label for="">Email</label>
+        <input type="text" class="form-control" placeholder="eg. example@gmail.com" name="Email"
+          formControlName="Email">
+        <small *ngIf="
+          InviteForm.controls['Email'].errors && 
+          (InviteForm.controls['Email'].dirty || InviteForm.controls['Email'].touched)
+        ">
+          <small class="text-danger" *ngIf="InviteForm.get('Email').hasError('required')">Email is
+            required
+          </small>
+          <small class="text-danger" *ngIf="
+            InviteForm.get('Email').hasError('minlength') &&
+            !InviteForm.get('Email').hasError('pattern')
+          ">Minimum 2 characters</small>
+          <small class="text-danger" *ngIf="InviteForm.get('Email').hasError('pattern')">Invalid Email ID</small>
+        </small>
+
+      </div>
+    </div>
+    <div class="modal-footer bg-model-footer">
+      <button type="button" class="btn btn-outline fs-12" (click)="Closeinvitenewteammember('close')">Cancel</button>
+      <button type="button" class="btn btn-primary fs-12" [disabled]="!InviteForm.valid" (click)="sendinvite()">Send
+        Invite</button>
+
+    </div>
+  </form>
+</ng-template>
+<!-- end -->
+<!-- addignapplicant model -->
+<ng-template #assignapp let-d="dismiss" id="AssignApplicant">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Assign Applicant</span>
+    <span class="modal-close close" (click)="CloseaddRelatedfilings('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body py-20 px-30">
+    <div class="row">
+      <div class="col-sm-12 p-0">
+        <label for="">Search by Name</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="" aria-label="e.g John Smith"
+            aria-describedby="basic-addon1">
+          <div class="input-group-prepend bg-primary">
+            <span class="input-group-text text-white" id="basic-addon1">Search</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row my-20">
+      <div class="col-sm-12 p-0">
+        <span>Your Connections List</span>
+        <span class="text-primary float-right  pointer" (click)="invitenewteammember(invitenew)"> +Invite
+          Connection</span>
+      </div>
+    </div>
+    <div class="row py-10 bbt">
+      <div class="col-sm-2 pl-0">
+        <img src="" alt="" class="lo-profile--image extrasmall">
+      </div>
+      <div class="col-sm-8">
+        <span class="fs-16">Nagesh</span>
+        <br>
+        <span>Applicant</span>
+      </div>
+      <div class="col-sm-1">
+        <i class="fas fa-plus plusicon pointer"></i>
+      </div>
+    </div>
+    <div class="row py-10 bbt">
+      <div class="col-sm-2 pl-0">
+        <img src="" alt="" class="lo-profile--image extrasmall">
+      </div>
+      <div class="col-sm-8">
+        <span class="fs-16">Nagesh</span>
+        <br>
+        <span>Applicant</span>
+      </div>
+      <div class="col-sm-1">
+        <i class="fas fa-check plusicon pointer bg-green text-white"></i>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="button" class="btn btn-primary fs-12">Aassign selected</button>
+    <button type="button" class="btn btn-outline fs-12">close</button>
+  </div>
+</ng-template>
+<!-- end assign applicant model -->
+
+<!-- addignapplicant model -->
+<ng-template #AssignApplicant let-d="dismiss" id="openApplicants">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Assign Applicant</span>
+    <span class="modal-close close" (click)="closeModal()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body py-20 px-30">
+    <div class="row">
+      <div class="col-sm-12 p-0">
+        <label for="">Search by Name</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Search Applicant" aria-label="e.g John Smith"
+            aria-describedby="basic-addon1" [(ngModel)]="searchFilter">
+          <!-- <div class="input-group-prepend bg-primary">
+            <span class="input-group-text text-white" id="basic-addon1">Search</span>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="row my-20">
+      <div class="col-sm-12 p-0">
+        <span>Your Applicants List</span>
+        <span class="text-primary float-right  pointer" (click)="invitenewteammember(invitenew)"> +Invite
+          Applicant</span>
+      </div>
+    </div>
+    <div class="row py-10 bbt" *ngFor="let applicant of applicantsDataList| filter: searchFilter; let i = index">
+      <div class="col-sm-1 pl-0">
+        <img src="" alt="" class="lo-profile--image extrasmall">
+      </div>
+      <div class="col-sm-8">
+        <span class="fs-16 normalTextFormat">{{applicant.UserName}}</span>
+        <br>
+        <span>Applicant</span>
+      </div>
+      <div class="offset-sm-1 col-sm-1" (click)="selectApplicant(i, applicant)" *ngIf="applicant.assign == false">
+        <i class="fas fa-plus plusicon pointer"></i>
+      </div>
+      <div class="offset-sm-1 col-sm-1" *ngIf="applicant.assign == true">
+        <i class="fas fa-check plusicon pointer bg-green text-white"></i>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="button" class="btn btn-primary fs-12" (click)="assignSelected()"
+      [disabled]="applicantData==null">Assign Selected</button>
+    <button type="button" class="btn btn-outline fs-12" (click)="closeAssignModal()">Close</button>
+  </div>
+</ng-template>
+<!-- end assign applicant model -->
+
+
+<!-- approve Modal -->
+<ng-template #approve let-d="dismiss" id="approveModel">
+  <div class="gl-modal-header p-20 bg-white text-white text-align">
+    <span class="modal-close close" (click)="CloseApprove('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body pt-20 pb-20 px-10 text-center">
+    <i class="fa fa-address-book fs-70 color-orange pb-30" aria-hidden="true"></i>
+    <p class="fs-20">Add Applicants To Your Connections</p>
+    <p class="fs-14">Applicant should be member of your organization connections</p>
+  </div>
+  <div class="text-center pb-50">
+    <button type="button" class="btn btn-primary " (click)="approveApplicant()">Approve</button>
+    <button type="button" class="btn btn-outline ml-20 px-20 " (click)="closeModal()">Cancel</button>
+  </div>
+</ng-template>
+<!-- end -->
+
+
+
+<!-- Overview Section -->
+<div class="row" *ngIf="overviewSection">
+  <div class="col-sm-9 box-shadow">
+    <div class="row">
+      <div class="col-md-6 col-sm-12 p-5">
+        <div class="card shadow-sm">
+          <div class="card-body pd">
+            <div class="row">
+              <div class="col-sm-7">
+                <span>
+                  <i class="fas fa-user usericon"></i>
+                </span>
+                <span class="fs-20 p-5 vertical-align">Applicant</span>
+              </div>
+              <div class="col-sm-5">
+                <!-- <span class="float-right text-primary p-6  pointer">View profile</span> -->
+              </div>
+            </div>
+            <div class="row pt-10">
+              <div class="col-sm-5">
+                <span class="text-muted fs-12">First Name</span>
+                <p class="">{{applicantdetails?.FirstName}}</p>
+              </div>
+              <div class="col-sm-7">
+                <span class="text-muted fs-12">Last Name</span>
+                <p class="">{{applicantdetails?.LastName}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-5">
+                <span class="text-muted fs-12">Phone (M)</span>
+                <p class="">{{applicantdetails?.Mobile}}</p>
+              </div>
+              <div class="col-sm-7">
+                <span class="text-muted fs-12">Email</span>
+                <p class="normalTextFormat text-truncate" isEllipsisActive>{{applicantdetails?.Email}}</p>
+
+              </div>
+            </div>
+            <div class="row mt-20">
+              <div class="col-sm-12">
+                <p class="text-primary  float-right pointer">View Related Filings</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-12 p-5">
+        <div class="card shadow-sm">
+          <div class="card-body pd">
+            <div class="row">
+              <div class="col-sm-7">
+                <span>
+                  <i class="fa fa-building sponsericon" aria-hidden="true"></i>
+                </span>
+                <span class="fs-20 p-5 vertical-align">Sponsor</span>
+              </div>
+              <div class="col-sm-5">
+                <!-- <span class="float-right text-primary p-6  pointer">View profile</span> -->
+              </div>
+            </div>
+            <div class="row pt-10">
+              <div class="col-sm-12">
+                <span class="text-muted fs-12">Company Name</span>
+                <p class="">{{sponserdetails.OrganisationName}}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-5">
+                <span class="text-muted fs-12">First Name</span>
+                <p class="">{{sponserdetails.FirstName}}</p>
+
+              </div>
+              <div class="col-sm-7">
+                <span class="text-muted fs-12">Last Name</span>
+                <p class="">{{sponserdetails.LastName}}</p>
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-5">
+                <span class="text-muted fs-12">Phone (M)</span>
+                <p class="">{{sponserdetails.Mobile}}</p>
+              </div>
+              <div class="col-sm-7">
+                <span class="text-muted fs-12">Email</span>
+                <p class=" normalTextFormat">{{sponserdetails.Email}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-10">
+      <div class="col-md-6 col-sm-12 p-5">
+        <div class="card shadow-sm">
+          <div class="card-body pd">
+            <div class="row">
+              <div class="col-sm-12" style="margin-bottom: 15px">
+                <span>
+                  <i class="fas fa-list-ul activityicon" aria-hidden="true"></i>
+                </span>
+                <span class="fs-20 p-5 vertical-align">Activity</span>
+              </div>
+            </div>
+            <div class="activity-feed">
+              <!-- <label class="ml--7">{{activity.Daystatus}}</label> -->
+              <div class="feed-item" *ngFor="let activity of activityinfo | slice:0:activityviewall">
+                <div class="text">{{activity.ActivityName}}</div>
+                <div class="date normalTextFormat">{{activity.ActivityCreatedby}} -
+                  {{activity.CreatedOn | date: 'MM/dd/yyyy hh:mm  a'}}
+
+                </div>
+              </div>
+            </div>
+            <div class="mx-auto text-align" *ngIf="activityinfo.length==0">
+              <img src="../../../../../../assets/icons/add-note.svg" class="addnoteempty text-center pt-20" />
+              <p class="text-center pb-20 pt-10">No Active activities found.</p>
+            </div>
+            <div class="row pb-10">
+              <div class="col-sm-12 text-center text-primary pointer" (click)="viewall()" *ngIf="activityinfo.length>0">
+                {{activityview}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 colsm-12 p-5">
+        <div class="card shadow-sm">
+          <div class="card-body pd">
+            <div class="row">
+              <div class="col-sm-7">
+                <span>
+                  <i class="far fa-copy notesicon"></i>
+                </span>
+                <span class="fs-20 p-5 vertical-align">My Notes</span>
+              </div>
+              <div class="col-sm-5">
+                <span class="float-right text-primary p-6  pointer" (click)="Modeladdnote(note)">+Add</span>
+              </div>
+            </div>
+            <div class="activity-feed notes mt-10">
+              <!-- <label class="ml--7">RECENT</label> -->
+              <!-- <div class="feed-item" *ngIf="!isNotes">
+                <div class="text">No Note is created at..!!!</div>
+              </div> -->
+              <div class="feed-item" *ngFor="let note of notes | slice:0:notesviewall">
+                <div class="text" *ngIf="isNotes">{{note.Notetitle}}</div>
+              </div>
+              <!-- <div class="feed-item">
+                <div class="text">Need to file along with client supporting documents</div>
+              </div> -->
+            </div>
+            <div class="mx-auto text-align" *ngIf="notes.length==0">
+              <img src="../../../../../../assets/icons/add-note.svg" class="addnoteempty text-center pt-25" />
+              <p class="text-center pb-20 pt-10">No Active notes found.</p>
+            </div>
+          </div>
+          <div class="row pb-10">
+            <div class="col-sm-12 text-center text-primary pointer" (click)="notesclick()" *ngIf="notes.length>0">
+              {{notesview}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-10">
+      <div class="col-sm-12 colsm-12 p-5">
+        <div class="card shadow-sm">
+          <div class="card-body pd">
+            <div class="row">
+              <div class="col-md-4">
+                <span>
+                  <i class="fas fa-truck trackicon"></i>
+                </span>
+                <span class="fs-20 p-5 vertical-align">Shipment Tracking</span>
+              </div>
+              <div class="col-md-4 text-center text-muted">
+                <p class=" p-6" *ngIf="Shipmentdetails.length>0">Last updated:
+                  {{Shipmentdetails[0].CreatedOn | date: 'MM/dd/yyyy hh:mm  a'}}</p>
+              </div>
+              <div class="col-md-4">
+                <span class="float-right text-primary p-6  pointer" (click)="Modeladdtrack(track)"
+                  *ngIf="FillingPermissions? (FillingPermissions.CanAddEditShippingOutDetailsToFiling):true">+Add
+                  Tracking Number</span>
+              </div>
+            </div>
+            <div class="col-md-3 mx-auto text-align" *ngIf="Shipmentdetails.length==0">
+              <img src="../../../../../../assets/icons/shiping-emtpy.svg" class="shipingempty" />
+              <p class="text-center pb-20 pt-10">No Shipment Details found.</p>
+            </div>
+            <div *ngIf="Shipmentdetails.length>0">
+              <div class="row px-13" *ngFor="let shipment of Shipmentdetails;let i = index">
+                <div class="col-sm-12 p-5">
+                  <div class="card">
+                    <div class="card-body pd pb-10">
+                      <div class="row pointer" (click)="toggler($event,i)">
+                        <div class="row col-12 pt-10">
+                            <div class="col-3">
+                                <span class="text-primary">{{shipment.Title}}</span>
+                              </div>
+                          <div class="col-4">
+                            <span class="text-primary">TRK# {{shipment.TrackingNumber}}</span>
+                          </div>
+                          <div class="col-2">
+                              <p>Status</p>
+                            <span class="text-primary">{{shipment.TrackingDetails?.StatusDetailDescription}}</span><br>
+                          </div>
+                          <!-- <div class="col-2">
+                            <ng-container *ngIf="shipment?.TrackingDetails?.FedExTrackingTimeStamps">
+                              <div *ngFor="let estmt of shipment.TrackingDetails.FedExTrackingTimeStamps">
+                                <span class="text-primary">{{estmt.SHIP}}</span><br>
+                                <p>Est. Delivery</p>
+                              </div>
+                            </ng-container>
+                          </div> -->
+                          <div class='offset-1 col-2'>
+                            <span class="icon-circle" (click)="EditShiping(shipment,track)"
+                              *ngIf="FillingPermissions? (FillingPermissions.CanAddEditShippingOutDetailsToFiling):true &&shipment.CreatedBy==username"><i
+                                class="fas fa-pencil-alt"></i></span>
+                            <span class="icon-circle ml-4" *ngIf="username==shipment.CreatedBy"
+                              (click)="DeleteShippopup(shipment,deleteshipmentPopUp)"><i
+                                class="fas fa-trash-alt"></i></span>
+                            <span class="float-right">More<i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-n mt-10" id="togg{{i}}">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="row">
+                              <ng-container *ngIf="shipment?.TrackingDetails?.TrackEvents">
+                                <div class="col-3"></div>
+                                <div class="col-6 activity-feed">
+                                  <div class="feed-item" *ngFor="let activity of shipment.TrackingDetails.TrackEvents">
+                                    <div class="text">{{ activity.EventDesc }}</div>
+                                    <div class="date normalTextFormat">
+                                      {{ activity.EventType }} -
+                                      {{ activity.Timestamp | date: 'MM/dd/yyyy hh:mm  a' }}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-3"></div>
+                              </ng-container>
+                              <div class="mx-auto text-align" *ngIf="!shipment?.TrackingDetails?.TrackEvents">
+                                <img src="../../../../../../assets/icons/add-note.svg"
+                                  class="addnoteempty text-center pt-25" />
+                                <p class="text-center pb-20 pt-10">{{shipment.TrackingDetails}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 p-16 bg-white shadow-sm rounded">
+    <div class="row">
+      <div class="col-sm-9 fs-16 font-weight-bold">
+        Filing Details
+      </div>
+      <!-- <div class="col-sm-3 text-primary ">
+        <span class="float-right pointer" (click)="ModelviewFiling(view)">Edit</span>
+      </div> -->
+    </div>
+    <div class="row">
+      <div class="col-sm-10 py-5">
+        <button class="btn btn-default dp-button ml-9 fs-12">{{fillingdetails.FilingStatus}}</button>
+        <p class="text-muted fs-12">Filing Status</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <span class="text-muted">Filing Date</span>
+        <p class="fs-14">{{fillingdetails.FilingSubmitDate | date : 'MM/dd/yyyy hh:mm  a'}}</p>
+      </div>
+      <div class="col-sm-6">
+        <span class="text-muted">Filing Type</span>
+        <p class="fs-14">{{fillingdetails.FilingType!= null  ? fillingdetails.FilingType : 'H1'}}</p>
+      </div>
+      <div class="col-sm-6">
+        <span class="text-muted">Receipt Number</span>
+        <p class="fs-14">{{fillingdetails.ReceiptNumber}}</p>
+      </div>
+      <div class="col-sm-6">
+        <span class="text-muted">LCA Number</span>
+        <p class="fs-14">{{fillingdetails.LCANumber}}</p>
+      </div>
+    </div>
+    <div class="row mb-5">
+      <div class="col-sm-6">
+        <div class="btn btn-sm btn-outline fs-12"
+          *ngIf="(!permissionService.isOnlyForApplicant()) &&(FillingPermissions ? FillingPermissions.CanCreateTasks : true)"
+          (click)="deActivate()">Deactivate Filing</div>
+      </div>
+      <div class="col-sm-6">
+        <div class="btn btn-sm btn-outline-danger fs-12"
+          *ngIf="(!permissionService.isOnlyForApplicant()) &&(FillingPermissions ? FillingPermissions.CanCreateTasks : true)"
+          (click)="deletes()">Delete Filing</div>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-sm-12 fs-16 font-weight-bold">
+        Tasks Summary
+      </div>
+    </div>
+
+    <div class="row" *ngIf="Tasksummarydetails==''">
+      <div class="col-sm-12 fs-16">
+        No Task Summary found.
+      </div>
+    </div>
+
+    <div class="row" *ngIf="Tasksummarydetails.ApplicantTasks !=''">
+      <div class="col-sm-4">
+        <circle-progress [percent]="Tasksummarydetails?.ApplicantTasks?.PercentageOfTasksCompleted" [radius]="100"
+          [outerStrokeWidth]="16" [innerStrokeWidth]="8" [outerStrokeColor]="this.Tasksummarycolors.applicant"
+          [innerStrokeColor]="'#f2f2f2'" [animation]="true" [animationDuration]="100"></circle-progress>
+      </div>
+      <div class="col-sm-8">
+        <span class=" text-muted">Applicant Tasks</span>
+        <p class="fs-14">
+          {{Tasksummarydetails?.ApplicantTasks?.CompletedTasks}}/{{Tasksummarydetails?.ApplicantTasks?.TotalTasks}}</p>
+      </div>
+    </div>
+    <div class="row" *ngIf="Tasksummarydetails.SponserTeamTasks !=''">
+      <div class="col-sm-4">
+        <circle-progress [percent]="Tasksummarydetails?.SponserTeamTasks?.PercentageOfTasksCompleted" [radius]="100"
+          [outerStrokeWidth]="16" [innerStrokeWidth]="8" [outerStrokeColor]="this.Tasksummarycolors.sponser"
+          [innerStrokeColor]="'#f2f2f2'" [animation]="true" [animationDuration]="100"></circle-progress>
+      </div>
+      <div class="col-sm-8">
+        <span class=" text-muted">Sponsor Team Tasks</span>
+        <p class="fs-14">
+          {{Tasksummarydetails?.SponserTeamTasks?.CompletedTasks}}/{{Tasksummarydetails?.SponserTeamTasks?.TotalTasks}}
+        </p>
+      </div>
+    </div>
+    <div class="row pb-10" *ngIf="Tasksummarydetails.YourTeamTasks !=''">
+      <div class="col-sm-4">
+        <circle-progress [percent]="Tasksummarydetails?.YourTeamTasks?.PercentageOfTasksCompleted" [radius]="100"
+          [outerStrokeWidth]="16" [innerStrokeWidth]="8" [outerStrokeColor]="this.Tasksummarycolors.yourteam"
+          [innerStrokeColor]="'#f2f2f2'" [animation]="true" [animationDuration]="100"></circle-progress>
+      </div>
+      <div class="col-sm-8">
+        <span class=" text-muted">Your Team Tasks</span>
+        <p class="fs-14">
+          {{Tasksummarydetails?.YourTeamTasks?.CompletedTasks}}/{{Tasksummarydetails?.YourTeamTasks?.TotalTasks}}</p>
+      </div>
+    </div>
+    <hr>
+    <div class="row pt-13">
+      <div class="col-sm-12 fs-16 font-weight-bold">
+        Your Upcoming Tasks
+      </div>
+    </div>
+    <div class="row pt-13" *ngIf="Upcomingtaskdetails.length !=0">
+      <div class="col-sm-12" *ngFor="let upcomingtaskdetail of Upcomingtaskdetails | slice:0:10">
+        <span class="fs-14">{{upcomingtaskdetail.TaskTitle}}</span>
+        <p class="text-danger">{{upcomingtaskdetail.TasksStatus}}</p>
+      </div>
+    </div>
+    <div class="row" style="margin-top:25px" *ngIf="Upcomingtaskdetails.length ==0">
+      <div class="col-sm-12">
+        <span class="fs-14 text-danger">There is no upcoming tasks.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #view let-d="dismiss" id="ModelviewFiling">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Filing Details</span>
+    <span class="modal-close close" (click)="CloseviewFiling('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-20 pb-100">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="expirationDate">Filing Date</label>
+          <div class="input-group">
+            <input (focus)="visitingInput()" type="text" id="expirationDate" class="form-control" [minDate]="minDate"
+              name="expirationDate" ngbDatepicker #expirationDate="ngbDatepicker"
+              [(ngModel)]="fillingmodel.fillingdate" />
+            <span class="input-group-append">
+              <button type="button" class="btn btn-light" (click)="expirationDate.toggle()">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <label for="filing type">Filing Type</label>
+        <input (focus)="visitingInput()" type="text" class="form-control" placeholder="H1b Inside USA"
+          [(ngModel)]="fillingmodel.fillingtype">
+      </div>
+    </div>
+    <div class="row pb-10">
+      <div class="col-sm-6">
+        <label for="receipiprtnumber">Receipt Number</label>
+        <input type="text" class="form-control" placeholder="H1b Inside USA" [(ngModel)]="fillingmodel.receiptnumber"
+          (focus)="visitingInput()">
+      </div>
+      <div class="col-sm-6">
+        <label for="lca number">LCA Number</label>
+        <label class="float-right pointer text-primary">View LCA Number</label>
+        <input type="text" class="form-control" placeholder="H1b Inside USA" [(ngModel)]="fillingmodel.lcanumber"
+          (focus)="visitingInput()">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <label for="filingstatus">Filing Status</label>
+        <select name="filingstatus" class="form-control" [(ngModel)]="selectedfstatus"
+          (ngModelChange)="fillingstatusselect(selectedfstatus)" (focus)="visitingInput()"
+          [disabled]="FillingPermissions ? !FillingPermissions.CanAddEditReceiptNumberToFiling : false">
+          <option *ngFor="let filling of fillings" [selected]="selectedfstatus == filling" [value]="filling">{{filling}}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-6" *ngIf="false">
+        <div class="form-group" class="pt-33">
+          <input type="checkbox" id="4" class="ml-10" (change)="toggleEditable($event)" [checked]="autoupdateselected"
+            class="example-margin">
+          <label for="4" class="checkbox"></label> Auto Update Filing Status
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="button" class="btn btn-outline" (click)="CloseviewFiling('close click')">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="submitfillingdetails()">Save</button>
+  </div>
+  <div class="row" *ngIf="isempty" style="margin-left:20px !important; margin-top:20px !important">
+    <p class="alert alert-danger">{{errormessage}}</p>
+  </div>
+</ng-template>
+
+<!-- add note model -->
+<ng-template #note let-d="dismiss" id="Modeladdnote">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Add Note</span>
+    <span class="modal-close close" (click)="Closeaddnote('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-20">
+    <div class="row">
+      <div class="col-sm-12">
+        <label>Note:</label>
+        <textarea name="" id="" class="form-control" cols="30" rows="4" placeholder="Add your note..."
+          [(ngModel)]="addnote" (ngModelChange)="addnotechnage(addnote)"></textarea>
+        <div>
+          <label class="float-right">{{notelength}}/200</label>
+        </div>
+        <small class="text-danger" *ngIf="isempty">Please enter Addnote.</small> <br>
+        <small class="text-danger" *ngIf="notelength>200">Maximum 200 characters allowed.</small>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="button" class="btn btn-outline" (click)="Closeaddnote('close click')">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="savenote()"
+      [disabled]="notelength==0 || notelength>200">Save</button>
+  </div>
+  <div class="row">
+    <div *ngIf="isempty" style="margin-left:20px !important; margin-top:20px !important">
+      <p class="alert alert-danger">Please enter Addnote.</p>
+    </div>
+  </div>
+</ng-template>
+
+<!-- *****************end add note model *********************-->
+
+
+<ng-template #track let-d="dismiss" id="Modeladdtrack">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Add Shipment</span>
+    <span class="modal-close close" (click)="Closeaddtrack('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-20">
+    <form [formGroup]="shipmentForm">
+      <div class="row">
+        <div class="col-sm-12">
+          <label>Title<i class="required">*</i></label>
+          <input (focus)="visitingInput()" formControlName="Shipmenttittle" type="text" class="form-control"
+            placeholder="e.g Client Documents" [(ngModel)]="Shipmenttittle" />
+          <small *ngIf="
+            shipmentForm.controls['Shipmenttittle'].errors &&
+              (shipmentForm.controls['Shipmenttittle'].dirty || shipmentForm.controls['Shipmenttittle'].touched)
+            ">
+            <small class="text-danger" *ngIf="shipmentForm.get('Shipmenttittle').hasError('required')">Title
+              required</small>
+            <small class="text-danger" *ngIf="shipmentForm.get('Shipmenttittle').hasError('pattern')"> Enter only
+              Characters and Numbers</small>
+            <small class="text-danger" *ngIf="
+                shipmentForm.get('Shipmenttittle').hasError('maxlength') &&
+                !shipmentForm.get('Shipmenttittle').hasError('pattern') 
+              ">Maximum 30 characters</small>
+          </small>
+        </div>
+      </div>
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Shipment Tracking Number<i class="required">*</i></label>
+          <input (focus)="visitingInput()" formControlName="Shipmentnumber" type="text" class="form-control"
+            placeholder="e.g 546578678" [(ngModel)]="Shipmentnumber" />
+          <small *ngIf="
+          shipmentForm.controls['Shipmentnumber'].errors &&
+            (shipmentForm.controls['Shipmentnumber'].dirty || shipmentForm.controls['Shipmentnumber'].touched)
+          ">
+            <small class="text-danger" *ngIf="shipmentForm.get('Shipmentnumber').hasError('required')">Shipment tracking
+              number required</small>
+          </small>
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="button" class="btn btn-outline" (click)="Closeaddtrack('close click')">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="SubmitTrackingid()"
+      [disabled]="!shipmentForm.valid">Save</button> <br />
+  </div>
+</ng-template>
+
+<!-- *****************end Add tracking *********************-->
+<ng-template #deleteshipmentPopUp let-d="dismiss" id="deleteshipmentPopUp">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeModal()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+    <i class="fa fa-trash-alt fa-3x mx-auto d-table" aria-hidden="true"></i>
+    <p class="fs-20 mt-15"> Are you sure you want to archive message?</p>
+    <div class="taskGroupArchiveTitle">
+      <div class="btn btn-outline fs-12 mt-10" (click)="closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="DeleteShipment()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- end -->

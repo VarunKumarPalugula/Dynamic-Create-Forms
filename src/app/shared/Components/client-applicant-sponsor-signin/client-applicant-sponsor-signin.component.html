@@ -1,0 +1,108 @@
+<div class="container mt-40">
+  <div class="text-center">
+      <img src="../../../assets/logo.png" class="logo">
+  </div>
+  <div class="col-sm-5 mx-auto mt-20">
+    <div class="white-box">
+        <h4 class="card-title text-center fs-28 mb-30">
+            Sign In
+          </h4>
+      <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate>
+        <div class="form-group">
+          <label>Email Or Username</label>
+          <label class="d-block">
+            <input type="email" class="form-control" formControlName="Email" name="email" [(ngModel)]="client.Email"
+              autocomplete="Email" [placeholder]="'Email or Username' | translate"  />
+            <span hidden translate>Email</span>
+            <small [hidden]="loginForm.controls.Email.valid || loginForm.controls.Email.untouched" class="text-danger"
+            translate>
+            Email or Userame is required
+          </small>
+          </label>
+        </div>
+          <div class="form-group">
+          <label class="d-block">Password</label>
+          <div class="input-group">
+            <input  [type]="fieldTextType ? 'password' : 'text'" class="form-control" formControlName="Password" name="password" [(ngModel)]="client.Password"
+              autocomplete="current-password" [placeholder]="'Password' | translate" required />
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <i
+                    class="fa"
+                    [ngClass]="{
+                      'fa-eye-slash': !fieldTextType,
+                      'fa-eye': fieldTextType
+                    }"
+                    (click)="toggleFieldTextType()"
+                  ></i>
+                </span>
+              </div>
+            </div>
+            <span hidden translate>Password</span>
+            <small [hidden]="loginForm.controls.Password.valid || loginForm.controls.Password.untouched" class="text-danger"
+              translate>
+              Password is required
+            </small>
+        </div>
+        <button class="btn btn-primary btn-block mt-20" type="submit" [disabled]="loginForm.invalid">
+          Sign In
+        </button>
+        <div class="mt-25">
+          <p class="text-center normalTextFormat">Not a member yet? Get started by createing a new account</p>
+          <button type="button" class="btn btn-outline btn-block"  (click)="createAccount()"> Create New Account</button>
+          <p class="text-center mt-10 fs-16">Forget Password? <a (click)="forgotPassword()" class="text-primary pointer fs-16">Click here</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<ng-template #popTemplate>
+  <div class="modal-header bgheader">
+    <h4 class="modal-title pull-left">{{title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card-body">
+      <h4 class="card-title text-center">
+        <label class="fs-15 mt-15 alert-danger">You have logged in with system genarated password which will expire
+          in 24 hrs so kindly please set your password
+          for security constraints</label>
+      </h4>
+      <div [formGroup]="passwordFormGroup">
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input class="form-control" type="password" name="password" [(ngModel)]="model.password" formControlName="password">
+
+          <small
+          *ngIf="passwordFormGroup.controls['password'].errors && (passwordFormGroup.controls['password'].dirty || passwordFormGroup.controls['password'].touched)">
+          <small class="text-danger" *ngIf="passwordFormGroup.get('password').hasError('required')">
+            Password is required</small>
+          <small class="text-danger" *ngIf="passwordFormGroup.get('password').hasError('pattern')">
+            Password must consists of at least 8 characters and one special symbol & digit</small>
+        </small>
+        </div>
+        <!-- <p class="bg-danger" *ngIf="passwordFormGroup.controls.password.errors?.required && passwordFormGroup.controls.password.touched">Password
+          is required</p> -->
+
+        <div class="form-group">
+          <label for="Confirm Password">Confirm Password</label>
+          <input class="form-control" type="password" name="confirmPassword" [(ngModel)]="model.confirmPassword"
+            formControlName="confirmPassword">
+            <small class="text-danger"
+            *ngIf="passwordFormGroup.controls.confirmPassword.errors?.required && passwordFormGroup.controls.confirmPassword.touched">Confirm
+            Password is
+            required</small>
+          <small class="text-danger" *ngIf="passwordFormGroup.errors?.doesMatchPassword">Password does not match</small>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="form-control btn btn-primary  w-100 mt-15" type="submit" (click)="setActualPassword()"
+          [disabled]="!passwordFormGroup.valid">Set Password</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer bgfooter">
+  </div>
+</ng-template>

@@ -1,0 +1,42 @@
+<div class="education">
+    <div *ngFor='let in of educationArray;let i = index'>
+        <div *ngIf="finalObj() && finalObj(i + 1); then educationContlIf else educationContlEls"></div>
+        <ng-template #educationContlIf>
+            <div class="card__data">
+                <div class="d-flex justify-content-between align-items-center pl-10 ">
+                    <strong> Education -{{i + 1}} </strong>
+                    <button class="cursor__pointer button__class" (click)="openEducationDetails(educationModel, i + 1)">
+                        Change
+                    </button>
+                </div>
+                <app-education-popup [isCard]="true" [data]="finalObj(i + 1)">
+                </app-education-popup>
+                <app-education-popup2 [isCard]="true" [data]="finalObj(i + 1)">
+                </app-education-popup2>
+            </div>
+        </ng-template>
+        <ng-template #educationContlEls>
+            <div class="d__flex_between education__div">
+                <div>
+                    <div>Education -{{i + 1}} </div>
+                </div>+
+                <button class="blue__button cursor__pointer" (click)="openEducationDetails(educationModel, i + 1)"> Add Details
+                </button>
+            </div>
+        </ng-template>
+    </div>
+
+    <a *ngIf="educationArray.length !== maxEducation" class="d__flex_end education__add cursor__pointer">
+        <span (click)="incEducation()"> + Add</span>
+    </a>
+</div>
+
+<ng-template #educationModel let-d="dismiss" id="educationModel">
+    <app-education-popup  (emitCloseModel)="updateFormValues(educationModel2, $event, index)" [data]="finalObj(index)" [tempData]="educationFormData" >
+    </app-education-popup>
+</ng-template>
+
+<ng-template #educationModel2 let-d="dismiss" id="educationModel2">
+    <app-education-popup2 (emitBackModel)="backToModel1(educationModel)" (emitCloseModel)="closeModel($event, index)" [data]="finalObj(index)">
+    </app-education-popup2>
+</ng-template>

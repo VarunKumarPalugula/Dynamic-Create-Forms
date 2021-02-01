@@ -1,0 +1,23 @@
+.input-group.calendar {
+  input {
+    box-shadow: none;
+    border: 1px solid #ced4da;
+    width: 100%;
+    z-index: 2;
+    background: transparent;
+    cursor: pointer;
+  }
+  span {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    button {
+      background: transparent;
+      padding-bottom: 26px;
+      width: 15px;
+      height: 33px;
+      padding-right: 25px;
+      border: 0;
+    }
+  }
+}

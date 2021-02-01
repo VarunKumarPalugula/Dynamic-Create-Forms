@@ -1,0 +1,12 @@
+<div class="modal-footer">
+  <div class="mr-auto" *ngIf="isBackBtnRequired">
+    <button class="btn btn-primary" type="button" (click)="back()">Back</button>
+  </div>
+  <div class="float-right">
+    <button class="btn btn-primary" [disabled]="!isFormValid.valid" type="submit"
+      (click)="submit()">{{buttonName}}</button>
+    <button class="btn btn-outline ml-10" type="button"
+      (click)="cancel()">Cancel</button>
+  </div>
+ 
+</div>

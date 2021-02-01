@@ -1,0 +1,153 @@
+.nav-item.quick {
+  .dropdown-toggle::after {
+    display: contents;
+    width: 0;
+    height: 0;
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+  }
+
+  .dropdown-menu::before {
+    content: "";
+    height: 10px;
+    width: 10px;
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    transform: rotate(-45deg);
+    position: absolute;
+    background-color: white;
+    top: -5px;
+    right: 15px;
+    z-index: 996;
+  }
+
+  .dropdown-item {
+    line-height: 32px;
+    padding-left: 2.5rem;
+    position: relative;
+    .fa {
+      position: absolute;
+      font-size: 14px;
+      left: 10px;
+      top: 14px;
+      display: none;
+    }
+    &.active {
+      background-color: transparent;
+      color: black;
+      .fa {
+        display: block;
+      }
+    }
+  }
+}
+
+ul {
+  list-style: none;
+  padding-left: 0px;
+  li {
+    float: left;
+    margin: 0 10px;
+    text-decoration: none;
+  }
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+}
+header {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+[data-letters]:before {
+  content: attr(data-letters);
+  display: inline-block;
+  font-size: 1em;
+  width: 2.5em;
+  height: 2.5em;
+  line-height: 2.5em;
+  text-align: center;
+  border-radius: 50%;
+  background: orange;
+  vertical-align: middle;
+  margin-right: 1em;
+  color: white;
+}
+
+.uname {
+  display: inline-block;
+  font-size: 1em;
+  width: 2.5em;
+  height: 2.5em;
+  line-height: 2.5em;
+  text-align: center;
+  border-radius: 50%;
+  background: orange;
+  vertical-align: middle;
+  margin-right: 1em;
+  color: white;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav .dropdown-menu {
+    position: absolute;
+    width: 300px;
+    line-height: 26px;
+  }
+}
+.dropdownname[data-letters]:before {
+  content: attr(data-letters);
+  display: inline-block;
+  font-size: 1.5 em;
+  width: 3.5em;
+  height: 3.5em;
+  line-height: 3.5em;
+  text-align: center;
+  border-radius: 50%;
+  background: orange;
+  vertical-align: middle;
+  margin-right: 1em;
+  color: white;
+}
+
+.logoutdd {
+  // background-color: #ccc;
+  padding: 10px;
+  cursor: pointer;
+  text-align: right;
+}
+.btn-logout {
+  background-color: #d0cccc;
+  border: 1px solid #495057;
+  font-size: 12px;
+}
+.lo-profile--image.small {
+  width: 38px;
+  height: 36px;
+  display: inline-block;
+}
+.inuname {
+  display: inline-block;
+  font-size: 1em;
+  width: 5em;
+  height: 5em;
+  line-height: 5rem;
+  text-align: center;
+  border-radius: 50%;
+  background: orange;
+  vertical-align: middle;
+  margin-right: 1em;
+  color: white;
+  margin: 0 auto;
+  display: table;
+}

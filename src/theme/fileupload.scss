@@ -1,0 +1,57 @@
+.lo-fileuploader {
+  width: 100%;
+  display: flex;
+  border: 1px dashed #a8b7c7;
+  justify-content: center;
+  flex-direction: column;
+  align-self: center;
+  background-color: #f4f6f9;
+  height: 242px;
+  //   width: 300px;
+  align-content: center;
+  align-items: center;
+  color: $biscay;
+  font-size: 14px;
+  text-align: center;
+  input[type="file"] {
+    visibility: hidden;
+    position: fixed;
+    top: -100%;
+  }
+}
+
+.lo-fileuploader-profile {
+  width: 100%;
+  display: flex;
+  // border: 1px dashed $border;
+  justify-content: center;
+  flex-direction: column;
+  align-self: center;
+  align-content: center;
+  align-items: center;
+  color: $primary;
+  font-size: 14px;
+  text-align: center;
+  input[type="file"] {
+    visibility: hidden;
+    position: fixed;
+    top: -100%;
+  }
+}
+.gl-fileuploader-profile {
+  width: 100%;
+  display: flex;
+  // border: 1px dashed $border;
+  justify-content: center;
+  flex-direction: column;
+  align-self: center;
+  align-content: center;
+  align-items: center;
+  font-size: 14px;
+  text-align: center;
+  input[type="file"] {
+    visibility: hidden;
+    position: fixed;
+    top: -100%;
+  }
+}

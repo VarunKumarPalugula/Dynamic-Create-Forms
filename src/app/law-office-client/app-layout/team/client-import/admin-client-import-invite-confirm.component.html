@@ -1,0 +1,69 @@
+
+<div class="container-fluid mt-50 mb-20">
+<div class="card p-10">
+<div class="card-body">
+<label class="fs-18">Import Client Members List </label>
+<p><b>Step 2 of 3 - Upload File</b></p>
+<div class="container">
+<div class="col-sm-8 mx-auto">
+        <table class="table table-striped p-10">
+                <thead>
+                  <tr class="bg-th">
+                    <th>Imported Column</th>
+                    <th>Match Column</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>First Name</td>
+                    <td>
+                            <select class="form-control lo-select" id="sel1" [(ngModel)]="headerOne">
+                              <option *ngFor="let client of clientData; let i=index" value="{{client.HeaderIndex}}">{{client.ColumnHeaders}}</option>
+                            </select>
+                        </td>    
+                  </tr>
+                  <tr>
+                  <td>Last Name</td>
+                  <td>
+                        <select class="form-control lo-select" id="sel1" [(ngModel)]="headerTwo">                          
+                          <option *ngFor="let client of clientData; let i=index" value="{{client.HeaderIndex}}">{{client.ColumnHeaders}}</option>
+                        </select>
+                    </td> 
+                </tr>
+                <tr>
+                  <td>Organization</td>
+                  <td>
+                        <select class="form-control lo-select" id="sel1" [(ngModel)]="headerThree">
+                          <option *ngFor="let client of clientData" value="{{client.HeaderIndex}}">{{client.ColumnHeaders}}</option>
+                        </select>
+                    </td> 
+                </tr>
+                <tr>
+                  <td>Email1</td>
+                  <td>
+                        <select class="form-control lo-select" id="sel1" [(ngModel)]="headerFour">
+                          <option *ngFor="let client of clientData" value="{{client.HeaderIndex}}">{{client.ColumnHeaders}}</option>
+                        </select>
+                    </td> 
+                </tr>
+                <tr>
+                  <td>Email2</td>
+                  <td>
+                        <select class="form-control lo-select" id="sel1" [(ngModel)]="headerFive">
+                          <option *ngFor="let client of clientData" value="{{client.HeaderIndex}}">{{client.ColumnHeaders}}</option>
+                        </select>
+                    </td> 
+                </tr>
+                </tbody>
+              </table>
+</div>
+</div>
+
+</div>
+<div class="pt-20 p-20 pl-0">
+        <div class="btn btn-outline fs-12"  routerLink="/client/applayout/team/clientimportfinsih">Previous</div>
+
+        <div class="btn btn-primary ml-20 fs-12 float-right">Cancel</div>
+        <div class="btn btn-outline fs-12 float-right" (click)="selectedRows()">Next</div>
+    </div>
+</div>

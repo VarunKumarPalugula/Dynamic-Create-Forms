@@ -1,0 +1,85 @@
+
+
+    <div class="gl-modal-header p-20 bg-model text-white text-align">
+        <span class="fs-16 mb-0 d-ib">Address Details</span>
+        <span class="modal-close close" (click)="close()">
+            <i class="fa fa-times text-white" aria-hidden="true"></i>
+        </span>
+    </div>
+    <div class="lo-modal-body p-30 pb-50">
+        <div class="row">
+            <div class="col-sm-12 form-group">
+                <label>Street Number and Name</label>
+                <input type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <div class="custom-control custom-checkbox custom-control-inline mb-3">
+                    <input type="checkbox" class="custom-control-input" id="" name="currnetSpouseApplyingWithUY"
+                        formControlName="isCurrenSpouseApplyingWithU" />
+                    <label class="custom-control-label pt-4" for="currnetSpouseApplyingWithUY">Apt</label>
+                </div>
+                <div class="custom-control custom-checkbox custom-control-inline mb-3">
+                    <input type="checkbox" class="custom-control-input" id="" name="currnetSpouseApplyingWithUN"
+                        formControlName="isCurrenSpouseApplyingWithU" />
+                    <label class="custom-control-label pt-4" for="currnetSpouseApplyingWithUN">Ste</label>
+                </div>
+                <div class="custom-control custom-checkbox custom-control-inline mb-3">
+                    <input type="checkbox" class="custom-control-input" id="" name="currnetSpouseApplyingWithUY"
+                        formControlName="isCurrenSpouseApplyingWithU" />
+                    <label class="custom-control-label pt-4" for="currnetSpouseApplyingWithUY">Flr</label>
+                </div>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label>Number</label>
+                <input type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 form-group">
+                <label>City or town</label>
+                <input type="text" class="form-control" formControlName="CPScityorTownorVillageSouseDeatils" />
+            </div>
+            <div class="col-sm-4 form-group">
+                <label for="sel1">State</label>
+                <select class="form-control" id="sel1" formControlName="CPSstateorProvinceSouseDeatils">
+                    <option>Ohio</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 form-group">
+                <label>Zip Code(Postal Code)</label>
+                <input type="text" class="form-control" formControlName="CPScityorTownorVillageSouseDeatils" />
+            </div>
+            <div class="col-sm-4 form-group">
+                <label>Province</label>
+                <input type="text" class="form-control" formControlName="CPScityorTownorVillageSouseDeatils" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 form-group">
+                <label for="sel1">Country</label>
+                <select class="form-control" id="sel1">
+                    <option>Usa</option>
+                    <option>India</option>
+                </select>
+            </div>
+        </div>
+        <h5>Dates of Residence</h5>
+        <div class="row">
+            <div class="col-sm-4 form-group">
+                <label>From</label>
+                <input type="date" class="form-control" />
+            </div>
+            <div class="col-sm-4 form-group">
+                <label>To</label>
+                <input type="date" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer bg-model-footer">
+        <button type="button" class="btn btn-primary" (click)="save()">Save</button>
+        <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+    </div>

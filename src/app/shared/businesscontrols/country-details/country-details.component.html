@@ -1,0 +1,41 @@
+
+<form [formGroup]="detailsForm" autocomplete="off">
+  
+    <div class="row w-1000">
+        <div class="p-15 form-group">
+          <label for=""><strong> Country </strong><em class="required">*</em></label>
+          <div><strong [hidden]="!isCard"> {{ formData('Country') }}</strong></div>
+          <select [hidden]="isCard" (change)="commonService.onCountryChange($event.target.value); changes($event.target.value);" class="widthF form-control"
+            formControlName="Country">
+            <option hidden></option>
+            <option *ngFor="let countries of commonService.allCountriesList" [value]="countries.name">
+              {{countries.name}}
+            </option>
+          </select>
+          <small [hidden]="isCard"
+            *ngIf="detailsForm.controls['Country'].errors && (detailsForm.controls['Country'].dirty || detailsForm.controls['Country'].touched)">
+            <small class="text-danger" *ngIf="detailsForm.get('Country').hasError('required')">Country
+              is required</small>
+          </small>
+        </div>
+        <div class="p-15 form-group">
+          <label for=""> <strong> State </strong><i class="required">*</i></label>
+          <div><strong [hidden]="!isCard"> {{ formData('State') }}</strong></div>
+          <select [hidden]="isCard" class="widthF form-control" formControlName="State" (change)="changes($event.target.value);">
+            <option hidden></option>
+            <option *ngFor="let state of commonService.states" [value]="state.name">
+              {{state.name}}</option>
+          </select>
+          <small [hidden]="isCard"
+            *ngIf="detailsForm.controls['State'].errors && (detailsForm.controls['State'].dirty || detailsForm.controls['State'].touched)">
+            <small class="text-danger" *ngIf="detailsForm.get('State').hasError('required')">State is
+              required</small>
+          </small>
+        </div>
+        <div class="p-15 form-group">
+          <label> <strong> City or town </strong></label>
+          <div><strong [hidden]="!isCard"> {{ formData('CityOrTown') }}</strong></div>
+          <input [hidden]="isCard" type="text" class="form-control widthF" (input)="changes($event.target.value)" formControlName="CityOrTown" />
+        </div>
+      </div>
+</form>

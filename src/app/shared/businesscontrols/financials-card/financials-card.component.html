@@ -1,0 +1,53 @@
+<div class="row" *ngIf="finInfo">
+  <div class="col-sm-7">
+    <div class="card">
+      <div class="card-body">
+        <button *ngIf="loginUser =='Client'" class="float-right btn-secondary" type="button"
+          (click)="changeFinInfo()">change details</button>
+        <div>
+          <label><b>Federal Employer ID Number (FEN)</b></label>
+          <p>{{finInfo.FederalEmployerIDNumber}}</p>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <label><b>Individual Tax Number</b></label>
+            <p>{{finInfo.IndividualTaxNumber}}</p>
+          </div>
+          <div class="col-sm-6">
+            <label><b>NAICS Number</b></label>
+            <p>{{finInfo.NAICSNumber}}</p>
+          </div>
+        </div>
+        <p>Last 2 Years Income</p>
+        <div class="row">
+          <div class="col-sm-4">
+            <label><b>Current year</b></label>
+            <p>2020</p>
+          </div>
+          <div class="col-sm-4">
+            <label><b>Gross Annual Income</b></label>
+            <p *ngIf="finInfo?.Income.length">{{finInfo.Income[0].GrossAnnualIncome}}</p>
+          </div>
+          <div class="col-sm-4">
+            <label><b>Net Annual Income</b></label>
+            <p *ngIf="finInfo?.Income.length">{{finInfo.Income[0].NetAnnualIncome}}</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <label><b>Past year</b></label>
+            <p>2019</p>
+          </div>
+          <div class="col-sm-4">
+            <label><b>Gross Annual Income</b></label>
+            <p *ngIf="finInfo?.Income.length">{{finInfo.Income[1].GrossAnnualIncome}}</p>
+          </div>
+          <div class="col-sm-4">
+            <label><b>Net Annual Income</b></label>
+            <p *ngIf="finInfo?.Income.length">{{finInfo.Income[1].NetAnnualIncome}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

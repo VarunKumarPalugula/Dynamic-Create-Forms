@@ -1,0 +1,102 @@
+<div class="gl-modal-header p-20 bg-model text-white text-align" [hidden]="isCard">
+    <span class="fs-16 mb-0 d-ib">Step 1 - Insitutte Details</span>
+    <span class="modal-close close" (click)="cancel()">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+</div>
+<form [formGroup]="educationDetailsForm">
+    <div class="lo-modal-body p-20">
+        <div class="form-group">
+            <label>Major/primary field of study <i class="required">*</i></label>
+            <div><strong [hidden]="!isCard"> {{ formData('FieldOfStudy') }}</strong></div>
+            <select [hidden]="isCard" class="form-control" formControlName="FieldOfStudy">
+                <option value="Bachelor of science">Bachelor of science</option>
+                <option value="Masters">Masters</option>
+                <option value="Ph.D">Ph.D</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="">Type of degree awarded <i class="required">*</i></label>
+            <div><strong [hidden]="!isCard"> {{ formData('DegreeAwarded') }}</strong></div>
+            <input [hidden]="isCard" type="text" class="form-control" formControlName="DegreeAwarded" />
+            <small [hidden]="isCard"
+                *ngIf="educationDetailsForm.controls['DegreeAwarded'].errors && (educationDetailsForm.controls['DegreeAwarded'].dirty || educationDetailsForm.controls['DegreeAwarded'].touched)">
+                <small class="text-danger" *ngIf="educationDetailsForm.get('DegreeAwarded').hasError('required')">Type of
+                    degree awarded is
+                    required</small>
+            </small>
+            <small class="text-danger" [hidden]="isCard"
+                *ngIf="(educationDetailsForm.get('DegreeAwarded').hasError('minlength') || educationDetailsForm.get('DegreeAwarded').hasError('maxlength')) && !(educationDetailsForm.get('DegreeAwarded').hasError('pattern'))">
+                Type of degree awarded must be greater than 3 characters and less than 50 characters
+            </small>
+            <small class="text-danger" *ngIf="educationDetailsForm.get('DegreeAwarded').hasError('pattern')">accepts only
+                characters and space</small>
+        </div>
+        <div class="form-group">
+            <label>Select university type <i class="required">*</i></label>
+            <div><strong [hidden]="!isCard"> {{ formData('UniversityType') }}</strong></div>
+            <div class="row" [hidden]="isCard">
+                <div class="col-sm-12">
+                    <label class="radio-inline">
+                        <input type="radio" value="Public" formControlName="UniversityType">&nbsp;Public
+                    </label>
+                    &nbsp;&nbsp;
+                    <label class="radio-inline">
+                        <input type="radio" value="Private Non-profit" formControlName="UniversityType">&nbsp;Private
+                        Non-profit
+                    </label>
+                    &nbsp;&nbsp;
+                    <label class="radio-inline">
+                        <input type="radio" value="Other" formControlName="UniversityType">&nbsp;Other
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="">University name <i class="required">*</i></label>
+            <div><strong [hidden]="!isCard"> {{ formData('UniversityName') }}</strong></div>
+            <input [hidden]="isCard" type="text" class="form-control" formControlName="UniversityName" />
+            <small [hidden]="isCard"
+                *ngIf="educationDetailsForm.controls['UniversityName'].errors && (educationDetailsForm.controls['UniversityName'].dirty || educationDetailsForm.controls['UniversityName'].touched)">
+                <small class="text-danger" *ngIf="educationDetailsForm.get('UniversityName').hasError('required')">University
+                    Name is
+                    required</small>
+            </small>
+            <small class="text-danger" [hidden]="isCard"
+                *ngIf="(educationDetailsForm.get('UniversityName').hasError('minlength') || educationDetailsForm.get('UniversityName').hasError('maxlength')) && !(educationDetailsForm.get('UniversityName').hasError('pattern'))">
+                university name must be greater than 3 characters and less than 100 characters
+            </small>
+            <small class="text-danger" *ngIf="educationDetailsForm.get('UniversityName').hasError('pattern')">accepts only
+                characters, space & symbol </small>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label>Date of degree awarded <i class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('DateOfDegreeAwarded') }}</strong></div>
+                <div class="input-group calendar" [hidden]="isCard">
+                    <input type="text" #dp="bsDatepicker" class="form-control" bsDatepicker placement="top"
+                        formControlName="DateOfDegreeAwarded"
+                        [value]=" educationDetailsForm.get('DateOfDegreeAwarded').value | date" [maxDate]="maxDate"
+                        [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue'}">
+                    <span class="input-group-prepend">
+                        <button type="button" class="btn btn-light" (click)="dp.toggle()">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="mt-30">
+                    <input type="checkbox" [hidden]="isCard" id="97" value="isHighestLevelOfEducation"
+                        formControlName="IsHighestLevelOfEducation">
+                    <label for="97" class="checkbox"></label> is highest level of education
+                    <div><strong [hidden]="!isCard"> {{ formData('IsHighestLevelOfEducation') }}</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="modal-footer bg-model-footer" [hidden]="isCard">
+    <button type="button" class="btn btn-primary" (click)="save()">Next- Add Address</button>
+    <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+</div>

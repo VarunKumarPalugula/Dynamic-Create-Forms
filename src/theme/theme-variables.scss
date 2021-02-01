@@ -1,0 +1,91 @@
+/*
+ * Application global variables.
+ */
+
+// Use Bootstrap defaults for other variables, imported here so we can access all app variables in one place when used
+// in components.
+@import "~bootstrap/scss/_functions";
+@import "~bootstrap/scss/_variables";
+
+// Set Font Awesome font path
+$fa-font-path: "~@fortawesome/fontawesome-free-webfonts/webfonts";
+
+// ---------------------------------------------------------------------------
+// Bootstrap variables
+//
+// Override Bootstrap variables here to suite your theme.
+// Copy variables you want to customize from node_modules/bootstrap/scss/_variables.scss
+
+//
+// Color system
+//
+
+$white: #fff !default;
+$gray-100: #f6f9fc !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #8898aa !default; // Line footer color
+$gray-700: #525f7f !default; // Line p color
+$gray-800: #32325d !default; // Line heading color
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+// $blue: #0073dd;
+// $indigo: #6610f2;
+// $purple: #6f42c1;
+// $pink: #e83e8c;
+// $red: #dc3545;
+// $orange: #fd7e14;
+// $yellow: #ffc107;
+// $green: #28a745;
+// $teal: #20c997;
+// $cyan: #17a2b8;
+
+$deep-dark: #061c3f;
+$kasmir: #54698d;
+$geyser: #d8dde6;
+$link-water: #f0f4f6;
+$biscay: #16325c;
+$cadet-blue: #a8b7c7;
+$white: #ffffff;
+$midnight-blue: #00396b;
+$lake-blue: #0070d2;
+$flush-mahogany: #c23934;
+$salem: #4bca81;
+$endeavor: #005fb2;
+$azure: #1589ee;
+$koromiko: #ffb75d;
+$emerald: #4bca81;
+$peacock: #7e8be4;
+$saffron: #f88962;
+$turmeric: #fcb95b;
+$royal: #b781d3;
+$sea: #2fbfce;
+
+$primary: $lake-blue;
+$secondary: $biscay;
+$success: $salem;
+$info: $azure;
+$warning: $koromiko;
+$danger: $flush-mahogany;
+$light: $link-water;
+$dark: $deep-dark;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark,
+  "kasmir": $kasmir
+);
+
+//Components
+$box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075);
+$box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+$box-shadow-lg: 0 1rem 3rem rgba($black, 0.175);

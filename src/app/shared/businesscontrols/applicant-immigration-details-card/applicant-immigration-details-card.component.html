@@ -1,0 +1,100 @@
+<div class="row mt-15">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <button *ngIf="loginUser =='Client'" class="float-right btn-secondary" type="button"
+          (click)="changeInfo()">Change</button>
+        <div class="row">
+          <div class="col-sm-12 p-0">
+            <label><b>I94 Arrival Or Departure Record Number</b></label>
+            <p class="card-text">{{immigrationInfo.I94ArrivalOrDepartureRecordNumber}} </p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <label><b>Date Of Last Arrival</b></label>
+            <p class="card-text">{{immigrationInfo.DateOfLastArrival | date}} </p>
+          </div>
+          <div class="col-sm-6">
+            <label><b>Current Non Immigrant Status</b></label>
+            <p class="card-text">{{immigrationInfo.CurrentNonImmigrantStatus }} </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <label><b>Any I40 Petition Field</b></label>
+            <p class="card-text">{{immigrationInfo.AnyI40PetitionField }} </p>
+          </div>
+          <div class="col-sm-6">
+            <label><b>Approved Receipt Number</b></label>
+            <p class="card-text">{{immigrationInfo.ApprovedReciptNumber }} </p>
+          </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-sm-12">
+            <label>Email remainders</label>
+            <p class="card-text">
+              {{immigrationInfo.EmailRemainder? "We will send an notification on before 3 months of documents exipary" : "We don't send any notifications about your expiry documents" }}
+            </p>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <p *ngIf="loginUser =='Client'"><i class="fas fa-paperclip"></i>&nbsp;<button
+        class="btn btn-link btn-file btn-sm">I94
+        Arrival Or Departure Record Number file&nbsp;<input type="file" (change)="selectedImgFile($event)"
+          multiple /></button> <span>(<b>Note:</b> Front Page, Back Page)</span></p>
+  </div>
+</div>
+
+<div *ngIf="imgI94DocFile">
+  <div class="row imgTravelFileView" *ngFor="let imgI94DocFile of imgI94DocFile">
+    <div class="col-sm-7">
+      <p class="card-text"> {{imgI94DocFile.FileName}} </p>
+    </div>
+    <div class="col-sm-5">
+      <ul>
+        <i class="fas fa-eye col-sm-1" (click)="view(imgI94DocFile.EFileId, 'I94')"></i>
+        <i class="fas fa-download col-sm-1" (click)="download(imgI94DocFile.EFileId,imgI94DocFile.FileName, 'I94')"></i>
+        <i *ngIf="loginUser =='Client'" class="fas fa-print col-sm-1"
+          (click)="print(imgI94DocFile.EFileId,imgI94DocFile.FileName, 'I94')"></i>
+        <i *ngIf="loginUser =='Client'" class="fas fa-trash col-sm-1"
+          (click)="deleteFile(imgI94DocFile.EFileId, 'I94')"></i>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedImgFileToUpload" class="card">
+  <div class="card-header">Upload Your I94 Arrival document</div>
+  <div class="card-body">
+    <div class="mb-15" *ngFor="let file of filesNames; let i = index">
+      <span *ngIf="file.fileType == 'pdf' || file.fileType == 'PDF'">
+        <img src="../../../../../assets/icons/pdf.png" class="w-31 h-40">
+      </span>
+      <span
+        *ngIf="file.fileType == 'jpg' || file.fileType == 'jpeg' || file.fileType == 'png' || file.fileType == 'PNG' || file.fileType == 'JPG' || file.fileType == 'JPEG'">
+        <img src="../../../../../../assets/icons/image.svg" class="w-31 h-40">
+      </span>
+      <span *ngIf="file.fileType == 'csv'">
+        <img src="../../../../../../assets/icons/csv.png" class="w-31 h-40">
+      </span>
+      <span *ngIf="file.fileType == 'doc' || file.fileType == 'docx'">
+        <img src="../../../../../../assets/icons/word.png" class="w-31 h-40">
+      </span>
+      <span *ngIf="file.fileType == 'txt' || file.fileType == 'Txt'">
+        <img src="../../../../../../assets/icons/txt.png" class="w-31 h-40">
+      </span>
+      <span *ngIf="file.fileType == 'xlsx' || file.fileType == 'xls'">
+        <img src="../../../../../../assets/icons/excel.png" class="w-31 h-40">
+      </span>
+      <label class="ml-10 mt--13">{{file.name}}</label>
+      <span class="float-right fs-13">
+        <button class="btn btn-default btn-sm float-right" (click)="removeSelectedFiles(i)">Cancel</button>
+        <br>
+      </span>
+    </div>
+    <button class="btn btn-primary btn-sm float-right" (click)="upload()">Upload</button>
+  </div>
+</div>

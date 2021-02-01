@@ -1,0 +1,42 @@
+@import "src/theme/theme-variables";
+.lo-profile--image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  text-align: center;
+  margin: 0px auto;
+  position: relative;
+  display: table;
+  vertical-align: middle;
+  background-image: url("/assets/avatar.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  &.small {
+    width: 100px;
+    height: 100px;
+    display: inline-block;
+  }
+  &.xsmall {
+    width: 40px;
+    height: 40px;
+  }
+  &.extrasmall {
+    width: 45px;
+    height: 45px;
+    display: inline-block;
+  }
+  &.xs {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+  }
+  i {
+    font-size: 40px;
+    margin: 55px;
+  }
+}

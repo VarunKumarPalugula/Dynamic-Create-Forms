@@ -1,0 +1,242 @@
+<div class="row" *ngIf="isShowResume">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-bodyCustom">
+        <div *ngIf="loginUser =='Client'">
+          <span>Your Latest Resume</span>
+          <span
+            class="btn btn-secondary col-sm-5 btn-block float-right btn-sm btn-file">{{ getResumeFile? "Change Resume or CV " : "Attach resume or cv" }}
+            <input type="file" (change)="selectedResumeFile($event)" id="resume"
+              accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf ">
+          </span>
+        </div>
+        <div *ngIf="getResumeFile" class="card-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <p class="card-text"> {{getResumeFile.FileName}} </p>
+            </div>
+            <div class="col-sm-6">
+              <ul>
+                <i class="fas fa-eye col-sm-1" (click)="viewFile(getResumeFile.EFileId, 'resume')"></i>
+                <i class="fas fa-download col-sm-1"
+                  (click)="downloadFile(getResumeFile.EFileId, getResumeFile.FileName, 'resume')"></i>
+                <i *ngIf="loginUser =='Client'" class="fas fa-print col-sm-1"
+                  (click)="printFile(getResumeFile.EFileId, getResumeFile.FileName, 'resume')"></i>
+                <i *ngIf="loginUser =='Client'" class="fas fa-trash col-sm-1"
+                  (click)="deleteFile(getResumeFile.EFileId, 'resume')"></i>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="resumeFileToUpload">
+          <p class="mt-10 fs16">Upload Your Resume</p>
+          <span *ngIf="resumeFileToUpload.type == 'application/pdf'">
+            <img src="../../../../../assets/icons/pdf.png" class="w-31 h-40">
+          </span>
+          <span
+            *ngIf="resumeFileToUpload.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'">
+            <img src="../../../../../assets/icons/gdoc.png" class="w-31 h-40">
+          </span>
+          <label class="ml-10 mt--13">{{resumeFileToUpload.name}}</label>
+          <div class="btn btn-primary ml-20 fs-12 float-right" (click)="uploadResume()">Upload</div>
+          <div class="btn btn-outline fs-12 float-right" (click)="removeSelectedResume()">Cancel</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-20" *ngIf="isShowRecentw2s">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-bodyCustom">
+        <div *ngIf="loginUser =='Client'">
+          <span>Recent W2'S</span>
+          <span
+            class="btn btn-secondary col-sm-5 btn-block float-right btn-sm btn-file">{{ getRecentw2s? "Add Recent w2's" : "Attach recent w2s" }}
+            <input type="file" id="recentw2s" (change)="selectedRecentw2sFile($event)" multiple>
+          </span>
+        </div>
+        <div *ngIf="(getRecentw2s.length!==0)" class="card-body">
+          <div *ngFor="let getRecentw2s of getRecentw2s" class="row">
+            <div class="col-sm-6">
+              <p class="card-text"> {{getRecentw2s.FileName}} </p>
+            </div>
+            <div class="col-sm-6">
+              <ul>
+                <i class="fas fa-eye col-sm-1" (click)="viewFile(getRecentw2s.EFileId, 'recentW2s')"></i>
+                <i class="fas fa-download col-sm-1"
+                  (click)="downloadFile(getRecentw2s.EFileId, getRecentw2s.FileName, 'recentW2s')"></i>
+                <i *ngIf="loginUser =='Client'" class="fas fa-print col-sm-1"
+                  (click)="printFile(getRecentw2s.EFileId, getRecentw2s.FileName, 'recentW2s')"></i>
+                <i *ngIf="loginUser =='Client'" class="fas fa-trash col-sm-1"
+                  (click)="deleteFile(getRecentw2s.EFileId, 'recentW2s')"></i>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="recentw2sFileToUpload">
+          <p class="mt-10 fs16">Upload Your recent w2s</p>
+          <div class="mb-15" *ngFor="let file of filesNames; let i = index">
+            <span *ngIf="file.fileType == 'pdf' || file.fileType == 'PDF'">
+              <img src="../../../../../assets/icons/pdf.png" class="w-31 h-40">
+            </span>
+            <span
+              *ngIf="file.fileType == 'jpg' || file.fileType == 'jpeg' || file.fileType == 'png' || file.fileType == 'PNG' || file.fileType == 'JPG' || file.fileType == 'JPEG'">
+              <img src="../../../../../../assets/icons/image.svg" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'csv'">
+              <img src="../../../../../../assets/icons/csv.png" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'doc' || file.fileType == 'docx'">
+              <img src="../../../../../../assets/icons/word.png" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'txt' || file.fileType == 'Txt'">
+              <img src="../../../../../../assets/icons/txt.png" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'xlsx' || file.fileType == 'xls'">
+              <img src="../../../../../../assets/icons/excel.png" class="w-31 h-40">
+            </span>
+            <label class="ml-10 mt--13">{{file.name}}</label>
+            <span class="float-right fs-13">
+              <button class="btn btn-default btn-sm float-right" (click)="removeSelectedRecentw2s(i)">Cancel</button>
+              <br>
+            </span>
+          </div>
+          <button class="btn btn-primary btn-sm float-right" (click)="uploadRecentw2s()">Upload</button>
+          <div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-20" *ngIf="isShowPaystubs">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-bodyCustom">
+        <div *ngIf="loginUser =='Client'">
+          <span>3 Recent pay-stubs</span>
+          <span
+            class="btn btn-secondary col-sm-5 btn-block float-right btn-sm btn-file">{{ getRecentPaystubfiles.length!==0? "Add Recent Pay-Stubs" : "Attach Recent Pay-Stubs" }}
+            <input type="file" id="3recentPayStubs" (change)="selected3recentPaystubs($event)" multiple>
+          </span>
+        </div>
+        <div *ngIf="(getRecentPaystubfiles.length!==0)" class="card-body">
+          <div *ngFor="let file of getRecentPaystubfiles" class="row">
+            <div class="col-sm-6">
+              <p class="card-text"> {{file.FileName}} </p>
+            </div>
+            <div class="col-sm-6">
+              <ul>
+                <i class="fas fa-eye col-sm-1" (click)="viewFile(file.EFileId, '3recentPayStubs')"></i>
+                <i class="fas fa-download col-sm-1"
+                  (click)="downloadFile(file.EFileId, file.FileName, '3recentPayStubs')"></i>
+                <i *ngIf="loginUser =='Client'" class="fas fa-print col-sm-1"
+                  (click)="printFile(file.EFileId, file.FileName, '3recentPayStubs')"></i>
+                <i *ngIf="loginUser =='Client'" class="fas fa-trash col-sm-1"
+                  (click)="deleteFile(file.EFileId,'3recentPayStubs')"></i>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="paystubsFileInfo">
+          <p>Upload Recent pay-stubs </p>
+          <div class="mb-15" *ngFor="let file of filesNames; let i = index">
+            <span *ngIf="file.fileType == 'pdf' || file.fileType == 'PDF'">
+              <img src="../../../../../assets/icons/pdf.png" class="w-31 h-40">
+            </span>
+            <span
+              *ngIf="file.fileType == 'jpg' || file.fileType == 'jpeg' || file.fileType == 'png' || file.fileType == 'PNG' || file.fileType == 'JPG' || file.fileType == 'JPEG'">
+              <img src="../../../../../../assets/icons/image.svg" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'csv'">
+              <img src="../../../../../../assets/icons/csv.png" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'doc' || file.fileType == 'docx'">
+              <img src="../../../../../../assets/icons/word.png" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'txt' || file.fileType == 'Txt'">
+              <img src="../../../../../../assets/icons/txt.png" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'xlsx' || file.fileType == 'xls'">
+              <img src="../../../../../../assets/icons/excel.png" class="w-31 h-40">
+            </span>
+            <label class="ml-10 mt--13">{{file.name}}</label>
+            <span class="float-right fs-13">
+              <button class="btn btn-default btn-sm float-right"
+                (click)="removeSelected3RecentPaystubs(i)">Cancel</button>
+              <br>
+            </span>
+          </div>
+          <button class="btn btn-primary btn-sm float-right" (click)="upload3RecentPaystubs()">Upload</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-20" *ngIf="isShowEadCard">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-bodyCustom">
+        <div *ngIf="loginUser =='Client'">
+          <span>EAD Card</span>
+          <span
+            class="btn btn-secondary col-sm-5 btn-block float-right btn-sm btn-file">{{ getEadCardFile? "Add EAD Card" : "Attach EAD Card" }}
+            <input type="file" id="eadCards" (change)="selectedFileEad($event)" multiple>
+          </span>
+        </div>
+        <div *ngIf="(getEadCardFile.length!==0)" class="card-body">
+          <div *ngFor="let getEadCardFile of getEadCardFile" class="row">
+            <div class="col-sm-6">
+              <p class="card-text"> {{getEadCardFile.FileName}} </p>
+            </div>
+            <div class="col-sm-6">
+              <ul>
+                <i class="fas fa-eye col-sm-1" (click)="viewFile(getEadCardFile.EFileId, 'eadCards')"></i>
+                <i class="fas fa-download col-sm-1"
+                  (click)="downloadFile(getEadCardFile.EFileId, getEadCardFile.FileName, 'eadCards')"></i>
+                <i *ngIf="loginUser =='Client'" class="fas fa-print col-sm-1"
+                  (click)="printFile(getEadCardFile.EFileId, getEadCardFile.FileName, 'eadCards')"></i>
+                <i *ngIf="loginUser =='Client'" class="fas fa-trash col-sm-1"
+                  (click)="deleteFile(getEadCardFile.EFileId, 'eadCards')"></i>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="eadCardToUpload">
+          <p>Upload Your ead card </p>
+          <div class="mb-15" *ngFor="let file of filesNames; let i = index">
+            <span *ngIf="file.fileType == 'pdf' || file.fileType == 'PDF'">
+              <img src="../../../../../assets/icons/pdf.png" class="w-31 h-40">
+            </span>
+            <span
+              *ngIf="file.fileType == 'jpg' || file.fileType == 'jpeg' || file.fileType == 'png' || file.fileType == 'PNG' || file.fileType == 'JPG' || file.fileType == 'JPEG'">
+              <img src="../../../../../../assets/icons/image.svg" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'csv'">
+              <img src="../../../../../../assets/icons/csv.png" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'doc' || file.fileType == 'docx'">
+              <img src="../../../../../../assets/icons/word.png" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'txt' || file.fileType == 'Txt'">
+              <img src="../../../../../../assets/icons/txt.png" class="w-31 h-40">
+            </span>
+            <span *ngIf="file.fileType == 'xlsx' || file.fileType == 'xls'">
+              <img src="../../../../../../assets/icons/excel.png" class="w-31 h-40">
+            </span>
+            <label class="ml-10 mt--13">{{file.name}}</label>
+            <span class="float-right fs-13">
+              <button class="btn btn-default btn-sm float-right" (click)="removeSelectedEadCard(i)">Cancel</button>
+              <br>
+            </span>
+          </div>
+          <button class="btn btn-primary btn-sm float-right" (click)="uploadEadCard()">Upload</button>
+          <div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

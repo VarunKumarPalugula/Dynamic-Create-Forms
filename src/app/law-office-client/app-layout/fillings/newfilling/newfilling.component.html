@@ -1,0 +1,104 @@
+<div class="row lo-100 ml-0">
+  <div class="container  mt-100">
+    <div class="col-md-5 mx-auto">
+      <p class="fs-28 text-center">Create New Filing</p>
+      <div class="row mt-20">
+        <div class="col-md-12">
+          <label>Choose Filing Type <i class="required">*</i></label>
+          <select class="form-control" id="sel1" (change)="selectFillingType($event)" [(ngModel)]="selectedFilling">
+            <option [value]="item.FilingId" *ngFor="let item of fillingTypes">{{item.FilingName}}</option>
+          </select>
+          <small>Can't find the filing type you need? <span class="text-primary">request it now</span></small>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Choose Law office Connection<i class="required">*</i></label><label class="float-right text-primary pointer"
+              (click)="connectionInvite(connection)"  *ngIf="((isAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteConnections:true))" >+Invite
+              Connection</label>
+            <ng-multiselect-dropdown [placeholder]="''"  class="normalTextFormat"[settings]="connectionDropsownSettings"
+             [data]="clientsConnections"  [(ngModel)]="selectedConnection"  [disabled]="isConnectionDisabled"
+              (onSelect)="onConnectionSelect($event)" (onDeSelect)="onConnectionSelect($event)">
+              <!-- (onDeSelect)="onConnectionSelect($event)" -->
+            </ng-multiselect-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Add Applicant<i class="required">*</i></label>
+            <label class="float-right text-primary pointer" (click)="applicantInvite(applicant)" *ngIf="((isAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteClients:true))">
+              +Invite
+              Applicant
+            </label>
+            <input [(ngModel)]="selectedApplicant" [typeahead]="ApplicantsListData" [disabled]="isApplicantDisabled"
+                   typeaheadOptionField="Email" [typeaheadItemTemplate]="applicantTemplate"
+                   (typeaheadOnSelect)="applicantOnSelect($event)" [typeaheadScrollable]="true" class="form-control">
+          </div>
+          <ng-template #applicantTemplate let-model="item" let-index="index">
+            <span class="float-left">{{model.Email}}</span> &nbsp;&nbsp;
+            <span class="float-right typeheadmodel" *ngIf="model.SetType==2">
+              Applicant</span>
+          </ng-template>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Add Team members<i class="required">*</i></label>
+            <label class="float-right text-primary pointer" (click)="teamInvite(team)" *ngIf="(isAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteTeamMembers:true)"
+             >+Invite
+              Team member</label>
+            <ng-multiselect-dropdown [placeholder]="''"  [settings]="teamMembersDropsownSettings" [data]="teamMembersList" class="normalTextFormat"
+              [(ngModel)]="selectedTeamMembers" [disabled] ="isTeamMemberDisabled"
+              (onSelect)="onTeamMemberSelect($event)"  (onDeSelect)="onTeamMemberSelect($event)" (onSelectAll)="onTeamMemberSelectAll($event)" 
+              (onDeSelectAll)="onTeamMemberSelectAll($event)">
+             
+            </ng-multiselect-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-6">
+          <button class="btn btn-primary btn-block" [disabled]="isCreatedFillingDisabled" (click)="CreateFilling()">
+            Create Filing</button>
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-outline btn-block" (click)="Clear()"> Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--***************** applicant invite request******************** -->
+<ng-template #connection let-d="dismiss" id="connection">
+  <indivual-invite  [tittle]="'Invite New Law office Connection'"
+    (emitConfirmation)="confirmationSuccessPopup($event,confirmationsucess)"
+    (emitCloseModel)="closeSponsorInvite($event)"></indivual-invite>
+</ng-template>
+<!--***************** end invite request********************* -->
+
+<!--*****************applicant invite request******************** -->
+<ng-template #applicant let-d="dismiss" id="applicant">
+  <team-individual-invite [SetType]="4" [tittle]="'Invite New Individual Applicant'" [isSetTypeRequired]="false" [isSubAdminAcess]="isSubAdminAcess"
+                          (emitConfirmation)="confirmationSuccessPopup($event,confirmationsucess)"
+                          (emitCloseModel)="closeApplicantInvite($event)"></team-individual-invite>
+</ng-template>
+<!--*****************end applicant request********************* -->
+
+<!--*****************team invite request******************** -->
+<ng-template #team let-d="dismiss" id="team">
+  <team-individual-invite [tittle]="'Invite New Individual Team Member'" [isSubAdminAcess]="isSubAdminAcess"
+    (emitConfirmation)="confirmationSuccessPopup($event,confirmationsucess)"
+    (emitCloseModel)="closeTeamInvite($event,teamsucess)"></team-individual-invite>
+</ng-template>
+<!--*****************end team invite request********************* -->
+
+<!-- successpopup-->
+<ng-template #confirmationsucess let-d="dismiss" id="confirmationsucess">
+  <confirmation-notification [confirmData]="confirmData" (emitCloseModel)="closeConfirmSuccess($event)">
+  </confirmation-notification>
+</ng-template>

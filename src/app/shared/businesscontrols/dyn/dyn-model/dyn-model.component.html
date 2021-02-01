@@ -1,0 +1,28 @@
+<div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">{{ data.title }}</span>
+    <button type="button" class="close" aria-label="Close" (click)="modalClose()">
+    </button>
+</div>
+<div class="lo-modal-body p-30 pb-50">
+    <div *ngFor="let key of data | keyvalue : returnZero">
+        <div class="d__flex_between header__class">
+            <h5> {{ key.key }} </h5>
+        </div> -->
+        <div class="d__flex">
+            <div *ngFor="let subField of data.data; let i = index; trackBy: trackByFn">
+                <app-dyamic-template [fields]="subField" [parent]="data.parent" [parentChild]="data.child"
+                    [custome]="'custome'"></app-dyamic-template>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal-footer">
+    <button (click)="modalClose()" class="btn btn-basic">
+        Cancel
+    </button>
+    <button class="btn btn-primary" (click)="save()">
+        save
+    </button>
+</div>

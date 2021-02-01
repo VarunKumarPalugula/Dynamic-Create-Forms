@@ -1,0 +1,155 @@
+<div class="row mt-6">
+  <div class="col-sm-2">
+    <div class="lo-list">
+      <div class="gl-listname active" id="tab-1" (click)="tabChanger($event)"
+        *ngIf="isAuthorize && isSubAdminAuthorize">
+        Organization</div>
+    </div>
+    <div class="lo-list" *ngIf="isAuthorize && isSubAdminAuthorize">
+      <div class="gl-listname" id="tab-2" (click)="tabChanger($event)">Contact Information</div>
+    </div>
+    <div class="lo-list" *ngIf="isAuthorize && isSubAdminAuthorize">
+      <div class="gl-listname" id="tab-3" (click)="tabChanger($event)">POC and authorized</div>
+    </div>
+    <div class="lo-list" *ngIf="isAuthorize && isSubAdminAuthorize">
+      <div class="gl-listname" id="tab-4" (click)="tabChanger($event)">Financials</div>
+    </div>
+  </div>
+  <div class="col-sm-9">
+    <div class="marketplace-300 active" id="1">
+      <span class="fs-16"><b>Organization Information</b></span>
+      <p class="normalTextFormat">
+        The Information will be auto-populated in relevent immigration forms.
+      </p>
+      <ng-container *ngIf="!clientCommonService.showOrgInfoForm">
+        <organization-form [Orgdetails]="clientCommonService.Orgdetails" [maxDate]="clientCommonService.maxDate" (emitOrganizationInfo)="clientCommonService.Submit()"
+          (backToOrganisationCard)="clientCommonService.getOrganisationInfo()">
+        </organization-form>
+      </ng-container>
+      <ng-container *ngIf="clientCommonService.showOrgInfoForm">
+        <organization-card [orgInfo]="clientCommonService.Orgdetails.value" (changeOrgInformation)="clientCommonService.showOrgInfoForm=$event">
+        </organization-card>
+      </ng-container>
+    </div>
+    <div class="marketplace-300" id="2">
+      <span class="fs-16"><b>Address of Company or Organization</b> </span>
+      <p class="normalTextFormat">
+        The Information will be auto-populated in relevent forms as g-28 and for application review
+        purposes
+      </p>
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="card" *ngIf="!clientCommonService.isContactInfoShow">
+            <div class="card-bodyCustom">
+              <span>Mailing Address</span>
+              <button class="btn btn-secondary float-right btn-sm" type="button"
+                (click)="commonService.openModel(addMailingAddress)">Add Address</button>
+            </div>
+          </div>
+          <div *ngIf="clientCommonService.isContactInfoShow">
+            <address-card [cardBodyTittle]="'Mailing Address'" [addressInfo]="clientCommonService.contactForm.value"
+              (emitChangeInfo)="commonService.openModel(addMailingAddress)">
+            </address-card>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="card" *ngIf="!clientCommonService.addContactFormShow">
+            <div class="card-bodyCustom">
+              <span>Address Of Principal Place Of Business (if different from above)</span>
+              <button class="btn btn-secondary float-right btn-sm" type="button"
+                (click)="commonService.openModel(principalPlaceOfBusiness)">Add Address</button>
+            </div>
+          </div>
+          <div *ngIf="clientCommonService.addContactFormShow">
+            <address-card [cardBodyTittle]="'Address of Principal Place of Business (if different from above)'"
+              [addressInfo]="clientCommonService.businessAddress.value"
+              (emitChangeInfo)="commonService.openModel(principalPlaceOfBusiness)">
+            </address-card>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="marketplace-300" id="3">
+      <span class="fs-16"><b>Point of Contact (POC) </b> </span>
+      <p class="normalTextFormat">
+        This Information will be auto-populated in relevent forms as g-28 and for application review
+        purposes
+      </p>
+      <ng-container *ngIf="!clientCommonService.showPocContactInfo">
+        <contact-form [contactInfoForm]="clientCommonService.posDetails" [contactObj]="clientCommonService.pocObj" (emitSubmitInfo)="clientCommonService.pocInformation($event)"
+          (emitCancelContact)="clientCommonService.getPocInfromation()">
+        </contact-form>
+      </ng-container>
+      <ng-container *ngIf="clientCommonService.showPocContactInfo">
+        <contact-card [contactInfo]="clientCommonService.pocObj" (emitChangeInfo)="clientCommonService.showPocContactInfo=$event">
+        </contact-card>
+      </ng-container>
+      <br />
+      <span class="fs-16"><b>Authorized Signatory </b> </span>
+      <p class="normalTextFormat">
+        This Information will be auto-populated in relevent forms as g-28 and for application review
+        purposes
+      </p>
+
+      <div class="mt-4 pt-4">
+        <ng-container *ngIf="!clientCommonService.showAutoryhSigntContactInfo">
+          <contact-form [contactInfoForm]="clientCommonService.authSignatoryDetails" [contactObj]="clientCommonService.authSignatoryObj"
+            [isCheckBoxChecked]="clientCommonService.isChecked" [sameAsContactInfoRequired]="true" [contactValidated]="clientCommonService.showPocContactInfo"
+            (emitSubmitInfo)="clientCommonService.authSignatoryInformation($event)" (emitCancelContact)="clientCommonService.getauthSignatoryInformation()"
+            (emitSameContactInfo)="clientCommonService.sameeAsPOCAuthorizedSignatory($event)"> </contact-form>
+        </ng-container>
+        <ng-container *ngIf="clientCommonService.showAutoryhSigntContactInfo">
+          <contact-card [contactInfo]="clientCommonService.authSignatoryObj" (emitChangeInfo)="clientCommonService.showAutoryhSigntContactInfo=$event">
+          </contact-card>
+        </ng-container>
+      </div>
+
+    </div>
+    <div class="marketplace-300" id="4">
+      <span class="fs-16"><b>Financial Information </b> </span>
+      <p class="normalTextFormat">
+        This Information will be auto-populated in relevent forms as g-28 and for application review
+        purpose only
+      </p>
+      <ng-container *ngIf="!clientCommonService.showFinancialInfoForm">
+        <financials-form [financials]="clientCommonService.financials" [financialObj]="clientCommonService.financialObj" [currentYearIncome]="clientCommonService.currentYearIncome"
+          [previousYearIncome]="clientCommonService.previousYearIncome" (emitSubmitFinancialInfo)="clientCommonService.financialsInformation()"
+          (backToFinacialCard)="clientCommonService.getfinancialsInformation()">
+        </financials-form>
+      </ng-container>
+      <ng-container *ngIf="clientCommonService.showFinancialInfoForm">
+        <financials-card [finInfo]="clientCommonService.financialInfo" (editFininfo)="clientCommonService.showFinancialInfoForm=$event">
+        </financials-card>
+      </ng-container>
+    </div>
+
+  </div>
+</div>
+<!-- Mailing address modal -->
+<ng-template #addMailingAddress let-c="close" let-d="dismiss">
+  <modal-header [headerTittle]="'Mailing Address'"></modal-header>
+  <div class="modal-body">
+    <address-form [contactForm]="clientCommonService.contactForm" [isAptSteFlrNumberDisabled]="clientCommonService.isAptSteFlrNumberDisabled"
+      (emitChangeAptSteFlr)="clientCommonService.changeAptSteFlr()" >
+    </address-form>
+  </div>
+  <!-- [contactFormObj]="contactFormObj"  (emitContactinformation)="storeContactInformation($event)" -->
+  <modal-footer [isFormValid]="clientCommonService.contactForm" (emitCancel)="clientCommonService.getcontactinformation()"
+    (emitSubmit)="clientCommonService.mailingAddress($event)"></modal-footer>
+</ng-template>
+<!-- Address Of principal place if business -->
+<ng-template #principalPlaceOfBusiness let-c="close" let-d="dismiss">
+  <modal-header [headerTittle]="'Address Of Principal Place Of Business'"></modal-header>
+  <div class="modal-body">
+    <address-form [contactForm]="clientCommonService.businessAddress" [isAptSteFlrNumberDisabled]="clientCommonService.isBussinessAptSteFlrNumberDisabled"
+      (emitChangeAptSteFlr)="clientCommonService.changeBussinessAptSteFlrNumber()" 
+     ></address-form>
+    <!-- [contactFormObj]="addContactFormObj" (emitContactinformation)="storeAddressPrincipal($event)"-->
+  </div>
+  <modal-footer [isFormValid]="clientCommonService.businessAddress" (emitCancel)="clientCommonService.closeModal('close click')"
+    (emitSubmit)="clientCommonService.addressOfPrincipalPlaceOfBusiness($event)"></modal-footer>
+</ng-template>

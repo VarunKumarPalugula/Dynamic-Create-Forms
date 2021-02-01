@@ -1,0 +1,22 @@
+<div class="card__data p-20">
+
+    <div class="d-flex justify-content-between align-items-center pb-10">
+        <strong> {{ title }}</strong>
+        <button class="cursor__pointer button__class" (click)="changes()">
+            Change
+        </button>
+    </div>
+
+    <div class="flex-wrap" *ngFor="let key of data">
+        <div class="pb-5">
+            <strong>{{ key.title }}</strong>
+        </div>
+        <div class="d-flex flex-wrap">
+            <div class="card__width pb-15" *ngFor="let control of key.control">
+                <label> {{ control.display }} </label>
+                <div> <strong> {{ control.value }} </strong> </div>
+            </div>
+        </div>
+    </div>
+
+</div>

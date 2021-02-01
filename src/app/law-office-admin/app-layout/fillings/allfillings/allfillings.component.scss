@@ -1,0 +1,41 @@
+.dot {
+  height: 7px;
+  width: 7px;
+  background-color: #ffb75d;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dotincomplete {
+  height: 7px;
+  width: 7px;
+  background-color: #ffb75d;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dotinprogress {
+  height: 7px;
+  width: 7px;
+  background-color: blue;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dotincompleted {
+  height: 7px;
+  width: 7px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.three-dots {
+  width: 71%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.filling-name {
+  font-size: 16px;
+  color: #000000 !important;
+  line-height: 25px;
+}

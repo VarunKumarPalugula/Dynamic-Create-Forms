@@ -1,0 +1,38 @@
+<div class="minnav">
+  <div class="padding">
+    <h6><a [routerLink]="['/admin/fillings']"><i class="fa fa-arrow-left text-white"></i>&nbsp; All Filings</a></h6>
+    <h6 class="filingNameheader">{{FillingName}}</h6>
+  </div>
+</div>
+<div class="lo-30 lo-whitebox">
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/admin/fillings/overview" routerLinkActive="active"><i class="fa fa-home fs-17 icon-color"
+        aria-hidden="true"></i> &nbsp;Overview </div>
+  </div>
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/admin/fillings/taskslist" routerLinkActive="active"><i
+        class="fa fa-tasks fs-17 icon-color" aria-hidden="true"></i> &nbsp;Tasks </div>
+  </div>
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/admin/fillings/messages" routerLinkActive="active"><i
+        class="fa fa-envelope fs-17 icon-color" aria-hidden="true"></i> &nbsp;Messages </div>
+  </div>
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/admin/fillings/files" routerLinkActive="active"><i class="fa fa-folder fs-17 icon-color"
+        aria-hidden="true"></i> &nbsp;Files </div>
+  </div>
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/admin/fillings/casesubmission" routerLinkActive="active"><i
+        class="fa fa-briefcase fs-17 icon-color" aria-hidden="true"></i> &nbsp;Case Submissions</div>
+  </div>
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/admin/fillings/members" routerLinkActive="active"><i class="fa fa-users fs-17 icon-color"
+        aria-hidden="true"></i> &nbsp;Members </div>
+  </div>
+  <div class="gl-list">
+    <div class="gl-listname "><i class="fa fa-futbol fs-17 icon-color" aria-hidden="true"></i> &nbsp;Need Help? </div>
+  </div>
+</div>
+<div class="lo-70 lo-graybox">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,178 @@
+/*
+ * Global application theme.
+ * Framework overrides and customization goes here.
+ */
+
+//Typography
+// @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap');
+@import "utils";
+@import "checkbox";
+@import "table";
+@import "subnav";
+@import "progressbar";
+@import "profile";
+@import "plugins";
+@import "modal";
+@import "layout";
+@import "forms";
+@import "buttons";
+@import "fileupload";
+body {
+  // font-family: "Roboto", sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.9rem;
+  color: $biscay;
+  background-color: #e8ecef;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+  text-transform: capitalize;
+}
+label {
+  font-size: 14px;
+  // color: $kasmir;
+  line-height: 15px;
+}
+
+a {
+  font-size: 13px;
+  color: $azure;
+  line-height: 17px;
+}
+
+.text-primary {
+  color: $primary;
+}
+
+.text-secondary {
+  color: $lake-blue;
+}
+i {
+  font-size: 17px;
+  color: #000;
+  vertical-align: middle;
+}
+.bg-model {
+  background-color: #00396b;
+  color: white;
+}
+.bg-model-footer {
+  background-color: #f6f8fa;
+}
+.minnav {
+  background-color: #17325c;
+  color: white;
+  top: 60px;
+  height: 120px;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 65px;
+}
+.lo-30 {
+  width: 220px;
+  height: 100%;
+  position: fixed;
+  left: 0px;
+  top: 125px;
+}
+
+.lo-70 {
+  padding: 30px;
+  padding-left: 250px;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: auto;
+  padding-top: 132px;
+}
+
+.icon-minus {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 3px;
+}
+
+svg {
+  overflow: hidden;
+  vertical-align: middle;
+  height: 60px !important;
+  float: right;
+  width: 60px;
+  display: inline-block;
+}
+tspan {
+  font-size: 0;
+}
+
+.white-box {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  background-color: white;
+  width: 100%;
+  padding: 20px;
+}
+
+.logo {
+  height: auto;
+  width: 23%;
+}
+.header-logo {
+  width: 200px;
+  height: 100%;
+  padding-left: 30px;
+}
+.boredr-right {
+  border-right: 2px solid #d8dde6;
+}
+.filingNameheader {
+  color: #fcb95b;
+  font-size: 20px;
+  // font-family: SourceSansPro-Regular;
+}
+.filingOverviewLabel {
+  color: #54698d;
+  font-size: 12px;
+  // font-family: SourceSansPro-Regular;
+}
+.fs16 {
+  font-size: 16px;
+}
+.normalTextFormat {
+  text-transform: none;
+}
+.input-group.calendar {
+  input {
+    box-shadow: none;
+    border: 1px solid #ced4da;
+    border-right: 0;
+  }
+  span button {
+    background: transparent;
+    border: 1px solid #ced4da;
+    padding-bottom: 26px;
+    width: 15px;
+    height: 33px;
+    padding-right: 25px;
+    border-radius: 0.25rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 0;
+  }
+}
+
+.text-truncate {
+  display: block;
+}
+
+.required {
+  color: red;
+}
+.taskGroupArchiveTitle {
+  font-size: 20px;
+  margin-top: 15px;
+  text-align: center;
+}
+.mt--15 {
+  margin-top: -15px;
+}

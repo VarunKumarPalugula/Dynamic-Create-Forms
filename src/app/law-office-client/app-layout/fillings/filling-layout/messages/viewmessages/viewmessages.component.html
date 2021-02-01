@@ -1,0 +1,295 @@
+<div class="row mt-5">
+  <div class="col-sm-12 p-0">
+    <span class="text-primary pointer" routerLink="../messages">
+      <i class="fas fa-arrow-left mb-3 text-primary"></i> Back to List</span>
+    <span class="text-primary float-right pointer" (click)="refresh()">
+      <i class="fas fa-sync-alt mb-3  text-primary"></i> Refresh
+    </span>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-11">
+            <p class="text-primary fs-16 three-dots" data-toggle="tooltip" title="{{viewdata.Title}}">{{viewdata.Title}}
+            </p>
+          </div>
+          <div class="col-sm-1">
+            <div class="dot float-right"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-11 fs-14">
+            {{viewdata.Description}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 fs-14">
+            <div class="msg-list">
+              <ul>
+                <li class="title">
+                  <!-- <span class="lo-profile--image xs">
+                    <img src="" alt="">
+                  </span> By {{viewdata.CreatedBy}} -->
+                  <span class="uname mht"
+                    [style.background-color]="colors[0]">{{getShortName(viewdata.CreatedBy) | uppercase}}</span>
+                  <span class="title">By {{viewdata.CreatedBy}}</span>
+                </li>
+
+                <li class="mt-4">
+                  <i class="far fa-comment-alt"></i> {{messages.length}} Replies 
+                </li>
+
+                <li class="mt-4">
+                  <i class="far fa-calendar-alt"></i> {{viewdata.CreatedOn | date: 'MM/dd/yyyy hh:mm  a'}}
+                </li>
+
+                <li class="mt-4 float-right text-primary pointer" *ngIf="(FillingPermissions? FillingPermissions.CanDeleteMessage : true) && (viewdata.CreatedBy == UserName)"
+                 (click)="editTopicModel(task,viewdata)">
+                  <i class="fas fa-pencil-alt text-primary"></i> Edit
+                </li>
+                <li class="mt-4 float-right text-danger pointer"
+                  *ngIf="(FillingPermissions? FillingPermissions.CanDeleteMessage : true) && (viewdata.CreatedBy == UserName)"
+                  (click)="DeleteMainMessage(deleteMainMessagePopUpTemp,viewdata)">
+                  <i class="far fa-trash-alt text-danger"></i> Archive
+                </li>
+              </ul>
+              <div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-11 fs-14">
+            <div class="msg-list">
+              <ul>
+                <li class="mt-4">
+                  <i class="fas fa-users fs-20"></i><span> Shared With:</span>
+                </li>
+                <li *ngFor="let user of viewdata.Users;index as i">
+                  <!-- <span class="lo-profile--image xs">
+                    <img src="" alt="">
+                  </span> {{user.username}} -->
+                  <span class="uname mht"
+                    [style.background-color]="Subcolors[i]">{{getShortName(user.username) | uppercase}}</span>
+                  <span class="title"> {{user.username}}</span>
+                </li>
+
+              </ul>
+              <div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-20 pointer" (click)="toggler($event,'one')">
+  <div class="col-sm-12 bbt p-5">
+    <span class="fs-16"> Replies ({{messages.length}}) </span>
+  </div>
+</div>
+<!-- ####################  Message  ##################### -->
+<div>
+ 
+
+  <div>
+
+    <!-- #################### reply  ##################### -->
+    <div class="row">
+      <!-- col-sm-6 pl-150 pb-10 -->
+      <div class="col-sm-6 ml-30 mt-20">
+        <div class="form-group">
+          <!-- <label>Reply </label> -->
+          <!-- <angular-editor [(ngModel)]="message"> </angular-editor> -->
+          <textarea class="form-control" [(ngModel)]="message" rows="2" id="comment"></textarea>
+        </div>
+        <button class="btn btn-primary ml-5 float-right fs-13" (click)="SendClientMessage()">Send Message</button>
+        <!-- <button class="btn btn-outline float-right fs-13">Cancel</button> -->
+      </div>
+    </div>
+
+    <div class="p-0" *ngFor="let message of messages;index as i ">
+      <div class="row">
+        <div class="col-sm-12 mt-10 bbt pointer px-20" >
+          <span class="xs">
+            <span class="uname" [style.background-color]="colors[i]">{{getShortName(message.name) | uppercase}}</span>
+          </span>
+          <span class="fs-14 ml-4 title">{{message.name}} <span>
+              &nbsp;&nbsp;{{message.CreatedOn | date: 'MM/dd/yyyy hh:mm  a'}}</span></span>
+          <span class="float-right">
+            <i class="fa fa-chevron-down ifontsize" aria-hidden="true"></i>
+          </span>
+          <p class="mt-5 ml-26 pl-19 mess">{{message.message}} </p>
+
+          <p class="pl-47">
+            <i class="fas fa-comment-dots ifontsize" style="color:darkgreen;" *ngIf="message.SubMessages" (click)="checkCanReplay(message.name,i)">
+            </i>&nbsp;{{message.SubMessages.length}}
+            <i class="fa fa-reply ifontsize text-primary pl-10" aria-hidden="true" (click)="checkCanReplay(message.name,i)"></i>
+            <i class="fa fa-trash ifontsize text text-danger pl-20" aria-hidden="true"
+            *ngIf="(FillingPermissions? FillingPermissions.CanDeleteMessage : true) && (viewdata.CreatedBy == UserName)"
+              (click)="DeleteMessage(deleteMessagePopUpTemp,message)"></i>
+          </p>
+          <div class="msg-list  fs-14 mb-4">
+            <div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=" d-n overflow" id={{i}}>
+        <div class="row " *ngFor="let submessage of message.SubMessages;index as j">
+          <div class="col-sm-1"></div>
+
+          <div class="col-sm-11 mt-10 bbt">
+            <span class="xs">
+
+              <span class="uname"
+                [style.background-color]="Subcolors[j]">{{getShortName(submessage.name) | uppercase}}</span>
+            </span>
+            <span class="fs-16 ml-6">{{submessage.name}} </span>
+            <span class="ifontsize"> &nbsp;{{submessage.CreatedOn | date: 'MM/dd/yyyy hh:mm  a'}}</span>
+            <p class="ml-30 pl-19 mtmargin">{{submessage.message}}</p>
+
+          </div>
+        </div>
+        <div class="row mt-20 pointer px-20">
+          <div class="col-sm-6 pl-150 pb-10">
+            <div class="form-group">
+              <!-- <label>Reply </label> -->
+              <!-- <angular-editor [(ngModel)]="submessage"> </angular-editor> -->
+              <textarea class="form-control" [(ngModel)]="submessage" rows="2" id="comment"></textarea>
+            </div>
+            <button class="btn btn-primary ml-5 float-right fs-13" (click)="SendClientSubMessage(message)">
+              Reply</button>
+            <!-- <button class="btn btn-outline float-right fs-13">Cancel</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<ng-template #deleteMainMessagePopUpTemp let-d="dismiss" id="deleteMainMessagePopUpTemp">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeModal('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+    <i class="fa fa-trash-alt fa-3x ml-160" aria-hidden="true"></i>
+    <p class="fs-20 mt-15"> Are you sure you want to archive message?</p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="ArchieveTopic()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #deleteMessagePopUpTemp let-d="dismiss" id="deleteMessagePopUpTemp">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeModal('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+    <i class="fa fa-trash-alt fa-3x ml-160" aria-hidden="true"></i>
+    <p class="fs-20 mt-15"> Are you sure you want to archive message?</p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="Archievemessage()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+
+
+<!-- /edit message topic model -->
+<ng-template #task let-d="dismiss" id="CreateTopicModel">
+  <div class="tasksmodel">
+    <form [formGroup]="TopicForm">
+      <div class="gl-modal-header p-20 bg-model text-white text-align">
+        <span class="fs-16 mb-0 d-ib">Edit Topic</span>
+        <span class="modal-close close" (click)="Closesent()">
+          <i class="fa fa-times text-white" aria-hidden="true"></i>
+        </span>
+      </div>
+      <div class="lo-modal-body p-20">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Topic or Question<i class="required">*</i></label>
+              <input (focus)="visitingInput()" type="text" class="form-control" formControlName="topic"
+                [(ngModel)]="viewdata.Title" name="topic" [attr.disabled]="true" />
+            </div>
+          </div>
+        </div>
+        <small *ngIf="
+            TopicForm.controls['topic'].errors &&
+            (TopicForm.controls['topic'].dirty || TopicForm.controls['topic'].touched)
+          ">
+          <small class="text-danger" *ngIf="TopicForm.get('topic').hasError('required')">Topic or Question is required.
+          </small>
+        </small>
+
+        <div class="row" (focus)="visitingInput()">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Description <i class="required">*</i> </label>
+              <!-- <angular-editor
+                (focus)="visitingInput()"
+                formControlName="description"
+                name="description"
+              ></angular-editor> -->
+              <textarea class="form-control" (focus)="visitingInput()" [(ngModel)]="viewdata.Description"
+                [attr.disabled]="true" formControlName="description" name="description" rows="4" cols="62"
+                [maxlength]="maxChars"> </textarea>
+              <label class="float-right">{{description.length}}/{{maxChars}}</label>
+            </div>
+          </div>
+        </div>
+
+        <small *ngIf="
+            TopicForm.controls['description'].errors &&
+            (TopicForm.controls['description'].dirty || TopicForm.controls['description'].touched)
+          ">
+          <small class="text-danger" *ngIf="TopicForm.get('description').hasError('required')">Description is required.
+          </small>
+        </small>
+
+        <div class="row" (focus)="visitingInput()">
+          <div class="col-md-12">
+            <label>Add Lawoffice Members <i class="required">*</i></label>
+
+            <ng-multiselect-dropdown [placeholder]="''" class="normalTextFormat"
+              [settings]="adminteamMembersDropsownSettings" [data]="adminteamMembersList"
+              [(ngModel)]="selectedadminTeamMembers" (onSelect)="onadminmemberSelect($event)"
+              (onSelectAll)="onadminMemberSelectAll($event)" (focus)="visitingInput()" formControlName="adminmembers"
+              name="adminmembers"></ng-multiselect-dropdown>
+          </div>
+        </div>
+
+        <div class="row" (focus)="visitingInput()">
+          <div class="col-md-12">
+            <label>Add Client Members <i class="required">*</i> </label>
+
+            <ng-multiselect-dropdown [placeholder]="''" class="normalTextFormat"
+              [settings]="teamMembersDropsownSettings" [data]="teamMembersList" [(ngModel)]="selectedTeamMembers"
+              (onSelect)="onTeamMemberSelect($event)" (onSelectAll)="onTeamMemberSelectAll($event)"
+              (focus)="visitingInput()" formControlName="members" name="members"></ng-multiselect-dropdown>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-model-footer">
+        <button type="button" class="btn btn-primary" (click)="CreateTopic()" [disabled]="!TopicForm.valid">
+          Save
+        </button>
+        <button type="button" class="btn btn-outline" (click)="Close()">Cancel</button>
+
+      </div>
+      <div class="row" *ngIf="isempty" style="margin-left:20px !important; margin-top:20px !important">
+        <p class="alert alert-danger">{{ errormessage }}</p>
+      </div>
+    </form>
+  </div>
+
+</ng-template>

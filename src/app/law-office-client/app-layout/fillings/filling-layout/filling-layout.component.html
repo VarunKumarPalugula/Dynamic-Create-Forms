@@ -1,0 +1,52 @@
+<div class="minnav">
+  <div class="padding">
+    <h6>
+      <a routerLink="/client/applayout/fillings">
+        <i class="fa fa-arrow-left text-white"></i>&nbsp; All Filings</a>
+    </h6>
+    <h6 class="filingNameheader">{{filingName}}</h6>
+  </div>
+</div>
+<div class="lo-30 lo-whitebox">
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/client/applayout/fillings/overview" routerLinkActive="active">
+      <i class="fa fa-home fs-17 icon-color" aria-hidden="true"></i> &nbsp;Overview </div>
+  </div>
+  <div class="gl-list" *ngIf="!isIncompleteFiling">
+    <div class="gl-listname" routerLink="/client/applayout/fillings/taskslist" routerLinkActive="active">
+      <i class="fa fa-tasks fs-17 icon-color" aria-hidden="true"></i> &nbsp;Tasks </div>
+  </div>
+  <div class="gl-list" *ngIf="isIncompleteFiling">
+      <div class="gl-listname disabled">
+        <i class="fa fa-tasks fs-17 icon-color" aria-hidden="true"></i> &nbsp;Tasks </div>
+    </div>
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/client/applayout/fillings/messages" routerLinkActive="active">
+      <i class="fa fa-envelope fs-17 icon-color" aria-hidden="true"></i> &nbsp;Messages </div>
+  </div>
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/client/applayout/fillings/files" routerLinkActive="active">
+      <i class="fa fa-folder fs-17 icon-color" aria-hidden="true"></i> &nbsp;Files </div>
+  </div>
+  <!-- <div class="gl-list">
+    <div class="gl-listname" routerLink="/client/applayout/fillings/case" routerLinkActive="active">
+      <i class="fa fa-briefcase fs-17" aria-hidden="true"></i> &nbsp;Case </div>
+  </div> -->
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/client/applayout/fillings/casesubmission" routerLinkActive="active">
+      <i class="fa fa-briefcase fs-17 icon-color" aria-hidden="true"></i> &nbsp;Case Submission</div>
+  </div>
+   
+  <div class="gl-list">
+    <div class="gl-listname" routerLink="/client/applayout/fillings/members" routerLinkActive="active">
+      <i class="fa fa-users fs-17 icon-color" aria-hidden="true"></i> &nbsp;Members </div>
+  </div>
+  
+  <div class="gl-list">
+    <div class="gl-listname">
+      <i class="fa fa-futbol fs-17 icon-color" aria-hidden="true"></i> &nbsp;Need Help? </div>
+  </div>
+</div>
+<div class="lo-70 lo-graybox">
+  <router-outlet></router-outlet>
+</div>

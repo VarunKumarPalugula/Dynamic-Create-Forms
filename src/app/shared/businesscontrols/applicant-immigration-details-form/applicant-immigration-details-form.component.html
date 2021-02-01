@@ -1,0 +1,109 @@
+<form [formGroup]="immiggrationDetails" (ngSubmit)="submit()">
+  <div class="row mt-15">
+    <div class="col-sm-12">
+      <label>I-94 Arrival/Departure Record Number <i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="I94ArrivalOrDepartureRecordNumber"
+        [(ngModel)]="immiggrationDetailsObj.I94ArrivalOrDepartureRecordNumber" />
+      <small
+        *ngIf="immiggrationDetails.controls['I94ArrivalOrDepartureRecordNumber'].errors && (immiggrationDetails.controls['I94ArrivalOrDepartureRecordNumber'].dirty || immiggrationDetails.controls['I94ArrivalOrDepartureRecordNumber'].touched)">
+        <small class="text-danger"
+          *ngIf="immiggrationDetails.get('I94ArrivalOrDepartureRecordNumber').hasError('required')">
+          Passport Or Travel Document Number is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+  immiggrationDetails.get('I94ArrivalOrDepartureRecordNumber').hasError('minlength') &&
+  !immiggrationDetails.get('I94ArrivalOrDepartureRecordNumber').hasError('pattern')
+  ">Minimum 5 characters</small>
+      <small class="text-danger" *ngIf="
+  immiggrationDetails.get('I94ArrivalOrDepartureRecordNumber').hasError('maxlength') &&
+  !immiggrationDetails.get('I94ArrivalOrDepartureRecordNumber').hasError('pattern')
+  ">Maximum 20 characters</small>
+      <small class="text-danger"
+        *ngIf="immiggrationDetails.get('I94ArrivalOrDepartureRecordNumber').hasError('pattern')">Enter only
+        characters
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label>Date of Last Arrival <i class="required">*</i></label>
+      <div class="input-group calendar">
+        <input type="text" #dp="bsDatepicker" class="form-control" formControlName="DateOfLastArrival" bsDatepicker
+          [maxDate]="maxDate" [value]=" immiggrationDetails.get('DateOfLastArrival').value | date"
+          [(ngModel)]="immiggrationDetailsObj.DateOfLastArrival"
+          [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }">
+        <span class="input-group-prepend">
+          <button type="button" class="btn btn-light" (click)="dp.toggle()">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </button>
+        </span>
+      </div>
+      <small
+        *ngIf="immiggrationDetails.controls['DateOfLastArrival'].errors && (immiggrationDetails.controls['DateOfLastArrival'].dirty || immiggrationDetails.controls['DateOfLastArrival'].touched)">
+        <small class="text-danger" *ngIf="immiggrationDetails.get('DateOfLastArrival').hasError('required')">
+          Date Of Last Arrival is required.
+        </small>
+      </small>
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="">Current Non-Immigrant Status <i class="required">*</i></label>
+      <select class="form-control" formControlName="CurrentNonImmigrantStatus"
+        [(ngModel)]="immiggrationDetailsObj.CurrentNonImmigrantStatus">
+        <option hidden>--- please select ---</option>
+        <option *ngFor="let NonImmigrantInfo of visaCategory" [ngValue]="NonImmigrantInfo.purposeOfTravel">
+          {{ NonImmigrantInfo.purposeOfTravel}}</option>
+      </select>
+      <small
+        *ngIf="immiggrationDetails.controls['CurrentNonImmigrantStatus'].errors && (immiggrationDetails.controls['CurrentNonImmigrantStatus'].dirty || immiggrationDetails.controls['CurrentNonImmigrantStatus'].touched)">
+        <small class="text-danger" *ngIf="immiggrationDetails.get('CurrentNonImmigrantStatus').hasError('required')">
+          Current Non-Immigrant Status is required.
+        </small>
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="">Do You Have Any I-40 Petition Field On Your Behalf? <i class="required">*</i></label>
+      <select class="form-control" formControlName="AnyI40PetitionField"
+        [(ngModel)]="immiggrationDetailsObj.AnyI40PetitionField">
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+      <small
+        *ngIf="immiggrationDetails.controls['AnyI40PetitionField'].errors && (immiggrationDetails.controls['AnyI40PetitionField'].dirty || immiggrationDetails.controls['AnyI40PetitionField'].touched)">
+        <small class="text-danger" *ngIf="immiggrationDetails.get('AnyI40PetitionField').hasError('required')">
+          Date Passport Or Travel Document Expires is required.
+        </small>
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label>If Approved Provide Receipt Number</label>
+      <input type="text" class="form-control" formControlName="ApprovedReciptNumber"
+        [(ngModel)]="immiggrationDetailsObj.ApprovedReciptNumber" />
+      <small class="text-danger" *ngIf="
+        immiggrationDetails.get('ApprovedReciptNumber').hasError('minlength') &&
+  !immiggrationDetails.get('ApprovedReciptNumber').hasError('pattern')
+  ">Minimum 3 characters</small>
+      <small class="text-danger" *ngIf="
+  immiggrationDetails.get('ApprovedReciptNumber').hasError('maxlength') &&
+  !immiggrationDetails.get('ApprovedReciptNumber').hasError('pattern')
+  ">Maximum 20 characters</small>
+      <small class="text-danger" *ngIf="immiggrationDetails.get('ApprovedReciptNumber').hasError('pattern')">Enter
+        only
+        characters
+      </small>
+    </div>
+  </div>
+  <div class="row ml-0">
+    <button class="btn btn-primary" type="submit" [disabled]="immiggrationDetails.invalid">Submit</button>
+    <button class="btn btn-default ml-10" type="button" (click)="cancel()">Cancel</button>
+  </div>
+</form>

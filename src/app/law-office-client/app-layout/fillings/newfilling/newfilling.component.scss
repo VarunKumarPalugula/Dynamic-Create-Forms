@@ -1,0 +1,33 @@
+/*typeheadauto auto complete*/
+.typehead-autocomplete .dropdown.dropdown-menu {
+  width: 100%;
+}
+.typehead-autocomplete .dropdown-item {
+  display: inline-block;
+  width: 100%;
+  padding: 0.25rem 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #212529;
+  text-align: inherit;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  float: left;
+}
+.required {
+  color: red;
+}
+.typehead-autocomplete .dropdown-header {
+  display: inline-block;
+  width: 39%;
+}
+.typehead-autocomplete .dropdown-item.active,
+.dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #007bff;
+}
+.typeheadmodel {
+  color: #a0a7bf;
+}

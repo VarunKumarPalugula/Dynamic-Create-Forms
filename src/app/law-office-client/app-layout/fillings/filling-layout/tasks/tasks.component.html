@@ -1,0 +1,134 @@
+<!--***************** empty state start********************* -->
+<ng-container *ngIf="taskGroupList.length==0">
+  <div class="row">
+    <div class="col-md-3 mx-auto text-align">
+      <img src="../../../../../assets/emty-list.png">
+    </div>
+  </div>
+  <div class="row mt-20">
+    <div class="col-md-6 mx-auto text-align">
+      <p class="fs-28"> Looks like there are no task groups</p>
+      <p classs="fs-16">
+        <!-- Lorem ipsium lorem some relevant text goes here to help user understand what they can do to
+        search and sort for better results -->
+      </p>
+      <div>
+        <button class="btn btn-primary"
+          *ngIf="FillingPermissions ? FillingPermissions.CanCreateTasks : true"
+          (click)="openTaskGropPopup(taskGroup)">Create New Task Group</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!--***************** empty state end********************* -->
+
+<ng-container *ngIf="taskGroupList.length>0">
+  <div class="row mt-10">
+    <div class="col-md-6">
+      <h4>Task Group List</h4>
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-primary float-right"
+        *ngIf="FillingPermissions ? FillingPermissions.CanCreateTasks : true"
+        (click)="openTaskGropPopup(taskGroup)">Add New Task Group</button>
+    </div>
+  </div>
+  <div class="row mt-10 fs-14" *ngFor="let taskGroup of taskGroupList">
+    <div class="col-sm-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <p class="text-kasmir fs-16 font-weight-bold">{{taskGroup.Title |uppercase}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <ul>
+                <li>
+                  <span class="text-muted fs-12">Tasks Completed</span><br>
+                  <small>{{taskGroup.TotalNoTasksCompleted}} of {{taskGroup.TotalNoTasks}}</small>
+                </li>
+                <li>
+                  <span class="text-muted fs-12">Sub-tasks</span><br>
+                  <p class="text-center">{{taskGroup.SubTasks}}</p>
+                </li>
+                <li>
+                  <span class="text-muted fs-12">Over Due</span><br>
+                  <p class="text-danger text-center">{{taskGroup.TotalNoTasks - taskGroup.TotalNoTasksCompleted}}</p>
+                </li>
+                <li>
+                  <span class="text-muted fs-12">Next task due</span><br>
+                  <small *ngIf="taskGroup.NextTaskDueByDate=='0001-01-01T00:00:00'">None</small>
+                  <small
+                    *ngIf="taskGroup.NextTaskDueByDate!='0001-01-01T00:00:00'">{{ taskGroup.NextTaskDueByDate | date }}</small>
+                </li>
+                <li>
+                  <span class="text-muted fs-12">Created By</span><br>
+                  <small class="normalTextFormat">{{taskGroup.CreatedBy}}</small>
+                </li>
+              </ul>
+            </div>
+            <div class="col-sm-4 text-right">
+              <button class="btn btn-outline-secondary btn-sm"
+                [routerLink]="['/client/applayout/fillings/task',taskGroup.TaskGroupId]">View Tasks</button>
+              <button class="btn btn-outline-danger btn-sm"
+                *ngIf="(isAuthorize  && taskGroup.CreatedBy==username)? (FillingPermissions ? FillingPermissions.CanDeleteTasks : true) : false"
+                (click)="confirmDeteleteTaskGroup(deleteTaskGroupPopup,taskGroup)">
+                <i class="fa fa-trash fs-12 text-danger"></i> &nbsp;
+                <span>Archive</span></button>&nbsp;
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ng-container>
+
+
+
+
+<!--***************** Add new task model******************** -->
+<ng-template #taskGroup let-d="dismiss" id="taskGroup">
+  <div class="tasksmodel">
+    <div class="gl-modal-header p-20 bg-model text-white text-align">
+      <span class="fs-16 mb-0 d-ib">New Custom Task Group</span>
+      <span class="modal-close close" (click)="CloseTaskgroup('close click')">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-20">
+      <div class="form-group">
+        <label>Task Group Title</label>
+        <input type="text" class="form-control" [(ngModel)]="Tittle" />
+      </div>
+    </div>
+    <div class="modal-footer bg-model-footer">
+      <button type="button" class="btn btn-outline" (click)="CloseTaskgroup('close click')">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="AddTaskGroup(Tittle)">Create</button>
+    </div>
+  </div>
+</ng-template>
+<!--***************** end Add new task model********************* -->
+<!--*****************  Archive model ********************* -->
+<ng-template #deleteTaskGroupPopup let-d="dismiss" id="deleteTaskGroupPopup">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeConfirmDelete('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center">
+    <i class="fa fa-trash-alt fa-3x" aria-hidden="true"></i>
+    <p class="taskGroupArchiveTitle"> Are you sure you want to archive the topic <b>{{taskTitle}}</b>?</p>
+    <div class="text-align">
+      <button type="button" class="btn btn-danger mt-10 fs-12" (click)="deleteTaskGroup()">Yes, Confirm</button>
+      <button type="button" class="btn btn-outline ml-20 fs-12 mt-10"
+        (click)="closeConfirmDelete('close click')">Cancel</button>
+
+    </div>
+  </div>
+</ng-template>
+<!--*****************  Archive model ended ********************* -->

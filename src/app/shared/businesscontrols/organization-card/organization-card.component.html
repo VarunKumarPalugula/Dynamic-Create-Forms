@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-sm-7">
+        <div class="card">
+            <div class="card-body">
+                <button *ngIf="loginUser =='Client'" class="float-right btn-secondary" type="button"
+                    (click)="changeOrgInfo()">Change
+                    Details</button>
+                <div>
+                    <label><b>Company Or Organization Name</b></label>
+                    <p class="">{{orgInfo.OrganisationName}}</p>
+                </div>
+                <div>
+                    <label><b>Doing Business As Name</b></label>
+                    <p class="">{{orgInfo.DoingBusinessAsName}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label><b>Nature Of Business</b></label>
+                        <p class="">{{orgInfo.NatureOfBusiness}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <label><b>Company Formed On </b></label>
+                        <p class="">{{orgInfo.CompanyFormedOn | date: 'fullDate'}}</p>
+                    </div>
+                </div>
+                <div>
+                    <label><b>Current Total Number Of Employees (U.S Only)</b></label>
+                    <p class="">{{orgInfo.CurrentTotalNumberOfEmployees}}</p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label><b>Total Full Time Employees</b></label>
+                        <p class="">{{orgInfo.TotalFullTimeEmployees}}</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <label><b>Number Of Employees On H1-B</b></label>
+                        <p class="">{{orgInfo.NumberOfEmployeesOnH1B}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

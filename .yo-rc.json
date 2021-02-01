@@ -1,0 +1,20 @@
+{
+  "generator-ngx-rocket": {
+    "version": "5.2.0",
+    "props": {
+      "location": "path",
+      "appName": "lawfront",
+      "target": ["web"],
+      "pwa": true,
+      "ui": "bootstrap",
+      "auth": true,
+      "lazy": true,
+      "angulartics": true,
+      "analyticsProvider": "other",
+      "prettier": true,
+      "projectName": "lawfront",
+      "packageManager": "npm",
+      "mobile": []
+    }
+  }
+}

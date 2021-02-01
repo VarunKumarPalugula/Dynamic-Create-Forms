@@ -1,0 +1,79 @@
+<form [formGroup]="educationFrom" (ngSubmit)="submit()">
+  <div class="lo-modal-body p-20">
+    <div class="form-group">
+      <label>Major/primary field of study <i class="required">*</i></label>
+      <select class="form-control" formControlName="FieldOfStudy">
+        <option value="Bachelor of science">Bachelor of science</option>
+        <option value="Masters">Masters</option>
+        <option value="Ph.D">Ph.D</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="">Type of degree awarded <i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="DegreeAwarded" />
+      <small
+        *ngIf="educationFrom.controls['DegreeAwarded'].errors && (educationFrom.controls['DegreeAwarded'].dirty || educationFrom.controls['DegreeAwarded'].touched)">
+        <small class="text-danger" *ngIf="educationFrom.get('DegreeAwarded').hasError('required')">Type of degree awarded is
+          required</small>
+      </small>
+      <small class="text-danger"
+          *ngIf="(educationFrom.get('DegreeAwarded').hasError('minlength') || educationFrom.get('DegreeAwarded').hasError('maxlength')) && !(educationFrom.get('DegreeAwarded').hasError('pattern'))">
+          Type of degree awarded must be greater than 3 characters and less than 50 characters
+        </small>
+          <small class="text-danger" *ngIf="educationFrom.get('DegreeAwarded').hasError('pattern')">accepts only characters and space</small>
+    </div>
+    <div class="form-group">
+      <label>Select university type <i class="required">*</i></label>
+      <div class="row">
+        <div class="col-sm-12">
+            <label class="radio-inline" >
+                <input type="radio"  value="Public"  formControlName="UniversityType">&nbsp;Public
+              </label>
+              &nbsp;&nbsp;
+              <label class="radio-inline">
+                <input type="radio"  value="Private Non-profit" formControlName="UniversityType">&nbsp;Private Non-profit
+              </label>
+              &nbsp;&nbsp;
+              <label class="radio-inline">
+                <input type="radio"   value="Other" formControlName="UniversityType">&nbsp;Other
+              </label>
+      </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="">University name <i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="UniversityName" />
+      <small
+        *ngIf="educationFrom.controls['UniversityName'].errors && (educationFrom.controls['UniversityName'].dirty || educationFrom.controls['UniversityName'].touched)">
+        <small class="text-danger" *ngIf="educationFrom.get('UniversityName').hasError('required')">University Name is
+          required</small>
+      </small>
+      <small class="text-danger"
+          *ngIf="(educationFrom.get('UniversityName').hasError('minlength') || educationFrom.get('UniversityName').hasError('maxlength')) && !(educationFrom.get('UniversityName').hasError('pattern'))">
+          university name must be greater than 3 characters and less than 100 characters
+        </small>
+          <small class="text-danger" *ngIf="educationFrom.get('UniversityName').hasError('pattern')">accepts only characters, space & symbol </small>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <label>Date of degree awarded <i class="required">*</i></label>
+        <div class="input-group calendar">
+          <input type="text" #dp="bsDatepicker" class="form-control" bsDatepicker  placement="top" formControlName="DateOfDegreeAwarded"
+            [value]=" educationFrom.get('DateOfDegreeAwarded').value | date" [maxDate]="maxDate"
+            [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue'}">
+          <span class="input-group-prepend">
+            <button type="button" class="btn btn-light" (click)="dp.toggle()">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="mt-30">
+          <input type="checkbox" id="97" value="isHighestLevelOfEducation" formControlName="IsHighestLevelOfEducation">
+          <label for="97" class="checkbox"></label> is highest level of education
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,86 @@
+<form [formGroup]="clientImportValidation">
+<div class="container-fluid mt-70 mb-10">
+        <div class="card p-10">
+                <div class="card-body">
+                        <label class="fs-18">Import Client Members List </label>
+                        <p><b>Step 1 of 3 - Upload File</b></p>
+                </div>
+                <div class="container">
+                        <div class="row mx-auto">
+                                <div class="col-sm-1 col-xs-1"></div>
+                                <div class="col-sm-4 col-xs-5">
+                                        <div class="form-group">
+                                                <label for="files">Acceptable file types: CSV or tab-delimited text
+                                                        files</label>
+                                                <label for="files" class="lo-fileuploader p-30 fs-16">
+
+                                                        <p class="text-muted">Drag files to upload <br><br>OR<br> <i
+                                                                        class="fa fa-cloud-upload"
+                                                                        aria-hidden="true"></i></p>
+                                                        <i class="fa fa-cloud-download" aria-hidden="true"></i>
+
+                                                        <input type="file" id="files" (change)="uploadFile($event)"
+                                                                accept="text/csv, .csv">
+                                                </label>
+                                        </div>
+                                        <label for="files" class="lo-fileuploader-profile">
+                                                <input type="file" id="files" (change)="uploadFile($event)"
+                                                        accept="text/csv, .csv">
+                                                <span class="btn btn-outline fs-13">Choose File</span>
+                                        </label>
+                                </div>
+                                <div class="col-sm-6 col-xs-6" *ngIf="fileDiv">
+                                        <p class="fs-16">Selected  File</p>
+                                        <div class="mb-15">
+                                                <span><img src="../../../../../assets/icons/csv.png"
+                                                                class="w-31 h-40"></span>
+                                                <label class="ml-10 mt--13">{{fileName}} &nbsp;&nbsp;<i class="fa fa-trash text-muted" aria-hidden="true"
+                                                        (click)="confirmDeleteSeletedFile(removeSelectedFile)"></i></label>
+                                        </div>
+                                        
+                                </div>
+                        </div>
+                        <div class="row mb-20">
+                                <div class="col-sm-1 col-xs-1"></div>
+                                <div class="col-sm-10 col-xs-5">
+                                        <p class="fs-16 ml-10"><strong>Permission to send emails to client members</strong></p>
+                                        <input type="checkbox" id="4" class="ml-10" formControlName="cb">
+                                        <label for="4" class="checkbox"></label>
+                                        <span class="mt-10">I agree that I’ve gathered proper permission to send emails
+                                                to every address on my client member list</span>
+                                </div>
+                        </div>
+                </div>
+                <div class="row">
+                        <div class="col-sm-10 mx-auto">
+                                <div class="pt-20 p-20 pl-0">
+                                        <button class="btn btn-primary ml-20 fs-12 float-right"
+                                                routerLink="/admin/clients/clientimportinviteconfirm" [disabled]="clientImportValidation.invalid">Next</button>
+                                        <button class="btn btn-outline fs-12 float-right"
+                                                routerLink="/admin/clients/clientinvitelist">Back</button>
+                                </div>
+                        </div>
+                </div>
+        </div>
+</div>
+</form>
+
+<ng-template #removeSelectedFile let-d="dismiss" id="removeSelectedFile">
+        <div class="lo-modal--header p-20">
+          <span class="modal-close close" (click)="closeConfirmDelete('close click')">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </span>
+        </div>
+        <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+          <i class="fa fa-trash-alt fa-3x ml-175" aria-hidden="true"></i>
+          <p class="fs-20 mt-15">
+            Are you sure you want to remove selected file  ?
+          </p>
+          <div class="text-align">
+            <button type="button" class="btn btn-outline fs-12 mt-10" (click)="closeConfirmDelete('close click')">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-danger ml-20 mt-10 fs-12" (click)="removeFile()">Yes, Confirm</button>
+          </div>
+        </div>
+      </ng-template>

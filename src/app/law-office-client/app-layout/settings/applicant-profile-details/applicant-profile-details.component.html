@@ -1,0 +1,377 @@
+<div class="container-fluid" >
+  <div class="row">
+    <div class="col-lg-2">
+      <ul class="nav nav-pills">
+        <li *ngFor="let templateTitle of sectionTitles">
+          <a data-toggle="pill" href="#collapse_{{templateTitle.$id}}"
+            [ngClass]="{'active': templateTitle.$id == 2}">{{templateTitle.Section}}</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-lg-10">
+      <div class="tab-content">
+        <div id="collapse_{{templateTitle.$id}}"
+          *ngFor="let templateTitle of sectionTitles; let i = index; trackBy: commonService.trackByFn"
+          class="tab-pane fade" [ngClass]="{'in active show': templateTitle.$id == 2}">
+          <div *ngFor="let data of allSectionConfigs; let i = index; trackBy: commonService.trackByFn">
+            <div *ngIf="data.Section === templateTitle.Section">
+              <app-dyamic-layout [data]="data" [applicantKey]="'appProfileDetails'"></app-dyamic-layout>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="row mt-6">
+
+  
+  <div class="col-sm-2">
+    <div class="lo-list">
+      <div class="lo-list">
+        <div class="gl-listname active" id="tab-5" (click)="tabChanger($event)">Personal details</div>
+      </div>
+      <div class="lo-list">
+        <div class="gl-listname" id="tab-6" (click)="tabChanger($event)">address and contact</div>
+      </div>
+      <div class="lo-list">
+        <div class="gl-listname" id="tab-7" (click)="tabChanger($event)">education</div>
+      </div>
+      <div class="lo-list">
+        <div class="gl-listname" id="tab-8" (click)="tabChanger($event)">employment</div>
+      </div>
+      <div class="lo-list">
+        <div class="gl-listname" id="tab-9" (click)="tabChanger($event)">immigration details</div>
+      </div>
+      <div class="lo-list">
+        <div class="gl-listname" id="tab-10" (click)="tabChanger($event)">period of stay</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-9">
+    <div class="marketplace-300 active" id="5">
+      <span class="fs-16"><b>Personal Details</b> </span>
+      <p>
+        This below Information will used to auto-populate relevent immigration forms, so please keep this
+        information
+        current at all times.
+      </p>
+      <ng-container *ngIf="clientCommonService.showPersonalInfoFoorm">
+        <personal-details-card [personalInfo]="clientCommonService.personalDetailsForm.value"
+          (emitChangeInfo)="clientCommonService.showPersonalInfoFoorm=$event"></personal-details-card>
+      </ng-container>
+
+      <ng-container *ngIf="!clientCommonService.showPersonalInfoFoorm">
+        <personal-details [personalForm]="clientCommonService.personalDetailsForm"
+          [maxDate]="clientCommonService.maxDate" (emitPersonalInfo)="clientCommonService.submitPersonalInfo($event)"
+          (backToPersonalInfoCard)="clientCommonService.getPersonalInfo()">
+        </personal-details>
+      </ng-container>
+    </div>
+    <div class="marketplace-300" id="6">
+      <form>
+        <span class="fs-16"><b>Address And Contact Details </b> </span>
+        <p>
+          This below Information will used to auto-populate relevent immigration forms, so please keep this
+          information
+          current at all times.
+        </p>
+        <div class="row">
+          <div class="col-sm-7">
+            <div class="card" *ngIf="!clientCommonService.isForginContactInfoShow">
+              <div class="card-bodyCustom">
+                <span>Foreign Address</span>
+                <button class="btn btn-secondary float-right btn-sm" type="button"
+                  (click)="commonService.openModel(addForeignAddress)">Add
+                  Address</button>
+              </div>
+            </div>
+            <div *ngIf="clientCommonService.isForginContactInfoShow">
+              <address-card [cardBodyTittle]="'Foreign Address'"
+                [addressInfo]="clientCommonService.foreginAddressValidationRules.value"
+                (emitChangeInfo)="commonService.(addForeignAddress)">
+              </address-card>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-7">
+            <div class="card" *ngIf="!clientCommonService.isCurrentUsaAddress">
+              <div class="card-bodyCustom">
+                <span>Current U.S.A Address</span>
+                <button class="btn btn-secondary float-right btn-sm" type="button"
+                  (click)="commonService.openModel(addCurrentUsaAddress);clientCommonService.checkUSAAddress()">Add
+                  address</button>
+              </div>
+            </div>
+            <div *ngIf="clientCommonService.isCurrentUsaAddress">
+              <address-card [cardBodyTittle]="'Current U.S.A Address'"
+                [addressInfo]="clientCommonService.currentUsaAddreesValidationRules.value"
+                (emitChangeInfo)="commonService.openModel(addCurrentUsaAddress)">
+              </address-card>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="marketplace-300" id="7">
+      <p class="fs-16"><b>Education </b> </p>
+      <div class="row ">
+        <div class="col-sm-7">
+          <div class="card">
+            <div class="card-bodyCustom">
+              <h6 class="card-title">New</h6>
+              <span>Degree and institution details</span>
+              <button class="btn btn-secondary float-right btn-sm" type="button"
+                (click)="commonService.openModel(educationDetails)">Add
+                Details </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 mt-3"
+          *ngIf="clientCommonService.educationInfoList && clientCommonService.educationInfoList.length">
+          <ng-container *ngFor="let educationInfo of clientCommonService.educationInfoList">
+            <applicant-education-details-card [educationInfo]="educationInfo"
+              (emitEducationData)="clientCommonService.educationAddressInfo($event)"
+              (emitChangeInfo)="commonService.openModel(educationDetails)"
+              (emitUploadEduTravelDocument)="clientCommonService.uploadEduDocumentFile($event)"
+              [getEduFile]="educationInfo.eduFileObj"
+              (emitViewEduFile)="clientCommonService.viewEmployementFiles($event)"
+              (emitDownloadEduFile)="clientCommonService.downloadEmployementFiles($event)"
+              (emitPrintEduFile)="clientCommonService.printEmployementFiles($event)"
+              (emitDeleteEduFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)"
+              (emitEduInfo)="clientCommonService.deleteEducationPopup(deleteEduInfo, $event)">
+            </applicant-education-details-card>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="marketplace-300" id="8">
+      <p class="fs-16"><b>Employment Details </b> </p>
+      <applicant-employement [getResumeFile]="clientCommonService.getResumeFile"
+        [getRecentw2s]="clientCommonService.getRecentw2s" [getEadCardFile]="clientCommonService.getEadCardFile"
+        [getRecentPaystubfiles]="clientCommonService.getRecentPaystubfiles"
+        (emitUploadResumeFile)="clientCommonService.uploadResumeFile($event)"
+        (emitUploadRecentW2s)="clientCommonService.uploadRecentw2s($event)"
+        (emitUpload3RecentPaystubs)="clientCommonService.uploadRecentPaystubs($event)"
+        (emitUploadEadCard)="clientCommonService.uploadEadCard($event)"
+        (emitViewFile)="clientCommonService.viewEmployementFiles($event)"
+        (emitDownloadFile)="clientCommonService.downloadEmployementFiles($event)"
+        (emitPrintFile)="clientCommonService.printEmployementFiles($event)"
+        (emitDeleteFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)"></applicant-employement>
+    </div>
+    <div class="marketplace-300" id="9">
+      <p class="fs-16"><b>Immigration</b> </p>
+      <div class="row">
+        <div class="col-sm-6">
+          <ng-container *ngIf="clientCommonService.showImgTravelDetails">
+            <img-traveldocument-details-card [travelDocumentDetailsInfo]="clientCommonService.imgTravelDetail"
+              [imgTravelDocFile]="clientCommonService.imgTravelDocFile" [maxDate]="clientCommonService.maxDate"
+              (changeTravelDocumentDetails)="clientCommonService.changeimgTravel($event);commonService.openModel(travelDoumentDetails)"
+              (emitUploadImgI94Document)="clientCommonService.uploadImgTravelDocumentFile($event)"
+              (emitViewFile)="clientCommonService.viewEmployementFiles($event)"
+              (emitDownloadFile)="clientCommonService.downloadEmployementFiles($event)"
+              (emitPrintFile)="clientCommonService.printEmployementFiles($event)"
+              (emitDeleteFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)">
+            </img-traveldocument-details-card>
+          </ng-container>
+
+          <div *ngIf="!clientCommonService.showImgTravelDetails" class="card">
+            <div class="card-bodyCustom">
+              <span>Passport or travel document</span>
+              <button class="btn btn-secondary float-right btn-sm" type="button"
+                (click)="commonService.openModel(travelDoumentDetails)">Add
+                Details</button>
+            </div>
+          </div>
+
+          <ng-container *ngIf="clientCommonService.showImmigrationDetailsForm">
+            <applicant-immigration-details-card [immigrationInfo]="clientCommonService.immiggrationDetails.value"
+              [imgI94DocFile]="clientCommonService.imgI94DocFile"
+              (emitChangeInfo)="clientCommonService.showImmigrationDetailsForm=$event"
+              (emitUploadImgTravelDocument)="clientCommonService.uploadImgI94DocumentFile($event)"
+              (emitViewImgFile)="clientCommonService.viewEmployementFiles($event)"
+              (emitDownloadImgFile)="clientCommonService.downloadEmployementFiles($event)"
+              (emitPrintImgFile)="clientCommonService.printEmployementFiles($event)"
+              (emitDeleteImgFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)">
+            </applicant-immigration-details-card>
+          </ng-container>
+          <ng-container *ngIf="!clientCommonService.showImmigrationDetailsForm">
+            <applicant-immigration-details-form [immiggrationDetails]="clientCommonService.immiggrationDetails"
+              [visaCategory]="clientCommonService.nonImmigrantInfo" [maxDate]="clientCommonService.TodayAndOnlyPastDate"
+              [immiggrationDetailsObj]="clientCommonService.immiggrationDetailsObj"
+              (emitImmigrationDetails)="clientCommonService.PostImmigrationDetails()"
+              (emitCancelImg)="clientCommonService.getImmigrationDetails()">
+            </applicant-immigration-details-form>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="marketplace-300" id="10">
+      <form>
+        <p class="fs-16"><b>Period Of Stay </b> </p>
+        <span class="normalTextFormat">-List each beneficiary's prior periods of stay in H or L classification in the
+          United States for the last
+          six years.</span><br />
+        <span class="normalTextFormat">-Be sure to only list those in which each beneficiary was actually in the
+          United
+          States in an H or L
+          classification</span><br />
+        <p class="normalTextFormat">-Do not include periods in which the beneficiary was in dependent status, for
+          example, H-4 or L-2
+          status.</p>
+        <p>Total number of days outside U.S.A - {{clientCommonService.totalNumberOfDaysOutsideUsa}} Days</p>
+        <div class="row" *ngIf="clientCommonService.posInfoObj.length == 0">
+          <div class="col-sm-7">
+            <div class="card">
+              <div class="card-bodyCustom">
+                <span>Period 1</span>
+                <button class="btn btn-secondary float-right btn-sm" type="button"
+                  (click)="commonService.openModel(periodOfStay)">Add
+                  details</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 mt-3" *ngIf="clientCommonService.posInfoObj && clientCommonService.posInfoObj.length">
+          <ng-container *ngFor="let posInfo of clientCommonService.posInfoObj; index as i ">
+            <applicant-pos-card [posInfo]="posInfo" [objIndex]="i+1"
+              (emitChangeInfo)="clientCommonService.log($event);commonService.openModel(periodOfStay)"
+              (emitUploadPosTravelDocument)="clientCommonService.uploadPosDocumentFile($event)"
+              [getPosFile]="posInfo.posFileObj" (emitViewPosFile)="clientCommonService.viewEmployementFiles($event)"
+              (emitPrintPosFile)="clientCommonService.printEmployementFiles($event)"
+              (emitDownloadPosFile)="clientCommonService.downloadEmployementFiles($event)"
+              (emitDeletePosFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)"
+              (emitPosDeleteInfo)="clientCommonService.deletePosPopup(deletePosInfo, $event)">
+            </applicant-pos-card>
+          </ng-container>
+        </div>
+        <div class="row">
+          <div class="col-sm-7">
+            <button class="btn mt-5 btn-outline-primary btn-sm float-right"
+              (click)="clientCommonService.addMorePeriods(periodOfStay)">Add More Periods</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> -->
+
+<ng-template #periodOfStay let-d="dismiss" id="periodOfStay">
+  <modal-header [headerTittle]="'Add Period Of Stay'"></modal-header>
+  <applicant-pos-form [posValidationRules]="clientCommonService.posValidationRules"
+    [maxDate]="clientCommonService.maxDate"></applicant-pos-form>
+  <modal-footer [isFormValid]="clientCommonService.posValidationRules" (emitSubmit)="clientCommonService.postPosInfo()">
+  </modal-footer>
+</ng-template>
+
+<ng-template #educationDetails let-d="dismiss" id="educationDetails">
+  <modal-header [headerTittle]="'Step 1 -Institute Details'"></modal-header>
+  <div class="modal-body">
+    <applicant-education-details-form [educationFrom]="clientCommonService.educationDetailsValidationRules"
+      [maxDate]="clientCommonService.maxDate">
+    </applicant-education-details-form>
+  </div>
+  <modal-footer [isFormValid]="clientCommonService.educationDetailsValidationRules"
+    [buttonName]="'Next-add Address Changes'"
+    (emitSubmit)="clientCommonService.checkHighestLevelOfEducation(addCurrentUsaAddress);"
+    (emitCancel)="clientCommonService.educationDetailsValidationRules.reset(); commonService.closeModel('close click');">
+  </modal-footer>
+</ng-template>
+
+<ng-template #addForeignAddress let-c="close" let-d="dismiss">
+  <modal-header [headerTittle]="'Foreign Address'"></modal-header>
+  <div class="modal-body">
+    <address-form [contactForm]="clientCommonService.foreginAddressValidationRules"
+      [isAptSteFlrNumberDisabled]="clientCommonService.isForignAptSteFlrNumberDisabled"
+      (emitChangeAptSteFlr)="clientCommonService.changeForginAptSteFlr()">
+    </address-form>
+  </div>
+  <modal-footer [isFormValid]="clientCommonService.foreginAddressValidationRules"
+    [isBackBtnRequired]="clientCommonService.isBackBtnRequired" (emitCancel)="clientCommonService.currentUsaAddreesValidationRules.reset();
+    clientCommonService.getForeginAddressAndContact();"
+    (emitSubmit)="clientCommonService.addAddressAndContact($event)"></modal-footer>
+</ng-template>
+
+<ng-template #addCurrentUsaAddress let-c="close" let-d="dismiss">
+  <modal-header [headerTittle]="clientCommonService.currentAddress"></modal-header>
+  <div class="modal-body">
+    <address-form [contactForm]="clientCommonService.currentUsaAddreesValidationRules"
+      [isAptSteFlrNumberDisabled]="clientCommonService.isCurrentAptSteFlrNumberDisabled"
+      (emitChangeAptSteFlr)="clientCommonService.changeCurrentUsaAddreesValidationRulesAptSteFlr()">
+    </address-form>
+  </div>
+  <modal-footer [isFormValid]="clientCommonService.currentUsaAddreesValidationRules"
+    [isBackBtnRequired]="clientCommonService.isBackBtnRequired"
+    (emitBack)="clientCommonService.backToEducationInfo(educationDetails);"
+    (emitCancel)="clientCommonService.getEducationalnfo(); clientCommonService.educationDetailsValidationRules.reset(); clientCommonService.currentUsaAddreesValidationRules.reset(); clientCommonService.getCurrentUsaAddress();"
+    (emitSubmit)="clientCommonService.addCurrentUsaAddress($event)">
+  </modal-footer>
+</ng-template>
+
+<ng-template #travelDoumentDetails let-c="close" let-d="dismiss">
+  <modal-header [headerTittle]="'passport or travel document details'"></modal-header>
+  <div class="modal-body">
+    <applicant-img-traveldocument-details
+      [travelDocumentValidationRules]="clientCommonService.travelDocumentValidationRules"
+      [maxDate]="clientCommonService.maxDate" [minDate]="clientCommonService.ImgTravelDocExpiryDate">
+    </applicant-img-traveldocument-details>
+  </div>
+  <modal-footer [isFormValid]="clientCommonService.travelDocumentValidationRules"
+    (emitSubmit)="clientCommonService.imgTravelDetails()">
+  </modal-footer>
+</ng-template>
+
+<ng-template #deletefilePopUpTemp let-d="dismiss" id="deletefilePopUpTemp">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="clientCommonService.closeModal('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+    <i class="fa fa-trash-alt fa-3x ml-130" aria-hidden="true"></i>
+    <p class="fs-20 mt-15"> Are you sure you want to delete file?</p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="clientCommonService.closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="clientCommonService.deleteEmployementFiles()">Yes, Confirm
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #deleteEduInfo let-d="dismiss" id="deleteEduInfo">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="clientCommonService.closeModal('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center">
+    <i class="fa fa-trash-alt fa-3x" aria-hidden="true"></i>
+    <p class="taskGroupArchiveTitle">Are you sure you want delete this education info we will also deleted along with
+      the files if any?
+    </p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="clientCommonService.closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="clientCommonService.deleteEducationInfo()">Yes, Confirm
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #deletePosInfo let-d="dismiss" id="deletePosInfo">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="clientCommonService.closeModal('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center">
+    <i class="fa fa-trash-alt fa-3x" aria-hidden="true"></i>
+    <p class="taskGroupArchiveTitle">Are you sure you want delete this Period of stay info we will also deleted along
+      with
+      the files if any?
+    </p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="clientCommonService.closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="clientCommonService.deletePosInfo()">Yes, Confirm
+      </div>
+    </div>
+  </div>
+</ng-template>

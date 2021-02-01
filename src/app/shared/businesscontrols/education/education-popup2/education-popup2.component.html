@@ -1,0 +1,227 @@
+<div class="gl-modal-header p-20 bg-model text-white text-align" [hidden]="isCard">
+    <span class="fs-16 mb-0 d-ib">Address History Details</span>
+    <span class="modal-close close">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+</div>
+<form [formGroup]="education2DetailsForm">
+    <!-- <modal-body></modal-body> -->
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12 form-group">
+                <label for="">Street Number and Name<i class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('StreetNumberAndName') }}</strong></div>
+                <input [hidden]="isCard" type="text" class="form-control" formControlName="StreetNumberAndName">
+                <small [hidden]="isCard"
+                    *ngIf="education2DetailsForm.controls['StreetNumberAndName'].errors && (education2DetailsForm.controls['StreetNumberAndName'].dirty || education2DetailsForm.controls['StreetNumberAndName'].touched)">
+                    <small class="text-danger"
+                        *ngIf="education2DetailsForm.get('StreetNumberAndName').hasError('required')">Street
+                        Number
+                        And Name
+                        is required</small>
+                    <small class="text-danger"
+                        *ngIf="(education2DetailsForm.get('StreetNumberAndName').hasError('minlength') || education2DetailsForm.get('StreetNumberAndName').hasError('maxlength')) && !(education2DetailsForm.get('StreetNumberAndName').hasError('pattern'))">
+                        Street Number And Name is must be greater than 5 characters and less than 30 characters
+                    </small>
+                </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 fs-14">
+                <div class="pt-30">
+                    <div class="form-check-inline">
+                        <div><strong [hidden]="!isCard"> {{ formData('aptSteFlr') }}</strong></div>
+                        <label class="form-check-label">
+                            <input [hidden]="isCard" type="radio" class="form-check-input" value="Apt"
+                                (change)="changeAptSteFlr()" formControlName="aptSteFlr">Apt
+                        </label>
+                    </div>
+                    <div class="form-check-inline">
+                        <label class="form-check-label">
+                            <input [hidden]="isCard" type="radio" class="form-check-input" value="Ste"
+                                (change)="changeAptSteFlr()" formControlName="aptSteFlr">Ste
+                        </label>
+                    </div>
+                    <div class="form-check-inline">
+                        <label class="form-check-label">
+                            <input [hidden]="isCard" type="radio" class="form-check-input" value="Flr"
+                                (change)="changeAptSteFlr()" formControlName="aptSteFlr">Flr
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="">Number<i class="required" *ngIf="!isAptSteFlrNumberDisabled">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('AptSteFlrNumber') }}</strong></div>
+                <input type="text" [hidden]="isCard" class="form-control"
+                    [attr.disabled]="isAptSteFlrNumberDisabled ? '' : null" (input)="changeAptSteFlr()"
+                    formControlName="AptSteFlrNumber">
+                <small [hidden]="isCard"
+                    *ngIf="education2DetailsForm.controls['AptSteFlrNumber'].errors && (education2DetailsForm.controls['AptSteFlrNumber'].dirty || education2DetailsForm.controls['AptSteFlrNumber'].touched)">
+                    <small class="text-danger"
+                        *ngIf="education2DetailsForm.get('AptSteFlrNumber').hasError('required')">Apt/Ste/Flr
+                        Number is
+                        required</small>
+                    <small class="text-danger"
+                        *ngIf="education2DetailsForm.get('AptSteFlrNumber').hasError('pattern')">Enter
+                        Valid
+                        Apt/Ste/Flr</small>
+                    <small class="text-danger"
+                        *ngIf="(education2DetailsForm.get('AptSteFlrNumber').hasError('minlength') || education2DetailsForm.get('AptSteFlrNumber').hasError('maxlength')) && !(education2DetailsForm.get('AptSteFlrNumber').hasError('pattern'))">
+                        Apt/Ste/Flr is must be greater than 4 characters and less than 15 numbers
+                    </small>
+                </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="">Country<i class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('Country') }}</strong></div>
+                <select [hidden]="isCard" (change)="commonService.onCountryChange($event.target.value)"
+                    class="form-control" formControlName="Country">
+                    <!-- <option hidden></option>          </option> -->
+                    <option hidden></option>
+                    <option *ngFor="let countries of commonService.allCountriesList" [value]="countries.name">
+                        {{countries.name}}
+                    </option>
+                </select>
+                <small
+                    *ngIf="education2DetailsForm.controls['Country'].errors && (education2DetailsForm.controls['Country'].dirty || education2DetailsForm.controls['Country'].touched)">
+                    <small class="text-danger" *ngIf="education2DetailsForm.get('Country').hasError('required')">Country
+                        is required</small>
+                </small>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="">State<i class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('State') }}</strong></div>
+                <select [hidden]="isCard" class="form-control" formControlName="State">
+                    <option hidden></option>
+                    <option *ngFor="let state of commonService.states" [value]="state.name">{{state.name}}</option>
+                </select>
+                <small [hidden]="isCard"
+                    *ngIf="education2DetailsForm.controls['State'].errors && (education2DetailsForm.controls['State'].dirty || education2DetailsForm.controls['State'].touched)">
+                    <small class="text-danger" *ngIf="education2DetailsForm.get('State').hasError('required')">State is
+                        required</small>
+                </small>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="">City or Town<i class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('CityOrTown') }}</strong></div>
+                <input [hidden]="isCard" type="text" class="form-control" formControlName="CityOrTown">
+                <small [hidden]="isCard"
+                    *ngIf="education2DetailsForm.controls['CityOrTown'].errors && (education2DetailsForm.controls['CityOrTown'].dirty || education2DetailsForm.controls['CityOrTown'].touched)">
+                    <small class="text-danger" *ngIf="education2DetailsForm.get('CityOrTown').hasError('required')">City
+                        Or Town is required
+                    </small>
+                    <small class="text-danger" *ngIf="education2DetailsForm.get('CityOrTown').hasError('pattern')">Enter
+                        Valid City Or Town</small>
+                </small>
+                <small class="text-danger"
+                    *ngIf="(education2DetailsForm.get('CityOrTown').hasError('minlength') || education2DetailsForm.get('CityOrTown').hasError('maxlength')) && !(education2DetailsForm.get('CityOrTown').hasError('pattern'))">
+                    City Or Town is must be greater than 5 characters and less than 20 characters
+                </small>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="">Province</label>
+                <div><strong [hidden]="!isCard"> {{ formData('Province') }}</strong></div>
+                <input [hidden]="isCard" type="text" class="form-control" formControlName="Province">
+                <small [hidden]="isCard"
+                    *ngIf="education2DetailsForm.controls['Province'].errors && (education2DetailsForm.controls['Province'].dirty || education2DetailsForm.controls['Province'].touched)">
+                    <small class="text-danger" *ngIf="education2DetailsForm.get('Province').hasError('pattern')">Enter
+                        Valid Province</small>
+                    <small class="text-danger"
+                        *ngIf="(education2DetailsForm.get('Province').hasError('minlength') || education2DetailsForm.get('Province').hasError('maxlength')) && !(education2DetailsForm.get('Province').hasError('pattern'))">
+                        Province is must be greater than 2 characters and less than 18 characters
+                    </small>
+                </small>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="">Zipcode (postal code)<i class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('ZipCode') }}</strong></div>
+                <input [hidden]="isCard" type="text" class="form-control" formControlName="ZipCode">
+                <small [hidden]="isCard"
+                    *ngIf="education2DetailsForm.controls['ZipCode'].errors && (education2DetailsForm.controls['ZipCode'].dirty || education2DetailsForm.controls['ZipCode'].touched)">
+                    <small class="text-danger" *ngIf="education2DetailsForm.get('ZipCode').hasError('required')">Zipcode
+                        is required</small>
+                    <small class="text-danger" *ngIf="education2DetailsForm.get('ZipCode').hasError('pattern')">Enter
+                        Valid Zipcode</small>
+                    <small class="text-danger"
+                        *ngIf="(education2DetailsForm.get('ZipCode').hasError('minlength') || education2DetailsForm.get('ZipCode').hasError('maxlength')) && !(education2DetailsForm.get('ZipCode').hasError('pattern'))">
+                        Zipcode is must be greater than 4 characters and less than 10 numbers
+                    </small>
+                </small>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="">Fax</label>
+                <div><strong [hidden]="!isCard"> {{ formData('Fax') }}</strong></div>
+                <input [hidden]="isCard" type="text" class="form-control" formControlName="Fax">
+                <small [hidden]="isCard"
+                    *ngIf="education2DetailsForm.controls['Fax'].errors && (education2DetailsForm.controls['Fax'].dirty || education2DetailsForm.controls['Fax'].touched)">
+                    <small class="text-danger" *ngIf="education2DetailsForm.get('Fax').hasError('required')">FaxNumber
+                        is required</small>
+                    <small class="text-danger" *ngIf="education2DetailsForm.get('Fax').hasError('pattern')">Enter
+                        Valid FaxNumber</small>
+                    <small class="text-danger"
+                        *ngIf="(education2DetailsForm.get('Fax').hasError('minlength') || education2DetailsForm.get('Fax').hasError('maxlength')) && !(education2DetailsForm.get('ZipCode').hasError('pattern'))">
+                        Fax number is must be greater than 4 characters and less than 13 numbers
+                    </small>
+                </small>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label for="">Daytime Phone</label>
+                <div><strong [hidden]="!isCard"> {{ formData('DayTimePhone') }}</strong></div>
+                <input [hidden]="isCard" type="text" class="form-control" formControlName="DayTimePhone">
+                <small [hidden]="isCard"
+                    *ngIf="education2DetailsForm.controls['DayTimePhone'].errors && (education2DetailsForm.controls['DayTimePhone'].dirty || education2DetailsForm.controls['DayTimePhone'].touched)">
+                    <small class="text-danger"
+                        *ngIf="education2DetailsForm.get('DayTimePhone').hasError('pattern')">Enter
+                        Valid DaytimePhone</small>
+                </small>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label for="">Mobile Phone</label>
+                <div><strong [hidden]="!isCard"> {{ formData('MobilePhone') }}</strong></div>
+                <input [hidden]="isCard" type="text" class="form-control" formControlName="MobilePhone">
+                <small [hidden]="isCard"
+                    *ngIf="education2DetailsForm.controls['MobilePhone'].errors && (education2DetailsForm.controls['MobilePhone'].dirty || education2DetailsForm.controls['MobilePhone'].touched)">
+                    <small class="text-danger"
+                        *ngIf="education2DetailsForm.get('MobilePhone').hasError('pattern')">Enter
+                        Valid MobilePhone</small>
+                </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 form-group">
+                <label for="">Email</label>
+                <div><strong [hidden]="!isCard"> {{ formData('Email') }}</strong></div>
+                <input [hidden]="isCard" type="text" class="form-control" formControlName="Email">
+                <small [hidden]="isCard"
+                    *ngIf="education2DetailsForm.controls['Email'].errors && (education2DetailsForm.controls['Email'].dirty || education2DetailsForm.controls['Email'].touched)">
+                    <small class="text-danger" *ngIf="education2DetailsForm.get('Email').hasError('pattern')">Enter
+                        Valid
+                        EmailID</small>
+                </small>
+            </div>
+        </div>
+    </div>
+    <!-- <modal-footer [isFormValid]="education2DetailsForm"></modal-footer> -->
+</form>
+
+<div class="modal-footer bg-model-footer d-flex justify-content-between">
+    <div  [hidden]="isCard">
+        <button type="button" class="btn btn-primary" (click)="back()">Back</button>
+    </div>
+    <div  [hidden]="isCard">
+        <button type="button" class="btn btn-primary mr-10" (click)="save()">Save</button>
+        <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+    </div>
+</div>

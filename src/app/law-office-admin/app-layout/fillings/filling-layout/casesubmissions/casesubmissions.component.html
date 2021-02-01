@@ -1,0 +1,257 @@
+<div *ngIf="getCaseSubmissionsData.length > 0">
+    <div class="row">
+        <div class="col-lg-7">
+            <button class="float-right btn btn-primary" (click)="addNewCaseSubmission(addNewCaseSubModal)">Add New Case</button>
+            <h3>All case submissions</h3>
+            <p>
+                this is a collection of all the submissions sent as part of filing process 
+            </p>
+            <div *ngFor="let caseSubmissions of getCaseSubmissionsData">
+                <span class="text-primary">{{caseSubmissions.CaseTitle}}</span>
+                <p>{{caseSubmissions.CaseDescription}}</p>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label class="form-text text-muted">Primary attorney</label>
+                    <p>{{caseSubmissions.PrimaryAttorneyName}}</p>
+                </div>
+                <div class="col-sm-3">
+                    <label class="form-text text-muted">Created by </label>
+                    <p>{{caseSubmissions.CreatedByName}}</p>
+                </div>
+                <div class="col-sm-3">
+                    <label class="form-text text-muted">Created on </label>
+                    <p>{{caseSubmissions.CreatedOn | date}}</p>
+                </div>
+            </div>
+            <div class="clerpix">
+                <button class="btn btn-outline-primary btn-sm mr-10" [routerLink]="['/admin/fillings/casesubmission', caseSubmissions.CaseId]">View Details</button>
+                <button class="btn btn-outline-dark btn-sm mr-10" (click)="editCaseSubmission(addNewCaseSubModal, caseSubmissions)">Edit</button>
+                <button class="btn btn-outline-secondary btn-sm mr-10" (click)="caseSubPrivacy(caseSubmissionPrivacy, caseSubmissions)">Privacy options</button>
+                <button class="btn btn-outline-danger btn-sm" (click)="delCaseSubmission(deleteCaseSection, caseSubmissions.CaseId, caseSubmissions)"><em class="far fa-trash-alt text-danger"></em>Archive</button>
+            </div>
+            <hr />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<ng-container *ngIf="getCaseSubmissionsData.length <= 0">
+    <div class="row mt-100">
+      <div class="col-md-4 mx-auto text-align">
+        <img src="../../../../../../assets/filings-files-empty.svg" class="w-100">
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-md-6 mx-auto text-align">
+        <p class="fs-28">Looks like there are no case submissions</p>
+        <p classs="fs-16">
+            <button class="btn btn-primary" (click)="addNewCaseSubmission(addNewCaseSubModal)">Add New Case</button>
+          </p>
+      </div>
+    </div>
+  </ng-container>
+
+<ng-template #addNewCaseSubModal let-d="dismiss" id="addNewCaseSubModal">
+  <form [formGroup]="caseSubmissionForm">
+    <div class="gl-modal-header p-20 bg-model text-white text-align">
+      <span class="fs-16 mb-0 d-ib">{{caseActionTitle}} Case</span>
+      <span class="modal-close close" (click)="closeConfirmDelete()">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-20">
+      <div class="row">
+          <div class="col-md-12 form-group">
+            <label>Case title <em class="required">*</em></label>
+            <input type="text" class="form-control" placeholder="e.g. Intial Submission" formControlName="CaseTitle" />
+            <small *ngIf="caseSubmissionForm.controls['CaseTitle'].errors &&
+                (caseSubmissionForm.controls['CaseTitle'].dirty || caseSubmissionForm.controls['CaseTitle'].touched)">
+              <small class="text-danger" *ngIf="caseSubmissionForm.get('CaseTitle').hasError('required')"
+                >Case title is required.
+              </small>
+            </small>
+          </div>
+        <div class="col-md-12 form-group">
+            <label for="description">Description <em class="required">*</em></label>
+            <textarea class="form-control" rows="3" id="description" formControlName="CaseDescription"></textarea>
+            <small *ngIf="caseSubmissionForm.controls['CaseDescription'].errors &&
+                (caseSubmissionForm.controls['CaseDescription'].dirty || caseSubmissionForm.controls['CaseDescription'].touched)">
+              <small class="text-danger" *ngIf="caseSubmissionForm.get('CaseTitle').hasError('required')"
+                >Case Description is required.
+              </small>
+            </small>
+          </div>
+          <div class="col-md-12 form-group">
+            <label for="primaryAttorney">Choose primary attorney <em class="required">*</em></label>
+            <select class="form-control" id="primaryAttorney" formControlName="PrimaryAttorneyId">
+              <option *ngFor="let primaryAttorney of adminclientTeammembersList" [value]="primaryAttorney.AdminID">{{primaryAttorney.UserName}}</option>
+            </select>
+            <small class="form-text text-muted">
+                the attorney representing the submission
+            </small>
+            <small *ngIf="caseSubmissionForm.controls['PrimaryAttorneyId'].errors &&
+            (caseSubmissionForm.controls['PrimaryAttorneyId'].dirty || caseSubmissionForm.controls['PrimaryAttorneyId'].touched)">
+          <small class="text-danger" *ngIf="caseSubmissionForm.get('PrimaryAttorneyId').hasError('required')"
+            >Primary attorney is required.
+          </small>
+        </small>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer bg-model-footer">
+        <button type="button" class="btn btn-primary" (click)="postCaseSubmission()" [disabled]="!caseSubmissionForm.valid">
+         Add Case
+       </button>
+       <button type="button" class="btn btn-outline" (click)="closeConfirmDelete()">Cancel</button>
+     </div>
+  </form>
+</ng-template>
+
+<ng-template #deleteCaseSection let-d="dismiss" id="deleteCaseSection">
+    <div class="lo-modal--header p-20">
+      <span class="modal-close close" (click)="closeConfirmArchive()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-30 pb-50 text-center">
+      <i class="fa fa-trash-alt fa-3x" aria-hidden="true"></i>
+      <p *ngIf="caseforms.length == 0" class="taskGroupArchiveTitle">
+        Are you sure you want to archive the case submission we can also delete this case submission associated files too
+      </p>
+      <p *ngIf="caseforms.length > 0" class="taskGroupArchiveTitle">
+        You can not delete this case submission because you already open forms 
+      </p>
+      <div class="text-align">
+        <button type="button" class="btn btn-outline fs-12 mt-10" (click)="closeConfirmArchive()">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger ml-20 mt-10 fs-12" [disabled]="caseforms.length > 0" (click)="deleteCaseSubmission()">Yes, Confirm</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #caseSubmissionPrivacy let-d="dismiss" id="caseSubmissionPrivacy">
+    <div class="gl-modal-header p-20 text-align">
+      <span class="fs-16 mb-0 d-ib">Case submission privacy </span>
+      <span class="modal-close close" (click)="closeCSPrivacyModal()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-20">
+      <div class="row">
+        <div class="col-sm-12 bbt pb-10">
+          <ul>
+            <li>
+              <span class="ml-3">{{caseSubmissionsDataForPrivacy.CaseTitle}} </span>
+              <br>
+              <ul class="fs-12 text-muted">
+                <li>
+                  {{caseSubmissionsDataForPrivacy.CreatedByName}}
+                </li>
+                <li>
+                  {{caseSubmissionsDataForPrivacy.CreatedOn | date}}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+          <div class="row mt-10">
+      <div class="col-sm-8">
+        <div class="card" (click)="toggler($event,'one')">
+          <div class="card-header bg-white">
+            <ul>
+              <li>
+                <input type="checkbox" id="allClients" name="allClients" (change)="selectAllClientMembers($event, 2)"
+                  [(ngModel)]="allClients">
+                <label for="allClients" class="checkbox"></label>
+              </li>
+              <li class="fs-16">
+                All Client Members
+              </li>
+              <div class="float-right">
+
+                <li>
+                  <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </div>
+        <div class="row d-n pt-10" id="one">
+          <div class="col-sm-12 pr-68 ml-20" *ngFor="let client of clientclientTeammembersList; let i = index">
+            <ul>
+              <li class="mt-5">
+                <input type="checkbox" id="{{i}}" name="{{i}}" [(ngModel)]="client.selected"
+                  (change)="selectClientMembers($event, i)">
+                <label for="{{i}}" class="checkbox"></label>
+              </li>
+              <li>
+                <span class="uname"
+                  [style.background-color]="colors[i]">{{getShortName(client.UserName) | uppercase}}</span>
+              </li>
+              <li>
+                <span class="fs-16">
+                  <b>{{client.UserName}}</b>
+                </span>
+                <p class="fs-12" *ngIf="client.Role">{{client.Role}}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card mt-7" (click)="toggler($event,'two')">
+          <div class="card-header bg-white">
+            <ul>
+              <li>
+                <input type="checkbox" id="allTeam" name="allTeam" (change)="selectAllTeamMembers($event, 1)"
+                  [(ngModel)]="allTeam">
+                <label for="allTeam" class="checkbox"></label>
+              </li>
+              <li class="fs-16">
+                All Admin Members
+              </li>
+              <div class="float-right">
+
+                <li>
+                  <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row d-n pt-10" id="two">
+      <div class="col-sm-8 pr-68 ml-20" *ngFor="let team of adminclientTeammembersList; let j = index">
+        <ul *ngIf="team.UserName!=username">
+          <li class="mt-5">
+            <input type="checkbox" id="0{{j}}" name="0{{j}}" [(ngModel)]="team.selected"
+              (change)="selectTeamMembers($event, j)">
+            <label for="0{{j}}" class="checkbox"></label>
+          </li>
+          <li>
+            <!-- <img src="" alt="" class="lo-profile--image extrasmall float-right"> -->
+            <span class="uname"
+              [style.background-color]="Subcolors[j]">{{getShortName(team.UserName) | uppercase}}</span>
+          </li>
+          <li>
+            <span class="fs-16">
+              <b>{{team.UserName }}</b>
+            </span>
+            <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==1 ||team.TeamMemberStatus==null">Admin</p>
+            <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==2"> Sub Admin</p>
+            <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==3"> Team Member</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" (click)="closeCSPrivacyModal()">Close</button>
+      <button type="button" class="btn btn-primary" (click)="caseSubmissionsPrivacy(caseSubmissionsDataForPrivacy.CaseId)">Done</button>
+    </div>
+  </ng-template>

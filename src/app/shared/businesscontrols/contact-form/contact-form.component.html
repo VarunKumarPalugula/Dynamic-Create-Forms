@@ -1,0 +1,144 @@
+<ng-container *ngIf="sameAsContactInfoRequired">
+  <label class="fs16">same as point of contact (poc)</label>&nbsp;
+  <label class="switch">
+    <input type="checkbox" [disabled]="!contactValidated" [(ngModel)]="isCheckBoxChecked"
+      (click)="sameAsContactInfo(isCheckBoxChecked)">
+    <span class="slider round"></span>
+  </label>
+</ng-container>
+<form [formGroup]="contactInfoForm" (ngSubmit)="submitContactInfoFormrmation()">
+  <div class="row">
+    <div class="col-lg-3 form-group">
+      <label>First Name<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="FirstName" [(ngModel)]="contactObj.FirstName" />
+      <small
+        *ngIf="contactInfoForm.controls['FirstName'].errors && (contactInfoForm.controls['FirstName'].dirty || contactInfoForm.controls['FirstName'].touched)">
+        <small class="text-danger" *ngIf="contactInfoForm.get('FirstName').hasError('required')">
+          first given Name is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+    contactInfoForm.get('FirstName').hasError('minlength') &&
+    !contactInfoForm.get('FirstName').hasError('pattern')
+  ">Minimum 3 characters</small>
+      <small class="text-danger" *ngIf="
+  contactInfoForm.get('FirstName').hasError('maxlength') &&
+    !contactInfoForm.get('FirstName').hasError('pattern')
+  ">Maximum 20 characters</small>
+      <small class="text-danger" *ngIf="contactInfoForm.get('FirstName').hasError('pattern')">Enter only
+        characters
+      </small>
+    </div>
+    <div class="col-lg-3 form-group">
+      <label>Middle Name</label>
+      <input type="text" class="form-control" formControlName="MiddleName" [(ngModel)]="contactObj.MiddleName" />
+      <small class="text-danger" *ngIf="
+    contactInfoForm.get('MiddleName').hasError('minlength') &&
+    !contactInfoForm.get('MiddleName').hasError('pattern')
+  ">Minimum 3 characters</small>
+      <small class="text-danger" *ngIf="
+  contactInfoForm.get('MiddleName').hasError('maxlength') &&
+    !contactInfoForm.get('MiddleName').hasError('pattern')
+  ">Maximum 20 characters</small>
+      <small class="text-danger" *ngIf="contactInfoForm.get('MiddleName').hasError('pattern')">Enter only
+        characters
+      </small>
+    </div>
+    <div class="col-lg-3 form-group">
+      <label>Last Name<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="LastName" [(ngModel)]="contactObj.LastName" />
+      <small
+        *ngIf="contactInfoForm.controls['LastName'].errors && (contactInfoForm.controls['LastName'].dirty || contactInfoForm.controls['LastName'].touched)">
+        <small class="text-danger" *ngIf="contactInfoForm.get('LastName').hasError('required')">
+          last given Name is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+    contactInfoForm.get('LastName').hasError('minlength') &&
+    !contactInfoForm.get('LastName').hasError('pattern')
+  ">Minimum 3 characters</small>
+      <small class="text-danger" *ngIf="
+  contactInfoForm.get('LastName').hasError('maxlength') &&
+    !contactInfoForm.get('LastName').hasError('pattern')
+  ">Maximum 20 characters</small>
+      <small class="text-danger" *ngIf="contactInfoForm.get('LastName').hasError('pattern')">Enter only
+        characters
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 form-group">
+      <label>Job Title<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="JobTitle" [(ngModel)]="contactObj.JobTitle" />
+      <small
+        *ngIf="contactInfoForm.controls['JobTitle'].errors && (contactInfoForm.controls['JobTitle'].dirty || contactInfoForm.controls['JobTitle'].touched)">
+        <small class="text-danger" *ngIf="contactInfoForm.get('JobTitle').hasError('required')">
+          Job title is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+    contactInfoForm.get('JobTitle').hasError('minlength') &&
+    !contactInfoForm.get('JobTitle').hasError('pattern')
+  ">Minimum 2 characters</small>
+      <small class="text-danger" *ngIf="
+  contactInfoForm.get('JobTitle').hasError('maxlength') &&
+    !contactInfoForm.get('JobTitle').hasError('pattern')
+  ">Maximum 50 characters</small>
+      <small class="text-danger" *ngIf="contactInfoForm.get('JobTitle').hasError('pattern')">Enter only
+        characters
+      </small>
+    </div>
+    <div class="col-lg-6 form-group">
+      <label>Email<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="Email" [(ngModel)]="contactObj.Email" />
+      <small
+        *ngIf="contactInfoForm.controls['Email'].errors && (contactInfoForm.controls['Email'].dirty || contactInfoForm.controls['Email'].touched)">
+        <small class="text-danger" *ngIf="contactInfoForm.get('Email').hasError('required')">
+          email is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="contactInfoForm.get('Email').hasError('pattern')">Enter valid email address
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 form-group">
+      <label>Day Time Phone<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="DayTimePhone" [(ngModel)]="contactObj.DayTimePhone" />
+      <small
+        *ngIf="contactInfoForm.controls['DayTimePhone'].errors && (contactInfoForm.controls['DayTimePhone'].dirty || contactInfoForm.controls['DayTimePhone'].touched)">
+        <small class="text-danger" *ngIf="contactInfoForm.get('DayTimePhone').hasError('required')">
+          day time phone is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+contactInfoForm.get('DayTimePhone').hasError('maxlength') &&
+  !contactInfoForm.get('DayTimePhone').hasError('pattern')
+">Maximum 10 characters</small>
+      <small class="text-danger" *ngIf="contactInfoForm.get('DayTimePhone').hasError('pattern')">Enter only
+        numbers
+      </small>
+    </div>
+    <div class="col-lg-3 form-group">
+      <label>Mobile Phone<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="MobilePhone" [(ngModel)]="contactObj.MobilePhone" />
+      <small
+        *ngIf="contactInfoForm.controls['MobilePhone'].errors && (contactInfoForm.controls['MobilePhone'].dirty || contactInfoForm.controls['MobilePhone'].touched)">
+        <small class="text-danger" *ngIf="contactInfoForm.get('MobilePhone').hasError('required')">
+          mobile phone is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+contactInfoForm.get('MobilePhone').hasError('maxlength') &&
+  !contactInfoForm.get('MobilePhone').hasError('pattern')
+">Maximum 10 characters</small>
+      <small class="text-danger" *ngIf="contactInfoForm.get('MobilePhone').hasError('pattern')">Enter only
+        numbers
+      </small>
+    </div>
+  </div>
+  <div>
+    <button class="btn btn-primary" [disabled]="contactInfoForm.invalid" type="submit">Save</button>
+    <button type="button" class="btn btn-dafault ml-10" (click)="cancelContact()">Cancel</button>
+  </div>
+</form>

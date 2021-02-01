@@ -1,0 +1,199 @@
+<div class="lo-100 overflow">
+  <div class="row bg-white header">
+    <img src="../../../assets/logo.png" class="header-logo">
+  </div>
+  <div class="container mt-20">
+    <div class="col-md-10 mx-auto">
+      <div class="row pt-18">
+        <div class="col-sm-6 boredr-right">
+          <form [formGroup]="signupform" autocomplete="off" (ngSubmit)="Register()">
+            <h5 class="card-title text-center text-capitalize">
+              Sign Up As A {{Tittle}} {{OrgName}}
+            </h5>
+            <div class="row" *ngIf="configClientSetup">
+              <div class="col-sm-12">
+                <label>Organization Name<i class="required">*</i></label>
+                <div class="input-group form-group mb-5">
+                  <input type="text" class="form-control" [(ngModel)]="client.ClientOrganisationName"
+                    formControlName="OrganisationName" id="clientorgName" #clientorgName 
+                    (blur)="checkClientOrganisationExistancy(client.ClientOrganisationName,clientorgName)">
+                </div>
+                <div
+                  *ngIf="signupform.controls['OrganisationName'].errors && (signupform.controls['OrganisationName'].dirty || signupform.controls['OrganisationName'].touched)">
+                  <small class="text-danger"
+                    *ngIf="signupform.get('OrganisationName').hasError('required')">Organization
+                    Name is required</small>
+                  <small class="text-danger"
+                    *ngIf="signupform.get('OrganisationName').hasError('minlength') && !(signupform.get('OrganisationName').hasError('pattern'))">Minimum
+                    2 characters</small>
+                  <small class="text-danger" *ngIf="signupform.get('OrganisationName').hasError('pattern')"> Enter only
+                    Characters and Numbers</small>
+                  <small class="text-danger" *ngIf="
+                signupform.get('OrganisationName').hasError('maxlength') &&
+                !signupform.get('OrganisationName').hasError('pattern') 
+              ">Maximum 30 characters</small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>First Name<i class="required">*</i></label>
+                  <label class="d-block">
+                    <input type="text" class="form-control" [(ngModel)]="client.FirstName" formControlName="FirstName"
+                       />
+                    <div
+                      *ngIf="signupform.controls['FirstName'].errors && (signupform.controls['FirstName'].dirty || signupform.controls['FirstName'].touched)">
+                      <small class="text-danger" *ngIf="signupform.get('FirstName').hasError('required')">First Name is
+                        required</small>
+                      <small class="text-danger"
+                        *ngIf="signupform.get('FirstName').hasError('minlength') && !(signupform.get('FirstName').hasError('pattern'))">Minimum
+                        3 characters</small>
+                      <small class="text-danger" *ngIf="signupform.get('FirstName').hasError('pattern')">Enter only
+                        characters</small>
+                        <small class="text-danger" *ngIf="
+                          signupform.get('FirstName').hasError('maxlength') &&
+                          !signupform.get('FirstName').hasError('pattern')
+                        ">Maximum 20 characters</small>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Last Name<i class="required">*</i></label>
+                  <label class="d-block">
+                    <input type="text" class="form-control" [(ngModel)]="client.Lastname" formControlName="LastName"
+                      />
+                    <div
+                      *ngIf="signupform.controls['LastName'].errors && (signupform.controls['LastName'].dirty || signupform.controls['LastName'].touched)">
+                      <small class="text-danger" *ngIf="signupform.get('LastName').hasError('required')">Last Name is
+                        required</small>
+                      <small class="text-danger"
+                        *ngIf="signupform.get('LastName').hasError('minlength') && !(signupform.get('LastName').hasError('pattern'))">Minimum
+                        3 characters</small>
+                        <small class="text-danger" *ngIf="
+                          signupform.get('LastName').hasError('maxlength') &&
+                          !signupform.get('LastName').hasError('pattern')
+                        ">Maximum 20 characters</small>
+                      <small class="text-danger" *ngIf="signupform.get('LastName').hasError('pattern')">Enter only
+                        character</small>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Username<i class="required">*</i></label>
+                  <label class="d-block">
+                    <input type="text" class="form-control" [(ngModel)]="client.UserName" formControlName="UserName"
+                      autocomplete="off" />
+                    <div
+                      *ngIf="signupform.controls['UserName'].errors && (signupform.controls['UserName'].dirty || signupform.controls['UserName'].touched)">
+                      <small class="text-danger" *ngIf="signupform.get('UserName').hasError('required')">Username is
+                        required</small>
+                      <small class="text-danger"
+                        *ngIf="signupform.get('UserName').hasError('minlength') && !(signupform.get('UserName').hasError('pattern'))">Minimum
+                        3 characters</small>
+                      <small class="text-danger" *ngIf="signupform.get('UserName').hasError('pattern')">Enter only
+                        Characters and Numbers</small>
+                        <small class="text-danger" *ngIf="
+                        signupform.get('UserName').hasError('maxlength') &&
+                        !signupform.get('UserName').hasError('pattern') 
+                      ">Maximum 20 characters</small>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Mobile Number<i class="required">*</i></label>
+                  <label class="d-block">
+                    <input type="text" class="form-control" [(ngModel)]="client.Mobile" formControlName="Mobile"
+                      autocomplete="off" />
+                    <div
+                      *ngIf="signupform.controls['Mobile'].errors && (signupform.controls['Mobile'].dirty || signupform.controls['Mobile'].touched)">
+                      <small class="text-danger" *ngIf="signupform.get('Mobile').hasError('required')">Mobile Number is
+                        required</small>
+                      <small class="text-danger" *ngIf="signupform.get('Mobile').hasError('pattern')">Enter valid
+                        Mobile Number</small>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Email<i class="required">*</i></label>
+                  <label class="d-block">
+                    <input type="email" #emailInput class="form-control" [attr.disabled]="emailDisabled ? '' : null"
+                      id="Email" [(ngModel)]="client.Email" formControlName="Email"  autocomplete="off" />
+                    <div
+                      *ngIf="signupform.controls['Email'].errors && (signupform.controls['Email'].dirty || signupform.controls['Email'].touched)">
+                      <small class="text-danger" *ngIf="signupform.get('Email').hasError('pattern')">Enter Valid Email
+                        ID</small>
+                      <span class="text-danger" *ngIf="signupform.get('Email').errors?.required &&
+                        signupform.get('Email').touched">
+                        Email is required
+                      </span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="d-block">Password<i class="required">*</i></label>
+                 <div class="input-group">
+                    <input [type]="fieldTextType ? 'password' : 'text'" class="form-control" [(ngModel)]="client.Password"
+                      formControlName="Password" autocomplete="off" />
+                      <div class="input-group-append">
+                        <span class="input-group-text">
+                          <i
+                            class="fa"
+                            [ngClass]="{
+                              'fa-eye-slash': !fieldTextType,
+                              'fa-eye': fieldTextType
+                            }"
+                            (click)="toggleFieldTextType()"
+                          ></i>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="signupform.controls['Password'].errors && (signupform.controls['Password'].dirty || signupform.controls['Password'].touched)">
+                      <small class="text-danger" *ngIf="signupform.get('Password').hasError('required')">Password is
+                        required</small>
+                      <small class="text-danger" *ngIf="signupform.get('Password').hasError('pattern')"> Password must
+                        consists of at least 8 characters and one special symbol & digit </small>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit" [disabled]="!signupform.valid">Sign Up</button>
+            <div class="mt-15">
+              <p class="text-center normalTextFormat">By clicking sign up you aggree to accept our <a style="color: #0070d2;">Customer
+                  Agreement</a></p>
+              <p class="text-center normalTextFormat mt-10">Already sign up as a member? <a (click)="signinAccount()"
+                  style="color: #0070d2;">Please sign in
+                  here</a></p>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-6">
+          <img src="../../../assets/teamwork.png" class="pt-100 img-res">
+          <div class="text-center">
+            <div class="fs-24 mt-20 mb-10">Title for image</div>
+            <div class="normalTextFormat">
+              Placeholder for some description text that will go here
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

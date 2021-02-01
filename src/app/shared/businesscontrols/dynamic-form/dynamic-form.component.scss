@@ -1,0 +1,103 @@
+.g28 {
+  color: #000;
+  z-index: o;
+  label {
+    color: #000;
+  }
+}
+body {
+  background: #c8cace;
+  font-family: serif;
+}
+
+.minnav {
+  z-index: 998;
+}
+
+input[type="checkbox"] {
+  z-index: 0;
+}
+// .container {
+//   margin: 2rem;
+//   display: flex;
+//   justify-content: center;
+// }
+
+#input-form {
+  position: absolute;
+  z-index: 1;
+  & input,
+  select,
+  textarea {
+    position: absolute;
+    background: transparent;
+    border: none;
+    // border: 1px solid red;
+  }
+  & textarea {
+    line-height: 24px;
+    outline: none;
+  }
+}
+
+input[type="checkbox"]:checked,
+input[type="checkbox"]:not(:checked) {
+  opacity: 1;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  z-index: 110;
+}
+input[type="text"],
+input[type="password"],
+input[type="radio"],
+input[type="checkbox"] {
+  outline: none;
+}
+
+.g28PdfView {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 13%;
+  position: relative;
+}
+.button_style{
+  position: absolute;
+  top: -63px;
+  left: 0px;
+}
+.bottomNavbar {
+  min-height: 50px;
+  background-color: #17325c;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: +1;
+}
+.submitButton {
+  margin: 8px 10px auto;
+}
+
+.syncItemColor {
+  color: red;
+}
+.ml-30 {
+  margin-left: 30px !important;
+}
+.body-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.pdf_left {
+  width: 27%;
+  margin-right: 75px;
+  height: 73em;
+  overflow-y: scroll;
+}
+.thumbnailpage {
+  width: 100%;
+   cursor: pointer;
+}

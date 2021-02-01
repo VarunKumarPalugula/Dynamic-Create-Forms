@@ -1,0 +1,84 @@
+<div class="container-fluid mt-100 mb-20">
+  <form [formGroup]="clientInviteForm" autocomplete="off" (ngSubmit)="sendInvitation()">
+    <div class="card bg-faded">
+      <div class="card-block px-20">
+        <div class="col-sm-6 pt-30">
+          <h3>Invite Connection Members</h3>
+        </div>
+        <div formArrayName="teamInvite"
+          *ngFor="let skill of clientInviteForm.get('teamInvite')['controls']; let i = index">
+          <hr *ngIf="i > 0" />
+          <div [formGroupName]="i">
+            <div class="row pt-0">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-3">
+                <div class="form-group"
+                  [ngClass]="{ 'has-error': skill.get('FullName').invalid && skill.get('FullName').touched }">
+                  <label class="control-label" [attr.for]="'FullName' + i">
+                    Full Name
+                  </label>
+                  <input type="text" class="form-control" [id]="'FullName' + i" (input)="validateFullname($event)"
+                    formControlName="FullName" placeholder="eg: John" />
+                  <span class="text-danger" *ngIf="isValidFullName">Enter Valid Data</span>
+                  <span class="text-danger" *ngIf="
+                      (skill.get('FullName').touched || skill.get('FullName').dirty) && skill.get('FullName').errors
+                    ">
+                    <span *ngIf="skill.get('FullName').errors.required">
+                      Full Name is required
+                    </span>
+                    <small class="text-danger" *ngIf="skill.get('FullName').hasError('pattern')">Enter only
+                      characters</small>
+                    <span *ngIf="skill.get('FullName').errors.minlength || skill.get('FullName').errors.maxlength">
+                      Full Name must be greater than 2 characters and less than 20 characters
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group"
+                  [ngClass]="{ 'has-error': skill.get('Email').invalid && skill.get('Email').touched }">
+                  <label class="control-label" [attr.for]="'Email' + i">
+                    Email
+                  </label>
+                  <input type="text" class="form-control"  [id]="'Email' + i" formControlName="Email"
+                    placeholder="example@sample.com" />
+                      <small class="text-danger" *ngIf="skill.get('Email').hasError('pattern')">Enter Valid Email
+                        ID</small>
+                      <span class="text-danger" *ngIf="skill.get('Email').errors?.required &&
+                      skill.get('Email').touched">
+                        Email is required
+                      </span>                   
+                </div>
+              </div>
+              <div class="col-sm-2" *ngIf="clientInviteForm.get('teamInvite').length > 1">
+                <i class="fa fa-times mt-36 fs-12 text-red pointer" (click)="removeConnection(i)"
+                  aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row ml-0">
+        <div class="col-sm-2"></div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <button type="button" class="btn btn-outline" (click)="addConnection()"
+              [disabled]="clientInviteForm.get('teamInvite').invalid">
+              <i class="text-primary fa fa-plus-circle"></i> Add Connection
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer pb-20">
+        <div class="col-sm-8">
+          <div class="btn-group float-right">
+            <button class="btn btn-primary" type="submit" [disabled]="clientInviteForm.get('teamInvite').invalid">
+              Send Invitation
+            </button>
+            <button class="ml-10 btn btn-light" [routerLink]="['/client/applayout/connections/inviteslist']">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

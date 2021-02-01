@@ -1,0 +1,134 @@
+<app-app-layout></app-app-layout>
+<div class="lo-100 pb-20">
+    <div *ngIf="fillingList.length>0">
+        <div class="container mt-80">
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="h5">All Filings</span>
+                    <button class="btn btn-primary float-right px-20 fs-14"
+                        [routerLink]="['/client/applayout/fillings/newfilling']"
+                        *ngIf="FillingPermissions ? FillingPermissions.CanCreateNewFilings : true">
+                        Create New Filing
+                    </button>
+                </div>
+            </div>
+            <div class="row mt-10">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Placeholder Text"
+                            [(ngModel)]="searchFilter" aria-label="Input group example"
+                            aria-describedby="btnGroupAddon">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text btn-primary fs-14" id="btnGroupAddon">
+                                <i class="fas fa-search text-white"></i>
+                                &nbsp;&nbsp; Search</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <select class="form-control" id="sel1" placeholder="Recently Updated" [(ngModel)]="FStatus"
+                        (change)="selectFillingStatus($event.target.value)">
+                        <option value="Select Filling Status" disabled selected>Select Filing Status</option>
+                        <option value="">All</option>
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="InComplete">InComplete</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-10"
+                    *ngFor='let filling of fillingList | filter: searchFilter;let rowcount = index;let isLast=last ;let isFirst=first; let i = index'>
+                    <div class="card mt-10 shadow-sm">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <span class="fs16 text-truncate font-weight-bold" isEllipsisActive>{{filling.FName}}</span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <span class="float-right ml-10" *ngIf="filling.UnReadMessages == 0"> <i
+                                            class="far fa-comment-alt text-muted"></i></span>
+                                    <span class="float-right ml-8" *ngIf="filling.UnReadMessages != 0"> <i
+                                            class="far fa-comment-alt text-green"></i><sup class="badge badge-danger">{{filling.UnReadMessages}}</sup></span>
+                                    <span class="float-right" *ngIf="filling.UnReadFiles == 0"><i
+                                            class="far fa-folder text-muted"></i></span>
+                                    <span class="float-right" *ngIf="filling.UnReadFiles != 0"><i
+                                            class="fas fa-folder text-green"></i><sup class="badge badge-danger">{{filling.UnReadFiles}}</sup></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <span class="fs-14 text-secondary normalTextFormat"> {{filling.Sponserer}}</span>
+                                </div>
+                            </div>
+                            <div class="row mt-10">
+                                <div class="col-sm-4" *ngIf="filling.FilingStatus != null">
+                                    <small class="text-muted fs-12">Status</small>
+                                    <p *ngIf="filling.FilingStatus=='Pending'"><span class="dot"></span><span
+                                            class="ml-4 fs-13">{{filling.FilingStatus}}</span></p>
+                                    <p *ngIf="filling.FilingStatus=='In Progress'"><span
+                                            class="dotinprogress"></span><span
+                                            class="ml-4 fs-13">{{filling.FilingStatus}}</span></p>
+                                    <p *ngIf="filling.FilingStatus=='Completed'"><span
+                                            class="dotincompleted"></span><span
+                                            class="ml-4 fs-13">{{filling.FilingStatus}}</span></p>
+                                    <p *ngIf="filling.FilingStatus=='InComplete'"><span
+                                            class="dotincomplete"></span><span
+                                            class="ml-4 fs-13">{{filling.FilingStatus}}</span></p>
+                                </div>
+                                <div class="col-sm-4" *ngIf="filling.FilingStatus == null">
+                                    <small class="text-muted fs-12">Status</small>
+                                    <small class="text-muted fs-12">Status</small>
+                                    <p><span class="dot"></span><span class="ml-4 fs-14 text-secondary">Pending</span></p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <small class="text-muted fs-12">Filing Type</small>
+                                    <p class="fs-14 text-truncate" isEllipsisActive>{{filling.FType}}</p>
+                                </div>
+                                <div class="col-sm-4">
+                                    <small class="text-muted fs-12">Tasks Done</small>
+                                    <p class="fs-14 text-secondary">{{filling.TasksComplete}} of {{filling.TasksComplete + filling.TasksInComplete}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-outline float-right fs-12"
+                                        (click)="viewFilling(filling, i)">View</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="fillingList.length==0">
+                <div class="alert alert-secondary mt-5">
+                    <strong>No Filings Found!</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="fillingList.length ===0">
+        <!--***************** empty state start********************* -->
+        <div class="row mt-100">
+            <div class="col-md-4 mx-auto text-align">
+                <img src="../../../../../assets/filings-empty.svg" class="w-100" />
+            </div>
+        </div>
+        <div class="row mt-20">
+            <div class="col-md-6 mx-auto text-align">
+                <p class="fs-28">Looks like there are no filings</p>
+                <p classs="fs-16">
+                    <!-- Lorem ipsium lorem some relevant text goes here to help user understand what they can do to search
+                    and sort for better results -->
+                </p>
+                <div class="btn btn-primary fs-12 px-30"
+                    *ngIf="isAuthorize ? (FillingPermissions  ? FillingPermissions.CanCreateNewFilings : true) : false"
+                    [routerLink]="['/client/applayout/fillings/newfilling']">Add New Filings</div>&nbsp;
+            </div>
+        </div>
+        <!--***************** empty state end********************* -->
+    </div>
+</div>

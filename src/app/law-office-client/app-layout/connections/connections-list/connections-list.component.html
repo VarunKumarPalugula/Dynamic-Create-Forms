@@ -1,0 +1,252 @@
+<div class="row mt-50">
+    <div class="container-fluid">
+        <div class="special">
+            <div class="btn btn-primary fs-12 float-right"
+                *ngIf="((isTeamMemberAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteConnections:true))"
+                (click)="inviteClientMembers(0)">Invite Connection members</div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="col-sm-12">
+        <div class="card mb-20">
+            <div class="card-body">
+                <ngb-tabset class="navtabs-modified">
+                    <ngb-tab title="All Connections">
+                        <ng-template ngbTabContent>
+                            <ng-container *ngIf="adminClientsListData.length>0">
+                                <div class="row p-20">
+                                    <input type="text" class="form-control lo-input br-100 fs-13"
+                                        [(ngModel)]="searchFilter"
+                                        placeholder="Search by name , organization, email or phone number">
+
+                                </div>
+                                <ng-container
+                                    *ngFor='let client of adminClientsListData | filter: searchFilter;let rowcount = index;let isLast=last ;let isFirst=first'>
+
+
+                                    <div class="row bt-line mt-10">
+                                        <div class="ml-20">
+                                            <!-- <img src="../../../assets/applicant.png"
+                                                class="lo-profile--image extrasmall"> -->
+                                            <span class="uname"
+                                                [style.background-color]="colors[rowcount]">{{getShortName(client.UserName) | uppercase}}</span>
+                                        </div>
+
+                                        <div class="col-sm-8  fs-13">
+                                            <p>
+                                                <b>{{client.UserName | uppercase}} </b>
+                                            </p>
+                                            <p class="fs-12" *ngIf="client.SetType==1">Bussiness Client</p>
+                                            <p class="fs-12" *ngIf="client.SetType==2">Applicant</p>
+                                            <p class="fs-12" *ngIf="client.SetType==3">Sponsor</p>
+
+                                            <p>
+                                                <i class="fa fa-phone fs-13 fa-rotate-90" aria-hidden="true"></i>
+                                                {{client.Mobile}}</p>
+                                            <p class="normalTextFormat">
+                                                <i class="fa fa-envelope" aria-hidden="true"></i> {{client.Email}}</p>
+                                        </div>
+                                        <!-- <div class="col-sm-3">
+                                            <div class="float-right">
+                                                <div class="btn btn-outline fs-12 mt-40"
+                                                    *ngIf="((isTeamMemberAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanViewProfileOfConnections:true))">
+                                                    View profile</div>&nbsp;
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                    <div *ngIf="isLast" class="mb-30">showing {{ rowcount+1 }} of
+                                        {{ adminClientsListData.length }}</div>
+
+                                </ng-container>
+                            </ng-container>
+                            <div *ngIf="adminClientsListData.length==0">
+                                <div class="row text-center py-30">
+                                    <div class="col-sm-12">
+                                        <img src="../../../../../../assets/inbox.png">
+                                        <p class="fs-28 pt-20"> Looks like there are no Connection Members</p>
+                                        <p classs="fs-16">
+                                            <!-- Lorem ipsium lorem some relevant text goes here to
+                                            help user understand what they can do to
+                                            search and sort for better results -->
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab title="Invited By Me" *ngIf="((isTeamMemberAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteConnections:true))">
+                        <ng-template ngbTabContent>
+                            <div class="row p-20" *ngIf="adminClientInvitedList.length != '0'">
+                                <input type="text" class="form-control lo-input br-100 fs-13"
+                                    placeholder="Search by name , organization, email or phone number"
+                                    [(ngModel)]="term">
+                                <p class="mt-20">Showing {{adminClientInvitedList.length}} results</p>
+                            </div>
+                            <div class="row bt-line mt-10"
+                                *ngFor="let client of adminClientInvitedList| filter:term | paginate: { itemsPerPage: 7, currentPage: p };let rowcount = index;">
+                                <div class="ml-20">
+                                    <!-- <img src="../../../assets/applicant.png" class="lo-profile--image extrasmall"> -->
+                                    <span class="uname"
+                                        [style.background-color]="Subcolors[rowcount]">{{getShortName(client.FullName) | uppercase}}</span>
+                                </div>
+                                <div class="col-sm-8 fs-13">
+                                    <p>
+                                        <b>{{client.FullName | uppercase}} </b>
+                                    </p>
+                                    <p class="normalTextFormat">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i> {{client.EmailId}}</p>
+                                    <p class="fs-12">{{client.InvitedOn}}</p>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="float-right">
+                                        <div class="btn btn-outline fs-12 mt-10 ml-20"
+                                            (click)="resendDelete(1,sent,client)">Resend Invite
+                                        </div>&nbsp;
+                                        <div class="btn btn-outline-danger fs-12 mt-10"
+                                        (click)="deleteModel(contant,client)">Cancel Invite
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="adminClientInvitedList.length == '0'">
+                                <div class="row  py-30 text-center">
+                                    <div class="col-sm-12 ">
+                                        <img src="../../../../../../assets/inbox.png">
+                                        <p class="fs-28 pt-20"> Looks like there are no Connection Members</p>
+                                        <p classs="fs-16">
+                                            <!-- Lorem ipsium lorem some relevant text goes here to
+                                            help user understand what they can do to
+                                            search and sort for better results -->
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lo-table--pagination text-muted" *ngIf="adminClientInvitedList.length > '7'">
+                                <div class="data">
+                                    <div class="pull-right text-right">
+                                        <pagination-controls (pageChange)="p = $event"> </pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab title="Invites For Me" *ngIf="((isTeamMemberAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteConnections:true))">
+                        <ng-template ngbTabContent>
+                            <div class="row p-20" *ngIf="adminInvitedForMelist.length != '0'">
+                                <input type="text" class="form-control lo-input br-100 fs-13"
+                                    placeholder="Search by name , organization, email or phone number"
+                                    [(ngModel)]="term">
+                                <p class="mt-20">Showing {{adminInvitedForMelist.length}} results</p>
+                            </div>
+                            <div class="row bt-line mt-10"
+                                *ngFor="let client of adminInvitedForMelist| filter:term | paginate: { itemsPerPage: 7, currentPage: p };let rowcount = index;">
+                                <div class="ml-20">
+                                    <!-- <img src="../../../assets/applicant.png" class="lo-profile--image extrasmall"> -->
+                                    <span class="uname"
+                                        [style.background-color]="colors[rowcount]">{{getShortName(client.UserName) | uppercase}}</span>
+                                </div>
+                                <div class="col-sm-8 fs-13">
+                                    <p class="mb-7">
+                                        <b>{{client.UserName}} </b>
+                                    </p>
+                                    <p class="mb-7">
+                                        <i class="fa fa-phone fs-13 fa-rotate-90" aria-hidden="true"></i>
+                                        &nbsp;&nbsp;{{client.Mobile}}</p>
+                                    
+                                    <p class="fs-12 normalTextFormat"> <i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp; {{client.Email}}</p>
+                                </div>
+                                
+                                <div class="col-sm-3">
+                                    <div class="float-right">
+                                        <div class="btn btn-outline fs-12 mt-10 "
+                                            (click)="acceptInvite(true,client)">Accept Invite
+                                        </div>&nbsp;
+                                        <div class="btn btn-outline fs-12 mt-10 "
+                                        (click)="viewProfile(contant,client)">View Profile
+                                    </div>&nbsp;
+                                        <!-- <div class="btn btn-outline fs-12 mt-10 ml-20"
+                                            (click)="resendDelete(1,sent,client)">Resend Invite
+                                        </div>&nbsp; -->
+                                        <div class="btn  btn-outline-danger  fs-12 mt-10"
+                                            (click)="declineInviteModel(declineInvite,client)">Decline Invite
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="adminInvitedForMelist.length == '0'">
+                                <div class="row  py-30 text-center">
+                                    <div class="col-sm-12 ">
+                                        <img src="../../../../../../assets/inbox.png">
+                                        <p class="fs-28 pt-20"> Looks like there are no Connection Members</p>
+                                        <p classs="fs-16">
+                                            <!-- Lorem ipsium lorem some relevant text goes here to
+                                            help user understand what they can do to
+                                            search and sort for better results -->
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lo-table--pagination text-muted" *ngIf="adminClientInvitedList.length > '7'">
+                                <div class="data">
+                                    <div class="pull-right text-right">
+                                        <pagination-controls (pageChange)="p = $event"> </pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #contant let-d="dismiss" id="deleteModel">
+    <div class="lo-modal--header p-20">
+        <span class="modal-close close" (click)="Close('close click')">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+    </div>
+    <div class="lo-modal-body p-30 pb-50 text-center mx-auto">
+        <i class="fa fa-trash fa-3x" aria-hidden="true"></i>
+        <p class="fs-20 mt-15"> Are you sure you want to cancel the invite?</p>
+        <div class="text-align">
+            <div class="btn btn-outline fs-12 mt-10" (click)="Close('close click')">No, keep it</div>
+            <div class="btn btn-danger ml-2 mt-10 fs-12" (click)="resendDelete(0,contant)">Yes, Confirm</div>
+        </div>
+    </div>
+</ng-template>
+<ng-template #declineInvite let-d="dismiss" id="deleteModel">
+    <div class="lo-modal--header p-20">
+        <span class="modal-close close" (click)="Close('close click')">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+    </div>
+    <div class="lo-modal-body p-30 pb-50 text-center mx-auto">
+        <i class="fa fa-trash fa-3x" aria-hidden="true"></i>
+        <p class="fs-20 mt-15"> Are you sure you want to decline invite ?</p>
+        <div class="text-align">
+            <div class="btn btn-outline fs-12 mt-10" (click)="Close('close click')">No, keep it</div>
+            <div class="btn btn-danger ml-2 mt-10 fs-12" (click)="acceptInvite(false,contant)">Yes, Confirm</div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #sent let-d="dismiss" id="Modelsent">
+    <div class="lo-modal--header p-20">
+        <span class="modal-close close" (click)="Closesent('close click')">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </span>
+    </div>
+    <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+        <i class="fa fa-check fa-3x ml-121 text-green" aria-hidden="true"></i>
+        <p class="fs-20 mt-15"> Your invitation has been resent to</p>
+
+        <p class="fs-16 text-align">{{inviteName | uppercase}}</p>
+        <div class="text-align">
+            <div class="btn btn-outline fs-12 mt-10" (click)="Closesent('close click')">Close</div>
+        </div>
+    </div>
+</ng-template>

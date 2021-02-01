@@ -1,0 +1,89 @@
+<ng-container *ngIf="teamInvitersList.length>0">
+  <div class="row p-20">
+    <input type="text" class="form-control lo-input br-100 fs-13" [(ngModel)]="searchFilter" placeholder="Search by name , email or job card title">
+  </div>
+  <ng-container *ngFor='let teaminvitity of teamInvitersList | filter: searchFilter | paginate: { itemsPerPage: 7, currentPage: p };let rowcount = index;let isLast=last ;let isFirst=first'>
+    <div class="row bt-line mt-10 py-5">
+      <div class="col-sm-1 wd">
+        <!-- <img src="" alt="" class="lo-profile--image xsmall"> -->
+        <span class="uname" [style.background-color]="Subcolors[rowcount]" >{{getShortName(teaminvitity.FullName) | uppercase}}</span>  
+      </div>
+      <div class="col-sm-8 tab fs-13">
+        <p class="client-name">
+          <b>{{teaminvitity.FullName| uppercase}} </b>
+        </p>
+        <p class="fs-12 lh-6" *ngIf="teaminvitity.TemMemberStatus==1"> Primary Admin</p>
+        <p class="fs-12 lh-6" *ngIf="teaminvitity.TemMemberStatus==2"> Sub Admin</p>
+        <p class="fs-12 lh-6" *ngIf="teaminvitity.TemMemberStatus==3"> Team Member</p>
+        <p class="lh-6">
+          Invitation Sent On :<b>{{teaminvitity.InvitedOn|date: 'MM-dd-yyyy'}}</b>
+        </p>
+        <p class="lh-6 normalTextFormat">
+          <i class="fa fa-envelope fs-13" aria-hidden="true"></i>
+          {{teaminvitity.EmailId}}</p>
+      </div>
+      <div class="col-sm-3 tab p-0">
+        <div class="float-right pt-55">
+          <div class="btn btn-outline fs-12 px-15" (click)="resendDelete(1,sent,teaminvitity)">Resend
+            invites</div>
+          <div class="btn btn-outline-danger fs-12 px-20 ml-10" (click)="deleteModel(contant,teaminvitity)">Cancel
+            Invite</div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="isLast" class="mb-30">showing {{ rowcount+1 }} of {{
+      teamInvitersList.length }}</div>
+  </ng-container>
+  <ng-template #contant let-d="dismiss" id="deleteModel">
+    <div class="lo-modal--header p-20">
+      <span class="modal-close close" (click)="Close('close click')">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-30 pb-50 text-center mx-auto">
+      <i class="fa fa-trash fa-3x" aria-hidden="true"></i>
+      <p class="fs-20 mt-15"> Are you sure you want to Cancel the invite?</p>
+      <div class="text-align fs-12 mt-10">
+        <div class="btn btn-danger ml-20" (click)="resendDelete(0,contant)">Yes, Confirm</div>
+        <div class="btn btn-outline ml-2" (click)="Close('close click')">No, keep it</div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #sent let-d="dismiss" id="Modelsent">
+    <div class="lo-modal--header p-20">
+      <span class="modal-close close" (click)="Closesent('close click')">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+      <i class="fa fa-check fa-3x ml-121 text-green" aria-hidden="true"></i>
+      <p class="fs-20 mt-15"> Your invitation has been resent to</p>
+
+      <p class="fs-16 text-align">{{inviteName | uppercase}}</p>
+      <div class="text-align">
+        <div class="btn btn-outline fs-12 mt-10" (click)="Closesent('close click')">Close</div>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
+
+<div class="lo-table--pagination text-muted" *ngIf="teamInvitersList.length > 7">
+  <div class="data">
+      <div class="pull-right text-right">
+          <pagination-controls (pageChange)="p = $event"> </pagination-controls>
+      </div>
+  </div>
+</div>
+<div *ngIf="teamInvitersList.length==0">
+    <div class="row py-30 text-center">
+        <div class="col-sm-12 ">
+              <img src="../../../../../../assets/inbox.png">
+            <p class="fs-28 pt-20"> Looks like there are no Client Members</p>
+            <p classs="fs-16">
+                <!-- Lorem ipsium lorem some relevant text goes here to
+                help user understand what they can do to
+                search and sort for better results -->
+            </p>
+        </div>
+</div>
+</div>

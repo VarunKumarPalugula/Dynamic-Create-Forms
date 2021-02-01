@@ -1,0 +1,23 @@
+.blue__button {
+    background: #54698d;
+    height: 30px;
+    width: 115px;
+    border-radius: 5px;
+  }
+  
+  .parent {
+    & .parent__div {
+      border: 1px solid #80808063;
+      padding: 15px 20px;
+      border-radius: 6px;
+      margin-bottom: 2%;
+      & button {
+        margin-left: 3%;
+        color: #ffffffb8;
+      }
+    }
+    & .parent__add {
+      color: blue;
+      padding: 2%;
+    }
+  }

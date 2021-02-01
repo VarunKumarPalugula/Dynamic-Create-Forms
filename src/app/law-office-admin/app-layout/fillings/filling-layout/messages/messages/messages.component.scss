@@ -1,0 +1,60 @@
+.dot {
+  height: 16px;
+  width: 16px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+  top: 2px;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0px;
+  li {
+    float: left;
+    margin: 0 5px;
+    text-decoration: none;
+  }
+}
+.required {
+  color: red;
+}
+
+.three-dots {
+  width: 91%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.title {
+  text-transform: none;
+}
+
+.uname {
+  display: inline-block;
+  font-size: 1em;
+  width: 2.5em;
+  height: 2.5em;
+  line-height: 2.5em;
+  text-align: center;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 0.3rem;
+  color: white;
+  margin-top: 14px !important;
+}
+.ifontsize {
+  font-size: 12px !important;
+}
+
+.mtmargin {
+  margin-top: -7px !important;
+  text-transform: capitalize;
+}
+.mtext {
+  text-transform: uppercase !important;
+}
+
+.mht {
+  margin-top: -4px !important;
+}

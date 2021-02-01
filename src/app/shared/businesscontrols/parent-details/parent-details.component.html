@@ -1,0 +1,35 @@
+<div class="parent">
+    <div *ngFor='let in of parentArray;let i = index'>
+        <div *ngIf="finalObj() && finalObj(i + 1); then parentContlIf else parentContlEls"></div>
+        <ng-template #parentContlIf>
+            <div class="card__data">
+                <div class="d-flex justify-content-between align-items-center pl-10">
+                    <strong> Parent -{{i + 1}}</strong>
+                    <button class="cursor__pointer button__class" (click)="openParentDetails(parentModel, i + 1)">
+                        Change
+                    </button>
+                </div>
+                <app-parent-details-popup [isCard]="true" [data]="finalObj(i + 1)">
+                </app-parent-details-popup>
+            </div>
+        </ng-template>
+        <ng-template #parentContlEls>
+            <div class="d__flex_between parent__div">
+                <div>
+                    <div>Parent -{{i + 1}} </div>
+                </div>
+                <button class="blue__button cursor__pointer" (click)="openParentDetails(parentModel, i + 1)"> Add Details
+                </button>
+            </div>
+        </ng-template>
+    </div>
+
+    <a *ngIf="parentArray.length !== maxParent" class="d__flex_end parent__add cursor__pointer">
+        <span (click)="incParent()"> + Add</span>
+    </a>
+</div>
+
+<ng-template #parentModel let-d="dismiss" id="parentModel">
+    <app-parent-details-popup (emitCloseModel)="closeModel($event, index)"  [data]="finalObj(index)">
+    </app-parent-details-popup>
+</ng-template>

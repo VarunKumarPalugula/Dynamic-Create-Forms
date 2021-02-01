@@ -1,0 +1,64 @@
+.lo-table {
+  width: 100%;
+  tr {
+    background-color: $white;
+    width: 100%;
+    border: 1px solid $geyser;
+    &.small {
+      th,
+      td {
+        font-size: 16px;
+      }
+    }
+    th {
+      color: $primary;
+      font-size: 16px;
+      font-weight: 300;
+      padding: 15px 10px;
+      line-height: 20px;
+    }
+    td {
+      font-size: 16px;
+      color: $gray-700;
+      padding: 15px 10px;
+    }
+  }
+}
+
+.lo-table--pagination {
+  background-color: $white;
+  width: 100%;
+  // border: 1px solid $gray-700;
+  color: $biscay;
+  padding: 15px 20px;
+  font-size: 16px;
+  line-height: 20px;
+  .data {
+    margin: 0px;
+    span {
+      padding: 0px 10px;
+    }
+  }
+}
+
+.table {
+  &.small {
+    th,
+    td {
+      font-size: 16px;
+    }
+  }
+  th {
+    font-size: 16px;
+    font-weight: 300;
+    padding: 15px 10px;
+    line-height: 20px;
+  }
+  td {
+    font-size: 16px;
+    padding: 15px 10px;
+  }
+}
+.text-muted {
+  color: #7f8fa4 !important;
+}

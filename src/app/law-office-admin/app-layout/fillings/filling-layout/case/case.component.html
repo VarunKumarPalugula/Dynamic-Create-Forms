@@ -1,0 +1,353 @@
+<div>
+  <i class="fas fa-arrow-left text-primary pointer" [routerLink]="['/admin/fillings/casesubmission']"></i> 
+  Back to list
+</div>
+<div class="row">
+  <div class="col-sm-5">
+    <span class="fs-20">Forms</span><br>
+    <p>Forms that will be submitted as part of the current filing case</p>
+  </div>
+  <div class="col-sm-7">
+    <div class="float-right text-primary fs-13">
+      <ul>
+        <li (click)="printselected()">
+          <i class="fa fa-print text-primary"></i> Print Selected
+        </li>
+        <li (click)="downloadselected()">
+          <i class="fas fa-cloud-download-alt text-primary"></i> Download Selected
+        </li>
+        <li (click)="Modeladd(contant)">
+          <i class="fas fa-cloud-upload-alt text-primary"></i> Add Form
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="caseforms.length>0">
+  <div class="col-sm-12">
+    <input type="checkbox" id="sall" class="ml-10" (change)="selectingall($event)">
+    <label for="sall" class="checkbox"></label> Select all
+  </div>
+</div>
+<div class="row mt-20" *ngFor="let cform of caseforms;index as i">
+  <div class="col-sm-9 bbt">
+    <div class="row mb-20">
+      <div class="col-sm-9">
+        <input type="checkbox" id={{i}} class="ml-10" [checked]="cform.isselected"
+          (change)="selectingforms($event,cform.$id)">
+        <label for={{i}} class="checkbox"></label>
+        <img src="../../../../../../assets/icons/pdf.png" class="w-31 h-36">
+        <span class="ml-15 fs-14 mt-10">{{cform.FormName}}</span><br>
+
+      </div>
+      <div class="col-sm-3">
+        <ul class="float-right fs-16">
+          <!-- <li (click)="g28click(cform)"> -->
+          <li [routerLink]="['/admin/fillings/form', cform.FormName, caseId]">
+            <i class="fa fa-eye" [ngbTooltip]="tipViewContent"></i>
+            <ng-template #tipViewContent>View</ng-template>
+          </li>
+          <li (click)="Printdocument(cform,caseId)">
+            <i class="fa fa-print" [ngbTooltip]="tipPrintContent"></i>
+            <ng-template #tipPrintContent>Print</ng-template>
+          </li>
+          <li (click)="G28viewforfiling(cform,caseId)">
+            <i class="fas fa-cloud-download-alt" [ngbTooltip]="tipDownloadContent"></i>
+            <ng-template #tipDownloadContent>Download</ng-template>
+          </li>
+          <!-- <li>
+              <i class="fas fa-trash-alt"></i>
+            </li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-100" *ngIf="caseforms.length==0">
+  <div class="col-md-3 mx-auto text-align">
+    <img src="../../../../../../assets/inbox.png">
+  </div>
+</div>
+<!-- <div class="row mt-20" *ngIf="SUfiles.length==0">
+  <div class="col-md-6 mx-auto text-align">
+    <p class="fs-28"> Looks like there are no forms.</p>
+
+  </div>
+</div> -->
+<div class="row mt-30">
+  <div class="col-sm-7">
+    <span class="fs-20">Supporting Files</span><br>
+    <p>Files required for the filing case submission. You can add files from Files section of this filing </p>
+  </div>
+  <div class="col-sm-5">
+    <div class="float-right text-primary fs-13">
+      <ul>
+        <li (click)="printMultipleFiles()">
+          <i class="fa fa-print text-primary"></i> Print Selected
+        </li>
+        <li (click)="downloadMultipleFiles()">
+          <i class="fas fa-cloud-download-alt text-primary"></i> Download Selected
+        </li>
+        <li (click)="Modeladds(contants)">
+          <i class="fas fa-cloud-upload-alt text-primary"></i> Add Files
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- <div class="row" *ngIf="SUfiles.length>0">
+  <div class="col-sm-12">
+    <input type="checkbox" id="all1" class="ml-10"  [(ngModel)]="Salli" (ngModelChange)="selectAllFiles()">
+    <label id="all1" class="checkbox"></label> Select all --
+      <input type="checkbox" (change)="selectAllFiles($event)" style="background: none;border:1px solid  #16325c; ;">
+      <label class="checkmark"></label>Select All
+  </div>
+</div> -->
+<div class="row" *ngIf="SUfiles.length>0">
+  <div class="col-sm-12">
+    <input type="checkbox" id="all1" class="ml-10" [(ngModel)]="Salli" (ngModelChange)="selectAllFiles($event)">
+    <label for="all1" class="checkbox"></label> Select all
+  </div>
+</div>
+<!-- <div class="row mt-20" *ngFor="let file of SUfiles;index as i">
+          <div class="col-sm-9 bbt">
+            <div class="row mb-20">
+              <div class="col-sm-9">
+              
+                <input type="checkbox" id={{i}} class="ml-10"  [checked]="file.isselected" >
+                <label id={{i}} class="checkbox"></label>
+                
+                <span  style="margin-left:25px" *ngIf="file.fileType == 'csv' || file.fileType == 'xlsx' || file.fileType == 'xls'">
+                  <img src="../../../../../../assets/icons/csv.png" class="w-31 h-36">
+                </span>
+                <span  style="margin-left:25px" *ngIf="file.fileType == 'jpeg' || file.fileType == 'jpg' || file.fileType == 'png'">
+                  <img src="../../../../../../assets/icons/attachment.png" class="w-31 h-36">
+                </span>
+                <span style="margin-left:25px" *ngIf="file.fileType == 'pdf'">
+                  <img src="../../../../../../assets/icons/pdf.png" class="w-31 h-36">
+                </span>
+                <span style="margin-left:25px" *ngIf="file.fileType == 'txt' || file.fileType == 'doc'|| file.fileType == 'docx'">
+                  <img src="../../../../../../assets/icons/txt.png" class="w-31 h-36">
+                </span>
+                <span class="ml-15 fs-14 mt-10">{{file.FileName}}</span>
+
+               
+              </div>
+              <div class="col-sm-3">
+                <ul class="float-right fs-16">
+                  <li (click)="viewFile(file.FileId)">
+                    <i class="fa fa-eye"></i>
+                  </li>
+                  <li (click)="printFile(file.FileId,file.FileName,file.fileType)">
+                    <i class="fa fa-print"></i>
+                  </li>
+                  <li (click)="downloadFile(file.FileId,file.FileName,file.fileType)">
+                    <i class="fas fa-cloud-download-alt"></i>
+                  </li>
+                 
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+         -->
+
+<div class="row mt-20" *ngFor="let file of SUfiles;index as i">
+  <div class="col-sm-9 bbt">
+    <div class="row mb-20">
+      <div class="col-sm-9">
+        <input type="checkbox" id="{{file.FileId}}" name="{{file.FileId}}" [(ngModel)]="file.selected" class="ml-10"
+          (change)="SelectedOptionalFiles(file.Sfileid, file.FileName , file.fileType , $event)">
+        <label for="{{file.FileId}}" class="checkbox"></label>
+        <span *ngIf="file.fileType == 'csv' || file.fileType == 'xlsx' || file.fileType == 'xls'">
+          <img src="../../../../../../assets/icons/csv.png" class="w-31 h-36">
+        </span>
+        <span *ngIf="file.fileType == 'jpeg' || file.fileType == 'jpg' || file.fileType == 'png' || file.fileType == 'PNG'">
+          <img src="../../../../../../assets/icons/attachment.png" class="w-31 h-36">
+        </span>
+        <span *ngIf="file.fileType == 'pdf'">
+          <img src="../../../../../../assets/icons/pdf.png" class="w-31 h-36">
+        </span>
+        <span *ngIf="file.fileType == 'txt'">
+          <img src="../../../../../../assets/icons/txt.png" class="w-31 h-36">
+        </span>
+        <span *ngIf="file.fileType == 'doc'|| file.fileType == 'docx'">
+          <img src="../../../../../../assets/icons/word.png" class="w-31 h-36">
+        </span>
+        <span 
+        *ngIf="file.fileType != 'xlsx' && file.fileType != 'pdf' && file.fileType != 'PDF' && file.fileType != 'xls' && file.fileType != 'txt' && 
+    file.fileType != 'doc' && file.fileType != 'docx' && file.fileType != 'csv' && file.fileType != 'jpg' &&  
+    file.fileType != 'jpeg' && file.fileType != 'png' && file.fileType != 'PNG' && file.fileType != 'JPG' && file.fileType != 'JPEG'">
+        <img src="../../../../../../assets/icons/attachment.png" class="w-31 h-36">
+      </span>
+        <span class="ml-15 fs-14 mt-10">{{file.FileName}}</span>
+
+      </div>
+      <div class="col-sm-3">
+        <ul class="float-right fs-16">
+          <li (click)="viewFile(file.Sfileid)">
+            <i class="fa fa-eye" [ngbTooltip]="tipViewContent"></i>
+            <ng-template #tipViewContent>View</ng-template>
+          </li>
+          <li (click)="printFile(file.Sfileid,file.FileName,file.fileType)">
+            <i class="fa fa-print" [ngbTooltip]="tipPrintContent"></i>
+            <ng-template #tipPrintContent>Print</ng-template>
+          </li>
+          <li (click)="downloadFile(file.Sfileid,file.FileName,file.fileType)">
+            <i class="fas fa-cloud-download-alt" [ngbTooltip]="tipDownloadContent"></i>
+            <ng-template #tipDownloadContent>Download</ng-template>
+          </li>
+          <!-- <li>
+                    <i class="fas fa-trash-alt"></i>
+                  </li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<!--***************** empty state start********************* -->
+<div class="row mt-100" *ngIf="SUfiles.length==0">
+  <div class="col-md-3 mx-auto text-align">
+    <img src="../../../../../../assets/inbox.png">
+  </div>
+</div>
+<div class="row mt-20" *ngIf="SUfiles.length==0">
+  <div class="col-md-6 mx-auto text-align">
+    <p class="fs-28"> Looks like there are no files</p>
+  </div>
+</div>
+<!--***************** empty state end********************* -->
+
+
+<ng-template #contant let-d="dismiss" id="Modeladd">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Select Forms to Add</span>
+    <span class="modal-close close" (click)="Closeadd('close click')">
+      <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+  </div>
+  <ng-container *ngIf="formsinfo.length">
+    <div class="lo-modal-body p-20">
+      <div class="col-sm-12 p-0">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search by Name" (focus)="visitingInput()"
+            [(ngModel)]="searchFilter" />
+        </div>
+      </div>
+      <div class="row mt-20" *ngFor="let gform of formsinfo | filter: searchFilter;index as i">
+        <div class="col-sm-12">
+          <div class="col-sm-12">
+            <input type="checkbox" (focus)="visitingInput()" (change)="gformselect($event,gform,i)"
+              style="opacity: 1;transform: scale(1.5);margin-top:15px" class="ml-10">
+            <img style="margin-left:25px" src="../../../../../assets/icons/pdf.png" class="w-31 h-36" />
+
+
+
+            <span style="margin-left:10px;font-size: 20px" class="ml-15 fs-14 mt-10">{{gform.FormName}}</span>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer bg-model-footer">
+      <button type="button" class="btn btn-primary" (click)="Submitforms()">Add Selected Forms</button>
+
+      <button type="button" class="btn btn-outline" (click)="Closeadd('close click')">Cancel</button><br>
+
+    </div> 
+    <p class="alert alert-danger" style="text-align:center" *ngIf="issubmitforms"> Select at least one form to Submit.
+    </p>
+  </ng-container>
+
+  <ng-container *ngIf="formsinfo.length==0">
+    <div class="row mt-100">
+      <div class="col-md-3 mx-auto text-align">
+        <img src="../../../../../../assets/inbox.png">
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-md-6 mx-auto text-align">
+        <p class="fs-28"> Looks like there are no files</p>
+      </div>
+    </div>
+  </ng-container>
+
+
+</ng-template>
+
+<ng-template #contants let-d="dismiss" id="Modeladds">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Select Files to Add</span>
+    <span class="modal-close close" (click)="Closeadd('close click')">
+      <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+  </div>
+  <ng-container *ngIf="Files.length">
+    <div class="lo-modal-body p-20">
+      <div class="col-sm-12 p-0">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search by Name" (focus)="visitingInput()"
+            [(ngModel)]="searchFilter" />
+        </div>
+      </div>
+      <div class="row mt-20" *ngFor="let file of Files  | filter: searchFilter;index as i">
+        <div class="col-sm-12">
+          <div class="col-sm-12">
+            <input type="checkbox" (focus)="visitingInput()" (change)="sformselect($event,file,i)"
+              style="opacity: 1;transform: scale(1.5);margin-top:15px" class="ml-10">
+
+            <span style="margin-left:25px"
+              *ngIf="file.fileType == 'csv' || file.fileType == 'xlsx' || file.fileType == 'xls'">
+              <img src="../../../../../../assets/icons/csv.png" class="w-31 h-36">
+            </span>
+            <span style="margin-left:25px"
+              *ngIf="file.fileType == 'jpeg' || file.fileType == 'jpg' || file.fileType == 'png' || file.fileType == 'JPG' || file.fileType == 'PNG'">
+              <img src="../../../../../../assets/icons/attachment.png" class="w-31 h-36">
+            </span>
+            <span style="margin-left:25px" *ngIf="file.fileType == 'pdf'">
+              <img src="../../../../../../assets/icons/pdf.png" class="w-31 h-36">
+            </span>
+            <span style="margin-left:25px"
+              *ngIf="file.fileType == 'txt'">
+              <img src="../../../../../../assets/icons/txt.png" class="w-31 h-36">
+            </span>
+            <span style="margin-left:25px"
+              *ngIf=" file.fileType == 'doc'|| file.fileType == 'docx'">
+              <img src="../../../../../../assets/icons/word.png" class="w-31 h-36">
+            </span>
+            <span style="margin-left:25px"
+              *ngIf="file.fileType != 'xlsx' && file.fileType != 'pdf' && file.fileType != 'PDF' && file.fileType != 'xls' && file.fileType != 'txt' && 
+          file.fileType != 'doc' && file.fileType != 'docx' && file.fileType != 'csv' && file.fileType != 'jpg' &&  
+          file.fileType != 'jpeg' && file.fileType != 'png' && file.fileType != 'PNG' && file.fileType != 'JPG' && file.fileType != 'JPEG'">
+              <img src="../../../../../../assets/icons/attachment.png" class="w-31 h-36">
+            </span>
+            <span class="ml-15 fs-14 mt-10">{{file.FileName}}</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer bg-model-footer">
+      <button type="button" class="btn btn-primary" (click)="submitfiles()">Add Selected Files</button>
+      <button type="button" class="btn btn-outline" (click)="Closeadd('close click')">Cancel</button><br>
+    </div> 
+    <p class="alert alert-danger" style="text-align:center" *ngIf="issubmitforms"> Select at least one form to Submit.
+    </p>
+
+  </ng-container>
+  <ng-container *ngIf="Files.length==0">
+    <div class="row mt-100">
+      <div class="col-md-6 mx-auto text-align">
+        <img src="../../../../../../assets/inbox.png">
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-md-12 mx-auto text-align">
+        <p class="fs-28"> Looks like there are no files</p>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>

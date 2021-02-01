@@ -1,0 +1,62 @@
+<div class="address">
+
+    <div *ngFor='let in of addrArray;let i = index'>
+        <div *ngIf="finalObj() && finalObj(i + 1); then addrContlIf else addrContlEls"></div>
+        <ng-template #addrContlIf>
+            <div class="card__data">
+                <div class="d-flex justify-content-between align-items-center pl-10">
+                    <strong> Physical Address -{{i + 1}} </strong>
+                    <button class="cursor__pointer button__class" (click)="openAddrDetails(addrModel, i + 1)">
+                        Change
+                    </button>
+                </div>
+                <app-address-history-popup [isCard]="true" [data]="finalObj(i + 1)">
+                </app-address-history-popup>
+            </div>
+        </ng-template>
+        <ng-template #addrContlEls>
+            <div class="d__flex_between address__div">
+                <div>
+                    <div>Physical Address -{{i + 1}} </div>
+                </div>
+                <button class="blue__button cursor__pointer" (click)="openAddrDetails(addrModel, i + 1)"> Add Details
+                </button>
+            </div>
+        </ng-template>
+    </div>
+
+    <a *ngIf="addrArray.length !== maxAddr" class="d__flex_end address__add cursor__pointer">
+        <span (click)="incAddr()"> + Add</span>
+    </a>
+
+    <div class="card__data" *ngIf="(finalObj() && finalObj('outsideUSA'))">
+        <div class="d-flex justify-content-between align-items-center pl-10">
+            <strong>Physical Address - Outside U.S.A</strong>
+            <button class="cursor__pointer button__class" (click)="optionChang()">
+                Change
+            </button>
+        </div>
+        <app-address-history-popup [isCard]="true" [data]="finalObj('outsideUSA')">
+        </app-address-history-popup>
+    </div>
+    
+    <div class="d__flex_between address__div" *ngIf="showOutsideUSA">
+        <div>
+            <div> Physical Address - Outside U.S.A </div>
+        </div>
+        
+        <label >Choose from address options</label>
+        <select class="form-control lo-select" (change)="selAddrOption()" [(ngModel)]="selectAddrOption">
+            <option *ngFor="let opt of addrOptions; let i=index" value="{{opt}}">
+              {{opt}}</option>
+          </select>
+        <button class="blue__button cursor__pointer" (click)="openAddrDetails(addrModel, 'outsideUSA')"> Add Details
+        </button>
+    </div>
+
+</div>
+
+<ng-template #addrModel let-d="dismiss" id="addrModel">
+    <app-address-history-popup (emitCloseModel)="closeModel($event, selectedAddr)" [data]="commonService.fileData['Address History']['finalObj'][selectedAddr]">
+    </app-address-history-popup>
+</ng-template>

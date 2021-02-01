@@ -1,0 +1,168 @@
+<form [formGroup]="Orgdetails" (ngSubmit)="OrganizationInfo()">
+  <div class="row">
+    <div class="col-sm-12">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 form-group">
+      <label for="">company or Organization Name<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="OrganisationName" />
+      <small
+        *ngIf="Orgdetails.controls['OrganisationName'].errors && (Orgdetails.controls['OrganisationName'].dirty || Orgdetails.controls['OrganisationName'].touched)">
+        <small class="text-danger" *ngIf="Orgdetails.get('OrganisationName').hasError('required')">Organization
+          Name is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+  Orgdetails.get('OrganisationName').hasError('minlength') &&
+  !Orgdetails.get('OrganisationName').hasError('pattern')
+">Minimum 2 characters</small>
+      <small class="text-danger" *ngIf="
+Orgdetails.get('OrganisationName').hasError('maxlength') &&
+  !Orgdetails.get('OrganisationName').hasError('pattern')
+">Maximum 200 characters</small>
+      <small class="text-danger" *ngIf="Orgdetails.get('OrganisationName').hasError('pattern')">Enter only
+        characters
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 form-group">
+      <label>Doing business as name</label>
+      <input type="text" class="form-control" formControlName="DoingBusinessAsName" />
+      <small
+        *ngIf="Orgdetails.controls['DoingBusinessAsName'].errors && (Orgdetails.controls['DoingBusinessAsName'].dirty || Orgdetails.controls['DoingBusinessAsName'].touched)">
+
+      </small>
+      <small class="text-danger" *ngIf="
+  Orgdetails.get('DoingBusinessAsName').hasError('minlength') &&
+  !Orgdetails.get('DoingBusinessAsName').hasError('pattern')
+">Minimum 2 characters</small>
+      <small class="text-danger" *ngIf="
+Orgdetails.get('DoingBusinessAsName').hasError('maxlength') &&
+  !Orgdetails.get('DoingBusinessAsName').hasError('pattern')
+">Maximum 200 characters</small>
+      <small class="text-danger" *ngIf="Orgdetails.get('DoingBusinessAsName').hasError('pattern')">Enter only
+        characters
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3 form-group">
+      <label>Nature of business<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="NatureOfBusiness" />
+      <small
+        *ngIf="Orgdetails.controls['NatureOfBusiness'].errors && (Orgdetails.controls['NatureOfBusiness'].dirty || Orgdetails.controls['NatureOfBusiness'].touched)">
+        <small class="text-danger" *ngIf="Orgdetails.get('NatureOfBusiness').hasError('required')">Nature of
+          business is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+  Orgdetails.get('NatureOfBusiness').hasError('minlength') &&
+  !Orgdetails.get('NatureOfBusiness').hasError('pattern')
+">Minimum 2 characters</small>
+      <small class="text-danger" *ngIf="
+Orgdetails.get('NatureOfBusiness').hasError('maxlength') &&
+  !Orgdetails.get('NatureOfBusiness').hasError('pattern')
+">Maximum 100 characters</small>
+      <small class="text-danger" *ngIf="Orgdetails.get('NatureOfBusiness').hasError('pattern')">Enter only
+        characters
+      </small>
+    </div>
+
+    <div class="col-sm-3 form-group">
+      <label>company formed on<i class="required">*</i></label>
+      <div class="input-group calendar">
+        <input type="text" #dp="bsDatepicker" class="form-control" formControlName="CompanyFormedOn"
+          [value]="Orgdetails.get('CompanyFormedOn').value | date" name="CompanyFormedOn" bsDatepicker
+          [maxDate]="maxDate"
+          [bsConfig]="{showWeekNumbers: false, containerClass: 'theme-dark-blue', dateInputFormat: 'MM/DD/YYYY' }">
+        <span class="input-group-prepend">
+          <button type="button" class="btn btn-light" (click)="dp.toggle()">
+            <i class="fa fa-calendar"></i>
+          </button>
+        </span>
+        <small
+          *ngIf="Orgdetails.controls['CompanyFormedOn'].errors && (Orgdetails.controls['CompanyFormedOn'].dirty || Orgdetails.controls['CompanyFormedOn'].touched)">
+          <small class="text-danger" *ngIf="Orgdetails.get('CompanyFormedOn').hasError('required')">
+            company formed on date is required.
+          </small>
+        </small>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 form-group">
+      <label>current total number of employees (U.S only)<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="CurrentTotalNumberOfEmployees" />
+      <small
+        *ngIf="Orgdetails.controls['CurrentTotalNumberOfEmployees'].errors && (Orgdetails.controls['CurrentTotalNumberOfEmployees'].dirty || Orgdetails.controls['CurrentTotalNumberOfEmployees'].touched)">
+        <small class="text-danger" *ngIf="Orgdetails.get('CurrentTotalNumberOfEmployees').hasError('required')">
+          current total number of employees in USA is required
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+      Orgdetails.get('CurrentTotalNumberOfEmployees').hasError('minlength') &&
+      !Orgdetails.get('CurrentTotalNumberOfEmployees').hasError('pattern')
+    ">Minimum 1 characters</small>
+      <small class="text-danger" *ngIf="
+Orgdetails.get('CurrentTotalNumberOfEmployees').hasError('maxlength') &&
+  !Orgdetails.get('CurrentTotalNumberOfEmployees').hasError('pattern')
+">Maximum 6 characters</small>
+      <small class="text-danger" *ngIf="Orgdetails.get('CurrentTotalNumberOfEmployees').hasError('pattern')">Enter only
+        numbers
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3 form-group">
+      <label>Total full time employees<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="TotalFullTimeEmployees" />
+      <small
+        *ngIf="Orgdetails.controls['TotalFullTimeEmployees'].errors && (Orgdetails.controls['TotalFullTimeEmployees'].dirty || Orgdetails.controls['TotalFullTimeEmployees'].touched)">
+        <small class="text-danger" *ngIf="Orgdetails.get('TotalFullTimeEmployees').hasError('required')">
+          Total full time employees is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+      Orgdetails.get('TotalFullTimeEmployees').hasError('minlength') &&
+      !Orgdetails.get('TotalFullTimeEmployees').hasError('pattern')
+    ">Minimum 1 characters</small>
+      <small class="text-danger" *ngIf="
+Orgdetails.get('TotalFullTimeEmployees').hasError('maxlength') &&
+  !Orgdetails.get('TotalFullTimeEmployees').hasError('pattern')
+">Maximum 6 characters</small>
+      <small class="text-danger" *ngIf="Orgdetails.get('TotalFullTimeEmployees').hasError('pattern')">Enter only
+        numbers
+      </small>
+    </div>
+    <div class="col-sm-3 form-group">
+      <label>number of employees on H1-B<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="NumberOfEmployeesOnH1B" name="NumberOfEmployeesOnH1B" />
+      <small
+        *ngIf="Orgdetails.controls['NumberOfEmployeesOnH1B'].errors && (Orgdetails.controls['NumberOfEmployeesOnH1B'].dirty || Orgdetails.controls['NumberOfEmployeesOnH1B'].touched)">
+        <small class="text-danger" *ngIf="Orgdetails.get('NumberOfEmployeesOnH1B').hasError('required')">
+          number of employees on H1-B required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+      Orgdetails.get('NumberOfEmployeesOnH1B').hasError('minlength') &&
+      !Orgdetails.get('NumberOfEmployeesOnH1B').hasError('pattern')
+    ">Minimum 1 characters</small>
+      <small class="text-danger" *ngIf="
+      Orgdetails.get('NumberOfEmployeesOnH1B').hasError('maxlength') &&
+        !Orgdetails.get('NumberOfEmployeesOnH1B').hasError('pattern')
+      ">Maximum 6 characters</small>
+      <small class="text-danger" *ngIf="Orgdetails.get('NumberOfEmployeesOnH1B').hasError('pattern')">Enter only
+        numbers
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-primary" [disabled]="Orgdetails.invalid" type="submit">Save
+        Changes</button>
+      <button class="btn btn-outline ml-10" type="button" (click)="BackToOrganisationInformation()">Cancel</button>
+    </div>
+  </div>
+</form>

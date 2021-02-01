@@ -1,0 +1,16 @@
+{
+    "common": {
+       "required": "This field is required",       
+       "minLength": "Please Enter min length",
+       "maxLength": "Please Enter max length"
+    },
+    "username": {
+        "required": "Please enter username this feild",
+        "minLength": "Please Enter min length"
+    },
+    "FirstName": {
+        "required": "Please enter username this feild",
+        "minLength": "Please Enter min length",
+        "maxLength": "Please Enter max length"
+    }
+}

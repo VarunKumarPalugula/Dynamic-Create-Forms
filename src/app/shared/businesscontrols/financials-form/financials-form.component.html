@@ -1,0 +1,185 @@
+<form [formGroup]="financials" (ngSubmit)="financialsInformation()">
+  <div class="row">
+    <div class="col-lg-6 form-group">
+      <label>federal employer ID number (FEN)<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="FEIN"
+        [(ngModel)]="financialObj.FederalEmployerIDNumber" />
+      <small
+        *ngIf="financials.controls['FEIN'].errors && (financials.controls['FEIN'].dirty || financials.controls['FEIN'].touched)">
+        <small class="text-danger" *ngIf="financials.get('FEIN').hasError('required')">
+          Federal Employer ID Number FEN is Required
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+  financials.get('FEIN').hasError('minlength') &&
+  !financials.get('FEIN').hasError('pattern')
+">Minimum 5 characters</small>
+      <small class="text-danger" *ngIf="
+financials.get('FEIN').hasError('maxlength') &&
+  !financials.get('FEIN').hasError('pattern')
+">Maximum 20 characters</small>
+      <small class="text-danger" *ngIf="financials.get('FEIN').hasError('pattern')">Enter only
+        characters
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-3 form-group">
+      <label>individual tax number<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="individualIRSTaxNo" name="individualIRSTaxNo"
+        [(ngModel)]="financialObj.IndividualTaxNumber" />
+      <small
+        *ngIf="financials.controls['individualIRSTaxNo'].errors && (financials.controls['individualIRSTaxNo'].dirty || financials.controls['individualIRSTaxNo'].touched)">
+        <small class="text-danger" *ngIf="financials.get('individualIRSTaxNo').hasError('required')">
+          Individual Tax Number is Required
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+financials.get('individualIRSTaxNo').hasError('minlength') &&
+!financials.get('individualIRSTaxNo').hasError('pattern')
+">Minimum 5 characters</small>
+      <small class="text-danger" *ngIf="
+financials.get('individualIRSTaxNo').hasError('maxlength') &&
+!financials.get('individualIRSTaxNo').hasError('pattern')
+">Maximum 11 characters</small>
+      <small class="text-danger" *ngIf="financials.get('individualIRSTaxNo').hasError('pattern')">Enter only
+        Numbers
+      </small>
+    </div>
+    <div class="col-lg-3 form-group">
+      <label>NAICS Number<i class="required">*</i> &nbsp;
+        <a href="https://www.naics.com/search/" target="_blank">
+          <button type="button" class="btn btn-link" style="margin-top: -3px;">Find out here
+          </button>
+        </a>
+      </label>
+      <input type="text" class="form-control" formControlName="naicsNumber" name="naicsNumber"
+        [(ngModel)]="financialObj.NAICSNumber" />
+      <small
+        *ngIf="financials.controls['naicsNumber'].errors && (financials.controls['naicsNumber'].dirty || financials.controls['naicsNumber'].touched)">
+        <small class="text-danger" *ngIf="financials.get('naicsNumber').hasError('required')">
+          NAICS Number is Required
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+financials.get('naicsNumber').hasError('minlength') &&
+!financials.get('naicsNumber').hasError('pattern')
+">Minimum 2 Numbers</small>
+      <small class="text-danger" *ngIf="
+financials.get('naicsNumber').hasError('maxlength') &&
+!financials.get('naicsNumber').hasError('pattern')
+">Maximum 6 Numbers</small>
+      <small class="text-danger" *ngIf="financials.get('naicsNumber').hasError('pattern')">Enter only
+        Numbers
+      </small>
+    </div>
+  </div>
+  <p class="fs-16"><b>Last 2 Years income </b> </p>
+  <div class="row">
+    <div class="col-lg-2 form-group">
+      <label>Current Year</label>
+      <br />
+      <b>2020</b>
+    </div>
+    <div class="col-lg-2 form-group">
+      <label>Gross Annual income<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="CGrossAnnualIncome" name="CGrossAnnualIncome"
+        [(ngModel)]="currentYearIncome.GrossAnnualIncome" />
+      <small
+        *ngIf="financials.controls['CGrossAnnualIncome'].errors && (financials.controls['CGrossAnnualIncome'].dirty || financials.controls['CGrossAnnualIncome'].touched)">
+        <small class="text-danger" *ngIf="financials.get('CGrossAnnualIncome').hasError('required')">
+          Gross Annual Income Required
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+financials.get('CGrossAnnualIncome').hasError('minlength') &&
+!financials.get('CGrossAnnualIncome').hasError('pattern')
+">Minimum 4 characters</small>
+      <small class="text-danger" *ngIf="
+financials.get('CGrossAnnualIncome').hasError('maxlength') &&
+!financials.get('CGrossAnnualIncome').hasError('pattern')
+">Maximum 10 characters</small>
+      <small class="text-danger" *ngIf="financials.get('CGrossAnnualIncome').hasError('pattern')">Enter only
+        Numbers
+      </small>
+    </div>
+
+    <div class="col-lg-2 form-group">
+      <label>net Annual income<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="CNetAnnualIncome" name="CNetAnnualIncome"
+        [(ngModel)]="currentYearIncome.NetAnnualIncome" />
+      <small
+        *ngIf="financials.controls['CNetAnnualIncome'].errors && (financials.controls['CNetAnnualIncome'].dirty || financials.controls['CNetAnnualIncome'].touched)">
+        <small class="text-danger" *ngIf="financials.get('CNetAnnualIncome').hasError('required')">
+          net Annual Income Required
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+financials.get('CNetAnnualIncome').hasError('minlength') &&
+!financials.get('CNetAnnualIncome').hasError('pattern')
+">Minimum 4 characters</small>
+      <small class="text-danger" *ngIf="
+financials.get('CNetAnnualIncome').hasError('maxlength') &&
+!financials.get('CNetAnnualIncome').hasError('pattern')
+">Maximum 10 characters</small>
+      <small class="text-danger" *ngIf="financials.get('CNetAnnualIncome').hasError('pattern')">Enter only
+        Numbers
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2 form-group">
+      <label>Past Year</label>
+      <br />
+      <b>2019</b>
+    </div>
+    <div class="col-lg-2 form-group">
+      <label>Gross Annual income<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="LGrossAnnualIncome"
+        [(ngModel)]="previousYearIncome.GrossAnnualIncome" />
+      <small
+        *ngIf="financials.controls['LGrossAnnualIncome'].errors && (financials.controls['LGrossAnnualIncome'].dirty || financials.controls['LGrossAnnualIncome'].touched)">
+        <small class="text-danger" *ngIf="financials.get('LGrossAnnualIncome').hasError('required')">
+          Gross Annual Income Required
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+financials.get('LGrossAnnualIncome').hasError('minlength') &&
+!financials.get('LGrossAnnualIncome').hasError('pattern')
+">Minimum 4 characters</small>
+      <small class="text-danger" *ngIf="
+financials.get('LGrossAnnualIncome').hasError('maxlength') &&
+!financials.get('LGrossAnnualIncome').hasError('pattern')
+">Maximum 10 characters</small>
+      <small class="text-danger" *ngIf="financials.get('LGrossAnnualIncome').hasError('pattern')">Enter only
+        Numbers
+      </small>
+    </div>
+    <div class="col-lg-2 form-group">
+      <label>net Annual income<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="LNetAnnualIncome"
+        [(ngModel)]="previousYearIncome.NetAnnualIncome" />
+      <small
+        *ngIf="financials.controls['LNetAnnualIncome'].errors && (financials.controls['LNetAnnualIncome'].dirty || financials.controls['LNetAnnualIncome'].touched)">
+        <small class="text-danger" *ngIf="financials.get('LNetAnnualIncome').hasError('required')">
+          net Annual Income Required
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+financials.get('LNetAnnualIncome').hasError('minlength') &&
+!financials.get('LNetAnnualIncome').hasError('pattern')
+">Minimum 4 characters</small>
+      <small class="text-danger" *ngIf="
+financials.get('LNetAnnualIncome').hasError('maxlength') &&
+!financials.get('LNetAnnualIncome').hasError('pattern')
+">Maximum 10 characters</small>
+      <small class="text-danger" *ngIf="financials.get('LNetAnnualIncome').hasError('pattern')">Enter only
+        Numbers
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <button class="btn btn-primary ml-10" type="submit" [disabled]="financials.invalid">Submit</button>
+    <button class="btn btn-default ml-10" type="button" (click)="BackToFinancialCard()">cancel</button>
+  </div>
+</form>

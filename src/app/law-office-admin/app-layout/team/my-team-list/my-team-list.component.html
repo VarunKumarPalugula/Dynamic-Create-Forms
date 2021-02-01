@@ -1,0 +1,74 @@
+<div class="container-fluid mt-60" *ngIf="teamMembersList.length !== 0 || teamInvitersList.length !== 0">
+  <div class="col-sm-12 pt-20 pb-20">
+    <div
+      class="btn btn-primary fs-12 float-right"
+      *ngIf="isAuthorize && (loadPermissions ? loadPermissions?.CanInviteTeamMembers : true)"
+      [routerLink]="['/admin/team/teaminvite']"
+    >
+      Invite Team members
+    </div>
+    &nbsp;
+  </div>
+</div>
+<div class="container-fluid mt-5">
+    <ng-container *ngIf="teamMembersList.length !== 0 || teamInvitersList.length !== 0">
+    <div class="col-sm-12">
+      <div class="card mb-20">
+        <div class="card-body">
+          <ngb-tabset class="navtabs-modified"  #t="ngbTabset" [activeId]="activeid">
+            <ngb-tab title="All Team Members" id="teamMembersTab">
+              <ng-template ngbTabContent>
+                <app-teammemberslist
+                  [teamMembersList]="teamMembersList"
+                  [isViewTeamMember]="
+                    isAuthorize && (loadPermissions ? loadPermissions?.CanViewProfileOfTeamMembers : true)
+                  "
+                  [isDeleteTeamMember]="isAuthorize && (loadPermissions ? loadPermissions?.CanDeleteTeamMembers : true)"
+                  (emitTeamList)="loadTeamList()"
+                ></app-teammemberslist>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Invited By Me" id="pendingTeamMembersTab" *ngIf="isAuthorize">
+              <ng-template ngbTabContent>
+                <app-teaminvitlist
+                  [teamInvitersList]="teamInvitersList"
+                  (emitTeamInviteList)="teamInvitataionList()"
+                ></app-teaminvitlist>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </div>
+      </div>
+    </div>
+    <p>
+      </p>
+    </ng-container>
+     <!--***************** empty state start********************* -->
+  <ng-container *ngIf="teamMembersList.length === 0 && teamInvitersList.length === 0">
+    <div class="row mt-100">
+      <div class="col-md-4 mx-auto text-align">
+        <img src="../../../../../assets/team-connections-empty.svg" class="w-100" />
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-md-6 mx-auto text-align">
+        <p class="fs-28">Looks like there are no Team Members</p>
+        <p classs="fs-16">
+          <!-- Lorem ipsium lorem some relevant text goes here to help user understand what they can do to search and sort
+          for better results -->
+        </p>
+        <div
+          class="btn btn-primary fs-12"
+          [routerLink]="['/admin/team/teaminvite']"
+          *ngIf="isAuthorize && (loadPermissions ? loadPermissions?.CanInviteTeamMembers : true)"
+        >
+          Invite Team members
+        </div>
+        &nbsp;
+      </div>
+    </div>
+  </ng-container>
+  <!--***************** empty state end********************* -->
+</div>
+
+

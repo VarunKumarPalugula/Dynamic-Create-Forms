@@ -1,0 +1,156 @@
+<form [formGroup]="personalForm" (ngSubmit)="personalInfo()">
+  <div class="row">
+    <div class="col-lg-5">
+      <label>First Name<i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="FirstName" />
+      <small *ngIf="
+       personalForm.controls['FirstName'].errors &&
+        (personalForm.controls['FirstName'].dirty || personalForm.controls['FirstName'].touched)
+      ">
+        <small class="text-danger" *ngIf="personalForm.get('FirstName').hasError('required')">First Name is
+          required
+        </small>
+        <small class="text-danger" *ngIf="personalForm.get('FirstName').hasError('pattern')">Enter only
+          characters
+        </small>
+        <small class="text-danger" *ngIf="
+      personalForm.get('FirstName').hasError('minlength') &&
+          !personalForm.get('FirstName').hasError('pattern')
+        ">Minimum 3 characters</small>
+        <small class="text-danger" *ngIf="
+      personalForm.get('FirstName').hasError('maxlength') &&
+          !personalForm.get('FirstName').hasError('pattern')
+        ">Maximum 20 characters</small>
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-5">
+      <label>Middle Name</label>
+      <input type="text" class="form-control" formControlName="MiddleName" />
+      <small *ngIf="
+       personalForm.controls['MiddleName'].errors &&
+        (personalForm.controls['MiddleName'].dirty || personalForm.controls['MiddleName'].touched)
+      ">
+        <small class="text-danger" *ngIf="personalForm.get('MiddleName').hasError('required')">Middle Name is
+          required
+        </small>
+        <small class="text-danger" *ngIf="personalForm.get('MiddleName').hasError('pattern')">Enter only
+          characters
+        </small>
+        <small class="text-danger" *ngIf="
+      personalForm.get('MiddleName').hasError('minlength') &&
+          !personalForm.get('MiddleName').hasError('pattern')
+        ">Minimum 3 characters</small>
+        <small class="text-danger" *ngIf="
+      personalForm.get('MiddleName').hasError('maxlength') &&
+          !personalForm.get('MiddleName').hasError('pattern')
+        ">Maximum 20 characters</small>
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-5">
+      <label>Last Name <i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="LastName" />
+      <small *ngIf="
+       personalForm.controls['LastName'].errors &&
+        (personalForm.controls['LastName'].dirty || personalForm.controls['LastName'].touched)
+      ">
+        <small class="text-danger" *ngIf="personalForm.get('LastName').hasError('required')">Last Name is
+          required
+        </small>
+        <small class="text-danger" *ngIf="personalForm.get('LastName').hasError('pattern')">Enter only
+          characters
+        </small>
+        <small class="text-danger" *ngIf="
+      personalForm.get('LastName').hasError('minlength') &&
+          !personalForm.get('LastName').hasError('pattern')
+        ">Minimum 3 characters</small>
+        <small class="text-danger" *ngIf="
+      personalForm.get('LastName').hasError('maxlength') &&
+          !personalForm.get('LastName').hasError('pattern')
+        ">Maximum 20 characters</small>
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-5">
+      <label>U.S Social Security Number <i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="USSSN" />
+      <small
+        *ngIf="personalForm.controls['USSSN'].errors && (personalForm.controls['USSSN'].dirty || personalForm.controls['USSSN'].touched)">
+        <small class="text-danger" *ngIf="personalForm.get('USSSN').hasError('required')">
+          U.S Social Security Number is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+    personalForm.get('USSSN').hasError('minlength') &&
+!personalForm.get('USSSN').hasError('pattern')
+">Minimum 5 characters</small>
+      <small class="text-danger" *ngIf="
+    personalForm.get('USSSN').hasError('maxlength') &&
+!personalForm.get('USSSN').hasError('pattern')
+">Maximum 11 characters</small>
+      <small class="text-danger" *ngIf="personalForm.get('USSSN').hasError('pattern')">Enter only
+        number
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-5">
+      <label>Date of Birth<i class="required">*</i></label>
+      <div class="input-group calendar">
+        <input type="text" #dp="bsDatepicker" class="form-control" formControlName="DateOfBirth" bsDatepicker
+          [maxDate]="maxDate" [value]=" personalForm.get('DateOfBirth').value | date"
+          [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }" formControlName="DateOfBirth">
+        <span class="input-group-prepend">
+          <button type="button" class="btn btn-light z-0" (click)="dp.toggle()">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-5">
+      <label>Province of Birth <i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="ProvinceOfBirth" />
+      <small *ngIf="
+      personalForm.controls['ProvinceOfBirth'].errors &&
+       (personalForm.controls['ProvinceOfBirth'].dirty || personalForm.controls['ProvinceOfBirth'].touched)
+     ">
+        <small class="text-danger"
+          *ngIf="personalForm.get('ProvinceOfBirth').hasError('ProvinceOfBirth')">ProvinceOfBirth is
+          required
+        </small>
+        <small class="text-danger" *ngIf="personalForm.get('ProvinceOfBirth').hasError('pattern')">Enter only
+          characters
+        </small>
+        <small class="text-danger" *ngIf="
+     personalForm.get('ProvinceOfBirth').hasError('minlength') &&
+         !personalForm.get('ProvinceOfBirth').hasError('pattern')
+       ">Minimum 3 characters</small>
+        <small class="text-danger" *ngIf="
+     personalForm.get('ProvinceOfBirth').hasError('maxlength') &&
+         !personalForm.get('ProvinceOfBirth').hasError('pattern')
+       ">Maximum 20 characters</small>
+      </small>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-5 form-group">
+      <label for="">Country of citizenship(nationality) <i class="required">*</i></label>
+      <select class="form-control" formControlName="CountryOfCitizenShip">
+        <option hidden></option>
+        <option *ngFor="let countries of commonService.allCountriesList" [value]="countries.name">{{countries.name}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row ml-0">
+    <button class="btn btn-primary" type="submit" [disabled]="personalForm.invalid">Submit</button>
+    <button class="btn btn-default ml-10" type="button" (click)="backToCard()">Cancel</button>
+  </div>
+</form>

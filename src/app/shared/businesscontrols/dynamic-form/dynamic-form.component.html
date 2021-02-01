@@ -1,0 +1,102 @@
+<div class="container">
+    <div class="g28PdfView">
+        <div class="button_style">
+        <button class="btn btn-primary" [routerLink]="['/admin/fillings/casesubmission/'+ caseId]"><i class="fas fa-arrow-left"></i> Back to case view</button>
+        </div>  
+        <div class="pdf_left">
+            <div class="thumbnailpage" *ngFor="let item of thumbnail; let i = index">
+                <img [src]="item.url" alt="form" class="img-fluid" (click)="previewPdf(i)"><span
+                    class="pagenumber">{{i + 1}}</span>
+            </div>
+        </div>
+        <div class="form-container" *ngIf="showData">
+            <form id="input-form" [formGroup]="myForm" novalidate>
+                <!-- Cycle through all the inputs -->
+                <div *ngFor="let input of inputLists[pagesNumber].list; let i = index; trackBy: trackByFn"
+                    [ngSwitch]="input.type">
+                    <input *ngIf="input.enableCont == 'checkbox'" [name]="input.name" type="checkbox"
+                        [value]="input.value" [checked]="input.value" [ngStyle]="getInputPosition(input)"
+                        (change)="change($event.target.checked, i)">
+
+                    <input *ngIf="input.enableCont == 'radio'" [name]="input.name" type="radio" [value]="input.value"
+                        [ngStyle]="getInputPosition(input)" [checked]="input.value" (change)="setRadioValue(input, i)">
+
+                    <!-- Insert an input accordingly and get the style/position from the component -->
+                    <input *ngIf="input.enableCont == 'text'" [name]="input.name" type="text" [value]="input.value"
+                        [ngStyle]="getInputPosition(input)" (input)="change($event.target.value, i)">
+
+                    <textarea *ngIf="input.enableCont == 'textarea'" [name]="input.name" [value]="input.value"
+                        [ngStyle]="getInputPosition(input)" (input)="change($event.target.value, i)">
+                        </textarea>
+
+                    <select *ngIf="input.enableCont == 'dropdown'" [name]="input.name"
+                        [ngStyle]="getInputPosition(input)" (change)="change($event.target.value, i)">
+                        <option *ngFor="let value of input.options" [value]="value">{{ value }}</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div id="htmlData" #htmlData class="" *ngIf="showPdfs">
+            <pdf-viewer id="viewer" [src]="pdfs[pagesNumber]" [zoom]="zoom" [original-size]="false" [autoresize]="true"
+                [autoresize]="true" (page-rendered)="pageRendered($event)" (after-load-complete)="loadComplete($event)">
+            </pdf-viewer>
+        </div>
+    
+        <div *ngIf="showPdfView">
+            <pdf-viewer *ngFor="let img of pdfs; let i = index" [src]="img" (page-rendered)="pageRenderedImages($event, img)">
+            </pdf-viewer>
+        </div>
+        
+    
+        <!-- Bind the zoom variable to the viewer component -->
+    </div>
+    <!-- Add some button -->
+</div>
+
+<div class="bottomNavbar">
+    <div class="row float-right mt-10">
+        <button (click)="prev()" class="btn btn-sm btn-outline-light mr-10" [disabled]="pagesNumber == 0">prev</button>
+        <button (click)="next()" class="btn btn-sm btn-outline-light mr-10" [disabled]="pagesNumber == (pdfs.length - 1)">next</button>
+        <button class="btn btn-success" class="btn btn-sm btn-outline-light mr-20" (click)="saveImmigrationFormData()">Submit</button>
+    </div>
+    <!-- <div class="submitButton ">
+        
+    </div> -->
+    <!-- <button mat-mini-fab (click)="zoomOut()">-</button>
+    <button mat-fab (click)="zoomIn()">+</button> -->
+</div>
+<ng-template #datSyncc let-d="dismiss" id="datSyncc">
+    <modal-header [headerTittle]="'Confirm Form Update'"></modal-header>
+    <div class="modal-body">
+        <div class="" *ngIf="dataSyncPrimaryAttorney">
+            <form #syncForm="ngForm">
+                <p class="info-text ml-7">There have been changes to the information related to this form. <span
+                        class="text-danger">New changes are marked in red.</span></p>
+                <div class="body-content">
+                    <div *ngFor="let syncData of dataSyncc">
+                        <h5> {{syncData.DataTemplate.DisplayHeader}}</h5>
+                        <div class="row border mx-3 mb-3 p-4">
+                            <div class="col-4" *ngFor="let subSyncData of syncData.DataTemplate.FieldDetails">
+                                <label class="checkbox-inline">
+                                    <b><input type="checkbox"
+                                            (change)="storeDataSync(subSyncData.FieldId,subSyncData.FieldData.SettingsValue,$event.target.checked)"
+                                            style="opacity: 1; position: relative;">
+                                        {{subSyncData.FieldDesc}}</b>
+                                </label>
+                                <div class="ml-30">
+                                    <span class="syncItemColor">{{subSyncData.FieldData.SettingsValue}}</span><br>
+                                    <span>{{subSyncData.FieldData.FormValue}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-model-footer">
+                    <button class="btn btn-primary btn-sm px-32 ml-5 fs-14" (click)="fileDataSync()"
+                        [disabled]="isSyncDisabled">Update selected</button>
+                    <button class="btn btn-primary btn-sm px-32 ml-5 fs-14" (click)="cancelDataSync()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>

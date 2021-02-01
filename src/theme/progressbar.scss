@@ -1,0 +1,34 @@
+.lo-progressbar {
+  width: 100%;
+  box-sizing: border-box;
+  height: 4px;
+  background-color: $geyser;
+  border-radius: 2px;
+  position: relative;
+  .progress-fill {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    background-color: $secondary;
+    &.progress-success {
+      background-color: $primary;
+    }
+    &.progress-error {
+      background-color: $danger;
+    }
+    &.nowidth {
+      width: 0%;
+      animation: slidein 600ms forwards;
+    }
+  }
+}
+
+@keyframes slidein {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

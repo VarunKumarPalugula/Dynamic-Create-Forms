@@ -1,0 +1,62 @@
+<div class="container-fluid mt-70 mb-10">
+  <div class="card p-10">
+  <div class="card-body">
+  <label class="fs-18">Import Client Members List </label>
+  <p><b>Step 1 of 3 - Upload File</b></p>
+  </div>
+  <div class="container">
+  <div class="row mx-auto">
+  <div class="col-sm-1 col-xs-1"></div>
+  <div class="col-sm-4 col-xs-5">
+  <div class="form-group">
+      <label for="files">Acceptable file types: CSV or tab-delimited text files</label>
+          <label for="files" class="lo-fileuploader p-30 fs-16">
+           
+              <p class="text-muted">Drag files to upload <br><br>OR<br> <i class="fa fa-cloud-upload" aria-hidden="true"></i></p>
+              <i class="fa fa-cloud-download" aria-hidden="true"></i>
+  
+              <input type="file" id="files" (change)="uploadFile($event)">
+          </label>                
+      </div>
+           <label for="files" class="lo-fileuploader-profile">
+                  <input type="file" id="files" (change)="uploadFile($event)">    
+                      <span class="btn btn-outline fs-13">Choose File</span>
+              </label>
+  </div>
+  <div class="col-sm-5 col-xs-5" *ngIf="fileDiv">
+  <p class="fs-16">Uploading File</p>
+  <div class="bbt mb-30">
+          <span><img src="../../../assets/download.png" class="w-31 h-40"></span>
+          <label class="ml-10 mt--13">{{fileName}}</label>
+          <span class="float-right fs-13">
+                  <i class="fa fa-trash text-muted" aria-hidden="true" (click)="removeFile()"></i><br>
+                  <label class="mt-10">45%</label>
+                </span>
+          <span><div class="progress ml-40 h-5 mt--7 mb-10 w-230">
+                  <div class="progress-bar fs-9" style="width:40%">70%</div>
+                </div></span>
+                
+          </div>
+  </div>
+  </div> 
+  <div class="row mb-20">
+          <div class="col-sm-1 col-xs-1"></div>
+          <div class="col-sm-10 col-xs-5">
+          <p class="fs-16 ml-10"><b>Permission to send emails to client members</b></p>
+          <input type="checkbox" id="4" class="ml-10">
+          <label for="4" class="checkbox"></label>
+            <span class="mt-10">I agree that I’ve gathered proper permission to send emails to every address on my client member list</span>   
+      </div>
+          </div>
+  </div> 
+  <div class="row">
+          <div class="col-sm-10 mx-auto">
+                <div class="pt-20 p-20 pl-0">
+                        <div class="btn btn-primary ml-20 fs-12 float-right" routerLink="/client/applayout/team/clientimportinviteconfirm">Next</div>
+                        <div class="btn btn-outline fs-12 float-right" routerLink="/client/applayout/team/">Back</div>
+                    </div>
+</div>
+</div>
+  </div>
+  </div>
+ 

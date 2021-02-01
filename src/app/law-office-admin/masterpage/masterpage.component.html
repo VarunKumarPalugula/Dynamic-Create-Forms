@@ -1,0 +1,444 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white lo-navbar">
+    <a class="navbar-brand" routerLink="/admin/fillings">
+      <img src="../../../assets/logo.jpg" class="logo" />
+    </a>
+    <button class="navbar-toggler" type="button" aria-controls="navbar-menu" aria-label="Toggle navigation"
+      (click)="toggleMenu()" [attr.aria-expanded]="menuHidden">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="navbar-menu" class="collapse navbar-collapse float-xs-none lo-header" [ngbCollapse]="!menuHidden">
+      <div class="navbar-nav">
+        <!-- <a class="nav-item nav-link" routerLink="/admin/home" routerLinkActive="active">
+          <span class="font-weight-bold">Home</span>
+        </a> -->
+        <a class="nav-item nav-link" routerLink="/admin/fillings" routerLinkActive="active">
+          <span class="font-weight-bold">Filings</span>
+        </a>
+        <a class="nav-item nav-link" routerLink="/admin/clients" routerLinkActive="active">
+          <span class="font-weight-bold">Clients </span>
+        </a>
+        <a class="nav-item nav-link" routerLink="/admin/team" routerLinkActive="active">
+          <span class="font-weight-bold">Team</span>
+        </a>
+        <!-- <a class="nav-item nav-link" routerLink="/admin/documents" routerLinkActive="active">
+          <span class="font-weight-bold">Documents</span>
+        </a> -->
+        <a class="nav-item nav-link" routerLink="/admin/settings" routerLinkActive="active">
+          <span class="font-weight-bold">Settings</span>
+        </a>
+      </div>
+      <div class="navbar-nav ml-auto">
+        <div class="nav-item quick dropdown" placement="bottom-right">
+          <a id="user-dropdown" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="font-weight-bold">Quick Actions </span><i class="fas fa-caret-down"></i>
+          </a>
+
+          <div class="dropdown-menu" id="dropdown-toggler" style="top: 63px;
+                left: -172px;">
+            <div class="dropdown-item pointer"
+              *ngIf="FillingPermissions? (FillingPermissions.CanAddEditShippingOutDetailsToFiling):true"
+              (click)="modelShipmentTracking($event, track)">
+              Assign Shipment Tracking
+            </div>
+            <div class="dropdown-item pointer" (click)="lcaNumber($event, lca)">
+              <!-- <i class="fa fa-check text-primary" aria-hidden="true"></i> -->
+              Assign LCA Number
+            </div>
+            <div class="dropdown-item pointer" (click)="receiptNumber($event, receipt)">
+              <!-- <i class="fa fa-check text-primary" aria-hidden="true"></i> -->
+              Assign Receipt Number
+            </div>
+            <div class="dropdown-item pointer" (click)="inviteTeammember($event, team)"
+              *ngIf="isAuthorize && (loadSubAdminPermissions ? loadSubAdminPermissions?.CanInviteTeamMembers : true)">
+              <!-- <i class="fa fa-check text-primary" aria-hidden="true"></i> -->
+              Invite Team Member
+            </div>
+          </div>
+        </div>
+        <div class="nav-item" ngbDropdown placement="bottom-right">
+          <a id="user-dropdown" class="nav-link" ngbDropdownToggle>
+            <span *ngIf="sessionImage.getImage()">
+              <img class="lo-profile--image small" [src]="sessionImage.getImage()" alt="profile" height="300" />
+            </span>
+            <span class="uname" *ngIf="!sessionImage.getImage()">{{userLogoName}}</span>
+          </a>
+          <div ngbDropdownMenu aria-labelledby="user-dropdown" class="pb-0"
+            style="box-shadow: 1px 1px 10px #888; left: -220px;">
+            <div class="row pb-10">s
+              <div class="w-100" *ngIf="sessionImage.getImage()">
+                <img class="inuname" [src]="sessionImage.getImage()" alt="profile" height="300" />
+              </div>
+              <div class="w-100" *ngIf="!sessionImage.getImage()">
+                <span class="inuname">{{userLogoName}}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="w-100 text-center">
+                <span class="normalTextFormat unameEmail"><strong>{{username}}</strong></span><br />
+                <span class="normalTextFormat unameEmail">{{email}}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="logoutdd" translate>
+                  <button class="btn btn-sm btn-primary"
+                    (click)="logOutConfirmationPopUp(logOutConfirmationPopUpModal)">Logout</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- ############TRacking Model ######### -->
+<ng-template #track let-d="dismiss" id="modelShipmentTracking">
+  <form [formGroup]="shipmentForm">
+    <div class="gl-modal-header p-20 bg-model text-white text-align">
+      <span class="fs-16 mb-0 d-ib">Assign Shipment Tracking</span>
+      <span class="modal-close close" (click)="modalClose()">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-20">
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Title<i class="required">*</i></label>
+          <input x formControlName="Shipmenttittle" type="text" class="form-control" placeholder="e.g Client Documents"
+            [(ngModel)]="Shipmenttittle" />
+          <small *ngIf="
+      shipmentForm.controls['Shipmenttittle'].errors && 
+      (shipmentForm.controls['Shipmenttittle'].dirty || shipmentForm.controls['Shipmenttittle'].touched)
+    ">
+            <small class="text-danger" *ngIf="shipmentForm.get('Shipmenttittle').hasError('required')">Shipment tittle
+              is
+              required
+            </small>
+          </small>
+        </div>
+      </div>
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Enter Shipment Tracking Number<i class="required">*</i></label>
+          <input type="text" class="form-control" placeholder="e.g 546578678" [(ngModel)]="trackingNumber"
+            name="Shpmentnumber" formControlName="Shpmentnumber" />
+            <small *ngIf="
+      shipmentForm.controls['Shpmentnumber'].errors && 
+      (shipmentForm.controls['Shpmentnumber'].dirty || shipmentForm.controls['Shpmentnumber'].touched)
+    ">
+          <small class="text-danger" *ngIf="shipmentForm.get('Shpmentnumber').hasError('required')">Shipment number is
+            required
+          </small>
+          <small class="text-danger" *ngIf="
+    shipmentForm.get('Shpmentnumber').hasError('minlength') &&
+        !shipmentForm.get('Shpmentnumber').hasError('pattern')
+      ">Minimum 2 characters</small>
+          <small class="text-danger" *ngIf="shipmentForm.get('Shpmentnumber').hasError('pattern')">Enter only
+            Characters and Numbers</small>
+        </small>
+        </div>
+        
+      </div>
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Search to select filing<i class="required">*</i></label>
+          <ng-multiselect-dropdown [placeholder]="'Select Filing'" [settings]="filingDropDownSettings"
+            [data]="fillingList" (onSelect)="selectedFiling($event)" [(ngModel)]="Sfliinginfo" name="Fillingselected"
+            formControlName="Fillingselected"></ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="row pt-20" *ngIf="selectedFilingDiv">
+        <div class="col-sm-10" *ngIf="Sfliinginfo.length>0">
+          <p class="fs-16">Selected Filings</p>
+          <div class="card">
+            <div class="card-header">
+              <p class="fs-14 pl-8">{{ selectedFilingInfo.FName }}</p>
+              <ul>
+                <li>
+                  <span class="text-muted">Filing Type</span>
+                  <p>{{ selectedFilingInfo.FType }}</p>
+                </li>
+                <li>
+                  <span class="text-muted">Updated On</span>
+                  <p>{{ selectedFilingInfo.CreatedOn | date: 'MM/dd/yyyy hh:mm  a'}}</p>
+                </li>
+                <li>
+                  <span class="text-muted">Status </span>
+                  <p>{{selectedFilingInfo.FilingStatus}}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer bg-model-footer">
+      <button type="button" class="btn btn-outline" (click)="modalClose()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="addTrackingNumber()"
+        [disabled]="trackingNumber=='' || selectedFilingId=='' || Sfliinginfo.length==0 || !shipmentForm.valid">Save</button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- successpopup-->
+<ng-template #confirmationsucess let-d="dismiss" id="confirmationsucess">
+  <confirmation-notification [confirmData]="confirmData" (emitCloseModel)="closeConfirmSuccess($event)">
+  </confirmation-notification>
+</ng-template>
+
+<!-- ############ LCA Model ######### -->
+<ng-template #lca let-d="dismiss" id="lcaNumber">
+  <form [formGroup]="LCAForm">
+    <div class="gl-modal-header p-20 bg-model text-white text-align">
+      <span class="fs-16 mb-0 d-ib">Assign LCA Number</span>
+      <span class="modal-close close" (click)="closelcaNumber('close click')">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-20">
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Enter LCA Number</label>
+          <input type="text" class="form-control" placeholder="e.g 546578678" [(ngModel)]="FilingLcaNumber"
+            name="lcanumber" formControlName="lcanumber" />
+            <small *ngIf="
+      LCAForm.controls['lcanumber'].errors && 
+      (LCAForm.controls['lcanumber'].dirty || LCAForm.controls['lcanumber'].touched)
+    ">
+          <small class="text-danger" *ngIf="LCAForm.get('lcanumber').hasError('required')">LCA number is
+            required
+          </small>
+          <small class="text-danger" *ngIf="
+    LCAForm.get('lcanumber').hasError('minlength') &&
+        !LCAForm.get('lcanumber').hasError('pattern')
+      ">Minimum 2 characters</small>
+          <small class="text-danger" *ngIf="LCAForm.get('lcanumber').hasError('pattern')">Enter only
+            Characters and Numbers</small>
+        </small>
+        </div>
+      </div>
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Search to select filing</label>
+          <ng-multiselect-dropdown [placeholder]="'Select Filing'" [settings]="filingDropDownSettings"
+            [data]="fillingList" (onSelect)="selectedFiling($event)" [(ngModel)]="Sfliinginfo" name="Fillingselected"
+            formControlName="Fillingselected"></ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="row pt-20" *ngIf="selectedFilingDiv">
+        <div class="col-sm-10">
+          <p class="fs-16">Selected Filings</p>
+          <div class="card">
+            <div class="card-header">
+              <p class="fs-14 pl-8">{{ selectedFilingInfo.FName }}</p>
+              <ul>
+                <li>
+                  <span class="text-muted">Filing Type</span>
+                  <p>{{ selectedFilingInfo.FType }}</p>
+                </li>
+                <li>
+                  <span class="text-muted">Updated On</span>
+                  <p>{{ selectedFilingInfo.CreatedOn |  date: 'MM/dd/yyyy hh:mm  a' }}</p>
+                </li>
+                <li>
+                  <span class="text-muted">Status </span>
+                  <p>{{selectedFilingInfo.FilingStatus}}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer bg-model-footer">
+      <button type="button" class="btn btn-outline" (click)="modalClose()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="addLcaNumber()"
+        [disabled]="FilingLcaNumber=='' || selectedFilingId=='' || Sfliinginfo.length==0  || !LCAForm.valid ">Apply
+        Changes</button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- ############ Receipt Model ######### -->
+<ng-template #receipt let-d="dismiss" id="receiptNumber">
+  <form [formGroup]="ReceiptForm">
+    <div class="gl-modal-header p-20 bg-model text-white text-align">
+      <span class="fs-16 mb-0 d-ib">Assign Application Receipt Number</span>
+      <span class="modal-close close" (click)="closeReceipt('close click')">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-20">
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Enter Application Receipt Number</label>
+          <input type="text" class="form-control" placeholder="e.g 546578678" [(ngModel)]="filingRecieptNumber"
+            name="receiptnumber" formControlName="receiptnumber" />
+            <small *ngIf="
+      ReceiptForm.controls['receiptnumber'].errors && 
+      (ReceiptForm.controls['receiptnumber'].dirty || ReceiptForm.controls['receiptnumber'].touched)
+    ">
+          <small class="text-danger" *ngIf="ReceiptForm.get('receiptnumber').hasError('required')">Receipt number is
+            required
+          </small>
+          <small class="text-danger" *ngIf="
+    ReceiptForm.get('receiptnumber').hasError('minlength') &&
+        !ReceiptForm.get('receiptnumber').hasError('pattern')
+      ">Minimum 2 characters</small>
+          <small class="text-danger" *ngIf="ReceiptForm.get('receiptnumber').hasError('pattern')">Enter only
+            Characters and Numbers</small>
+        </small>
+        </div>
+      </div>
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Search to select filing</label>
+          <ng-multiselect-dropdown [placeholder]="'Select Filing'" [settings]="filingDropDownSettings"
+            [data]="fillingList" (onSelect)="selectedFiling($event)" [(ngModel)]="Sfliinginfo" name="Fillingselected"
+            formControlName="Fillingselected"></ng-multiselect-dropdown>
+        </div>
+      </div>
+      <div class="row pt-20" *ngIf="selectedFilingDiv">
+        <div class="col-sm-10">
+          <p class="fs-16">Selected Filings</p>
+          <div class="card">
+            <div class="card-header">
+              <p class="fs-14 pl-8">{{ selectedFilingInfo.FName }}</p>
+              <ul>
+                <li>
+                  <span class="text-muted">Filing Type</span>
+                  <p>{{ selectedFilingInfo.FType }}</p>
+                </li>
+                <li>
+                  <span class="text-muted">Updated On</span>
+                  <p>{{ selectedFilingInfo.CreatedOn |  date: 'MM/dd/yyyy hh:mm  a' }}</p>
+                </li>
+                <li>
+                  <span class="text-muted">Status </span>
+                  <p>{{selectedFilingInfo.FilingStatus}}</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer bg-model-footer">
+      <button type="button" class="btn btn-outline" (click)="modalClose()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="addRecieptNumber()"
+        [disabled]="filingRecieptNumber=='' || selectedFilingId=='' || Sfliinginfo.length==0 || !ReceiptForm.valid">Apply
+        Changes</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #team let-d="dismiss" id="team">
+  <team-individual-invite [isSubAdminAcess]="isSubAdminAcess" [tittle]="'Invite Team Member'"
+    (emitConfirmation)="confirmationSuccessPopup($event, confirmationsucess)"
+    (emitCloseModel)="closeTeamInvite($event, teamsucess)"></team-individual-invite>
+</ng-template>
+
+
+<!-- LogOutConfirmation PopUp -->
+
+<ng-template #logOutConfirmationPopUpModal let-d="dismiss" id="logOutConfirmationPopUpModal">
+  <div class="lo-modal--header mt-5 mr-5">
+    <span class="modal-close close" (click)="closeConfirmDelete('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body pb-30 text-cener mx-auto">
+    <div class="row pb-10">
+      <div class="w-100" *ngIf="sessionImage.getImage()">
+        <img class="inuname" [src]="sessionImage.getImage()" alt="profile" height="300" />
+      </div>
+      <div class="w-100" *ngIf="!sessionImage.getImage()">
+        <span class="inuname">{{userLogoName}}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="w-100 text-center">
+        <span class="normalTextFormat unameEmail"><strong>{{username}}</strong></span>
+      </div>
+    </div>
+    <p class="fs-20 mt-15">
+      Are you sure you want to Logout??
+    </p>
+    <div class="text-align">
+      <button type="button" class="btn btn-outline fs-12 mt-10" (click)="closeConfirmDelete('close click')">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-danger ml-20 mt-10 fs-12" (click)="logout()">Yes, Confirm</button>
+    </div>
+  </div>
+</ng-template>
+
+<!-- ############ Invite Team Member Model ######### -->
+<ng-template #invite let-d="dismiss" id="invitemember">
+  <form #teaminvite="ngForm">
+    <div class="gl-modal-header p-20 bg-model text-white text-align">
+      <span class="fs-16 mb-0 d-ib">Invite Team Member</span>
+      <span class="modal-close close" (click)="closeInviteteammember('close click')">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-20" *ngFor="let choice of choice; let i = index">
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Choose Role</label>
+          <select class="form-control" id="sel1" [(ngModel)]="choice.TeamMemberType" #TeamMemberType="ngModel" required
+            name="TeamMemberType">
+            <option value="1">Primary-Admin</option>
+            <option value="2">Sub-Admin</option>
+            <option value="3">Team-Member</option>
+          </select>
+          <span *ngIf="TeamMemberType.touched && TeamMemberType.invalid" style="color:red">
+            <span *ngIf="TeamMemberType.errors.required">
+              Please Select Role
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Full Name</label>
+          <input type="text" class="form-control lo-input" placeholder="Full Name" name="fullname"
+            [(ngModel)]="choice.FullName" #fullname="ngModel" minlength="3" required />
+          <span *ngIf="fullname.touched && fullname.invalid" style="color:red">
+            <span *ngIf="fullname.errors.required">
+              Please Enter FullName
+            </span>
+            <span *ngIf="fullname.errors.minlength">
+              minimum 3 characters required
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="row pt-10">
+        <div class="col-sm-12">
+          <label>Email</label>
+          <input type="text" class="form-control lo-input" placeholder="Email Address" name="email"
+            [(ngModel)]="choice.Email" #email="ngModel" minlength="3" required />
+          <span *ngIf="email.touched && email.invalid" style="color:red">
+            <span *ngIf="email.errors.required">
+              Please Enter Email
+            </span>
+            <span *ngIf="email.errors.minlength">
+              minimum 3 characters required
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer bg-model-footer">
+      <button type="button" class="btn btn-outline" (click)="modalClose()">Cancel</button>
+      <button type="button" class="btn btn-primary" [disabled]="!teaminvite.valid" (click)="sendInvitation()">
+        Send Invite
+      </button>
+    </div>
+  </form>
+</ng-template>

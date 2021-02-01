@@ -1,0 +1,39 @@
+
+<div class="container-fluid mt-90 mb-20">
+<div class="card p-10">
+<div class="card-body">
+<label class="fs-18">Import Client Members List </label>
+<p><b>Step 3 of 3 - Upload File</b></p>
+<div class="container">
+<div class="col-sm-8 mx-auto">
+    <p>Showing 1-5 of 50 Imported Values</p>
+        <table class="table table-striped p-10">
+                <thead>
+                  <tr class="bg-th">
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Company</th>
+                    <th>Primary Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let ele of data">
+                    <td>{{ele.FirstName}}</td>
+                    <td>{{ele.LastName}}</td>
+                    <td>{{ele.OrganizationName}}</td>
+                    <td>{{ele.Email1}}</td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+</div>
+</div>
+
+</div>
+<div class="pt-20 p-20 pl-0">
+        <div class="btn btn-outline fs-12" routerLink="/admin/clients/clientimportinviteconfirm">Previous</div>
+
+        <div class="btn btn-primary ml-20 fs-12 float-right">Cancel</div>
+        <div class="btn btn-outline fs-12 float-right" (click)="sendInvite()">Send Invite</div>
+    </div>
+</div>

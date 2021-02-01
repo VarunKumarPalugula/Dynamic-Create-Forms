@@ -1,0 +1,115 @@
+/*
+ * Entry point of global application style.
+ * Component-specific style should not go here and be included directly as part of the components.
+ */
+
+// Theme variables, must be included before the libraries to allow overriding defaults
+@import "theme/theme-variables";
+
+// 3rd party libraries
+@import "~bootstrap/scss/bootstrap";
+@import "~@fortawesome/fontawesome-free-webfonts/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free-webfonts/scss/fa-brands.scss";
+@import "~@fortawesome/fontawesome-free-webfonts/scss/fa-regular.scss";
+@import "~@fortawesome/fontawesome-free-webfonts/scss/fa-solid.scss";
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+@import "~ngx-toastr/toastr-bs4-alert";
+
+// Theme customization
+@import "theme/theme";
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="checkbox"]:checked + label:after {
+  content: "";
+  display: inline-block;
+}
+
+
+/* You can add global styles to this file, and also import other style files */
+
+
+.d__flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+.d__flex_between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.d__flex_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d__flex_end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cursor__pointer {
+  cursor: pointer;
+}
+
+.card__data {
+  margin: 1%;
+  border: 2px solid #80808029;
+  border-radius: 5px;
+}
+
+
+.danger {
+  color: red;
+}
+
+.header__class {
+  border-bottom: 2px solid #80808029;
+  & h4 {
+  padding: 10px 0px 0px 15px;
+  }
+}
+
+
+.button__class {
+  min-height: 30px;
+  min-width: 60px;
+  background: lightblue;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+
+ 
+.custom-dialog-container {
+  & .mat-dialog-container {
+    padding: 0px !important;
+ } 
+}
+
+.mat-tab-labels {
+  display: contents !important; 
+}
+.mat-tab-label {
+  display: block !important;
+  opacity: 1.6 !important;
+}
+
+.cursor--pointer {
+  cursor: pointer;
+}
+
+// *****************************************  POPUP STYLE **********************
+
+
+
+// ***************************************** END POPUP STYLE **********************
+
+
+
+            

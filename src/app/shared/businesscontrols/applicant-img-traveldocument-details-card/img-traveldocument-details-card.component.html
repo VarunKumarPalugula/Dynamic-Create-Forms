@@ -1,0 +1,94 @@
+<div class="row mt-10">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-10">
+            <b>Passport Or Travel Document</b>
+          </div>
+          <div class="col-sm-2 p-0">
+            <button *ngIf="loginUser =='Client'" class="float-right btn-secondary" type="button"
+              (click)="changeInfo()">Change</button>
+          </div>
+        </div>
+        <div *ngIf="travelDocumentDetailsInfo" class="row">
+          <div class="col-sm-2">
+            <label><b>Number</b></label>
+            <p class="card-text">{{travelDocumentDetailsInfo.PassportOrTravelDocumentNumber}} </p>
+          </div>
+          <div class="col-sm-3">
+            <label><b>Issued On</b></label>
+            <p class="card-text">{{travelDocumentDetailsInfo.DatePassportOrTravelDocumentIssued |date }} </p>
+          </div>
+          <div class="col-sm-3">
+            <label><b>Expires On</b></label>
+            <p class="card-text">{{travelDocumentDetailsInfo.DatePassportOrTravelDocumentExpires |date }} </p>
+          </div>
+          <div class="col-sm-4">
+            <label><b>Country Of Issuance</b></label>
+            <p class="card-text">{{travelDocumentDetailsInfo.PassportOrTravelDocumentCountryOfIssuance}} </p>
+          </div>
+        </div>
+        <span
+          class="card-text">{{travelDocumentDetailsInfo.ExpiryEmailRemainder? "We will send an notification on before 3 months of documents exipary" : "" }}</span>
+      </div>
+    </div>
+    <p *ngIf="loginUser =='Client'"><i class="fas fa-paperclip"></i>&nbsp;<button
+        class="btn btn-link btn-file btn-sm">Attach Passport&nbsp;<input type="file" (change)="selectedImgFile($event)"
+          multiple /></button> <span>(<b>Note:</b> Front Page, Back Page,
+        And
+        Visa Stamped Pages if any)</span></p>
+  </div>
+</div>
+
+<div *ngIf="imgTravelDocFile">
+  <div class="row imgTravelFileView" *ngFor="let imgTravelDocFile of imgTravelDocFile">
+    <div class="col-sm-7">
+      <p class="card-text"> {{imgTravelDocFile.FileName}} </p>
+    </div>
+    <div class="col-sm-5">
+      <ul>
+        <i class="fas fa-eye col-sm-1" (click)="view(imgTravelDocFile.EFileId, 'travelDocument')"></i>
+        <i class="fas fa-download col-sm-1"
+          (click)="download(imgTravelDocFile.EFileId, imgTravelDocFile.FileName, 'travelDocument')"></i>
+        <i *ngIf="loginUser =='Client'" class="fas fa-print col-sm-1"
+          (click)="print(imgTravelDocFile.EFileId,imgTravelDocFile.FileName, 'travelDocument')"></i>
+        <i *ngIf="loginUser =='Client'" class="fas fa-trash col-sm-1"
+          (click)="deleteFile(imgTravelDocFile.EFileId, 'travelDocument')"></i>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedImgFileToUpload" class="card">
+  <div class="card-header">Upload Your passport travel document</div>
+  <div class="card-body">
+    <div class="mb-15" *ngFor="let file of filesNames; let i = index">
+      <span *ngIf="file.fileType == 'pdf' || file.fileType == 'PDF'">
+        <img src="../../../../../assets/icons/pdf.png" class="w-31 h-40">
+      </span>
+      <span
+        *ngIf="file.fileType == 'jpg' || file.fileType == 'jpeg' || file.fileType == 'png' || file.fileType == 'PNG' || file.fileType == 'JPG' || file.fileType == 'JPEG'">
+        <img src="../../../../../../assets/icons/image.svg" class="w-31 h-40">
+      </span>
+      <span *ngIf="file.fileType == 'csv'">
+        <img src="../../../../../../assets/icons/csv.png" class="w-31 h-40">
+      </span>
+      <span *ngIf="file.fileType == 'doc' || file.fileType == 'docx'">
+        <img src="../../../../../../assets/icons/word.png" class="w-31 h-40">
+      </span>
+      <span *ngIf="file.fileType == 'txt' || file.fileType == 'Txt'">
+        <img src="../../../../../../assets/icons/txt.png" class="w-31 h-40">
+      </span>
+      <span *ngIf="file.fileType == 'xlsx' || file.fileType == 'xls'">
+        <img src="../../../../../../assets/icons/excel.png" class="w-31 h-40">
+      </span>
+      <label class="ml-10 mt--13">{{file.name}}</label>
+      <span class="float-right fs-13">
+        <button class="btn btn-default btn-sm float-right" (click)="remove(i)">Cancel</button>
+        <br>
+      </span>
+    </div>
+    <button class="btn btn-primary btn-sm float-right" (click)="upload()">upload</button>
+  </div>
+</div>

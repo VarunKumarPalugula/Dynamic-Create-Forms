@@ -1,0 +1,24 @@
+<div *ngFor="let key of data.SubSectionTemplateData | keyvalue : commonService.returnZero">
+    <div class="card mt-10">
+        <div class="card-header">
+            <h4 class="float-left"> {{ data.SubSection }} </h4>
+            <button [disabled]="commonService.checkFormValid(commonService.fileData[applicantKey][data.SubSection])"
+                *ngIf="commonService.fileData[applicantKey][data.SubSection] && !commonService.fileData[applicantKey][data.SubSection].readOnly"
+                class="pull-right btn btn-sm btn-primary"
+                (click)="commonService.saveUIControlTemplateResults(data.Section, data, applicantKey)">
+                save
+            </button>
+            <button *ngIf="commonService.fileData[applicantKey][data.SubSection] && commonService.fileData[applicantKey][data.SubSection].readOnly"
+                class="float-right btn btn-sm btn-primary" (click)="edit(data.SubSection)">
+                edit
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div *ngFor="let subField of key.value; let i = index; trackBy: commonService.trackByFn">
+                     <app-dyamic-template [fields]="subField" [parent]="data.SubSection" [readOnly]="data.isSave" [applicantKey]="applicantKey"></app-dyamic-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

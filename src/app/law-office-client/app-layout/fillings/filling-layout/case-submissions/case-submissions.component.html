@@ -1,0 +1,46 @@
+
+<div *ngIf="getCaseSubmissionsData.length > 0">
+  <div class="row">
+      <div class="col-lg-7">
+          <h3>All case submissions</h3>
+          <p>
+              this is a collection of all the submissions sent as part of filing process 
+          </p>
+          <div *ngFor="let caseSubmissions of getCaseSubmissionsData">
+              <span class="text-primary">{{caseSubmissions.CaseTitle}}</span>
+              <p>{{caseSubmissions.CaseDescription}}</p>
+          <div class="row">
+              <div class="col-sm-3">
+                  <label class="form-text text-muted">Primary attorney</label>
+                  <p>{{caseSubmissions.PrimaryAttorneyName}}</p>
+              </div>
+              <div class="col-sm-3">
+                  <label class="form-text text-muted">Created by </label>
+                  <p>{{caseSubmissions.CreatedByName}}</p>
+              </div>
+              <div class="col-sm-3">
+                  <label class="form-text text-muted">Created on </label>
+                  <p>{{caseSubmissions.CreatedOn | date}}</p>
+              </div>
+          </div>
+          <div class="clerpix">
+              <button class="btn btn-outline-primary btn-sm mr-10" [routerLink]="['/client/applayout/fillings/casesubmission', caseSubmissions.CaseId]">View Details</button>
+          </div>
+          <hr />
+          </div>
+      </div>
+  </div>
+</div>
+
+<ng-container *ngIf="getCaseSubmissionsData.length <= 0">
+    <div class="row mt-100">  
+      <div class="col-md-4 mx-auto text-align">
+        <img src="../../../../../../assets/filings-files-empty.svg" class="w-100">
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-md-6 mx-auto text-align">
+        <p class="fs-28">No active case submissions</p>
+      </div>
+    </div>
+  </ng-container>

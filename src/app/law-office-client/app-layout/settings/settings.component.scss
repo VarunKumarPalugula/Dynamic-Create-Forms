@@ -1,0 +1,11 @@
+.row {
+  padding-bottom: 10px;
+}
+
+.marketplace-300 {
+  display: none;
+  overflow-y: auto;
+  &.active {
+    display: contents;
+  }
+}

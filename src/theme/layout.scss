@@ -1,0 +1,35 @@
+.lo-whitebox .lo-graybox {
+  border: 1px solid $geyser;
+  width: 100%;
+  min-height: 50px;
+}
+
+.lo-whitebox {
+  background-color: $white;
+}
+
+.lo-graybox {
+  background-color: $link-water;
+}
+
+.ol-main--wrapper {
+  width: 100%;
+  margin-top: 42px;
+}
+.lo-collapse {
+  border-bottom: 1px solid $geyser;
+}
+
+.bt-line {
+  border-bottom: 1px solid #d8dde6;
+}
+.lo-100 {
+  background-color: $link-water;
+  border: 1px solid $geyser;
+  width: 100%;
+  min-height: 100vh;
+  left: 0px;
+}
+.black-overlay {
+  position: fixed !important;
+}

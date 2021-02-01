@@ -1,0 +1,178 @@
+<div class="row lo-100 ml-0">
+  <div class="container  mt-100">
+    <div class="col-md-5 mx-auto">
+      <p class="fs-28 text-center">Create New Filing</p>
+      <div class="white-box">
+        <div class="row mt-20">
+          <div class="col-md-12">
+            <label>Choose Filing Type <i class="required">*</i></label>
+            <select class="form-control" id="sel1" (change)="selectFillingType($event)" [(ngModel)]="selectedFilling">
+              <option [value]="item.FilingId" *ngFor="let item of fillingTypes">{{item.FilingName}}</option>
+            </select>
+            <small>Can't find the filing type you need? <span class="text-primary" style="cursor: pointer;"
+                (click)="requestForFillingPopUp(requestFillingRef)">request it now</span></small>
+          </div>
+        </div>
+        <div class="row mt-10">
+          <div class="col-md-12">
+            <label>Choose Applicant Sponsored Type<i class="required">*</i></label><br>
+            <div class="mt-5" *ngFor="let sponser of sponserShipTypes">
+              <label for="studentcheck" class=" fs-16">
+                <input type="radio" name="radiogroup" [attr.disabled]="isSponsorshipTypesDisabled ? '' : null"
+                  [value]="sponser.SpSnrTypeId" [(ngModel)]="sponsorType" (change)="onSponsorTypeChange(sponser)">
+                <span>{{sponser.Name}}</span>
+              </label><br>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5" *ngIf="sponsorSection">
+          <div class="col-md-12">
+            <div class="form-group  postion-relative typehead-autocomplete">
+              <label for="exampleInputEmail1">Add Client<i class="required">*</i></label>
+              <label class="float-right text-primary pointer" (click)="sponsorInvite(sponser)"
+                *ngIf="((isAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteClients:true))">+Invite
+                Client</label>
+              <input [(ngModel)]="selectedClient" [typeahead]="clientsSponsors" [disabled]="isSponsorDisabled"
+                typeaheadOptionField="Email" [typeaheadItemTemplate]="customItemTemplate"
+                (typeaheadOnSelect)="sponsorOnSelect($event)" [typeaheadScrollable]="true" class="form-control">
+            </div>
+            <ng-template #customItemTemplate let-model="item" let-index="index">
+              <span class="float-left">{{model.Email}}</span> &nbsp;&nbsp;
+              <span class="float-right typeheadmodel" *ngIf="model.SetType==1">
+                Client
+              </span>
+              <!-- <span class="float-right typeheadmodel" *ngIf="model.SetType==2">
+                Applicant
+              </span> -->
+              <span class="float-right typeheadmodel" *ngIf="model.SetType==3">
+                Sponsor
+              </span>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-md-12 float-right" *ngIf="clientChoiceSection">
+            <label>let client invite&nbsp;</label>
+            <input type="checkbox" id="4" [(ngModel)]="applicantTypeCheck" (change)="applicantTypeChecking()">
+            <label for="4" class="checkbox"></label>
+          </div>
+          <div class="col-md-12" *ngIf="applicantSection">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Add Applicant<i class="required">*</i></label>
+              <label class="float-right text-primary pointer"
+                *ngIf="((isAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteClients:true))"
+                (click)="applicantInvite(applicant)">+Invite
+                Applicant</label>
+              <input [(ngModel)]="selectedApplicant" [typeahead]="applicants" [disabled]="isApplicantDisabled"
+                typeaheadOptionField="Email" [typeaheadItemTemplate]="applicantTemplate"
+                (typeaheadOnSelect)="applicantOnSelect($event)" [typeaheadScrollable]="true" class="form-control">
+            </div>
+            <ng-template #applicantTemplate let-model="item" let-index="index">
+              <span class="float-left">{{model.Email}}</span> &nbsp;&nbsp;
+              <span class="float-right typeheadmodel" *ngIf="model.SetType==2">
+                Applicant</span>
+            </ng-template>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Add Team members<i class="required">*</i></label><label
+                class="float-right text-primary pointer"
+                *ngIf="(isAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteTeamMembers:true)"
+                (click)="teamInvite(team)">+Invite
+                Team member</label>
+              <ng-multiselect-dropdown [placeholder]="''" [disabled]="isTeamMemberDisabled"
+                [settings]="teamMembersDropsownSettings" [data]="teamMembersList" class="normalTextFormat"
+                [(ngModel)]="selectedTeamMembers" (onSelect)="onTeamMemberSelect($event)"
+                (onSelectAll)="onTeamMemberSelectAll($event)">
+              </ng-multiselect-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-md-12">
+            <div class="form-group">
+              <!-- <ng-multiselect-dropdown [placeholder]="''" [disabled]="isTemplateDisabled"
+                [settings]="templateDropsownSettings" [data]="templateList" class="normalTextFormat"
+                [(ngModel)]="selectedTeamplate" 
+                >
+              </ng-multiselect-dropdown> -->
+              <label>Select Templates<i class="required">*</i></label>
+              <select class="form-control" id="sel1" (change)="selectTemplateType($event)"
+                [(ngModel)]="selectedTemplate">
+                <option [value]="item.DisplayTemplateTitle" *ngFor="let item of templateList">
+                  {{item.DisplayTemplateTitle}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-md-6">
+            <button class="btn btn-primary btn-block"
+              [disabled]="isCreatedFillingDisabled  ||  selectedTeamMembers.length==0" (click)="CreateFilling()">
+              Create Filing</button>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-outline btn-block" [disabled]="isClearDisabled" (click)="Clear()"> Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--***************** applicant invite request******************** -->
+<ng-template #sponser let-d="dismiss" id="sponser">
+  <indivual-invite [SetType]="sponsorType" [tittle]="tittle"
+    (emitConfirmation)="confirmationSuccessPopup($event,confirmationsucess)"
+    (emitCloseModel)="closeSponsorInvite($event)"></indivual-invite>
+</ng-template>
+<!--***************** end invite request********************* -->
+
+<!--*****************applicant invite request******************** -->
+<ng-template #applicant let-d="dismiss" id="applicant">
+  <indivual-invite [SetType]="3" [tittle]="'Invite New Individual Applicant'"
+    (emitConfirmation)="confirmationSuccessPopup($event,confirmationsucess)"
+    (emitCloseModel)="closeApplicantInvite($event)"></indivual-invite>
+</ng-template>
+<!--*****************end applicant request********************* -->
+
+<!--*****************team invite request******************** -->
+<ng-template #team let-d="dismiss" id="team">
+  <team-individual-invite [tittle]="'Invite New Individual Team Member'" [isSubAdminAcess]="isSubAdminAcess"
+    (emitConfirmation)="confirmationSuccessPopup($event,confirmationsucess)"
+    (emitCloseModel)="closeTeamInvite($event,teamsucess)"></team-individual-invite>
+</ng-template>
+<!--*****************end team invite request********************* -->
+
+<!-- successpopup-->
+<ng-template #confirmationsucess let-d="dismiss" id="confirmationsucess">
+  <confirmation-notification [confirmData]="confirmData" (emitCloseModel)="closeConfirmSuccess($event)">
+  </confirmation-notification>
+</ng-template>
+
+
+<!--*****************  request******************** -->
+<ng-template #requestFillingRef let-c="close" let-d="dismiss">
+  <form [formGroup]="fillingBuildForm" autocomplete="off" (ngSubmit)="requestForFilling()">
+    <div class="gl-modal-header p-20 bg-model text-white text-align">
+      <span class="fs-16 mb-0 d-ib">Request it now for new Filing</span>
+      <span class="modal-close close" (click)="closerequestForFilling('close click')">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+      </span>
+    </div>
+
+    <div class="lo-modal-body p-20">
+      <input type="text" class="form-control" [id]="'fillingType'" formControlName="fillingType">
+    </div>
+    <div class="modal-footer bg-model-footer">
+      <button type="submit" class="btn btn-primary" [disabled]="!fillingBuildForm.valid ">Send
+        Request</button>
+      <button type="button" class="btn btn-outline" (click)="closerequestForFilling('close click')">Cancel</button>
+
+    </div>
+  </form>
+</ng-template>
+<!--***************** end invite request********************* -->

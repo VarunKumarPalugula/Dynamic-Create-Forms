@@ -1,0 +1,1693 @@
+<div class="row mt-10">
+  <div class="col-sm-12 text-primary fs-14">
+    <i class="fas fa-arrow-left text-primary pointer" routerLink="/client/applayout/fillings/taskslist"></i> Back to
+    list
+  </div>
+</div>
+<div *ngIf="taskGroupData">
+  <div class="row mt-10 fs-14">
+    <div class="col-sm-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <p class="text-kasmir fs-16 font-weight-bold">{{taskGroupData.Title |uppercase}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-9">
+              <ul>
+                <li>
+                  <span class="text-muted fs-12">Tasks Completed</span>
+                  <br>
+                  <small>{{taskGroupData.TotalNoTasksCompleted}} of {{taskGroupData.TotalNoTasks}}</small>
+                </li>
+                <li>
+                  <span class="text-muted fs-12">Sub-tasks</span>
+                  <br>
+                  <p class="text-center">{{taskGroupData.SubTasks}}</p>
+                </li>
+                <li>
+                  <span class="text-muted fs-12">Over Due</span>
+                  <br>
+                  <p class="text-danger text-center">
+                    {{taskGroupData.TotalNoTasks - taskGroupData.TotalNoTasksCompleted }}</p>
+                </li>
+                <li>
+                  <span class="text-muted fs-12">Next task due</span>
+                  <br>
+                  <!-- <small>{{taskGroupData.NextTaskDueByDate |date}}</small> -->
+                  <small *ngIf="taskGroupData.NextTaskDueByDate=='0001-01-01T00:00:00'">None</small>
+                  <small *ngIf="taskGroupData.NextTaskDueByDate!='0001-01-01T00:00:00'">{{
+                    taskGroupData.NextTaskDueByDate | date }}</small>
+                </li>
+                <li>
+                  <span class="text-muted fs-12">Created By</span>
+                  <br>
+                  <small class="normalTextFormat">{{taskGroupData.CreatedBy}}</small>
+                </li>
+              </ul>
+            </div>
+            <div class="col-sm-3">
+              <button class="btn btn-primary btn-sm float-right"
+                *ngIf="isAuthorize ? (FillingPermissions? (FillingPermissions.CanCreateTasks):true) : false"
+                (click)="taskPopup(taskpop)">Add Task</button>
+              <button class="btn btn-outline-danger mr-4 btn-sm"
+                *ngIf="(isAuthorize && taskGroupData.CreatedBy==username) ? ( FillingPermissions? (FillingPermissions.CanDeleteTasks):true):false"
+                (click)="confirmDeteleteTaskGroup(deleteTaskGroupPopup,taskGroupData)">
+                <i class="fa fa-trash fs-12 text-danger"></i>&nbsp;
+                <span>Archive</span>
+              </button>&nbsp;
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--*****************  Add new task model********************* -->
+<ng-template #taskpop let-d="dismiss" id="taskpop">
+  <div class="tasksmodel">
+    <form [formGroup]="TaskForm">
+      <div class="gl-modal-header p-20 bg-model text-white text-align">
+        <span class="fs-16 mb-0 d-ib">{{taskTittleName}}</span>
+        <span class="modal-close close" (click)="closeTask('close click')">
+          <i class="fa fa-times text-white" aria-hidden="true"></i>
+        </span>
+      </div>
+      <div class="lo-modal-body p-20">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="mandatory">Task Title</label>
+              <input type="text" name="TaskName" formControlName="TaskName" [(ngModel)]="taskObj.Title"
+                class="form-control" />
+              <small *ngIf="
+              TaskForm.controls['TaskName'].errors &&
+              (TaskForm.controls['TaskName'].dirty || TaskForm.controls['TaskName'].touched)
+            ">
+                <small class="text-danger" *ngIf="TaskForm.get('TaskName').hasError('required')">Task Name is
+                  required
+                </small>
+                <small class="text-danger" *ngIf="
+                TaskForm.get('TaskName').hasError('minlength') &&
+                !TaskForm.get('TaskName').hasError('pattern')
+              ">Minimum 2 characters</small>
+                <small class="text-danger" *ngIf="TaskForm.get('TaskName').hasError('pattern')">Enter only
+                  Characters and Numbers</small>
+              </small>
+            </div>
+          </div>
+          <!-- <div class="col-md-6">
+              <div class="form-group">
+                  <label class="mandatory">Task Type</label>
+                  <label class="d-block">
+                    <select class="form-control" name="TaskType" formControlName="TaskType" [(ngModel)]="taskObj.TaskType"
+                      id="sel1">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                    </select>
+                    <small *ngIf="
+                    TaskForm.controls['TaskType'].errors &&
+                    (TaskForm.controls['TaskType'].dirty || TaskForm.controls['TaskType'].touched)
+                  ">
+                      <small class="text-danger" *ngIf="TaskForm.get('TaskType').hasError('required')">Task Type is
+                        required
+                      </small>
+                    </small>
+                  </label>
+                </div>
+          </div> -->
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="expirationDate" class="mandatory">Due Date</label>
+              <div class="input-group calendar">
+                <input type="text" #dp="bsDatepicker" name="DueDate" formControlName="DueDate" class="form-control"
+                  [(ngModel)]="taskObj.DueDate" bsDatepicker [minDate]="minDate" [maxDate]="taskMaxDate"
+                  [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }">
+                <span class="input-group-prepend">
+                  <button type="button" class="btn btn-light" (click)="dp.toggle()">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                  </button>
+                </span>
+              </div>
+              <small *ngIf="
+                  TaskForm.controls['DueDate'].errors &&
+                  (TaskForm.controls['DueDate'].dirty || TaskForm.controls['DueDate'].touched)
+                ">
+                <small class="text-danger" *ngIf="TaskForm.get('DueDate').hasError('required')">Due Date is
+                  required
+                </small>
+              </small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="mandatory">Priority</label>
+              <label class="d-block">
+                <select class="form-control" id="sel1" name="Priority" formControlName="Priority"
+                  [(ngModel)]="taskObj.Priority" required name="Priority">
+                  <option value="1">High</option>
+                  <option value="2">Medium</option>
+                  <option value="3">Low</option>
+                </select>
+                <small *ngIf="
+                    TaskForm.controls['Priority'].errors &&
+                    (TaskForm.controls['Priority'].dirty || TaskForm.controls['Priority'].touched)
+                  ">
+                  <small class="text-danger" *ngIf="TaskForm.get('Priority').hasError('required')">Priority is
+                    required
+                  </small>
+                </small>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="mandatory">Assignee</label>
+              <input [(ngModel)]="selectedAssigne" name="Assignee" formControlName="Assignee"
+                [typeahead]="assignMembers" typeaheadOptionField="Email" [typeaheadItemTemplate]="assigneTemplate"
+                (typeaheadOnSelect)="assignMembersOnSelect($event)" [typeaheadScrollable]="true" class="form-control">
+              <small *ngIf="
+                  TaskForm.controls['Assignee'].errors &&
+                  (TaskForm.controls['Assignee'].dirty || TaskForm.controls['Assignee'].touched)
+                ">
+                <small class="text-danger" *ngIf="TaskForm.get('Assignee').hasError('required')">Assignee is
+                  required
+                </small>
+              </small>
+            </div>
+            <!-- <ng-template #assigneTemplate let-model="item" let-index="index">
+              <span class="float-left">{{model.UserName}}&nbsp;&nbsp;</span>
+              <span class="float-left">{{model.Email}}</span> &nbsp;&nbsp;
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==0">
+                Client Member</span>
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==1">
+                Primay Admin</span>
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==2">
+                Sub Admin</span>
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==3">
+                Team Member</span>
+            </ng-template> -->
+            <ng-template #assigneTemplate let-model="item" let-index="index">
+              <span class="float-left">{{model.Email}}&nbsp;&nbsp;</span>
+              <span class="float-left" *ngIf="model.Role=='Sponserer'">Client</span> &nbsp;&nbsp;
+              <span class="float-left" *ngIf="model.Role!='Sponserer'">{{model.Role}}</span> &nbsp;&nbsp;
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==2 && !(model.Role)">
+                Sub Admin</span>
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==3  && !(model.Role)">
+                Team Member</span>
+            </ng-template>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Reviewer</label>
+              <input [(ngModel)]="selectedReviewer" name="Reviewer" formControlName="Reviewer"
+                [typeahead]="assignMembers" typeaheadOptionField="Email" [typeaheadItemTemplate]="reviewerTemplate"
+                (input)="typeHeadSelectFocus()" (typeaheadOnSelect)="reviewerOnSelect($event)"
+                [typeaheadScrollable]="true" class="form-control">
+              <!-- <small *ngIf="
+                TaskForm.controls['Reviewer'].errors &&
+                (TaskForm.controls['Reviewer'].dirty || TaskForm.controls['Reviewer'].touched)
+              ">
+                <small class="text-danger" *ngIf="TaskForm.get('Reviewer').hasError('required')">Reviewer is
+                  required
+                </small>
+              </small> -->
+            </div>
+            <ng-template #reviewerTemplate let-model="item" let-index="index">
+              <span class="float-left">{{model.Email}}</span> &nbsp;&nbsp;
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==2">
+                Sub Admin</span>
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==3">
+                Team Member</span>
+            </ng-template>
+            <input type="checkbox" id="reviewid" [(ngModel)]="taskObj.ReviewerApproval" [attr.disabled]="true"
+              name="ReviewerApproval" formControlName="ReviewerApproval">
+            <label for="reviewid" class="checkbox"></label>
+            <label>Need Reviewer's approval to close the task</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="comment" class="mandatory">Add Notes:</label>
+              <textarea class="form-control" [(ngModel)]="taskObj.Description" name="Notes" formControlName="Notes"
+                rows="5" id="comment"></textarea>
+              <small *ngIf="
+              TaskForm.controls['Notes'].errors &&
+              (TaskForm.controls['Notes'].dirty || TaskForm.controls['Notes'].touched)
+            ">
+                <small class="text-danger" *ngIf="TaskForm.get('Notes').hasError('required')">Add notes is
+                  required
+                </small>
+                <small class="text-danger" *ngIf="
+                TaskForm.get('Notes').hasError('minlength')">Minimum 5 characters </small>
+                <small class="text-danger" *ngIf="TaskForm.get('Notes').hasError('maxlength')">
+                  Maximum 512 characters are allowed</small>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-model-footer">
+        <button type="button" class="btn btn-outline" (click)="closeTask('close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="!TaskForm.valid"
+          (click)="taskInTaskGroup()">Save</button>
+      </div>
+
+
+
+    </form>
+  </div>
+</ng-template>
+<!--*****************  Add new taskgroup model ended********************* -->
+
+<!--*****************  Archive task group model ********************* -->
+<ng-template #deleteTaskGroupPopup let-d="dismiss" id="deleteTaskGroupPopup">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeConfirmDelete('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center mx-auto">
+    <i class="fa fa-trash-alt fa-3x" aria-hidden="true"></i>
+    <p class="taskGroupArchiveTitle"> Are you sure you want to archive the topic
+      <b>{{taskTitle}}</b>?
+    </p>
+    <div class="text-align">
+      <button type="button" class="btn btn-outline fs-12 mt-10"
+        (click)="closeConfirmDelete('close click')">Cancel</button>
+      <button type="button" class="btn btn-danger ml-20 mt-10 fs-12" (click)="deleteTaskGroup()">Yes, Confirm</button>
+    </div>
+  </div>
+</ng-template>
+<!--*****************  Archive task group ended ********************* -->
+<div *ngIf="tasksList.length>0">
+  <div class="row mt-10 fs-14" *ngFor="let taskdata of tasksList;let i = index">
+    <div class="offset-lg-1 col-lg-11">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="row pointer" (click)="toggler($event,i,taskdata.TaskId,taskdata)">
+            <div class="col-md-12">
+              <input type="checkbox" id="4" class="ml-10">
+              <span class="text-kasmir font-weight-bold fs-16">
+                <i class="fa fa-check-circle fa-1-5x"
+                  [ngStyle]="{'color': (taskdata.IsTaskCompleted && taskdata.IsTaskReviewDone && taskdata.ReviewerApproval || 
+                taskdata.IsTaskCompleted && !taskdata.ReviewerApproval || 
+                taskdata.IsTemplate && taskdata.IsTaskCompleted && taskdata.IsTaskReviewDone && taskdata.ReviewerApproval || 
+                taskdata.IsTemplate && taskdata.IsTaskCompleted && !taskdata.ReviewerApproval) ? 'green' : 'lightgray'}"></i>
+                &nbsp; {{taskdata.Title}}</span>
+              <span class="float-right mt-6 ml-6">
+                <i class="fa fa-chevron-down float-right text-muted" aria-hidden="true"></i>
+              </span>
+              <span class="float-right icon-circle ml-9"
+                *ngIf="(isAuthorize && taskdata.CreatedBy==username)? (FillingPermissions? (FillingPermissions.CanDeleteTasks):true) : false"
+                (click)="DeleteTaskPopUp(deletePopUpTemp,taskdata)">
+                <i class="fas fa-trash-alt"></i>
+              </span>
+              <span class="float-right icon-circle"
+                *ngIf="(isAuthorize && taskdata.CreatedBy==username) ? (FillingPermissions? (FillingPermissions.CanEditTasks):true) : false"
+                (click)="editTask(taskdata,taskpop)">
+                <i class="fas fa-pencil-alt"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="d-n mt-10" id="togg{{taskdata.TaskId}}{{i}}">
+            <div class="row ml-10">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12s">
+                    <ul>
+                      <li>
+                        <span class="text-muted fs-12">Due Date</span>
+                        <br>
+                        <small>{{taskdata.DueDate|date}}</small>
+                      </li>
+
+                      <li>
+                        <span class="text-muted fs-12">Priority</span>
+                        <br>
+                        <small class="color-danger" *ngIf="taskdata.Priority==1">High</small>
+                        <small class="color-danger" *ngIf="taskdata.Priority==2">Medium</small>
+                        <small class="color-danger" *ngIf="taskdata.Priority==3">Low</small>
+                      </li>
+                      <li>
+                        <span class="text-muted fs-12">Subtasks</span>
+                        <br>
+                        <p class="text-center">{{taskdata.SubTaskCount}}</p>
+                      </li>
+                      <li>
+                        <span class="text-muted fs-12">Created By</span>
+                        <br>
+                        <small class="normalTextFormat">{{taskdata.CreatedBy}}</small>
+                      </li>
+                      <li *ngIf="taskdata.Assignee">
+                        <span class="text-muted fs-12">Asignee</span>
+                        <br>
+                        <small class="normalTextFormat">{{taskdata.Assignee.UserName}}</small>
+                      </li>
+                      <li *ngIf="taskdata.Reviewer">
+                        <span class="text-muted fs-12">Reviewer</span>
+                        <br>
+                        <small>{{taskdata.Reviewer?.UserName}}</small>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-11 ml-30">
+                <span class="text-muted fs-12">Note: </span>
+                <p class="text-truncate" isEllipsisActive> {{taskdata.Description}}</p>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-sm-12">
+                <ul class="float-right">
+                  <li>
+                    <div class="text-primary float-right fs-16">
+                      <p (click)="CreateTopicModel(tasktopic)" class="pointer">
+                        <i class="far fa-comment-alt text-primary mr-4"></i>Create Topic
+                      </p>
+
+                    </div>
+                  </li>
+                  <li *ngIf="username==taskdata.CreatedBy  || username==taskdata.Reviewer?.UserName">
+                    <label class="switch"
+                      (click)="markAsReviewedCompletePopUp(markasreviewedtask,taskdata.IsTaskCompleted,taskdata.IsTaskReviewDone)">
+                      <input type="checkbox" disabled [(ngModel)]="taskdata.IsTaskReviewDone">
+                      <span class="slider round"></span>
+                    </label>
+                    <label class="fs-14 ml-12">Mark as reviewed</label>
+                  </li>
+
+                  <li
+                    *ngIf="username==taskdata.CreatedBy || username==taskdata.Assignee?.UserName || username==taskdata.Reviewer?.UserName">
+                    <div *ngIf="!isCompleted">
+                      <label class="switch" (click)="markAsCompletePopUp(markascomtask)">
+                        <input type="checkbox" disabled>
+                        <span class="slider round"></span>
+                      </label>
+                      <label class="fs-14 ml-12">Mark as complete</label>
+                    </div>
+                    <div *ngIf="isCompleted">
+                      <label class="switch" (click)="markAsCompletePopUp(markascomtask,taskdata.IsTaskCompleted)">
+                        <input type="checkbox" checked disabled>
+                        <span class="slider round"></span>
+                      </label>
+                      <label class="fs-14 ml-12">Mark as complete</label>
+                    </div>
+                  </li>
+
+                  <li>
+                    <button class="btn btn-secondary btn-sm"
+                      *ngIf="isAuthorize ? (FillingPermissions? (FillingPermissions.CanCreateSubTasks):true) : false"
+                      (click)="subTaskPopUp(taskdata.IsTaskCompleted,subtaskpop,taskdata)"
+                      [disabled]="taskdata.IsTaskCompleted">Add Subtask
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <hr />
+            <!-- <div *ngIf="taskdata.Title=='Organisation Details'">
+              <span class="fs-16"><b>Organization Information</b></span>
+              <p>
+                The Information will be auto-populated in relevent immigration forms.
+              </p>
+              <ng-container *ngIf="clientCommonService.showOrgInfoForm">
+                <div *ngIf="taskdata.Title=='Organisation Details' && taskdata.IsTemplate == true">
+                  <organization-card [orgInfo]="clientCommonService.Orgdetails.value"
+                    (changeOrgInformation)="clientCommonService.showOrgInfoForm=$event">
+                  </organization-card>
+                </div>
+              </ng-container>
+              <div *ngIf="!clientCommonService.showOrgInfoForm">
+                <organization-form [Orgdetails]="clientCommonService.Orgdetails" [maxDate]="clientCommonService.maxDate"
+                  (emitOrganizationInfo)="clientCommonService.Submit()"
+                  (backToOrganisationCard)="clientCommonService.getOrganisationInfo()">
+                </organization-form>
+              </div>
+            </div>
+
+            <div *ngIf="taskdata.Title=='Financials'">
+              <span class="fs-16"><b>Financial Information </b> </span>
+              <p class="normalTextFormat">
+                This Information will be auto-populated in relevent forms as g-28 and for application review
+                purpose only
+              </p>
+              <ng-container *ngIf="clientCommonService.showFinancialInfoForm">
+                <div *ngIf="taskdata.Title=='Financials' && taskdata.IsTemplate == true">
+                  <financials-card [finInfo]="clientCommonService.financialInfo"
+                    (editFininfo)="clientCommonService.showFinancialInfoForm=$event">
+                  </financials-card>
+                </div>
+              </ng-container>
+              <div *ngIf="!clientCommonService.showFinancialInfoForm">
+                <financials-form [financials]="clientCommonService.financials"
+                  [financialObj]="clientCommonService.financialObj"
+                  [currentYearIncome]="clientCommonService.currentYearIncome"
+                  [previousYearIncome]="clientCommonService.previousYearIncome"
+                  (emitSubmitFinancialInfo)="clientCommonService.financialsInformation()"
+                  (backToFinacialCard)="clientCommonService.getfinancialsInformation()">
+                </financials-form>
+              </div>
+            </div>
+            <div *ngIf="taskdata.Title=='Personal Details'">
+              <span class="fs-16"><b>Personal details</b> </span>
+              <p>
+                This below Information will used to auto-populate relevent immigration forms, so please keep this
+                information
+                current at all times.
+              </p>
+              <ng-container *ngIf="clientCommonService.showPersonalInfoFoorm">
+                <div *ngIf="taskdata.Title=='Personal Details' && taskdata.IsTemplate == true">
+                  <personal-details-card [personalInfo]="clientCommonService.personalDetailsForm.value"
+                    (emitChangeInfo)="clientCommonService.showPersonalInfoFoorm=$event"></personal-details-card>
+                </div>
+              </ng-container>
+              <div *ngIf="!clientCommonService.showPersonalInfoFoorm">
+                <personal-details [personalForm]="clientCommonService.personalDetailsForm"
+                  [maxDate]="clientCommonService.maxDate"
+                  (emitPersonalInfo)="clientCommonService.submitPersonalInfo($event)"
+                  (backToPersonalInfoCard)="clientCommonService.getPersonalInfo()">
+                </personal-details>
+              </div>
+            </div>
+
+
+            <div *ngIf="taskdata.Title=='Education'">
+              <p class="fs-16"><b>Education</b> </p>
+            </div>
+            <div
+              *ngIf="taskdata.Title=='Education' && taskdata.IsTaskCompleted == false && taskdata.IsTemplate == true">
+              <div class="row">
+                <div class="col-sm-7">
+                  <div class="card">
+                    <div class="card-bodyCustom">
+                      <h6 class="card-title">New</h6>
+                      <span>Degree and institution details</span>
+                      <button class="btn btn-secondary float-right btn-sm" type="button"
+                        (click)="commonService.openModel(educationDetails)">Add
+                        Details </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-12 mt-3"
+              *ngIf="clientCommonService.educationInfoList && clientCommonService.educationInfoList.length">
+              <div
+                *ngIf="taskdata.Title=='Education' && taskdata.IsTaskCompleted == false && taskdata.IsTemplate == true">
+                <ng-container *ngFor="let educationInfo of clientCommonService.educationInfoList">
+                  <applicant-education-details-card [educationInfo]="educationInfo"
+                    (emitEducationData)="clientCommonService.educationAddressInfo($event)"
+                    (emitChangeInfo)="commonService.openModel(educationDetails)"
+                    (emitUploadEduTravelDocument)="clientCommonService.uploadEduDocumentFile($event)"
+                    [getEduFile]="educationInfo.eduFileObj"
+                    (emitViewEduFile)="clientCommonService.viewEmployementFiles($event)"
+                    (emitDownloadEduFile)="clientCommonService.downloadEmployementFiles($event)"
+                    (emitPrintEduFile)="clientCommonService.printEmployementFiles($event)"
+                    (emitDeleteEduFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)"
+                    (emitEduInfo)="clientCommonService.deleteEducationPopup(deleteEduInfo, $event)">
+                  </applicant-education-details-card>
+                </ng-container>
+              </div>
+            </div>
+            <div *ngIf="taskdata.Title=='Period Of Stay'">
+              <p class="fs-16"><b>period of stay </b> </p>
+              <span class="normalTextFormat">-List each beneficiary's prior periods of stay in H or L classification in
+                the
+                United States for the last
+                six years.</span><br />
+              <span class="normalTextFormat">-Be sure to only list those in which each beneficiary was acutually in the
+                united
+                states in an H or L
+                classsification</span><br />
+              <p class="normalTextFormat">-Do not include periods in which the beneficiary was in dependent status, for
+                example, H-4 or L-2
+                status.</p>
+              <p>Total number of days outside U.S.A - {{clientCommonService.totalNumberOfDaysOutsideUsa}} Days</p>
+              <div *ngIf="taskdata.Title=='Period Of Stay' && taskdata.IsTemplate == true">
+                <div *ngIf="clientCommonService.posInfoObj.length == 0">
+                  <div class="row">
+                    <div class="col-sm-7">
+                      <div class="card">
+                        <div class="card-bodyCustom">
+                          <span>Period 1</span>
+                          <button class="btn btn-secondary float-right btn-sm" type="button"
+                            (click)="commonService.openModel(periodOfStay)">Add
+                            details</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-12 mt-3"
+                  *ngIf="clientCommonService.posInfoObj && clientCommonService.posInfoObj.length">
+                  <ng-container *ngFor="let posInfo of clientCommonService.posInfoObj; index as i ">
+                    <applicant-pos-card [posInfo]="posInfo" [objIndex]="i+1"
+                      (emitChangeInfo)="clientCommonService.log($event);commonService.openModel(periodOfStay)"
+                      (emitUploadPosTravelDocument)="clientCommonService.uploadPosDocumentFile($event)"
+                      [getPosFile]="posInfo.posFileObj"
+                      (emitViewPosFile)="clientCommonService.viewEmployementFiles($event)"
+                      (emitPrintPosFile)="clientCommonService.printEmployementFiles($event)"
+                      (emitDownloadPosFile)="clientCommonService.downloadEmployementFiles($event)"
+                      (emitDeletePosFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)"
+                      (emitPosDeleteInfo)="clientCommonService.deletePosPopup(deletePosInfo, $event)" S>
+                    </applicant-pos-card>
+                  </ng-container>
+                </div>
+                <div class="row">
+                  <div class="col-sm-7">
+                    <button class="btn mt-5 btn-outline-primary btn-sm float-right"
+                      (click)="clientCommonService.addMorePeriods(periodOfStay)">Add more periods</button>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div *ngIf="subTasks.length>0">
+            <div class="container-fluid pr-0" *ngFor="let subtask of subTasks;let ind = index">
+              <div *ngIf="subtask.TaskId==taskdata.TaskId">
+                <div class="col-sm-12 mt-5">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row pointer" (click)="togglerSubTask($event,ind,subtask.SubTaskId,subtask)">
+                        <div class="col-md-12">
+                          <input type="checkbox" id="4" class="ml-10">
+                          <span class="text-primary fs-16">
+                            <i class="fa fa-check-circle fa-1-5x"
+                              [ngStyle]="{'color': (subtask.IsTaskCompleted && subtask.IsTaskReviewDone && subtask.ReviewerApproval || 
+                subtask.IsTaskCompleted && !subtask.ReviewerApproval || 
+                subtask.IsTemplate && subtask.IsTaskCompleted && subtask.IsTaskReviewDone && subtask.ReviewerApproval || 
+                subtask.IsTemplate && subtask.IsTaskCompleted && !subtask.ReviewerApproval) ? 'green' : 'lightgray'}"></i>
+                            &nbsp;{{subtask.Title}}</span>
+                          <span class="float-right mt-6 ml-6">
+                            <i class="fa fa-chevron-down float-right" aria-hidden="true"></i>
+                          </span>
+                          <span class="float-right icon-circle ml-9"
+                            *ngIf="(isAuthorize  && subtask.CreatedBy==username) ? (FillingPermissions? (FillingPermissions.CanDeleteSubTasks):true) :false"
+                            (click)="DeleteSubTaskPopUp(deleteSubTaskPopUpTemp,subtask)">
+                            <i class="fas fa-trash-alt"></i>
+                          </span>
+                          <span class="float-right icon-circle"
+                            *ngIf="(isAuthorize  && subtask.CreatedBy==username) ? (FillingPermissions? (FillingPermissions.CanEditSubTasks):true):false"
+                            (click)="editSubtask(subtask,subtaskpop)">
+                            <i class="fas fa-pencil-alt"></i>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="d-n mt-10" id="subtogg{{ind}}{{subtask.SubTaskId}}">
+                        <div class="row ml-10">
+                          <div class="col-md-12">
+                            <div class="row">
+                              <div class="col-md-">
+                                <ul>
+                                  <li>
+                                    <span class="text-muted fs-12">Due Date</span>
+                                    <br>
+                                    <small>{{subtask.DueDate|date}}</small>
+                                  </li>
+                                  <li>
+                                    <span class="text-muted fs-12">Priority</span>
+                                    <br>
+                                    <small class="color-danger" *ngIf="subtask.Priority==1">High</small>
+                                    <small class="color-danger" *ngIf="subtask.Priority==2">Medium</small>
+                                    <small class="color-danger" *ngIf="subtask.Priority==3">Low</small>
+                                  </li>
+                                  <li>
+                                    <span class="text-muted fs-12">Created By</span>
+                                    <br>
+                                    <small class="normalTextFormat">{{subtask.CreatedBy}}</small>
+                                  </li>
+                                  <li *ngIf="subtask.Assignee">
+                                    <span class="text-muted fs-12">Asignee</span>
+                                    <br>
+                                    <small class="normalTextFormat">{{subtask.Assignee.UserName}}</small>
+                                  </li>
+                                  <li *ngIf="subtask.Reviewer">
+                                    <span class="text-muted fs-12">Reviewer</span>
+                                    <br>
+                                    <small>{{subtask.Reviewer?.UserName}}</small>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-11 ml-30">
+                            <span class="text-muted fs-12">Note:</span>
+                            <p class="text-truncate" isEllipsisActive>{{subtask.Description}}</p>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <ul class="float-right">
+                              <li>
+                                <div class="text-primary float-right fs-16">
+                                  <p (click)="CreateTopicModel(tasktopic)" class="pointer mt-3">
+                                    <i class="far fa-comment-alt text-primary mr-4"></i>Create Topic
+                                  </p>
+                                  <!-- <p routerLink="/admin/fillings/messages" class="pointer mt-10">
+                                    <i class="far fa-comment-alt text-primary mr-4"></i>View Topic
+                                  </p> -->
+                                </div>
+                              </li>
+                              <li *ngIf="username==subtask.CreatedBy  || username==subtask.Reviewer?.UserName ">
+                                <div *ngIf="!subtask.IsTaskReviewDone">
+                                  <label class="switch"
+                                    (click)="markAsReviewedCompleteSubPopUp(markasreviewedsubtask,subtask.IsTaskCompleted, subtask.IsTaskReviewDone)">
+                                    <input type="checkbox" disabled>
+                                    <span class="slider round"></span>
+                                  </label>
+                                  <label class="fs-14 ml-12">Mark as reviewed</label>
+                                </div>
+                                <div *ngIf="subtask.IsTaskReviewDone">
+                                  <label class="switch"
+                                    (click)="markAsReviewedCompleteSubPopUp(markasreviewedsubtask,subtask.IsTaskCompleted, subtask.IsTaskReviewDone)">
+                                    <input type="checkbox" checked disabled>
+                                    <span class="slider round"></span>
+                                  </label>
+                                  <label class="fs-14 ml-12">Mark as reviewed</label>
+                                </div>
+                              </li>
+                              <li
+                                *ngIf="username==subtask.CreatedBy || username==subtask.Assignee.UserName || username==subtask.Reviewer?.UserName ">
+                                <div *ngIf="!subtask.IsTaskCompleted">
+                                  <label class="switch"
+                                    (click)="markAsCompleteSubPopUp(markascomsubtask,subtask.IsTaskCompleted)">
+                                    <input type="checkbox" disabled>
+                                    <!-- [attr.disabled]="(subtask.IsTaskCompleted && subtask.IsTaskReviewDone) ? '' :subtask.IsTaskReviewDone? null:''"> -->
+                                    <span class="slider round"></span>
+                                  </label>
+                                  <label class="fs-14 ml-12">Mark as complete</label>
+                                </div>
+                                <div *ngIf="subtask.IsTaskCompleted">
+                                  <label class="switch"
+                                    (click)="markAsCompleteSubPopUp(markascomsubtask,subtask.IsTaskCompleted)">
+                                    <input type="checkbox" checked disabled>
+                                    <!-- [attr.disabled]="(subtask.IsTaskCompleted && subtask.IsTaskReviewDone) ? '' :subtask.IsTaskReviewDone? null:''"> -->
+                                    <span class="slider round"></span>
+                                  </label>
+                                  <label class="fs-14 ml-12">Mark as complete</label>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div *ngFor="let key of subtask.TemplateData | keyvalue : commonService.returnZero"
+                          class="card__data">
+                          <div class="card mt-10">
+                            <div class="card-header">
+                              <h4 class="float-left"> {{ subtask.SubSection }} </h4>
+                              <button
+                                [disabled]="commonService.checkFormValid(commonService.fileData[subtask.SubSection])"
+                                *ngIf="commonService.fileData[subtask.SubSection] && !commonService.fileData[subtask.SubSection].readOnly"
+                                class="pull-right btn btn-sm btn-primary"
+                                (click)="commonService.saveUIControlTemplateResults(subtask.Section, subtask)">
+                                save
+                              </button>
+                              <button
+                                *ngIf="commonService.fileData[subtask.SubSection] && commonService.fileData[subtask.SubSection].readOnly"
+                                class="float-right btn btn-sm btn-primary"
+                                (click)="commonService.edit(subtask.SubSection)">
+                                edit
+                              </button>
+                            </div>
+                            <div class="card-body">
+                              <div class="row">
+                                <div
+                                  *ngFor="let subField of key.value; let i = index; trackBy: commonService.trackByFn">
+                                  <app-dyamic-template [fields]="subField" [parent]="subtask.SubSection"
+                                    [readOnly]="subtask.isSave"></app-dyamic-template>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- <app-dyamic-layout [data]="data" [section]="templateTitle.Section"></app-dyamic-layout>
+                        <app-dyamic-layout [data]="subtask" [section]="subtask.Section"></app-dyamic-layout> -->
+
+
+                        <div *ngIf="subtask.Title=='Mailing Address'">
+                          <span class="fs-16"><b>Address of company or organization</b> </span>
+                          <p>
+                            The Information will be auto-populated in relevent forms as g-28 and for application
+                            review
+                            purposes
+                          </p>
+                          <div class="row">
+                            <div class="col-sm-8">
+                              <ng-container *ngIf="clientCommonService.isContactInfoShow">
+                                <div *ngIf="subtask.Title=='Mailing Address' && subtask.IsTemplate == true">
+                                  <address-card [cardBodyTittle]="'Mailing address'"
+                                    [addressInfo]="clientCommonService.contactForm.value"
+                                    (emitChangeInfo)="commonService.openModel(addMailingAddress)">
+                                  </address-card>
+                                </div>
+                              </ng-container>
+                              <div class="card" *ngIf="!clientCommonService.isContactInfoShow">
+                                <div class="card-bodyCustom">
+                                  <span>Mailing address</span>
+                                  <button class="btn btn-secondary float-right btn-sm" type="button"
+                                    (click)="commonService.openModel(addMailingAddress)">add address</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="subtask.Title=='Address Of Principal Place Of Business'">
+                          <span class="fs-16"><b>Address of company or organization</b> </span>
+                          <p>
+                            The Information will be auto-populated in relevent forms as g-28 and for application
+                            review
+                            purposes
+                          </p>
+                          <div class="row">
+                            <div class="col-sm-8">
+                              <ng-container *ngIf="clientCommonService.addContactFormShow">
+                                <div
+                                  *ngIf="subtask.Title=='Address Of Principal Place Of Business' && subtask.IsTemplate == true">
+                                  <address-card
+                                    [cardBodyTittle]="'Address of principal place of business (if different from above)'"
+                                    [addressInfo]="clientCommonService.businessAddress.value"
+                                    (emitChangeInfo)="commonService.openModel(principalPlaceOfBusiness)">
+                                  </address-card>
+                                </div>
+                              </ng-container>
+                              <div class="card" *ngIf="!clientCommonService.addContactFormShow">
+                                <div class="card-bodyCustom">
+                                  <span>Address of principal place of business (if different from above)</span>
+                                  <button class="btn btn-secondary float-right btn-sm" type="button"
+                                    (click)="commonService.openModel(principalPlaceOfBusiness)">add address</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div *ngIf="subtask.Title=='foreign address'">
+                          <span class="fs-16"><b>Address and contact details </b> </span>
+                          <p>
+                            This below Information will used to auto-populate relevent immigration forms, so please
+                            keep this
+                            information
+                            current at all times.
+                          </p>
+                          <div class="row" *ngIf="subtask.Title=='foreign address' && subtask.IsTemplate == true">
+                            <div class="col-sm-7">
+                              <div *ngIf="clientCommonService.isForginContactInfoShow">
+                                <address-card [cardBodyTittle]="'Foreign address'"
+                                  [addressInfo]="clientCommonService.foreginAddressValidationRules.value"
+                                  (emitChangeInfo)="commonService.openModel(addForeignAddress)">
+                                </address-card>
+                              </div>
+
+                              <div class="card" *ngIf="!clientCommonService.isForginContactInfoShow">
+                                <div class="card-bodyCustom">
+                                  <span>Foreign Address</span>
+                                  <button class="btn btn-secondary float-right btn-sm" type="button"
+                                    (click)="commonService.openModel(addForeignAddress)">Add
+                                    Address</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row" *ngIf="subtask.Title=='Current U.S.A  Address' && subtask.IsTemplate == true">
+                          <div class="col-sm-7">
+                            <div class="card" *ngIf="!clientCommonService.isCurrentUsaAddress">
+                              <div class="card-bodyCustom">
+                                <span>Current U.S.A address</span>
+                                <button class="btn btn-secondary float-right btn-sm" type="button"
+                                  (click)="commonService.openModel(addCurrentUsaAddress);clientCommonService.checkUSAAddress()">Add
+                                  address</button>
+                              </div>
+                            </div>
+                            <div *ngIf="clientCommonService.isCurrentUsaAddress">
+                              <address-card [cardBodyTittle]="'current U.S.A address'"
+                                [addressInfo]="clientCommonService.currentUsaAddreesValidationRules.value"
+                                (emitChangeInfo)="commonService.openModel(addCurrentUsaAddress)">
+                              </address-card>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="subtask.Title=='Resume' && subtask.IsTemplate == true && clientCommonService.getResumeFile == undefined">
+                          <applicant-employement [isShowResume]=true [isShowRecentw2s]=false [isShowPaystubs]=false
+                            [isShowEadCard]=false (emitUploadResumeFile)="clientCommonService.uploadResumeFile($event)">
+                          </applicant-employement>
+                        </div>
+                        <div
+                          *ngIf="subtask.Title=='Recent W2\'s' && subtask.IsTemplate == true && clientCommonService.getRecentw2s.length == 0">
+                          <applicant-employement [isShowResume]=false [isShowRecentw2s]=true [isShowPaystubs]=false
+                            [isShowEadCard]=false (emitUploadRecentW2s)="clientCommonService.uploadRecentw2s($event)">
+                          </applicant-employement>
+                        </div>
+                        <div
+                          *ngIf="subtask.Title=='Recent Pay-Stubs' && subtask.IsTemplate == true && clientCommonService.getRecentPaystubfiles.length == 0">
+                          <applicant-employement [isShowResume]=false [isShowRecentw2s]=false [isShowPaystubs]=true
+                            [isShowEadCard]=false
+                            (emitUpload3RecentPaystubs)="clientCommonService.uploadRecentPaystubs($event)">
+                          </applicant-employement>
+                        </div>
+                        <div
+                          *ngIf="subtask.Title=='EAD Card' && subtask.IsTemplate == true && clientCommonService.getEadCardFile.length == 0">
+                          <applicant-employement [isShowResume]=false [isShowRecentw2s]=false [isShowPaystubs]=false
+                            [isShowEadCard]=true (emitUploadEadCard)="clientCommonService.uploadEadCard($event)">
+                          </applicant-employement>
+                        </div>
+                        <div
+                          *ngIf="subtask.Title=='Resume' && subtask.IsTemplate == true && clientCommonService.getResumeFile != undefined">
+                          <applicant-employement [isShowResume]=true [isShowRecentw2s]=false [isShowPaystubs]=false
+                            [isShowEadCard]=false [getResumeFile]="clientCommonService.getResumeFile"
+                            (emitUploadResumeFile)="clientCommonService.uploadResumeFile($event)"
+                            (emitViewFile)="clientCommonService.viewEmployementFiles($event)"
+                            (emitDownloadFile)="clientCommonService.downloadEmployementFiles($event)"
+                            (emitPrintFile)="clientCommonService.printEmployementFiles($event)"
+                            (emitDeleteFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)">
+                          </applicant-employement>
+                        </div>
+                        <div
+                          *ngIf="subtask.Title=='Recent W2\'s' && subtask.IsTemplate == true && clientCommonService.getRecentw2s.length!==0">
+                          <applicant-employement [isShowResume]=false [isShowRecentw2s]=true [isShowPaystubs]=false
+                            [isShowEadCard]=false [getRecentw2s]="clientCommonService.getRecentw2s"
+                            (emitUploadRecentW2s)="clientCommonService.uploadRecentw2s($event)"
+                            (emitViewFile)="clientCommonService.viewEmployementFiles($event)"
+                            (emitDownloadFile)="clientCommonService.downloadEmployementFiles($event)"
+                            (emitPrintFile)="clientCommonService.printEmployementFiles($event)"
+                            (emitDeleteFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)">
+                          </applicant-employement>
+                        </div>
+                        <div
+                          *ngIf="subtask.Title=='Recent Pay-Stubs' && subtask.IsTemplate == true && clientCommonService.getRecentPaystubfiles.length!==0">
+                          <applicant-employement [isShowResume]=false [isShowRecentw2s]=false [isShowPaystubs]=true
+                            [isShowEadCard]=false [getRecentPaystubfiles]="clientCommonService.getRecentPaystubfiles"
+                            (emitUpload3RecentPaystubs)="clientCommonService.uploadRecentPaystubs($event)"
+                            (emitViewFile)="clientCommonService.viewEmployementFiles($event)"
+                            (emitDownloadFile)="clientCommonService.downloadEmployementFiles($event)"
+                            (emitPrintFile)="clientCommonService.printEmployementFiles($event)"
+                            (emitDeleteFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)">
+                          </applicant-employement>
+                        </div>
+                        <div
+                          *ngIf="subtask.Title=='EAD Card' && subtask.IsTemplate == true && clientCommonService.getEadCardFile.length!==0">
+                          <applicant-employement [isShowResume]=false [isShowRecentw2s]=false [isShowPaystubs]=false
+                            [isShowEadCard]=true [getEadCardFile]="clientCommonService.getEadCardFile"
+                            (emitUploadEadCard)="clientCommonService.uploadEadCard($event)"
+                            (emitViewFile)="clientCommonService.viewEmployementFiles($event)"
+                            (emitDownloadFile)="clientCommonService.downloadEmployementFiles($event)"
+                            (emitPrintFile)="clientCommonService.printEmployementFiles($event)"
+                            (emitDeleteFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)">
+                          </applicant-employement>
+                        </div>
+
+                        <div *ngIf="subtask.Title=='I-94 Travel Details'">
+                          <p class="fs-16"><b>Immigration</b> </p>
+                          <div *ngIf="subtask.Title=='I-94 Travel Details' && subtask.IsTemplate == true">
+                            <div class="row">
+                              <div class="col-sm-7">
+                                <ng-container *ngIf="clientCommonService.showImmigrationDetailsForm">
+                                  <applicant-immigration-details-card
+                                    [immigrationInfo]="clientCommonService.immiggrationDetails.value"
+                                    [imgI94DocFile]="clientCommonService.imgI94DocFile"
+                                    (emitChangeInfo)="clientCommonService.showImmigrationDetailsForm=$event"
+                                    (emitUploadImgTravelDocument)="clientCommonService.uploadImgI94DocumentFile($event)"
+                                    (emitViewImgFile)="clientCommonService.viewEmployementFiles($event)"
+                                    (emitDownloadImgFile)="clientCommonService.downloadEmployementFiles($event)"
+                                    (emitPrintImgFile)="clientCommonService.printEmployementFiles($event)"
+                                    (emitDeleteImgFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)">
+                                  </applicant-immigration-details-card>
+                                </ng-container>
+                              </div>
+                              <ng-container *ngIf="!clientCommonService.showImmigrationDetailsForm">
+                                <applicant-immigration-details-form
+                                  [immiggrationDetails]="clientCommonService.immiggrationDetails"
+                                  [visaCategory]="clientCommonService.nonImmigrantInfo"
+                                  [maxDate]="clientCommonService.TodayAndOnlyPastDate"
+                                  [immiggrationDetailsObj]="clientCommonService.immiggrationDetailsObj"
+                                  (emitImmigrationDetails)="clientCommonService.PostImmigrationDetails()"
+                                  (emitCancelImg)="clientCommonService.getImmigrationDetails()">
+                                </applicant-immigration-details-form>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div *ngIf="subtask.Title=='Passport Or Travel Document'">
+                          <p class="fs-16"><b>Immigration</b> </p>
+                          <div *ngIf="subtask.Title=='Passport Or Travel Document'  && subtask.IsTemplate == true">
+                            <div class="row">
+                              <div class="col-sm-7">
+                                <div class="card" *ngIf="!clientCommonService.showImgTravelDetails">
+                                  <div class="card-bodyCustom">
+                                    <span>Passport or travel document</span>
+                                    <button class="btn btn-secondary float-right btn-sm" type="button"
+                                      (click)="commonService.openModel(travelDoumentDetails)">Add
+                                      Details</button>
+                                  </div>
+                                </div>
+                                <ng-container *ngIf="clientCommonService.showImgTravelDetails">
+                                  <img-traveldocument-details-card
+                                    [travelDocumentDetailsInfo]="clientCommonService.imgTravelDetail"
+                                    [imgTravelDocFile]="clientCommonService.imgTravelDocFile"
+                                    [maxDate]="clientCommonService.maxDate"
+                                    (changeTravelDocumentDetails)="clientCommonService.changeimgTravel($event);commonService.openModel(travelDoumentDetails)"
+                                    (emitUploadImgI94Document)="clientCommonService.uploadImgTravelDocumentFile($event)"
+                                    (emitViewFile)="clientCommonService.viewEmployementFiles($event)"
+                                    (emitDownloadFile)="clientCommonService.downloadEmployementFiles($event)"
+                                    (emitPrintFile)="clientCommonService.printEmployementFiles($event)"
+                                    (emitDeleteFile)="clientCommonService.removeFilepopup(deletefilePopUpTemp, $event)">
+                                  </img-traveldocument-details-card>
+                                </ng-container>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div *ngIf="subtask.Title=='POC'">
+                          <span class="fs-16"><b>Point of Contact (POC) </b> </span>
+                          <p class="normalTextFormat">
+                            This Information will be auto-populated in relevent forms as g-28 and for application
+                            review
+                            purposes
+                          </p>
+                          <ng-container *ngIf="clientCommonService.showPocContactInfo">
+                            <div *ngIf="subtask.Title=='POC' && subtask.IsTemplate == true">
+                              <contact-card [contactInfo]="clientCommonService.pocObj"
+                                (emitChangeInfo)="clientCommonService.showPocContactInfo=$event; some($event)">
+                              </contact-card>
+                            </div>
+                          </ng-container>
+                          <div *ngIf="!clientCommonService.showPocContactInfo">
+                            <contact-form [contactInfoForm]="clientCommonService.posDetails"
+                              [contactObj]="clientCommonService.pocObj"
+                              (emitSubmitInfo)="clientCommonService.pocInformation($event)"
+                              (emitCancelContact)="clientCommonService.getPocInfromation()">
+                            </contact-form>
+                          </div>
+                        </div>
+                        <div *ngIf="subtask.Title=='Authorized Signatory'">
+                          <span class="fs-16"><b>Authorized Signatory </b> </span>
+                          <p class="normalTextFormat">
+                            This Information will be auto-populated in relevent forms as g-28 and for application
+                            review
+                            purposes
+                          </p>
+                          <div *ngIf="subtask.Title=='Authorized Signatory' && subtask.IsTemplate == true">
+                            <ng-container *ngIf="clientCommonService.showAutoryhSigntContactInfo">
+                              <contact-card [contactInfo]="clientCommonService.authSignatoryObj"
+                                (emitChangeInfo)="clientCommonService.showAutoryhSigntContactInfo=$event">
+                              </contact-card>
+                            </ng-container>
+                            <div *ngIf="!clientCommonService.showAutoryhSigntContactInfo">
+                              <contact-form [contactInfoForm]="clientCommonService.authSignatoryDetails"
+                                [contactObj]="clientCommonService.authSignatoryObj"
+                                [isCheckBoxChecked]="clientCommonService.isChecked" [sameAsContactInfoRequired]="true"
+                                [contactValidated]="clientCommonService.showPocContactInfo"
+                                (emitSubmitInfo)="clientCommonService.authSignatoryInformation($event)"
+                                (emitCancelContact)="clientCommonService.getauthSignatoryInformation()"
+                                (emitSameContactInfo)="clientCommonService.sameeAsPOCAuthorizedSignatory($event)">
+                              </contact-form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <p>fdgds</p>
+                <div *ngIf="subTasks.Title=='Foreign Addresses' && subTasks.IsTaskCompleted == true && subTasks.IsTemplate == true">
+                  <p>Mailing adress view</p>
+                </div>
+                <div *ngIf="subTasks.Title=='Foreign Addresses' && subTasks.IsTaskCompleted == false && subTasks.IsTemplate == true">
+                  <p>Mailing adress add</p>
+                </div> -->
+            </div>
+          </div>
+          <!-- <div *ngIf="subTasks.length==0">
+              <div class="alert alert-secondary mt-5">
+                <strong>No Sub Tasks Found!</strong>
+              </div>
+            </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-10 fs-14" *ngIf="isTaskListempty">
+  <div class="alert alert-secondary mt-5">
+    <strong>No Tasks Found!</strong>
+  </div>
+</div>
+
+
+<!--*****************  Archive task model ********************* -->
+<ng-template #deletePopUpTemp let-d="dismiss" id="deletePopUpTemp">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="Closedelete('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center">
+    <i class="fa fa-trash-alt fa-3x" aria-hidden="true"></i>
+    <p class="taskGroupArchiveTitle"> Are you sure you want to archive the task
+      <b>{{taskTittle}}</b>?
+    </p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="Closedelete('close click')">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="deleteTask()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+<!--*****************  Archive task model ended ********************* -->
+
+
+<!--*****************  Add  new sub task model********************* -->
+<ng-template #subtaskpop let-d="dismiss" id="subtaskpop">
+  <div class="tasksmodel">
+    <form [formGroup]="TaskForm">
+      <div class="gl-modal-header p-20 bg-model text-white text-align">
+        <span class="fs-16 mb-0 d-ib">{{subtaskTittleName}}</span>
+        <span class="modal-close close" (click)="closeSubTask('close click')">
+          <i class="fa fa-times text-white" aria-hidden="true"></i>
+        </span>
+      </div>
+      <div class="lo-modal-body p-20">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="mandatory">Task Title</label>
+              <input type="text" name="TaskName" formControlName="TaskName" [(ngModel)]="subTaskObj.Title"
+                class="form-control" />
+              <small *ngIf="
+                      TaskForm.controls['TaskName'].errors &&
+                      (TaskForm.controls['TaskName'].dirty || TaskForm.controls['TaskName'].touched)
+                    ">
+                <small class="text-danger" *ngIf="TaskForm.get('TaskName').hasError('required')">Task Name is
+                  required
+                </small>
+                <small class="text-danger" *ngIf="
+                        TaskForm.get('TaskName').hasError('minlength') &&
+                        !TaskForm.get('TaskName').hasError('pattern')
+                      ">Minimum 5 characters</small>
+                <small class="text-danger" *ngIf="TaskForm.get('TaskName').hasError('pattern')">Enter only
+                  Characters and Numbers</small>
+              </small>
+            </div>
+          </div>
+          <!-- <div class="col-md-6">
+              <div class="form-group">
+                  <label class="mandatory">Task Type</label>
+                  <label class="d-block">
+                    <select class="form-control" name="TaskType" formControlName="TaskType"
+                      [(ngModel)]="subTaskObj.TaskType" id="sel1">
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                    </select>
+                    <small *ngIf="
+                      TaskForm.controls['TaskType'].errors &&
+                      (TaskForm.controls['TaskType'].dirty || TaskForm.controls['TaskType'].touched)
+                    ">
+                      <small class="text-danger" *ngIf="TaskForm.get('TaskType').hasError('required')">Task Type is
+                        required
+                      </small>
+                    </small>
+                  </label>
+                </div>
+          </div> -->
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="expirationDate" class="mandatory">Due Date</label>
+              <div class="input-group calendar">
+                <input type="text" name="DueDate" formControlName="DueDate" #dp="bsDatepicker" class="form-control"
+                  [(ngModel)]="subTaskObj.DueDate" bsDatepicker [minDate]="minDate" [maxDate]="TaskDuseDate"
+                  [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }">
+                <span class="input-group-prepend">
+                  <button type="button" class="btn btn-light" (click)="dp.toggle()">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                  </button>
+                </span>
+              </div>
+              <small *ngIf="
+                    TaskForm.controls['DueDate'].errors &&
+                    (TaskForm.controls['DueDate'].dirty || TaskForm.controls['DueDate'].touched)
+                  ">
+                <small class="text-danger" *ngIf="TaskForm.get('DueDate').hasError('required')">Due Date is
+                  required
+                </small>
+              </small>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="mandatory">Priority</label>
+              <label class="d-block">
+                <select class="form-control" name="Priority" formControlName="Priority" id="sel1"
+                  [(ngModel)]="subTaskObj.Priority" required name="Priority">
+                  <option value="1">High</option>
+                  <option value="2">Medium</option>
+                  <option value="3">Low</option>
+                </select>
+                <small *ngIf="
+                      TaskForm.controls['Priority'].errors &&
+                      (TaskForm.controls['Priority'].dirty || TaskForm.controls['Priority'].touched)
+                    ">
+                  <small class="text-danger" *ngIf="TaskForm.get('Priority').hasError('required')">Priority is
+                    required
+                  </small>
+                </small>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="mandatory">Assignee</label>
+              <input [(ngModel)]="selectedSubTaskAssigne" name="Assignee" formControlName="Assignee"
+                [typeahead]="assignMembers" typeaheadOptionField="Email" [typeaheadItemTemplate]="assigneTemplate"
+                (typeaheadOnSelect)="assignMembersSubTaskOnSelect($event)" [typeaheadScrollable]="true"
+                class="form-control">
+              <small *ngIf="
+                TaskForm.controls['Assignee'].errors &&
+                (TaskForm.controls['Assignee'].dirty || TaskForm.controls['Assignee'].touched)
+              ">
+                <small class="text-danger" *ngIf="TaskForm.get('Assignee').hasError('required')">Assignee is
+                  required
+                </small>
+              </small>
+            </div>
+
+            <ng-template #assigneTemplate let-model="item" let-index="index">
+              <span class="float-left">{{model.Email}}&nbsp;&nbsp;</span>
+              <span class="float-left" *ngIf="model.Role=='Sponserer'">Client</span> &nbsp;&nbsp;
+              <span class="float-left" *ngIf="model.Role!='Sponserer'">{{model.Role}}</span> &nbsp;&nbsp;
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==2 && !(model.Role)">
+                Sub Admin</span>
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==3  && !(model.Role)">
+                Team Member</span>
+            </ng-template>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Reviewer</label>
+              <input [(ngModel)]="selectedSubTaskReviewer" name="Reviewer" formControlName="Reviewer"
+                [typeahead]="assignMembers" typeaheadOptionField="Email" [typeaheadItemTemplate]="reviewerTemplate"
+                (input)="typeHeadSelectFocusSubtask()" (typeaheadOnSelect)="reviewerSubTaskOnSelect($event)"
+                [typeaheadScrollable]="true" class="form-control">
+              <!-- <small *ngIf="
+                TaskForm.controls['Reviewer'].errors &&
+                (TaskForm.controls['Reviewer'].dirty || TaskForm.controls['Reviewer'].touched)
+              ">
+              <small class="text-danger" *ngIf="TaskForm.get('Reviewer').hasError('required')">Reviewer is
+                required
+              </small>
+            </small> -->
+            </div>
+            <ng-template #reviewerTemplate let-model="item" let-index="index">
+              <span class="float-left">{{model.Email}}</span> &nbsp;&nbsp;
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==2">
+                Sub Admin</span>
+              <span class="float-right typeheadmodel" *ngIf="model.TeamMemberStatus==3">
+                Team Member</span>
+            </ng-template>
+            <input type="checkbox" id="reviewsubtaskid" name="ReviewerApproval" formControlName="ReviewerApproval"
+              [(ngModel)]="subTaskObj.ReviewerApproval" [attr.disabled]="true">
+            <label for="reviewsubtaskid" class="checkbox"></label>
+            <label>Need Reviewer's approval to close the task</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="comment" class="mandatory">Add Notes:</label>
+              <textarea class="form-control" name="Notes" formControlName="Notes" [(ngModel)]="subTaskObj.Description"
+                rows="5" id="comment"></textarea>
+              <small *ngIf="
+              TaskForm.controls['Notes'].errors &&
+              (TaskForm.controls['Notes'].dirty || TaskForm.controls['Notes'].touched)
+            ">
+                <small class="text-danger" *ngIf="TaskForm.get('Notes').hasError('required')">Add notes is
+                  required
+                </small>
+                <small class="text-danger" *ngIf="
+                TaskForm.get('Notes').hasError('minlength')">Minimum 5 characters </small>
+                <small class="text-danger" *ngIf="TaskForm.get('Notes').hasError('maxlength')">
+                  Maximum 512 characters are allowed</small>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-model-footer">
+        <button type="button" class="btn btn-outline" (click)="closeSubTask('close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="!TaskForm.valid"
+          (click)="subTaskInTask()">Save</button>
+      </div>
+
+
+    </form>
+  </div>
+</ng-template>
+<!--*****************  Add  new sub model ended********************* -->
+
+
+
+<!--*****************  Archive task model ********************* -->
+<ng-template #deleteSubTaskPopUpTemp let-d="dismiss" id="deleteSubTaskPopUpTemp">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="CloseSubTaskPop('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center">
+    <i class="fa fa-trash-alt fa-3x" aria-hidden="true"></i>
+    <p class="taskGroupArchiveTitle"> Are you sure you want to archive the task
+      <b>{{subTaskTittle}}</b>?
+    </p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="CloseSubTaskPop('close click')">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="deleteSubTask()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+<!--*****************  Archive task model ended ********************* -->
+
+
+
+
+
+
+<!--*****************  conform complete task model ********************* -->
+<ng-template #markascomtask let-d="dismiss" id="markascomtask">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeMarkAsCompletePopUp('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center mx-auto text-align">
+    <img src="../../../../../assets/check-square-o - FontAwesome.png">
+    <p class="taskGroupArchiveTitle"> Are you sure you want to
+      <span>{{IsClientTaskCompleted? 'Incomplete' : 'Complete'}}</span> the task?
+    </p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="closeMarkAsCompletePopUp('close click')">No, keep it</div>
+      <div class="btn btn-primary ml-20 mt-10 fs-12" (click)="MarkTaskAsCompleted()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+<!--*****************  confirm complete task model ended ********************* -->
+
+<!--*****************  conform reviewed complete task model ********************* -->
+<ng-template #markasreviewedtask let-d="dismiss" id="markasreviewedtask">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeMarkAsReviewedCompletePopUp('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center mx-auto text-align">
+    <img src="../../../../../assets/check-square-o - FontAwesome.png">
+    <p class="taskGroupArchiveTitle"> Are you sure you want to
+      <span>{{IsClientTaskReviewed? 'unreview' : 'review'}}</span> the task?
+    </p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="closeMarkAsReviewedCompletePopUp('close click')">No, keep it
+      </div>
+      <div class="btn btn-primary ml-20 mt-10 fs-12" (click)="MarkTaskAsReviewed()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+<!--*****************  confirm reviewed complete task model ended ********************* -->
+
+<!--*****************  conform complete task model ********************* -->
+<ng-template #markascomsubtask let-d="dismiss" id="markascomsubtask">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeMarkAsCompleteSubPopUp('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center mx-auto text-align">
+    <img src="../../../../../assets/check-square-o - FontAwesome.png">
+    <p class="taskGroupArchiveTitle"> Are you sure you want to
+      <span>{{IsSubTaskCompleted? 'Incomplete' : 'Complete'}}</span> the task?
+    </p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="closeMarkAsCompleteSubPopUp('close click')">No, keep it</div>
+      <div class="btn btn-primary ml-20 mt-10 fs-12" (click)="MarkSubTaskAsCompleted()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+<!--*****************  confirm complete task model ended ********************* -->
+
+
+
+<!--*****************  conform reviewed complete sub task model ********************* -->
+<ng-template #markasreviewedsubtask let-d="dismiss" id="markasreviewedsubtask">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeMarkAsReviewedSubTaskCompletePopUp('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center mx-auto text-align">
+    <img src="../../../../../assets/check-square-o - FontAwesome.png">
+    <p class="taskGroupArchiveTitle"> Are you sure you want to <span>{{IsSubTaskReviewed? 'unreview' : 'review'}}</span>
+      the task?</p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="closeMarkAsReviewedSubTaskCompletePopUp('close click')">No,
+        keep
+        it</div>
+      <div class="btn btn-primary ml-20 mt-10 fs-12" (click)="MarkSubTaskAsReviewed()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+<!--*****************  confirm reviewed complete task model ended ********************* -->
+
+
+
+
+<!--***************** Create Topic Model********************* -->
+<ng-template #tasktopic let-d="dismiss" id="CreateTopicModel">
+  <div class="tasksmodel">
+    <form [formGroup]="TopicForm">
+      <div class="gl-modal-header p-20 bg-model text-white text-align">
+        <span class="fs-16 mb-0 d-ib">Create New Topic</span>
+        <span class="modal-close close" (click)="closeCreateTopic('close click')">
+          <i class="fa fa-times text-white" aria-hidden="true"></i>
+        </span>
+      </div>
+      <div class="lo-modal-body p-20">
+        <div class="row">
+          <div class="col-md-12 form-group">
+            <label>Topic or Question <i class="required">*</i></label>
+            <input (focus)="visitingInput()" type="text" class="form-control" formControlName="topic" name="topic" />
+            <small *ngIf="
+            TopicForm.controls['topic'].errors &&
+            (TopicForm.controls['topic'].dirty || TopicForm.controls['topic'].touched)">
+              <small class="text-danger" *ngIf="TopicForm.get('topic').hasError('required')">Topic or Question is
+                required.
+              </small>
+            </small>
+          </div>
+        </div>
+
+        <div class="row" (focus)="visitingInput()">
+          <div class="col-md-12 form-group">
+            <label>Description<i class="required">*</i> </label>
+            <!-- <angular-editor
+                  (focus)="visitingInput()"
+                  formControlName="description"
+                  name="description"
+                ></angular-editor> -->
+            <textarea (focus)="visitingInput()" class="form-control" [(ngModel)]="description"
+              formControlName="description" name="description" rows="4" cols="62"> </textarea>
+            <small *ngIf="
+            TopicForm.controls['description'].errors &&
+            (TopicForm.controls['description'].dirty || TopicForm.controls['description'].touched)">
+              <small class="text-danger" *ngIf="TopicForm.get('description').hasError('required')">Description is
+                required.
+              </small>
+            </small>
+          </div>
+        </div>
+
+        <div class="row" (focus)="visitingInput()">
+          <div class="col-md-12 form-group">
+            <label>Add Lawoffice Members<i class="required">*</i></label>
+            <ng-multiselect-dropdown [placeholder]="''" [settings]="adminteamMembersDropsownSettings"
+              class="normalTextFormat" [data]="adminteamMembersList" [(ngModel)]="selectedadminTeamMembers"
+              (onSelect)="onadminmemberSelect($event)" (onSelectAll)="onadminMemberSelectAll($event)"
+              (focus)="visitingInput()" formControlName="adminmembers" name="adminmembers"></ng-multiselect-dropdown>
+          </div>
+        </div>
+
+        <div class="row" (focus)="visitingInput()">
+          <div class="col-md-12 form-group">
+            <label>Add Client Members<i class="required">*</i></label>
+            <ng-multiselect-dropdown [placeholder]="''" class="normalTextFormat"
+              [settings]="teamMembersDropsownSettings" [data]="clinetteamMembersList" [(ngModel)]="selectedTeamMembers"
+              (onSelect)="onTeamMemberSelect($event)" (onSelectAll)="onTeamMemberSelectAll($event)"
+              (focus)="visitingInput()" formControlName="members" name="members"></ng-multiselect-dropdown>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer bg-model-footer">
+        <button type="button" class="btn btn-outline" (click)="closeCreateTopic('close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="CreateTopic()" [disabled]="!TopicForm.valid">
+          Save
+        </button>
+      </div>
+      <div class="row" *ngIf="isempty" style="margin-left:20px !important; margin-top:20px !important">
+        <p class="alert alert-danger">{{ errormessage }}</p>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+
+<!-- <ng-template #tasktopic let-d="dismiss" id="CloseCreatetopic">
+    <div class="tasksmodel">
+      <div class="gl-modal-header p-20 bg-model text-white text-align">
+        <span class="fs-16 mb-0 d-ib">Create New Topic</span>
+        <span class="modal-close close" (click)="ClosesCloseCreatetopicent()">
+          <i class="fa fa-times text-white" aria-hidden="true"></i>
+        </span>
+      </div>
+      <div class="lo-modal-body p-20">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Topic or Question </label>
+              <input (focus)="visitingInput()" type="text" class="form-control" [(ngModel)]="topic" />
+            </div>
+          </div>
+        </div>
+        <div class="row" (focus)="visitingInput()">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Description </label>
+              <angular-editor (focus)="visitingInput()" [(ngModel)]="description"></angular-editor>
+            </div>
+          </div>
+        </div>
+  
+        <div class="row" (focus)="visitingInput()">
+          <div class="col-md-12">
+            <label>Add admin Members </label>
+  
+            <ng-multiselect-dropdown [placeholder]="''" [data]="adminteamMembersList" [(ngModel)]="selectedadminTeamMembers" [settings]="adminteamMembersDropsownSettings"
+              (onSelect)="onadminmemberSelect($event)" (onSelectAll)="onadminMemberSelectAll($event)" (focus)="visitingInput()"></ng-multiselect-dropdown>
+  
+          </div>
+        </div>
+  
+  
+  
+        <div class="row" (focus)="visitingInput()">
+          <div class="col-md-12">
+            <label>Add Members </label>
+  
+            <ng-multiselect-dropdown [placeholder]="''" [data]="clinetteamMembersList" [(ngModel)]="selectedTeamMembers" [settings]="teamMembersDropsownSettings"
+              (onSelect)="onTeamMemberSelect($event)" (onSelectAll)="onTeamMemberSelectAll($event)" (focus)="visitingInput()"></ng-multiselect-dropdown>
+  
+          </div>
+        </div>
+  
+      </div>
+      <div class="modal-footer bg-model-footer">
+        <button type="button" class="btn btn-outline" (click)="CloseCreatetopic()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="CreateTopic()">Save</button>
+      </div>
+      <div class="row" *ngIf="isempty" style="margin-left:20px !important; margin-top:20px !important">
+        <p class="alert alert-danger">{{errormessage}}</p>
+      </div>
+    </div>
+  </ng-template> -->
+<!--***************** End Create Topic Model********************* -->
+
+<ng-template #periodOfStay let-d="dismiss" id="periodOfStay">
+  <modal-header [headerTittle]="'Add Period Of Stay'"></modal-header>
+  <applicant-pos-form [posValidationRules]="clientCommonService.posValidationRules"></applicant-pos-form>
+  <modal-footer [isFormValid]="clientCommonService.posValidationRules" (emitSubmit)="clientCommonService.postPosInfo()">
+  </modal-footer>
+</ng-template>
+
+<ng-template #educationDetails let-d="dismiss" id="educationDetails">
+  <modal-header [headerTittle]="'Step 1 -Institute Details'"></modal-header>
+  <div class="modal-body">
+    <applicant-education-details-form [educationFrom]="clientCommonService.educationDetailsValidationRules"
+      [maxDate]="clientCommonService.maxDate">
+    </applicant-education-details-form>
+  </div>
+  <modal-footer [isFormValid]="clientCommonService.educationDetailsValidationRules"
+    [buttonName]="'Next-add Address Changes'"
+    (emitSubmit)="clientCommonService.checkHighestLevelOfEducation(addCurrentUsaAddress);">
+  </modal-footer>
+</ng-template>
+
+<ng-template #addCurrentUsaAddress let-c="close" let-d="dismiss">
+  <modal-header [headerTittle]="clientCommonService.currentAddress"></modal-header>
+  <div class="modal-body">
+    <address-form [contactForm]="clientCommonService.currentUsaAddreesValidationRules"
+      [isAptSteFlrNumberDisabled]="clientCommonService.isCurrentAptSteFlrNumberDisabled"
+      (emitChangeAptSteFlr)="clientCommonService.changeCurrentUsaAddreesValidationRulesAptSteFlr()">
+    </address-form>
+    <!-- [contactFormObj]="currentUsaAddreesValidationRules.value"  (emitContactinformation)="storeContactInformation($event)"-->
+  </div>
+  <modal-footer [isFormValid]="clientCommonService.currentUsaAddreesValidationRules"
+    [isBackBtnRequired]="clientCommonService.isBackBtnRequired"
+    (emitBack)="clientCommonService.backToEducationInfo(educationDetails);"
+    (emitCancel)="clientCommonService.getEducationalnfo()"
+    (emitSubmit)="clientCommonService.addCurrentUsaAddress($event)">
+  </modal-footer>
+</ng-template>
+
+<ng-template #addForeignAddress let-c="close" let-d="dismiss">
+  <modal-header [headerTittle]="'Foreign Address'"></modal-header>
+  <div class="modal-body">
+    <address-form [contactForm]="clientCommonService.foreginAddressValidationRules"
+      [isAptSteFlrNumberDisabled]="clientCommonService.isForignAptSteFlrNumberDisabled"
+      (emitChangeAptSteFlr)="clientCommonService.changeForginAptSteFlr()">
+    </address-form>
+  </div>
+  <modal-footer [isFormValid]="clientCommonService.foreginAddressValidationRules"
+    (emitCancel)="clientCommonService.getForeginAddressAndContact()"
+    (emitSubmit)="clientCommonService.addAddressAndContact($event)"></modal-footer>
+</ng-template>
+
+<!-- Mailing address modal -->
+<ng-template #addMailingAddress let-c="close" let-d="dismiss">
+  <modal-header [headerTittle]="'Mailing Address'"></modal-header>
+  <div class="modal-body">
+    <address-form [contactForm]="clientCommonService.contactForm"
+      [isAptSteFlrNumberDisabled]="clientCommonService.isAptSteFlrNumberDisabled"
+      (emitChangeAptSteFlr)="clientCommonService.changeAptSteFlr()">
+    </address-form>
+  </div>
+  <!-- [contactFormObj]="contactFormObj"  (emitContactinformation)="storeContactInformation($event)" -->
+  <modal-footer [isFormValid]="clientCommonService.contactForm"
+    (emitCancel)="clientCommonService.getcontactinformation()"
+    (emitSubmit)="clientCommonService.mailingAddress($event)"></modal-footer>
+</ng-template>
+<!-- Address Of principal place if business -->
+<ng-template #principalPlaceOfBusiness let-c="close" let-d="dismiss">
+  <modal-header [headerTittle]="'Address Of Principal Place Of Business'"></modal-header>
+  <div class="modal-body">
+    <address-form [contactForm]="clientCommonService.businessAddress"
+      [isAptSteFlrNumberDisabled]="clientCommonService.isBussinessAptSteFlrNumberDisabled"
+      (emitChangeAptSteFlr)="clientCommonService.changeBussinessAptSteFlrNumber()"></address-form>
+    <!-- [contactFormObj]="addContactFormObj" (emitContactinformation)="storeAddressPrincipal($event)"-->
+  </div>
+  <modal-footer [isFormValid]="clientCommonService.businessAddress"
+    (emitCancel)="clientCommonService.getAddressOfPrincipalPlaceOfBusiness()"
+    (emitSubmit)="clientCommonService.addressOfPrincipalPlaceOfBusiness($event)"></modal-footer>
+</ng-template>
+
+<ng-template #travelDoumentDetails let-c="close" let-d="dismiss">
+  <modal-header [headerTittle]="'passport or travel document details'"></modal-header>
+  <div class="modal-body">
+    <applicant-img-traveldocument-details
+      [travelDocumentValidationRules]="clientCommonService.travelDocumentValidationRules"
+      [maxDate]="clientCommonService.maxDate">
+    </applicant-img-traveldocument-details>
+  </div>
+  <modal-footer [isFormValid]="clientCommonService.travelDocumentValidationRules"
+    (emitSubmit)="clientCommonService.imgTravelDetails()">
+  </modal-footer>
+</ng-template>
+
+<ng-template #deletefilePopUpTemp let-d="dismiss" id="deletefilePopUpTemp">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="clientCommonService.closeModal('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+    <i class="fa fa-trash-alt fa-3x ml-130" aria-hidden="true"></i>
+    <p class="fs-20 mt-15"> Are you sure you want to delete file?</p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="clientCommonService.closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="clientCommonService.deleteEmployementFiles()">Yes,
+        Confirm</div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #deleteEduInfo let-d="dismiss" id="deleteEduInfo">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="clientCommonService.closeModal('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center">
+    <i class="fa fa-trash-alt fa-3x" aria-hidden="true"></i>
+    <p class="taskGroupArchiveTitle">Are you sure you want delete this education info we will also deleted along with
+      the files?
+    </p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="clientCommonService.closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="clientCommonService.deleteEducationInfo()">Yes, Confirm
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #afterTopicCreate let-d="dismiss" id="afterTopicCreate">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeMarkAsReviewedSubTaskCompletePopUp('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-cener mx-auto text-align">
+    <img src="../../../../../assets/check-square-o - FontAwesome.png">
+    <p class="fs-20 mt-15">Do u want to navigate messages section?</p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="clientCommonService.closeModal()">No,
+        keep it</div>
+      <div class="btn btn-primary ml-20 mt-10 fs-12" (click)="navigateToMessages()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #deletePosInfo let-d="dismiss" id="deletePosInfo">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="clientCommonService.closeModal('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-center">
+    <i class="fa fa-trash-alt fa-3x" aria-hidden="true"></i>
+    <p class="taskGroupArchiveTitle">Are you sure you want delete this Period of stay info we will also deleted along
+      with
+      the files if any?
+    </p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="clientCommonService.closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="clientCommonService.deletePosInfo()">Yes, Confirm
+      </div>
+    </div>
+  </div>
+</ng-template>

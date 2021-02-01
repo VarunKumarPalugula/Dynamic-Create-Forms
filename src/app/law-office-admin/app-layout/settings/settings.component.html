@@ -1,0 +1,1442 @@
+<div class="container-fluid pt-70 pb-20">
+  <div class="col-sm-12">
+    <div class="card mb-20 mt-20">
+      <div class="card-body">
+        <ngb-tabset class="navtabs-modified">
+          <ngb-tab title="Profile Details" *ngIf="(isAuthorize==false || isSubAdminAuthorize==false)">
+            <ng-template ngbTabContent>
+              <div class="row mt-6">
+                <div class="col-sm-2">
+                  <div class="lo-list">
+                    <div class="gl-listname active" id="tab-10" (click)="tabChanger($event)">Account </div>
+                  </div>
+
+                  <div class="lo-list">
+                    <div class="gl-listname" id="tab-12" (click)="tabChanger($event)">Contact </div>
+                  </div>
+                </div>
+                <div class="col-sm-10">
+
+                  <div class="marketplace-300 active" id="10">
+                    <form [formGroup]="accountForm" (ngSubmit)="changeaccountdata()">
+
+                      <div class="row">
+                        <div class="col-lg-2">
+                          <div *ngIf="previewUrl">
+                            <img class="lo-profile--image small" [src]="previewUrl" height="300" />
+                          </div>
+                          <div *ngIf="!previewUrl && orgAccountData.Image">
+                            <img class="lo-profile--image small" [src]="orgAccountData.Image" height="300" />
+                          </div>
+                          <!-- <img src="" alt="" class="lo-profile--image small"> -->
+                          <span class="uname" [style.background-color]="colors[0]"
+                            *ngIf="orgAccountData.UserName && !(orgAccountData.Image) && !(previewUrl)">{{getShortName(orgAccountData.UserName) | uppercase | slice :0:1}}</span>
+                        </div>
+
+                        <div class="col-lg-4 mt-35 mr-10">
+                          <label for="files" class="lo-fileuploader-profile">
+                            <input type="file" id="files" accept=".png, .jpg, .jpeg" (change)="fileProgress($event)">
+                            <span class="fs-16 pointer">Edit</span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row mt-20">
+                        <div class="col-sm-12">
+                          <span class="fs-14 text-muted">User Name</span>
+                          <p class="fs-14">{{orgAccountData.UserName}}</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <span class="fs-14 text-muted">Account Email</span>
+                          <p class="fs-14">{{orgAccountData.Email}}</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="">First Name: <i class="required">*</i></label>
+                          <input type="text" class="form-control" [(ngModel)]="orgAccountData.FirstName"
+                            formControlName="FirstName" autocomplete="FirstName">
+
+                          <small
+                            *ngIf="accountForm.controls['FirstName'].errors && (accountForm.controls['FirstName'].dirty || accountForm.controls['FirstName'].touched)">
+                            <small class="text-danger" *ngIf="accountForm.get('FirstName').hasError('required')">First
+                              Name is
+                              required</small>
+                            <small class="text-danger"
+                              *ngIf="accountForm.get('FirstName').hasError('minlength') && !(accountForm.get('FirstName').hasError('pattern'))">Minimum
+                              3 characters</small>
+                            <small class="text-danger" *ngIf="accountForm.get('FirstName').hasError('pattern')">Enter
+                              only
+                              characters</small>
+                          </small>
+                        </div>
+                        <!-- <div class="col-sm-3">
+                            <label for="">Middle Name</label>
+                            <input type="text" class="form-control">
+                          </div> -->
+                        <div class="col-sm-3">
+                          <label for="">Last Name: <i class="required">*</i></label>
+                          <input type="text" class="form-control" [(ngModel)]="orgAccountData.LastName"
+                            formControlName="LastName" autocomplete="LastName" />
+                          <small
+                            *ngIf="accountForm.controls['LastName'].errors && (accountForm.controls['LastName'].dirty || accountForm.controls['LastName'].touched)">
+                            <small class="text-danger" *ngIf="accountForm.get('LastName').hasError('required')">Last
+                              Name is
+                              required</small>
+                            <small class="text-danger"
+                              *ngIf="accountForm.get('LastName').hasError('minlength') && !(accountForm.get('LastName').hasError('pattern'))">Minimum
+                              3 characters</small>
+                            <small class="text-danger" *ngIf="accountForm.get('LastName').hasError('pattern')">Enter
+                              only
+                              character</small>
+                          </small>
+                        </div>
+                        <div class="col-sm-3">
+                          <label class="text-primary px-20 fs-16 pl-40 pointer mt-30"
+                            (click)="passwordPop(passwordref)">Change
+                            Password</label>
+                        </div>
+                      </div>
+                      <div class="row mt-20">
+                        <div class="col-sm-4">
+                          <button class="btn btn-primary px-20" [disabled]="!accountForm.valid"
+                            type="submit">Save</button>
+                          <button class="btn btn-outline ml-10 px-20" type="button">Cancel</button>
+                        </div>
+                      </div>
+                    </form>
+
+                  </div>
+
+                  <div class="marketplace-300" id="12">
+                    <span class="fs-16"><b>Contact Details</b> </span>
+                    <p>
+                      The below information will be used to auto-populate relevent immagration forms. So please keep
+                      this information current at all times.
+                    </p>
+                    <form [formGroup]="profileContactForm" (ngSubmit)="saveContactChanges()">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="">Daytime Phone<i class="required">*</i></label>
+                          <input type="text" class="form-control" formControlName="DayTimePhone">
+                          <small
+                            *ngIf="profileContactForm.controls['DayTimePhone'].errors && (profileContactForm.controls['DayTimePhone'].dirty || profileContactForm.controls['DayTimePhone'].touched)">
+                            <small class="text-danger"
+                              *ngIf="profileContactForm.get('DayTimePhone').hasError('required')">
+                              day time phone is required.
+                            </small>
+                          </small>
+                          <small class="text-danger" *ngIf="
+                        profileContactForm.get('DayTimePhone').hasError('maxlength') &&
+                    !profileContactForm.get('DayTimePhone').hasError('pattern')
+                  ">Maximum 10 characters</small>
+                          <small class="text-danger"
+                            *ngIf="profileContactForm.get('DayTimePhone').hasError('pattern')">Enter only
+                            numbers
+                          </small>
+
+                        </div>
+                        <div class="col-sm-3">
+                          <label for="">Mobile Phone<i class="required">*</i></label>
+                          <input type="text" class="form-control" formControlName="MobilePhone">
+                          <small
+                            *ngIf="profileContactForm.controls['MobilePhone'].errors && (profileContactForm.controls['MobilePhone'].dirty || profileContactForm.controls['MobilePhone'].touched)">
+                            <small class="text-danger"
+                              *ngIf="profileContactForm.get('MobilePhone').hasError('required')">
+                              mobile phone is required.
+                            </small>
+                          </small>
+                          <small class="text-danger" *ngIf="
+                          profileContactForm.get('MobilePhone').hasError('maxlength') &&
+  !profileContactForm.get('MobilePhone').hasError('pattern')
+">Maximum 10 characters</small>
+                          <small class="text-danger"
+                            *ngIf="profileContactForm.get('MobilePhone').hasError('pattern')">Enter only
+                            numbers
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label for="">Primary Contact Email<i class="required">*</i></label>
+                          <input type="text" class="form-control" formControlName="PrimaryContactEmail">
+                          <small
+                            *ngIf="profileContactForm.controls['PrimaryContactEmail'].errors && (profileContactForm.controls['PrimaryContactEmail'].dirty || profileContactForm.controls['PrimaryContactEmail'].touched)">
+                            <small class="text-danger"
+                              *ngIf="profileContactForm.get('PrimaryContactEmail').hasError('required')">
+                              email is required.
+                            </small>
+                          </small>
+                          <small class="text-danger"
+                            *ngIf="profileContactForm.get('PrimaryContactEmail').hasError('pattern')">Enter
+                            valid email address
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4">
+                          <button class="btn btn-primary px-25" [disabled]="!profileContactForm.valid"
+                            type="submit">Save</button>
+                          <button class="btn btn-outline ml-10" type="button">Cancel</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+
+                </div>
+              </div>
+              <!-- Contact Information end -->
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Organization Details" *ngIf="isAuthorize && isSubAdminAuthorize">
+            <ng-template ngbTabContent>
+              <div class="row mt-6">
+                <div class="col-sm-2">
+                  <div class="lo-list">
+                    <div class="gl-listname active" id="tab-1" (click)="tabChanger($event)">Primary Attorney </div>
+                  </div>
+                  <div class="lo-list">
+                    <div class="gl-listname" id="tab-2" (click)="tabChanger($event)">Contact Information </div>
+                  </div>
+                  <div class="lo-list">
+                    <div class="gl-listname" id="tab-3" (click)="tabChanger($event)">Account</div>
+                  </div>
+                </div>
+                <div class="col-sm-9">
+                  <div class="marketplace-300 active" id="1">
+                    <form [formGroup]="attorneyForm" (ngSubmit)="primaryattorney()">
+                      <!---<span class="fs-16"><b>PrimaryAttorny or accredited representative</b> </span>
+                    <p>The Information will be auto-populated in relevent fields of g-28 form. you can always choose a
+                      different attorney from your film when adding filing members</p>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <label for="">Select an Attorney</label>
+                        <select class="form-control">
+                          <option>Select an option</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <label for="">First(Given) Name*</label>
+                        <input type="text" class="form-control">
+                      </div>
+                      <div class="col-sm-3">
+                        <label for="">Middle Name*</label>
+                        <input type="text" class="form-control">
+                      </div>
+                      <div class="col-sm-3">
+                        <label for="">Last(Given) Name*</label>
+                        <input type="text" class="form-control">
+                      </div>
+                    </div> -->
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <span class="fs-16"><b>Eligibility Information of Attorney or accredited
+                              representative</b></span>
+                          <p class="normalTextFormat">
+                            The Information will be auto-populated in relevent fields of g-28 form. you can always
+                            choose a
+                            different attorney from your film when adding filing members
+                          </p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label for="">Name of Law Firm or Organization <i class="required">*</i></label>
+                          <input type="text" class="form-control"
+                            [(ngModel)]="primaryattorneyObj.NameOfLawFirmOrOrganisation"
+                            formControlName="NameOfLawFirmOrOrganisation" autocomplete="NameOfLawFirmOrOrganisation">
+                          <small
+                            *ngIf="attorneyForm.controls['NameOfLawFirmOrOrganisation'].errors && (attorneyForm.controls['NameOfLawFirmOrOrganisation'].dirty || attorneyForm.controls['NameOfLawFirmOrOrganisation'].touched)">
+                            <small class="text-danger"
+                              *ngIf="attorneyForm.get('NameOfLawFirmOrOrganisation').hasError('required')">Name of Law
+                              Firm or Organization is
+                              required</small>
+                            <small class="text-danger"
+                              *ngIf="attorneyForm.get('NameOfLawFirmOrOrganisation').hasError('pattern')">Enter Valid
+                              Name Of LawFirm Or Organisation</small>
+                            <small class="text-danger"
+                              *ngIf="(attorneyForm.get('NameOfLawFirmOrOrganisation').hasError('minlength') || attorneyForm.get('NameOfLawFirmOrOrganisation').hasError('maxlength')) && !(attorneyForm.get('NameOfLawFirmOrOrganisation').hasError('pattern'))">
+                              Name Of LawFirm Or Organisation is must be greater than 5 characters and less than 20
+                              characters
+                            </small>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label for="">License Number</label>
+                          <input type="text" class="form-control" [(ngModel)]="primaryattorneyObj.LicenseNumber"
+                            formControlName="LicenseNumber" autocomplete="LicenseNumber">
+                          <small
+                            *ngIf="attorneyForm.controls['LicenseNumber'].errors && (attorneyForm.controls['LicenseNumber'].dirty || attorneyForm.controls['LicenseNumber'].touched)">
+
+                            <small class="text-danger"
+                              *ngIf="attorneyForm.get('LicenseNumber').hasError('pattern')">Enter Valid
+                              LicenseNumber</small>
+                            <small class="text-danger"
+                              *ngIf="(attorneyForm.get('LicenseNumber').hasError('minlength') || attorneyForm.get('LicenseNumber').hasError('maxlength')) && !(attorneyForm.get('LicenseNumber').hasError('pattern'))">
+                              License Number is must be greater than 4 characters and less than 20 numbers
+                            </small>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label for="">Bar Number <i class="required">*</i></label>
+                          <input type="text" class="form-control" [(ngModel)]="primaryattorneyObj.BarNumber"
+                            formControlName="BarNumber" autocomplete="BarNumber">
+                          <small
+                            *ngIf="attorneyForm.controls['BarNumber'].errors && (attorneyForm.controls['BarNumber'].dirty || attorneyForm.controls['BarNumber'].touched)">
+                            <small class="text-danger" *ngIf="attorneyForm.get('BarNumber').hasError('required')">Bar
+                              number is
+                              required</small>
+                            <small class="text-danger" *ngIf="attorneyForm.get('BarNumber').hasError('pattern')">Enter
+                              Valid Bar Number</small>
+                            <small class="text-danger"
+                              *ngIf="(attorneyForm.get('BarNumber').hasError('minlength') || attorneyForm.get('BarNumber').hasError('maxlength')) && !(attorneyForm.get('BarNumber').hasError('pattern'))">
+                              Bar Number is must be greater than 5 characters and less than 20 characters
+                            </small>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label for="">Licensing Authority <i class="required">*</i></label>
+                          <input type="text" class="form-control" [(ngModel)]="primaryattorneyObj.LicensingAuthority"
+                            formControlName="LicensingAuthority" autocomplete="LicensingAuthority">
+                          <small
+                            *ngIf="attorneyForm.controls['LicensingAuthority'].errors && (attorneyForm.controls['LicensingAuthority'].dirty || attorneyForm.controls['LicensingAuthority'].touched)">
+                            <small class="text-danger"
+                              *ngIf="attorneyForm.get('LicensingAuthority').hasError('required')">Licensing Authority is
+                              required</small>
+                            <small class="text-danger"
+                              *ngIf="attorneyForm.get('LicensingAuthority').hasError('pattern')">Enter Valid Licensing
+                              Authority</small>
+                            <small class="text-danger"
+                              *ngIf="(attorneyForm.get('LicensingAuthority').hasError('minlength') || attorneyForm.get('LicensingAuthority').hasError('maxlength')) && !(attorneyForm.get('LicensingAuthority').hasError('pattern'))">
+                              Licensing Authority is must be greater than 3 characters and less than 15 characters
+                            </small>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label for="">Name of Recognized Organization</label>
+                          <input type="text" class="form-control"
+                            [(ngModel)]="primaryattorneyObj.NameOfRecognisedOrganisation"
+                            formControlName="NameOfRecognisedOrganisation" autocomplete="NameOfRecognisedOrganisation">
+                          <small
+                            *ngIf="attorneyForm.controls['NameOfRecognisedOrganisation'].errors && (attorneyForm.controls['NameOfRecognisedOrganisation'].dirty || attorneyForm.controls['NameOfRecognisedOrganisation'].touched)">
+
+                            <small class="text-danger"
+                              *ngIf="attorneyForm.get('NameOfRecognisedOrganisation').hasError('pattern')">Enter Valid
+                              Recognized Organization</small>
+                            <small class="text-danger"
+                              *ngIf="(attorneyForm.get('NameOfRecognisedOrganisation').hasError('minlength') || attorneyForm.get('NameOfRecognisedOrganisation').hasError('maxlength')) && !(attorneyForm.get('NameOfRecognisedOrganisation').hasError('pattern'))">
+                              Recognized Organization is must be greater than 3 characters and less than 20 characters
+                            </small>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label for="">Date of Accreditation <i class="required">*</i></label>
+                          <div class="input-group calendar">
+                            <input type="text" #dp="bsDatepicker" class="form-control"
+                              [(ngModel)]="primaryattorneyObj.DateOfAccredition" bsDatepicker [maxDate]="maxDate"
+                              [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }"
+                              formControlName="DateOfAccredition" autocomplete="DateOfAccredition" value="">
+                            <span class="input-group-prepend">
+                              <button type="button" class="btn btn-light" (click)="dp.toggle()">
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                              </button>
+                            </span>
+                          </div>
+                          <small
+                            *ngIf="attorneyForm.controls['DateOfAccredition'].errors && (attorneyForm.controls['DateOfAccredition'].dirty || attorneyForm.controls['DateOfAccredition'].touched)">
+                            <small class="text-danger"
+                              *ngIf="attorneyForm.get('DateOfAccredition').hasError('required')">Date of Accredition is
+                              required</small>
+                          </small>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="">
+                            <button class="btn btn-primary" [disabled]="!attorneyForm.valid" type="submit">Save
+                              Changes</button>
+                            <button class="btn btn-outline ml-10" type="button">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                  <div class="marketplace-300" id="2">
+                    <form [formGroup]="contactForm" (ngSubmit)="contactinformation()">
+                      <span class="fs-16"><b>Contact Information</b> </span>
+                      <p class="normalTextFormat">
+                        The Information will be auto-populated in relevent fields of g-28 form. So please keep this
+                        information Correct
+                      </p>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label for="">Street Number and Name<i class="required">*</i></label>
+                          <input type="text" class="form-control" formControlName="StreetNumberAndName">
+                          <small
+                            *ngIf="contactForm.controls['StreetNumberAndName'].errors && (contactForm.controls['StreetNumberAndName'].dirty || contactForm.controls['StreetNumberAndName'].touched)">
+                            <small class="text-danger"
+                              *ngIf="contactForm.get('StreetNumberAndName').hasError('required')">Street Number And Name
+                              is required</small>
+                            <small class="text-danger"
+                              *ngIf="(contactForm.get('StreetNumberAndName').hasError('minlength') || contactForm.get('StreetNumberAndName').hasError('maxlength')) && !(contactForm.get('StreetNumberAndName').hasError('pattern'))">
+                              Street Number And Name is must be greater than 5 characters and less than 20 characters
+                            </small>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3 fs-14">
+                          <div class="pt-30">
+                            <div class="form-check-inline">
+                              <label class="form-check-label">
+                                <input type="radio" class="form-check-input" value="Apt" (change)="changeAptSteFlr()"
+                                  formControlName="aptSteFlr">Apt
+                              </label>
+                            </div>
+                            <div class="form-check-inline">
+                              <label class="form-check-label">
+                                <input type="radio" class="form-check-input" value="Ste" (change)="changeAptSteFlr()"
+                                  formControlName="aptSteFlr">Ste
+                              </label>
+                            </div>
+                            <div class="form-check-inline">
+                              <label class="form-check-label">
+                                <input type="radio" class="form-check-input" value="Flr" (change)="changeAptSteFlr()"
+                                  formControlName="aptSteFlr">Flr
+                              </label>
+                            </div>
+                            <!-- <input type="checkbox" id="94" value="Apt" (change)="changeAptSteFlr()"
+                              [(ngModel)]="contactFormObj.Apt" formControlName="Apt">
+                            <label for="94" class="checkbox"></label> Apt
+                            <span class="ml-20">
+                              <input type="checkbox" id="95" value="Ste" (change)="changeAptSteFlr()"
+                                [(ngModel)]="contactFormObj.Ste" formControlName="Ste">
+                              <label for="95" class="checkbox"></label> Ste
+                            </span>
+                            <span class="ml-20">
+                              <input type="checkbox" id="96" value="Flr" (change)="changeAptSteFlr()"
+                                [(ngModel)]="contactFormObj.Flr" formControlName="Flr">
+                              <label for="96" class="checkbox"></label> Flr
+                            </span> -->
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <label for="">Number<i class="required" *ngIf="!isAptSteFlrNumberDisabled">*</i></label>
+                          <input type="text" class="form-control"
+                            [attr.disabled]="isAptSteFlrNumberDisabled ? '' : null" (input)="changeAptSteFlr()"
+                            formControlName="AptSteFlrNumber">
+                          <small
+                            *ngIf="contactForm.controls['AptSteFlrNumber'].errors && (contactForm.controls['AptSteFlrNumber'].dirty || contactForm.controls['AptSteFlrNumber'].touched)">
+                            <small class="text-danger"
+                              *ngIf="contactForm.get('AptSteFlrNumber').hasError('required')">Apt/Ste/Flr Number is
+                              required</small>
+                          </small>
+                          <small class="text-danger" *ngIf="(contactForm.get('AptSteFlrNumber').hasError('minlength'))">
+                            Apt/Ste/Flr is must be greater than 4 characters
+                          </small>
+                          <small class="text-danger" *ngIf="(contactForm.get('AptSteFlrNumber').hasError('maxlength'))">
+                            Apt/Ste/Flr is must be lesser than 100 characters
+                          </small>
+                          <small class="text-danger"
+                            *ngIf="contactForm.get('AptSteFlrNumber').hasError('pattern')">Apt/Ste/Flr accepts only
+                            alpha numeric
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="">City or Town<i class="required">*</i></label>
+                          <input type="text" class="form-control" formControlName="CityOrTown">
+                          <small
+                            *ngIf="contactForm.controls['CityOrTown'].errors && (contactForm.controls['CityOrTown'].dirty || contactForm.controls['CityOrTown'].touched)">
+                            <small class="text-danger" *ngIf="contactForm.get('CityOrTown').hasError('required')">City
+                              Or Town is required
+                            </small>
+                            <small class="text-danger" *ngIf="contactForm.get('CityOrTown').hasError('pattern')">Enter
+                              Valid City Or Town</small>
+                          </small>
+                          <small class="text-danger"
+                            *ngIf="(contactForm.get('CityOrTown').hasError('minlength') || contactForm.get('CityOrTown').hasError('maxlength')) && !(contactForm.get('CityOrTown').hasError('pattern'))">
+                            City Or Town is must be greater than 5 characters and less than 15 characters
+                          </small>
+                        </div>
+                        <div class="col-sm-3">
+                          <label for="">Province</label>
+                          <input type="text" class="form-control" formControlName="Province">
+                          <small
+                            *ngIf="contactForm.controls['Province'].errors && (contactForm.controls['Province'].dirty || contactForm.controls['Province'].touched)">
+                            <small class="text-danger" *ngIf="contactForm.get('Province').hasError('pattern')">Enter
+                              Valid Province</small>
+                            <small class="text-danger"
+                              *ngIf="(contactForm.get('Province').hasError('minlength') || contactForm.get('Province').hasError('maxlength')) && !(contactForm.get('Province').hasError('pattern'))">
+                              Province is must be greater than 2 characters and less than 5 characters
+                            </small>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3 form-group">
+                          <label for="">Country<i class="required">*</i></label>
+
+                          <select (change)="commonService.onCountryChange($event.target.value)" class="form-control"
+                            formControlName="Country">
+                            <option hidden></option>
+                            <option *ngFor="let countries of commonService.allCountriesList" [value]="countries.name">
+                              {{countries.name}}
+                            </option>
+                          </select>
+                          <small
+                            *ngIf="contactForm.controls['Country'].errors && (contactForm.controls['Country'].dirty || contactForm.controls['Country'].touched)">
+                            <small class="text-danger" *ngIf="contactForm.get('Country').hasError('required')">Country
+                              is required</small>
+                          </small>
+                        </div>
+                        <div class="col-sm-3 form-group">
+                          <label for="">State<i class="required">*</i></label>
+                          <select class="form-control" formControlName="State">
+                            <option hidden></option>
+                            <option *ngFor="let state of commonService.states" [value]="state.name">
+                              {{state.name}}</option>
+                          </select>
+                          <small
+                            *ngIf="contactForm.controls['State'].errors && (contactForm.controls['State'].dirty || contactForm.controls['State'].touched)">
+                            <small class="text-danger" *ngIf="contactForm.get('State').hasError('required')">State is
+                              required</small>
+                          </small>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="">Zipcode (postal code) <i class="required">*</i></label>
+                          <input type="text" class="form-control" formControlName="ZipCode">
+                          <small
+                            *ngIf="contactForm.controls['ZipCode'].errors && (contactForm.controls['ZipCode'].dirty || contactForm.controls['ZipCode'].touched)">
+                            <small class="text-danger" *ngIf="contactForm.get('ZipCode').hasError('required')">Zipcode
+                              is required</small>
+                            <small class="text-danger" *ngIf="contactForm.get('ZipCode').hasError('pattern')">Enter
+                              Valid Zipcode</small>
+                            <small class="text-danger"
+                              *ngIf="(contactForm.get('ZipCode').hasError('minlength') || contactForm.get('ZipCode').hasError('maxlength')) && !(contactForm.get('ZipCode').hasError('pattern'))">
+                              Zipcode is must be greater than 4 characters and less than 10 numbers
+                            </small>
+                          </small>
+                        </div>
+                        <div class="col-sm-3">
+                          <label for="">Fax</label>
+                          <input type="text" class="form-control" formControlName="Fax">
+                          <small
+                            *ngIf="contactForm.controls['Fax'].errors && (contactForm.controls['Fax'].dirty || contactForm.controls['Fax'].touched)">
+                            <small class="text-danger" *ngIf="contactForm.get('Fax').hasError('pattern')">Enter
+                              Valid FaxNumber</small>
+                            <small class="text-danger"
+                              *ngIf="(contactForm.get('Fax').hasError('minlength') || contactForm.get('Fax').hasError('maxlength')) && !(contactForm.get('ZipCode').hasError('pattern'))">
+                              Fax number is must be greater than 4 characters and less than 13 numbers
+                            </small>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="">Daytime Phone</label>
+                          <input type="text" class="form-control" formControlName="DaytimePhone">
+                          <small
+                            *ngIf="contactForm.controls['DaytimePhone'].errors && (contactForm.controls['DaytimePhone'].dirty || contactForm.controls['DaytimePhone'].touched)">
+                            <small class="text-danger" *ngIf="contactForm.get('DaytimePhone').hasError('pattern')">Enter
+                              Valid DaytimePhone</small>
+                          </small>
+                        </div>
+                        <div class="col-sm-3">
+                          <label for="">Mobile Phone</label>
+                          <input type="text" class="form-control" formControlName="MobilePhone">
+                          <small
+                            *ngIf="contactForm.controls['MobilePhone'].errors && (contactForm.controls['MobilePhone'].dirty || contactForm.controls['MobilePhone'].touched)">
+                            <small class="text-danger" *ngIf="contactForm.get('MobilePhone').hasError('pattern')">Enter
+                              Valid MobilePhone</small>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label for="">Email</label>
+                          <input type="text" class="form-control" formControlName="Email">
+                          <small
+                            *ngIf="contactForm.controls['Email'].errors && (contactForm.controls['Email'].dirty || contactForm.controls['Email'].touched)">
+                            <small class="text-danger" *ngIf="contactForm.get('Email').hasError('pattern')">Enter Valid
+                              EmailID</small>
+                          </small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <div class="">
+                            <button class="btn btn-primary" [disabled]="!contactForm.valid" type="submit">Save
+                              Changes</button>
+                            <button class="btn btn-outline ml-10" type="button">Cancel</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <form [formGroup]="accountForm" (ngSubmit)="changeaccountdata()">
+                    <div class="marketplace-300" id="3">
+                      <div class="row">
+                        <div class="col-lg-2">
+                          <div *ngIf="previewUrl">
+                            <img class="lo-profile--image small" [src]="previewUrl" height="300" />
+                          </div>
+                          <div *ngIf="!previewUrl && orgAccountData.Image">
+                            <img class="lo-profile--image small" [src]="orgAccountData.Image" height="300" />
+                          </div>
+                          <!-- <img src="" alt="" class="lo-profile--image small"> -->
+                          <span class="uname" [style.background-color]="colors[0]"
+                            *ngIf="orgAccountData.UserName && !(orgAccountData.Image) && !(previewUrl)">{{getShortName(orgAccountData.UserName) | uppercase | slice :0:1}}</span>
+                        </div>
+
+                        <div class="col-lg-4 mt-35 mr-10">
+                          <label for="files" class="lo-fileuploader-profile">
+                            <input type="file" id="files" accept=".png, .jpg, .jpeg" (change)="fileProgress($event)">
+                            <span class="fs-16 pointer">Edit</span>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="row mt-20">
+                        <div class="col-sm-12">
+                          <span class="fs-14 text-muted">User Name</span>
+                          <p class="fs-14 normalTextFormat">{{orgAccountData.UserName}}</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12">
+                          <span class="fs-14 text-muted">Account Email</span>
+                          <p class="fs-14 normalTextFormat">{{orgAccountData.Email}}</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <label for="">First Name: <i class="required">*</i></label>
+                          <input type="text" class="form-control" [(ngModel)]="orgAccountData.FirstName"
+                            formControlName="FirstName" autocomplete="FirstName">
+
+                          <small
+                            *ngIf="accountForm.controls['FirstName'].errors && (accountForm.controls['FirstName'].dirty || accountForm.controls['FirstName'].touched)">
+                            <small class="text-danger" *ngIf="accountForm.get('FirstName').hasError('required')">First
+                              Name is
+                              required</small>
+                            <small class="text-danger"
+                              *ngIf="accountForm.get('FirstName').hasError('minlength') && !(accountForm.get('FirstName').hasError('pattern'))">Minimum
+                              3 characters</small>
+                            <small class="text-danger" *ngIf="accountForm.get('FirstName').hasError('pattern')">Enter
+                              only
+                              characters</small>
+                          </small>
+                        </div>
+                        <!-- <div class="col-sm-3">
+                        <label for="">Middle Name</label>
+                        <input type="text" class="form-control">
+                      </div> -->
+                        <div class="col-sm-3">
+                          <label for="">Last Name: <i class="required">*</i></label>
+                          <input type="text" class="form-control" [(ngModel)]="orgAccountData.LastName"
+                            formControlName="LastName" autocomplete="LastName" />
+                          <small
+                            *ngIf="accountForm.controls['LastName'].errors && (accountForm.controls['LastName'].dirty || accountForm.controls['LastName'].touched)">
+                            <small class="text-danger" *ngIf="accountForm.get('LastName').hasError('required')">Last
+                              Name is
+                              required</small>
+                            <small class="text-danger"
+                              *ngIf="accountForm.get('LastName').hasError('minlength') && !(accountForm.get('LastName').hasError('pattern'))">Minimum
+                              3 characters</small>
+                            <small class="text-danger" *ngIf="accountForm.get('LastName').hasError('pattern')">Enter
+                              only
+                              character</small>
+                          </small>
+                        </div>
+                        <div class="col-sm-3">
+                          <label class="text-primary px-20 fs-16 pl-40 pointer mt-30"
+                            (click)="passwordPop(passwordref)">Change
+                            Password</label>
+                        </div>
+                      </div>
+                      <div class="row mt-20">
+                        <div class="col-sm-4">
+                          <button class="btn btn-primary px-20" [disabled]="!accountForm.valid">Save</button>
+                          <!-- <button class="btn btn-outline ml-10 px-20">Cancel</button> -->
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- Contact Information end -->
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Permissions" *ngIf="isAuthorize">
+            <ng-template ngbTabContent>
+              <div class="row mt-20">
+                <div class="col-sm-4">
+                  <div class="fs-14 mt-16">1.Choose Team Member Role</div>
+                  <div class="form-group mt-5">
+                    <label for="sel1">Choose Role</label>
+                    <select class="form-control lo-select" (change)="GetTeambersOnTeamMemberStatus($event)"
+                      [(ngModel)]="selectedRole" id="role">
+                      <option [value]="item.RoleId" *ngFor="let item of teamMembersRoles">
+                        {{item.Name}}
+                      </option>
+                    </select>
+                    <!-- *ngIf="item.Name!=='Applicant'" -->
+                  </div>
+                </div>
+
+              </div>
+              <div class="row" *ngIf="teamMembersList.length>0">
+                <div class="col-sm-4">
+                  <div class="fs-14 mt-16">2. Select primary Team Member Users</div>
+                  <div class="card mt-15">
+                    <div class="card-body">
+                      <!-- <div class="alert alert-info" *ngIf="roleAlertMessage">
+                        <strong>{{roleAlertMessage}}</strong>
+                      </div> -->
+                      <!-- <div class="row p-5">
+                        <span>
+                          <br>
+                          <input type="checkbox" id="1">
+                          <label for="1" class="checkbox"></label>
+                          <strong>Select All users below</strong>
+                        </span>
+                      </div> -->
+
+                      <div class="row p-5" *ngFor="let team of teamMembersList;let i=index" [ngClass]="{
+                        'text-success':team.AdminID === AdminID
+                      }">
+                        <!-- <span>
+                          <br>
+                          <input type="checkbox" id="team{{i}}" (change)="teamMemberChange($event,team.AdminID,i)">
+                          <label for="team{{i}}" class="checkbox"></label>
+                        </span> -->
+                        <span>
+                          <img src="../../../assets/applicant.png" class="lo-profile--image extrasmall ml-5">
+                        </span>
+                        <span class="fs-12 ml-10">
+                          <b>{{team.UserName}}</b><br>
+                          <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==1"> Primary Admin</p>
+                          <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==2"> Sub Admin</p>
+                          <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==3"> Team Member</p>
+                        </span>
+                        <span class="float-right ml-97">
+                          <i class="fa fa-eye pointer" (click)="viewTeamMember(team.AdminID,i,team.TeamMemberStatus)"
+                            aria-hidden="true"></i>
+                          <!-- <i class="fas fa-pencil-alt pl-20 pointer" aria-hidden="true" (click)="Modelsent(sent)"></i> -->
+                        </span>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-8" *ngIf="loadPermissions">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="fs-14 mt-14">3. Configure Permission for selected Users</div>
+                    </div>
+                    <div class="col-md-6">
+
+                    </div>
+                  </div>
+                  <div class="row mt-10">
+                    <div class="col-md-12">
+                      <ng-container *ngIf="!isTeamMember">
+
+                        <div class="card">
+                          <div class="card-header bg-white pointer" (click)="toggler($event,'one')">
+                            <strong>Team Management Permissions</strong><i class="fa fa-chevron-down float-right"
+                              aria-hidden="true"></i>
+                          </div>
+                          <div class="card-body d-n" id="one">
+                            <!-- <ng-container *ngFor="let teamPermission of teamMemberPermissions;let ind=index"> -->
+                            <!-- <div class="row">
+                                <div class="col-md-12">
+                                  <input type="checkbox" id="10" [(ngModel)]="teamPermission.CanInviteApplicants">
+                                  <label for="10" class="checkbox"></label>
+                                  Can Invite Applicants
+                                </div>
+                              </div> -->
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="11" [(ngModel)]="teamMemberPermissions.CanInviteClients">
+                                <label for="11" class="checkbox"></label>
+                                Can Invite/Import Clients
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="t15" [(ngModel)]="teamMemberPermissions.CanDeleteClients">
+                                <label for="t15" class="checkbox"></label>
+                                Can Deactivate Clients
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="t16"
+                                  [(ngModel)]="teamMemberPermissions.CanViewProfileOfClients">
+                                <label for="t16" class="checkbox"></label>
+                                Can View Profile Of Clients
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="12" [(ngModel)]="teamMemberPermissions.CanInviteTeamMembers">
+                                <label for="12" class="checkbox"></label>
+                                Can Invite TeamMembers
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="t13"
+                                  [(ngModel)]="teamMemberPermissions.CanDeleteTeamMembers">
+                                <label for="t13" class="checkbox"></label>
+                                Can Deactivate TeamMembers
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="t14"
+                                  [(ngModel)]="teamMemberPermissions.CanViewProfileOfTeamMembers">
+                                <label for="t14" class="checkbox"></label>
+                                Can View Profile Of TeamMembers
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12 float-right">
+                                <button class="btn btn-outline float-right"
+                                  (click)="SetPrimaryTeamMemberDefaultPermissions(teamMemberPermissions)">Reset To
+                                  Default</button>
+                                <button class="btn btn-primary float-right mr-5"
+                                  (click)="SetPrimaryTeamMemberPermissions(teamMemberPermissions)">
+                                  Save
+                                  Changes
+                                </button>
+                              </div>
+                            </div>
+                            <!-- </ng-container> -->
+
+                          </div>
+                        </div>
+                        <div class="card mt-10">
+                          <div class="card-header bg-white pointer" (click)="toggler($event,'2')">
+                            <strong>Filings Permissions</strong><i class="fa fa-chevron-down float-right"
+                              aria-hidden="true"></i>
+                          </div>
+                          <div class="card-body d-n" id="2">
+                            <!-- <ng-container *ngFor="let teamFillingPermission of teamFillingsPermissions;let ind=index"> -->
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="13"
+                                  [(ngModel)]="teamFillingsPermissions.CanCreateNewFilings">
+                                <label for="13" class="checkbox"></label>
+                                Can Create New Filings
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="14"
+                                  [(ngModel)]="teamFillingsPermissions.CanDeleteEmptyFilings">
+                                <label for="14" class="checkbox"></label>
+                                Can Delete Empty Filings
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="15"
+                                  [(ngModel)]="teamFillingsPermissions.CanAddFilesToFilings">
+                                <label for="15" class="checkbox"></label>
+                                Can Add Files To Filings
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="16"
+                                  [(ngModel)]="teamFillingsPermissions.CanDeleteFilesuploadedByThem">
+                                <label for="16" class="checkbox"></label>
+                                Can Delete Files Uploaded By Them
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="24"
+                                  [(ngModel)]="teamFillingsPermissions.CanDownloadFilesFromFiling">
+                                <label for="24" class="checkbox"></label>
+                                Can Download Files From Filing
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="25" [(ngModel)]="teamFillingsPermissions.CanPrintFile">
+                                <label for="25" class="checkbox"></label>
+                                Can Print File
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="17" [(ngModel)]="teamFillingsPermissions.CanCreateTasks">
+                                <label for="17" class="checkbox"></label>
+                                Can Create Tasks
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="18" [(ngModel)]="teamFillingsPermissions.CanEditTasks">
+                                <label for="18" class="checkbox"></label>
+                                Can Edit Tasks
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="f18" [(ngModel)]="teamFillingsPermissions.CanDeleteTasks">
+                                <label for="f18" class="checkbox"></label>
+                                Can Delete Tasks
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="19" [(ngModel)]="teamFillingsPermissions.CanCreateSubTasks">
+                                <label for="19" class="checkbox"></label>
+                                Can Create SubTasks
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="20" [(ngModel)]="teamFillingsPermissions.CanEditSubTasks">
+                                <label for="20" class="checkbox"></label>
+                                Can Edit SubTasks
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="f19" [(ngModel)]="teamFillingsPermissions.CanDeleteSubTasks">
+                                <label for="f19" class="checkbox"></label>
+                                Can Delete SubTasks
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="21" [(ngModel)]="teamFillingsPermissions.CanReplyToClients">
+                                <label for="21" class="checkbox"></label>
+                                Can Reply To Clients
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="f22" [(ngModel)]="teamFillingsPermissions.CanDeleteMessage">
+                                <label for="f22" class="checkbox"></label>
+                                Can Delete Message
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="22"
+                                  [(ngModel)]="teamFillingsPermissions.CanReplyToApplicants">
+                                <label for="22" class="checkbox"></label>
+                                Can Reply To Applicants
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="23"
+                                  [(ngModel)]="teamFillingsPermissions.CanUpdateFilingStatus">
+                                <label for="23" class="checkbox"></label>
+                                Can Update Filing Status
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="26"
+                                  [(ngModel)]="teamFillingsPermissions.CanAddEditShippingOutDetailsToFiling">
+                                <label for="26" class="checkbox"></label>
+                                Can Add Edit ShippingOut Details To Filing
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="27"
+                                  [(ngModel)]="teamFillingsPermissions.CanAddEditReceiptNumberToFiling">
+                                <label for="27" class="checkbox"></label>
+                                Can Add Edit ReceiptNumber To Filing
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12 float-right">
+                                <button class="btn btn-outline float-right"
+                                  (click)="SetPrimaryTeamMemberDefaultFilingPermissions(teamFillingsPermissions)">Reset
+                                  To Default</button>
+                                <button class="btn btn-primary float-right mr-5"
+                                  (click)="SetPrimaryTeamMemberFilingPermissions(teamFillingsPermissions)">
+                                  Save
+                                  Changes
+                                </button>
+                              </div>
+                            </div>
+                            <!-- </ng-container> -->
+                          </div>
+                        </div>
+                        <div class="card mt-10">
+                          <div class="card-header bg-white pointer" (click)="toggler($event,'4')">
+                            <strong>Template Permissions</strong><i class="fa fa-chevron-down float-right"
+                              aria-hidden="true"></i>
+                          </div>
+                          <div class="card-body d-n" id="4">
+                            <!-- <ng-container *ngFor="let templatePermission of teamTemplatePermissions;let tempind=index"> -->
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="28" [(ngModel)]="teamTemplatePermissions.CanCreateTemplates">
+                                <label for="28" class="checkbox"></label>
+                                Can Create Templates
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="29" [(ngModel)]="teamTemplatePermissions.CanEditTemplates">
+                                <label for="29" class="checkbox"></label>
+                                Can Edit Templates
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12 float-right">
+                                <button class="btn btn-outline float-right"
+                                  (click)="SetPrimaryTeamMemberDefaultTemplatePermissions(teamTemplatePermissions)">Reset
+                                  To Default</button>
+                                <button class="btn btn-primary float-right mr-5"
+                                  (click)="SetPrimaryTeamMemberTemplatePermissions(teamTemplatePermissions)">
+                                  Save
+                                  Changes
+                                </button>
+                              </div>
+                            </div>
+                            <!-- </ng-container> -->
+                          </div>
+                        </div>
+                        <div class="card mt-10">
+                          <div class="card-header bg-white pointer" (click)="toggler($event,'5')">
+                            <strong>Document Library Permissions</strong><i class="fa fa-chevron-down float-right"
+                              aria-hidden="true"></i>
+                          </div>
+                          <div class="card-body d-n" id="5">
+                            <!-- <ng-container *ngFor="let templateDocPermission of teamMemberDocumentLibraryPermissions;let tempdocind=index"> -->
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="30"
+                                  [(ngModel)]="teamMemberDocumentLibraryPermissions.CanDeleteFilesFromDocLibrary">
+                                <label for="30" class="checkbox"></label>
+                                Can Delete Files From Doc Library
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="31"
+                                  [(ngModel)]="teamMemberDocumentLibraryPermissions.CanEditFileInfoInDocLibrary">
+                                <label for="31" class="checkbox"></label>
+                                Can Edit File Info In Doc Library
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <input type="checkbox" id="32"
+                                  [(ngModel)]="teamMemberDocumentLibraryPermissions.CanUploadFileToDocLibrary">
+                                <label for="32" class="checkbox"></label>
+                                Can Upload File To Doc Library
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12 float-right">
+                                <button class="btn btn-outline float-right"
+                                  (click)="SetPrimaryTeamMemberDefaultDocumentLibraryPermissions(teamMemberDocumentLibraryPermissions)">Reset
+                                  To Default</button>
+                                <button class="btn btn-primary float-right mr-5"
+                                  (click)="SetPrimaryTeamMemberDocumentLibraryPermissions(teamMemberDocumentLibraryPermissions)">
+                                  Save
+                                  Changes
+                                </button>
+                              </div>
+                            </div>
+                            <!-- </ng-container> -->
+                          </div>
+                        </div>
+                      </ng-container>
+                      <div class="card mt-10" *ngIf="isTeamMember">
+                        <div class="card-header bg-white pointer" (click)="toggler($event,'6')">
+                          <strong>Team Member Filing Permissions</strong><i class="fa fa-chevron-down float-right"
+                            aria-hidden="true"></i>
+                        </div>
+                        <div class="card-body d-n" id="6">
+                          <!-- <ng-container *ngFor="let teamFillingsPermissions of teamMemberFillingsPermissions;let ind=index"> -->
+
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="33"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanCreateNewFilings">
+                              <label for="33" class="checkbox"></label>
+                              Can Create NewFilings
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="34"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanDeleteEmptyFilings">
+                              <label for="34" class="checkbox"></label>
+                              Can Delete Empty Filings
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="35"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanAddFilesToFilings">
+                              <label for="35" class="checkbox"></label>
+                              Can Add Files To Filings
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="36"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanDeleteFilesuploadedByThem">
+                              <label for="36" class="checkbox"></label>
+                              Can Delete Filesuploaded By Them
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="37" [(ngModel)]="teamMemberFillingsPermissions.CanCreateTasks">
+                              <label for="37" class="checkbox"></label>
+                              Can Create Tasks
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="38" [(ngModel)]="teamMemberFillingsPermissions.CanEditTasks">
+                              <label for="38" class="checkbox"></label>
+                              Can Edit Tasks
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="t38"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanDeleteTasks">
+                              <label for="t38" class="checkbox"></label>
+                              Can Delete Tasks
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="39"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanCreateSubTasks">
+                              <label for="39" class="checkbox"></label>
+                              Can Create SubTasks
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="40"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanEditSubTasks">
+                              <label for="40" class="checkbox"></label>
+                              Can Edit SubTasks
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="t39"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanDeleteSubTasks">
+                              <label for="t39" class="checkbox"></label>
+                              Can Delete SubTasks
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="41"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanReplyToClients">
+                              <label for="41" class="checkbox"></label>
+                              Can Reply To Clients
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="42"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanReplyToApplicants">
+                              <label for="42" class="checkbox"></label>
+                              Can Reply To Applicants
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="f43"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanDeleteMessage">
+                              <label for="f43" class="checkbox"></label>
+                              Can Delete Message
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="43"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanUpdateFilingStatus">
+                              <label for="43" class="checkbox"></label>
+                              Can Update Filing Status
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="44"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanDownloadFilesFromFiling">
+                              <label for="44" class="checkbox"></label>
+                              Can Download Files From Filing
+                            </div>
+                          </div>
+
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="45" [(ngModel)]="teamMemberFillingsPermissions.CanPrintFile">
+                              <label for="45" class="checkbox"></label>
+                              Can Print File
+                            </div>
+                          </div>
+
+
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="46"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanAddEditShippingOutDetailsToFiling">
+                              <label for="46" class="checkbox"></label>
+                              Can Add Edit ShippingOut Details To Filing
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <input type="checkbox" id="47"
+                                [(ngModel)]="teamMemberFillingsPermissions.CanAddEditReceiptNumberToFiling">
+                              <label for="47" class="checkbox"></label>
+                              Can Add Edit ReceiptNumber To Filing
+                            </div>
+                          </div>
+
+
+                          <div class="row">
+                            <div class="col-md-12 float-right">
+
+                              <button class=" btn btn-outline float-right ">Reset To Default</button>
+
+                              <button class="btn btn-primary float-right mr-5"
+                                (click)="SetTeamMemberFilingPermissions(teamMemberFillingsPermissions)">
+                                Save
+                                Changes
+                              </button>
+                            </div>
+                          </div>
+                          <!-- </ng-container> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" *ngIf="teamMembersList.length==0 &&selectedRole">
+                <div class="col-md-6 mx-auto text-align">
+                  <p class="fs-28"> Looks like there are no settings</p>
+                  <p classs="fs-16">
+                    no settings found
+                  </p>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Templates" *ngIf="isAuthorize">
+            <ng-template ngbTabContent>
+              <div class="row mt-20">
+                <div class="col-sm-2">
+                  <label for="filingType">Sort by filing type :</label>
+                  <select #selectedId class="form-control" id="filingType" (change)="sortFilingType($event.target.value)">
+                    <option value="">All</option>
+                    <option *ngFor="let fTypes of filingTypes" value="{{ fTypes.FilingName }}">{{ fTypes.FilingName }}</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn btn-primary m-auto float-right" [routerLink]="['/admin/settings/template']">Add New Template</button>
+                <table class="table table-striped mt-50">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th>Title</th>
+                      <th>Filing Type</th>
+                      <th>Created By</th>
+                      <th>Created On</th>
+                      <th>Updated By</th>
+                      <th>Updated On</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let templateData of templateTableDta | filter: sortFilter">
+                      <td>{{templateData.DisplayTemplateTitle}}</td>
+                      <td>{{templateData.FilingType}}</td>
+                      <td>
+                        {{templateData.CreatedBy}}
+                      </td>
+                      <td>{{templateData.CreatedOn | date}}</td>
+                      <td>{{templateData.ModifiedBy}}</td>
+                      <td>{{templateData.ModifiedOn | date}}</td>
+                      <td>
+                        <button class="btn btn-link" (click)="viewTemplate(templateData.DisplayTemplateTitle)">View Details</button>
+                      </td>
+                    </tr>
+                    <tr *ngIf="templateTableDta.length == 0" rowspan="7" class="text-center">No records </tr>
+                  </tbody>
+                </table>
+              </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Billings" *ngIf="isAuthorize && isSubAdminAuthorize">
+            <ng-template ngbTabContent>
+              sndkjd
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #sent let-d="dismiss" id="Modelsent" class="w-400">
+  <div class="gl-modal--header p-20 bg-model text-white text-align">
+    <p class="fs-16 mb-0 d-ib">Edit Role</p>
+    <span class="modal-close close" (click)="Closesent('close click')">
+      <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-20">
+    <div class="row">
+      <div class="col-sm-1">
+        <img src="../../../assets/applicant.png" class="lo-profile--image extrasmall">
+      </div>
+      <div class="col-sm-10 fs-13 ml-20">
+        <p><b>Herman Back </b></p>
+        <p class="fs-14"> Primay Admin</p>
+        <p class="fs-14 mt-5"> Paralagal Associate</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Choose Role</label>
+          <select class="form-control lo-select" id="sel1">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label>Job Title</label>
+            <div class="form-group">
+              <input type="text" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="button" class="btn btn-outline">Cancel</button>
+    <button type="button" class="btn btn-primary">Save Changes</button>
+  </div>
+</ng-template>
+
+
+<ng-template #passwordref let-d="dismiss" id="passwordref" class="w-400">
+  <div class="gl-modal--header p-20 bg-model text-white text-align">
+    <p class="fs-16 mb-0 d-ib">Change Password</p>
+    <span class="modal-close close" (click)="closePasswordPop('close click')">
+      <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-20">
+    <div [formGroup]="passwordFormGroup">
+      <div class="form-group">
+        <label for="CurrentPassword">Current Password <i class="required">*</i></label>
+        <input class="form-control" type="password" name="currentpassword" [(ngModel)]="passwordObj.OldPassword"
+          formControlName="currentpassword">
+      </div>
+      <!-- <p class="bg-danger" *ngIf="passwordFormGroup.controls.currentpassword.errors?.required && passwordFormGroup.controls.currentpassword.touched">CurrentPassword
+            is required</p> -->
+      <small
+        *ngIf="passwordFormGroup.controls['currentpassword'].errors && (passwordFormGroup.controls['currentpassword'].dirty || passwordFormGroup.controls['currentpassword'].touched)">
+        <small class="text-danger" *ngIf="passwordFormGroup.get('currentpassword').hasError('required')">Current
+          Password is
+          required</small>
+        <small class="text-danger" *ngIf="passwordFormGroup.get('currentpassword').hasError('pattern')"> Current
+          Password must
+          consists of at least 8 characters and one special symbol & digit</small>
+      </small>
+
+      <div class="form-group">
+        <label for="password">Password <i class="required">*</i></label>
+        <input class="form-control" type="password" name="password" [(ngModel)]="passwordObj.NewPassword"
+          formControlName="password">
+      </div>
+      <!-- <p class="bg-danger" *ngIf="passwordFormGroup.controls.password.errors?.required && passwordFormGroup.controls.password.touched">Password
+          is required</p> -->
+      <small
+        *ngIf="passwordFormGroup.controls['password'].errors && (passwordFormGroup.controls['password'].dirty || passwordFormGroup.controls['password'].touched)">
+        <small class="text-danger" *ngIf="passwordFormGroup.get('password').hasError('required')">Password is
+          required</small>
+        <small class="text-danger" *ngIf="passwordFormGroup.get('password').hasError('pattern')"> Password must
+          consists of at least 8 characters and one special symbol & digit</small>
+      </small>
+
+      <div class="form-group">
+        <label for="Confirm Password">Confirm Password <i class="required">*</i></label>
+        <input class="form-control" type="password" name="confirmPassword" formControlName="confirmPassword">
+      </div>
+
+      <!-- <small *ngIf="passwordFormGroup.controls['confirmPassword'].errors && (passwordFormGroup.controls['confirmPassword'].dirty || passwordFormGroup.controls['confirmPassword'].touched)">
+            <small class="text-danger" *ngIf="passwordFormGroup.get('confirmPassword').hasError('required')">Confirm Password is
+              required</small>
+            <small class="text-danger" *ngIf="passwordFormGroup.get('confirmPassword').hasError('pattern')"> Confirm Password must
+              consists of at least 8 characters and one special symbol & digit</small>
+              <small class="text-danger" *ngIf="passwordFormGroup.get('confirmPassword').hasError('doesMatchPassword')">Confirm Password does not match</small>
+          </small> -->
+
+      <small class="text-danger"
+        *ngIf="passwordFormGroup.controls.confirmPassword.errors?.required && passwordFormGroup.controls.confirmPassword.touched">Confirm
+        Password is
+        required</small>
+      <small class="text-danger" *ngIf="passwordFormGroup.errors?.doesMatchPassword">Password does not match</small>
+    </div>
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="button" class="btn btn-primary" (click)="changeaccountpassword()"
+      [disabled]="!passwordFormGroup.valid">Save Changes</button>
+    <button type="button" class="btn btn-outline" (click)="closePasswordPop('close click')">Cancel</button>
+  </div>
+</ng-template>
+

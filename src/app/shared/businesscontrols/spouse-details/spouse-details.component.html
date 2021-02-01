@@ -1,0 +1,50 @@
+<div class="current__spouse">
+    <div class="d__flex_between current__spouse__div" *ngIf="CurrentSpouseDetails">
+        <div>
+            <div> Current Spouse </div>
+            <small> If you are currently married, provide information about your current spouse </small>
+        </div>
+        <button class="blue__button cursor__pointer" (click)="openSpouseDetails(currentModel)"> Add Details
+        </button>
+    </div>
+    <div *ngIf="!CurrentSpouseDetails" class="card__data">
+        <div class="d-flex justify-content-between align-items-center pl-10">
+            <strong> Current Spouse </strong>
+            <button class="cursor__pointer button__class" (click)="openSpouseDetails(currentModel)">
+                Change
+            </button>
+        </div>
+        <app-current-spouse-popup [data]="commonService.fileData['Martial Status and History']['finalObj']['married']" [isCard]="true" (cardMode)="openSpouseDetails(currentModel)">
+        </app-current-spouse-popup>
+
+    </div>
+    <div class="d__flex_between current__spouse__div" *ngIf="priorSpouseDetails">
+        <div>
+            <div> Prior Spouse </div>
+            <small> If you are currently married, provide information about your current spouse </small>
+        </div>
+        <button class="blue__button cursor__pointer" (click)="openSpouseDetails(priorModel)"> Add Details
+        </button>
+    </div>
+    <div *ngIf="!priorSpouseDetails" class="card__data">
+        <div class="d-flex justify-content-between align-items-center pl-10">
+            <strong> Prior Spouse </strong>
+            <button class="cursor__pointer button__class" (click)="openSpouseDetails(priorModel)">
+                Change
+            </button>
+        </div>
+        <app-prior-spouse-popup [data]="commonService.fileData['Martial Status and History']['finalObj']['married']" [isCard]="true">
+        </app-prior-spouse-popup>
+    </div>
+</div>
+
+<ng-template #currentModel let-d="dismiss" id="currentModel">
+    <app-current-spouse-popup [data]="commonService.fileData['Martial Status and History']['finalObj']['married']" (emitCloseModel)="closeModel($event, 'CurrentSpouseDetails')">
+    </app-current-spouse-popup>
+</ng-template>
+
+
+<ng-template #priorModel let-d="dismiss" id="priorModel">
+    <app-prior-spouse-popup [data]="commonService.fileData['Martial Status and History']['finalObj']['married']" (emitCloseModel)="closeModel($event, 'priorSpouseDetails')">
+    </app-prior-spouse-popup>
+</ng-template>

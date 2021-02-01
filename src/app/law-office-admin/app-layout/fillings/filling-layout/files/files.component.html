@@ -1,0 +1,582 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="float-right text-primary fs-13">
+      <ul>
+        <li (click)="downloadMultipleFiles()"
+          *ngIf="FillingPermissions? (FillingPermissions.CanDownloadFilesFromFiling):true && Files.length">
+          <i class="fas fa-cloud-download-alt text-primary"></i> Download Selected
+        </li>
+        <li (click)="uploadSection()" *ngIf="FillingPermissions? (FillingPermissions.CanAddFilesToFilings):true">
+          <i class="fas fa-cloud-upload-alt text-primary"></i> Upload
+        </li>
+        <!-- <li (click)="Modelsent(sent)" *ngIf="FillingPermissions? (FillingPermissions.CanAddFilesToFilings):true">
+          <i class="fa fa-download text-primary" *ngIf="false"></i> Import
+        </li> -->
+        <li (click)="modelNewfolder(newfolder)"
+          *ngIf="FillingPermissions? (FillingPermissions.CanAddFilesToFilings):true">
+          <i class="fa fa-folder text-primary"></i> New Folder
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="FillingPermissions? (FillingPermissions.CanAddFilesToFilings):true">
+  <div class="container-fluid mt-70 mb-10" *ngIf="uploadFilesDiv">
+    <div class="row">
+      <div class="col-sm-4 col-xs-5">
+        <div class="form-group">
+          <label for="files" class="lo-fileuploader p-30 fs-16">
+            <p class="text-muted">Drag files to upload
+              <br>
+              <br>OR
+              <br>
+              <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+            </p>
+            <i class="fa fa-cloud-download" aria-hidden="true"></i>
+
+            <input type="file" id="files" name="files" (change)="selectedFiles($event)" multiple>
+          </label>
+        </div>
+        <label for="files" class="lo-fileuploader-profile">
+          <input type="file" id="files" name="files" (change)="selectedFiles($event)" multiple>
+          <span class="btn btn-outline fs-13">Choose File</span>
+        </label>
+      </div>
+      <div class="col-sm-5 col-xs-5">
+        <p class="fs-16">Upload File(s)</p>
+        <div class="mb-30" *ngFor="let file of filesNames; let i = index">
+          <span *ngIf="file.fileType == 'pdf' || file.fileType == 'PDF'">
+            <img src="../../../../../assets/icons/pdf.png" class="w-31 h-40">
+          </span>
+          <span
+            *ngIf="file.fileType == 'jpg' || file.fileType == 'jpeg' || file.fileType == 'png' || file.fileType == 'PNG' || file.fileType == 'JPG' || file.fileType == 'JPEG'">
+            <img src="../../../../../../assets/icons/image.svg" class="w-31 h-40">
+          </span>
+          <span *ngIf="file.fileType == 'csv'">
+            <img src="../../../../../../assets/icons/csv.png" class="w-31 h-40">
+          </span>
+          <span *ngIf="file.fileType == 'doc' || file.fileType == 'docx'">
+            <img src="../../../../../../assets/icons/word.png" class="w-31 h-40">
+          </span>
+          <span *ngIf="file.fileType == 'txt' || file.fileType == 'Txt'">
+            <img src="../../../../../../assets/icons/txt.png" class="w-31 h-40">
+          </span>
+          <span *ngIf="file.fileType == 'xlsx' || file.fileType == 'xls'">
+            <img src="../../../../../../assets/icons/excel.png" class="w-31 h-40">
+          </span>
+          <span *ngIf="file.fileType != 'xlsx' && file.fileType != 'pdf' && file.fileType != 'PDF' && file.fileType != 'xls' && file.fileType != 'txt' && 
+          file.fileType != 'doc' && file.fileType != 'docx' && file.fileType != 'csv' && file.fileType != 'jpg' &&  
+          file.fileType != 'jpeg' && file.fileType != 'png' && file.fileType != 'PNG' && file.fileType != 'JPG' && file.fileType != 'JPEG'">
+            <img src="../../../../../../assets/icons/attachment.png" class="w-31 h-40">
+          </span>
+          <label class="ml-10 mt--13">{{file.name}}</label>
+          <span class="float-right fs-13">
+            <i class="fa fa-trash text-muted pointer" aria-hidden="true"
+              (click)="ModelUploadFiledelete(uploadfiledelete,i)"></i>
+            <br>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7 mx-auto">
+        <button class="btn btn-primary ml-20 fs-12 float-right" [disabled]="isSelectedFiles"
+          (click)="fileUpload()">Done</button>
+        <div class="btn btn-outline fs-12 float-right" (click)="backToFiles()">Cancel</div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="filesDiv && (Files.length ||foldersListData.length) && !uploadFilesDiv">
+  <div class="row mt-20">
+    <div class="col-md-4">
+      <div class="form-group">
+        <select class="form-control" id="sel1" [(ngModel)]="sortBy" (change)="sort()">
+          <option value="1">Sort</option>
+          <option value="FileName ">By FileName</option>
+          <option value="fileType">By FileType</option>
+          <option value="UploadedOn">By Date</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="text" class="form-control br-0" placeholder="Search" [(ngModel)]="searchele"
+          aria-label="Input group example" aria-describedby="btnGroupAddon">
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-white bl-0" id="btnGroupAddon">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 ml-8">
+      <input type="checkbox" id="all" [(ngModel)]="selectAll" (change)="selectAllFiles($event)">
+      <label for="all" class="checkbox"></label> Select all
+    </div>
+  </div>
+  <div class="row mt-20">
+    <div class="col-sm-9 bbt py-10" *ngFor="let folder of foldersListData  | orderBy: key:reverse | filter: searchele">
+      <span class="ml-30">
+        <img src="../../../../../../assets/icons/folder-2.png" class="w-31 h-36"
+          (click)="routeToFolder(folder.FolderId)">
+        {{folder.FolderName}}
+      </span>
+      <span class="ml-15 fs-14 mt-10">{{folder.folderName}}</span>
+      <span class="float-right fs-16">
+        <ul>
+          <li>
+            <i class="fa fa-eye pointer" (click)="routeToFolder(folder.FolderId)" [ngbTooltip]="tipViewContent"></i>
+            <ng-template #tipViewContent>View</ng-template>
+          </li>
+          <li>
+            <i class="fas fa-trash-alt pointer"
+              *ngIf="(FillingPermissions  && FillingPermissions.CanDeleteFilesuploadedByThem && folder.CreatedBy==username) ? true : (folder.CreatedBy==username?true: false)"
+              (click)="deleteFolderpopup(deletefolderPopUpTemp,folder.FolderId)" [ngbTooltip]="tipDeleteFolder"></i>
+            <ng-template #tipDeleteFolder>Delete</ng-template>
+          </li>
+        </ul>
+      </span>
+      <br>
+      <ul class="fs-12 text-muted">
+        <li class="ml-60 personname">
+          {{folder.CreatedBy}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-9 bbt ml-10" *ngFor="let file of Files  | orderBy: key:reverse | filter: searchele">
+      <div class="row py-10">
+        <div class="col-sm-9">
+          <input type="checkbox" id="{{file.FileId}}" name="{{file.FileId}}" [(ngModel)]="file.selected" class="ml-10"
+            (change)="SelectedOptionalFiles(file.FileId, file.FileName , file.fileType , $event)">
+          <label for="{{file.FileId}}" class="checkbox"></label>
+          <span *ngIf="file.fileType == 'pdf' || file.fileType == 'PDF'">
+            <img src="../../../../../assets/icons/pdf.png" class="w-31 h-40">
+          </span>
+          <span
+            *ngIf="file.fileType == 'jpg' || file.fileType == 'jpeg' || file.fileType == 'png' || file.fileType == 'PNG' || file.fileType == 'JPG' || file.fileType == 'JPEG'">
+            <img src="../../../../../../assets/icons/image.svg" class="w-31 h-40">
+          </span>
+          <span *ngIf="file.fileType == 'csv'">
+            <img src="../../../../../../assets/icons/csv.png" class="w-31 h-40">
+          </span>
+          <span *ngIf="file.fileType == 'doc' || file.fileType == 'docx'">
+            <img src="../../../../../../assets/icons/word.png" class="w-31 h-40">
+          </span>
+          <span *ngIf="file.fileType == 'txt' || file.fileType == 'Txt'">
+            <img src="../../../../../../assets/icons/txt.png" class="w-31 h-40">
+          </span>
+          <span *ngIf="file.fileType == 'xlsx' || file.fileType == 'xls'">
+            <img src="../../../../../../assets/icons/excel.png" class="w-31 h-40">
+          </span>
+          <span *ngIf="file.fileType != 'xlsx' && file.fileType != 'pdf' && file.fileType != 'PDF' && file.fileType != 'xls' && file.fileType != 'txt' && 
+          file.fileType != 'doc' && file.fileType != 'docx' && file.fileType != 'csv' && file.fileType != 'jpg' &&  
+          file.fileType != 'jpeg' && file.fileType != 'png' && file.fileType != 'PNG' && file.fileType != 'JPG' && file.fileType != 'JPEG'">
+            <img src="../../../../../../assets/icons/attachment.png" class="w-31 h-40">
+          </span>
+          <span class="ml-3 mt-10">{{file.FileName}}</span>
+          <br>
+          <ul class="ml-50 fs-12 text-muted">
+            <li class="normalTextFormat">
+              {{file.CreatedBy}}
+            </li>
+            <li>
+              {{file. UploadedOn | date:'MM/dd/yyyy hh:mm  a'}}
+            </li>
+            <li>
+              <span class="float-right fs-13" *ngIf="username==file.CreatedBy">
+                <span class="text-primary pointer" (click)="Modelprivacy(privacy, file.FileName, file.FileId,file)">
+                  <i class="fa fa-lock fa-sm" aria-hidden="true"></i>
+                  privacy options
+                </span>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div class="col-sm-3">
+          <ul class="float-right fs-16"
+            *ngIf="file.fileType == 'csv' || file.fileType == 'xlsx' || file.fileType == 'xls'">
+            <li>
+              <i class="fa fa-eye" (click)="viewFile(file.FileId)"></i>
+            </li>
+            <li>
+              <i class="fas fa-cloud-download-alt"
+                *ngIf="FillingPermissions? (FillingPermissions.CanDownloadFilesFromFiling):true"
+                (click)="downloadFile(file.FileId,file.FileName,file.fileType)"></i>
+            </li>
+            <li>
+              <i class="fas fa-trash-alt"
+                *ngIf="(FillingPermissions  && FillingPermissions.CanDeleteFilesuploadedByThem && file.CreatedBy==username) ? true : (file.CreatedBy==username?true: false)"
+                (click)="removeFilepopup(deletefilePopUpTemp,file.FileId)"></i>
+            </li>
+
+          </ul>
+          <ul class="float-right fs-16"
+            *ngIf="file.fileType != 'csv' && file.fileType != 'xlsx' && file.fileType != 'xls'">
+            <li>
+              <i class="fa fa-eye" (click)="viewFile(file.FileId)" [ngbTooltip]="tipViewContent"></i>
+              <ng-template #tipViewContent>View</ng-template>
+            </li>
+            <li>
+              <i class="fa fa-print" *ngIf="FillingPermissions? (FillingPermissions.CanPrintFile):true"
+                (click)="printFile(file.FileId,file.FileName,file.fileType)" [ngbTooltip]="tipPrintContent"></i>
+              <ng-template #tipPrintContent>Print</ng-template>
+            </li>
+            <li>
+              <i class="fas fa-cloud-download-alt"
+                *ngIf="FillingPermissions? (FillingPermissions.CanDownloadFilesFromFiling):true"
+                (click)="downloadFile(file.FileId,file.FileName,file.fileType)" [ngbTooltip]="tipDownloadContent"></i>
+              <ng-template #tipDownloadContent>Download</ng-template>
+            </li>
+            <li>
+              <i class="fas fa-trash-alt"
+                *ngIf="(FillingPermissions  && FillingPermissions.CanDeleteFilesuploadedByThem && file.CreatedBy==username) ? true : (file.CreatedBy==username?true: false)"
+                (click)="removeFilepopup(deletefilePopUpTemp,file.FileId)" [ngbTooltip]="tipDeleteContent"></i>
+              <ng-template #tipDeleteContent>Delete</ng-template>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<!--***************** empty state start*********************  ModelFolderdelete  deleteFolder(folder.FolderId)-->
+<ng-container *ngIf="!filesDiv && !uploadFilesDiv">
+  <div class="row mt-100">
+    <div class="col-md-4 mx-auto text-align">
+      <img src="../../../../../../assets/filings-files-empty.svg" class="w-100">
+    </div>
+  </div>
+  <div class="row mt-20">
+    <div class="col-md-6 mx-auto text-align">
+      <p class="fs-28"> Looks like there are no files</p>
+      <p classs="fs-16">
+        <!-- Lorem ipsium lorem some relevant text goes here to help user understand what they can do to search and sort for better
+      results -->
+      </p>
+      <!-- <input type="file" class="btn btn-primary" (change)="selectedFiles($event)" multiple>
+    <button (click)="fileUpload()">Upload</button> -->
+      <label for="signature" class="gl-fileuploader-profile"
+        *ngIf="FillingPermissions? (FillingPermissions.CanAddFilesToFilings):true"
+        (change)="emptySelectedFiles($event)">
+        <input type="file" id="signature" multiple />
+        <span class="btn btn-primary btn-md px-32">Upload a new file</span>
+      </label>
+      <span (click)="modelNewfolder(newfolder)"
+        *ngIf="FillingPermissions? (FillingPermissions.CanAddFilesToFilings):true">or
+        <span class="btn btn-primary btn-md px-32"> New Folder</span>
+      </span>
+    </div>
+  </div>
+</ng-container>
+<!--***************** empty state end********************* -->
+
+
+<ng-template #sent let-d="dismiss" id="Modelsent">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Import</span>
+    <span class="modal-close close" (click)="closeModal()">
+      <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-20">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-1 col-xs-3">
+            <img src="../../../../../../assets/dropbox.png" class="h-40 w-40">
+          </div>
+          <div class="col-sm-11 col-xs-9">
+            <span class="fs-18 pl-15">Import a file from Dropbox</span>
+            <p class="fs-12 pl-15">We will open a new page to help connect to your Dropbox account</p>
+            <button class="btn btn-primary pl-10 fs-13 ml-9" (click)="Connectdropbox()">Connect to Dropbox</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-10">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-sm-1 col-xs-3">
+            <img src="../../../../../../assets/google-drive.jpg" class="h-40 w-40">
+          </div>
+          <div class="col-sm-11 col-xs-9">
+            <span class="fs-18 pl-15">Import a file from Google Drive</span>
+            <p class="fs-12 pl-15">We will open a new page to help connect to your Google Drive</p>
+            <button class="btn btn-primary pl-10 fs-13 ml-9" (click)="ConnectgoogleDrive()">Connect to Google
+              Drive</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="button" class="btn btn-outline" (click)="closeModal()">close</button>
+  </div>
+
+</ng-template>
+<ng-template #newfolder let-d="dismiss" id="modelNewfolder">
+  <form [formGroup]="FolderForm">
+    <div class="gl-modal-header p-20 bg-model text-white text-align">
+      <span class="fs-16 mb-0 d-ib">New Folder</span>
+      <span class="modal-close close" (click)="closeModal()">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-20">
+      <div class="row">
+        <div class="col-sm-12">
+          <label for="">Folder Name</label>
+          <input type="text" class="form-control lo-input" [(ngModel)]="folderName" name="folderName" name="folderName"
+            formControlName="folderName" />
+          <small *ngIf="
+        FolderForm.controls['folderName'].errors &&
+              (FolderForm.controls['folderName'].dirty || FolderForm.controls['folderName'].touched)
+            ">
+            <small class="text-danger" *ngIf="FolderForm.get('folderName').hasError('required')">folder Name is
+              required.
+            </small>
+            <small class="text-danger" *ngIf="
+                FolderForm.get('folderName').hasError('minlength') &&
+                !FolderForm.get('folderName').hasError('pattern')
+              ">Minimum 1 characters</small>
+            <small class="text-danger" *ngIf="FolderForm.get('folderName').hasError('pattern')">Enter only Characters
+              and Numbers</small>
+          </small>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" (click)="closeModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="createFolder()"
+        [disabled]="!FolderForm.valid">Save</button>
+    </div>
+  </form>
+</ng-template>
+
+
+<ng-template #privacy let-d="dismiss" id="Modelprivacy">
+  <div class="gl-modal-header p-20 text-align">
+    <span class="fs-16 mb-0 d-ib">File Privacy</span>
+    <span class="modal-close close" (click)="closeModal()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-20">
+    <div class="row">
+      <div class="col-sm-12 bbt pb-10">
+        <ul>
+          <li>
+            <span *ngIf="CreatedFileType == 'csv' || CreatedFileType == 'xlsx' || CreatedFileType == 'xls'">
+              <img src="../../../../../../assets/icons/csv.png" class="w-31 h-36">
+            </span>
+            <span
+              *ngIf="CreatedFileType == 'jpeg' || CreatedFileType == 'jpg' || CreatedFileType == 'png' || CreatedFileType == 'PNG' || CreatedFileType == 'JPG' ">
+              <img src="../../../../../../assets/icons/image.svg" class="w-31 h-36">
+            </span>
+            <span *ngIf="CreatedFileType == 'pdf'">
+              <img src="../../../../../../assets/icons/pdf.png" class="w-31 h-36">
+            </span>
+            <span *ngIf="CreatedFileType == 'txt' || CreatedFileType == 'doc'|| CreatedFileType == 'docx'">
+              <img src="../../../../../../assets/icons/txt.png" class="w-31 h-36">
+            </span>
+          </li>
+          <li>
+            <span class="ml-3">{{fileName}} </span>
+            <br>
+            <ul class="fs-12 text-muted">
+              <li>
+                {{FileCreatedby}}
+              </li>
+              <li>
+                {{FileCreatedDate | date:'MM/dd/yyyy hh:mm  a'}}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row mt-10">
+      <div class="col-sm-8">
+        <div class="card" (click)="toggler($event,'one')">
+          <div class="card-header bg-white">
+            <ul>
+              <li>
+                <input type="checkbox" id="allClients" name="allClients" (change)="selectAllClientMembers($event, 2)"
+                  [(ngModel)]="allClients">
+                <label for="allClients" class="checkbox"></label>
+              </li>
+              <li class="fs-16">
+                All Client Members
+              </li>
+              <div class="float-right">
+
+                <li>
+                  <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </div>
+        <div class="row d-n pt-10" id="one">
+          <div class="col-sm-12 pr-68" *ngFor="let client of adminClientsListData; let i = index">
+            <ul>
+              <li class="mt-5">
+                <input type="checkbox" id="{{i}}" name="{{i}}" [(ngModel)]="client.selected"
+                  (change)="selectClientMembers($event, i)">
+                <label for="{{i}}" class="checkbox"></label>
+              </li>
+              <li>
+                <span class="uname"
+                  [style.background-color]="colors[i]">{{getShortName(client.UserName) | uppercase}}</span>
+              </li>
+              <li>
+                <span class="fs-16">
+                  <b>{{client.UserName}}</b>
+                </span>
+                <p class="fs-12" *ngIf="client.Role">{{client.Role}}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card mt-7" (click)="toggler($event,'two')">
+          <div class="card-header bg-white">
+            <ul>
+              <li>
+                <input type="checkbox" id="allTeam" name="allTeam" (change)="selectAllTeamMembers($event, 1)"
+                  [(ngModel)]="allTeam">
+                <label for="allTeam" class="checkbox"></label>
+              </li>
+              <li class="fs-16">
+                All Team Members
+              </li>
+              <div class="float-right">
+
+                <li>
+                  <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row d-n pt-10" id="two">
+      <div class="col-sm-8 pr-68" *ngFor="let team of teamMembersList; let j = index">
+        <ul *ngIf="team.UserName!=username">
+          <li class="mt-5">
+            <input type="checkbox" id="0{{j}}" name="0{{j}}" [(ngModel)]="team.selected"
+              (change)="selectTeamMembers($event, j)">
+            <label for="0{{j}}" class="checkbox"></label>
+          </li>
+          <li>
+            <!-- <img src="" alt="" class="lo-profile--image extrasmall float-right"> -->
+            <span class="uname"
+              [style.background-color]="Subcolors[j]">{{getShortName(team.UserName) | uppercase}}</span>
+          </li>
+          <li>
+            <span class="fs-16">
+              <b>{{team.UserName }}</b>
+            </span>
+            <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==1 ||team.TeamMemberStatus==null">Admin</p>
+            <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==2"> Sub Admin</p>
+            <p class="fs-12 lh-6" *ngIf="team.TeamMemberStatus==3"> Team Member</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="closeModal()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="filePermissions()">Done</button>
+  </div>
+</ng-template>
+
+<ng-template #filedelete let-d="dismiss" id="ModelFiledelete">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Are you sure want to delete this file?</span>
+    <span class="modal-close close" (click)="closeModal()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+
+
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="closeModal()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="Deletefile()">Delete</button>
+  </div>
+</ng-template>
+
+
+<ng-template #uploadfiledelete let-d="dismiss" id="ModelUploadFiledelete">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Are you sure want to delete this file?</span>
+    <span class="modal-close close" (click)="closeModal()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="closeModal()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="removeSelectedFile()">Delete</button>
+  </div>
+</ng-template>
+
+<ng-template #folderdelete let-d="dismiss" id="ModelFolderdelete">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">Are you sure want to delete this folder?</span>
+    <span class="modal-close close" (click)="closeModal()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+
+
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="closeModal()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="Deletefilesfolder()">Delete</button>
+  </div>
+</ng-template>
+
+<ng-template #deletefolderPopUpTemp let-d="dismiss" id="deletefolderPopUpTemp">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeModal('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+    <i class="fa fa-trash-alt fa-3x ml-160" aria-hidden="true"></i>
+    <p class="fs-20 mt-15"> Are you sure you want to delete folder?</p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="Deletefilesfolder()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #deletefilePopUpTemp let-d="dismiss" id="deletefilePopUpTemp">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closeModal('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+    <i class="fa fa-trash-alt fa-3x ml-160" aria-hidden="true"></i>
+    <p class="fs-20 mt-15"> Are you sure you want to delete file?</p>
+    <div class="text-align">
+      <div class="btn btn-outline fs-12 mt-10" (click)="closeModal()">No, keep it</div>
+      <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="removeFile()">Yes, Confirm</div>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<!-- <iframe src="{{fileAccessPath}}" frameborder="0" width="100%" height="550px"></iframe> -->

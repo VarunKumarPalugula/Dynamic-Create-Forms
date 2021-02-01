@@ -1,0 +1,142 @@
+<form [formGroup]="accountForm" (ngSubmit)="changeaccountdata()">
+  <div class="col-lg-10 offset-lg-2" id="">
+    <div class="row">
+      <div class="col-lg-2">
+        <div *ngIf="previewUrl">
+          <img class="lo-profile--image small" [src]="previewUrl" height="300" />
+        </div>
+        <div *ngIf="!previewUrl && orgAccountData.Image">
+          <img class="lo-profile--image small" [src]="orgAccountData.Image" height="300" />
+        </div>
+        <!-- <img src="" alt="" class="lo-profile--image small"> -->
+        <span class="uname" [style.background-color]="colors[0]"
+          *ngIf="orgAccountData.UserName && !(orgAccountData.Image) && !(previewUrl)">{{getShortName(orgAccountData.UserName) | uppercase | slice :0:1}}</span>
+      </div>
+
+      <div class="col-lg-4 mt-35 mr-10">
+        <label for="files" class="lo-fileuploader-profile">
+          <input type="file" id="files" accept=".png, .jpg, .jpeg" (change)="fileProgress($event)">
+          <span class="fs-16 pointer">Edit</span>
+        </label>
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-sm-12">
+        <span class="fs-14 text-muted">User Name</span>
+        <p class="fs-14 normalTextFormat">{{orgAccountData.UserName}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <span class="fs-14 text-muted">Account Email</span>
+        <p class="fs-14 normalTextFormat">{{orgAccountData.Email}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <label for="">First Name <i class="required">*</i></label>
+        <input type="text" class="form-control" [(ngModel)]="orgAccountData.FirstName" formControlName="FirstName"
+          autocomplete="FirstName">
+
+        <small
+          *ngIf="accountForm.controls['FirstName'].errors && (accountForm.controls['FirstName'].dirty || accountForm.controls['FirstName'].touched)">
+          <small class="text-danger" *ngIf="accountForm.get('FirstName').hasError('required')">First
+            Name is
+            required</small>
+          <small class="text-danger"
+            *ngIf="accountForm.get('FirstName').hasError('minlength') && !(accountForm.get('FirstName').hasError('pattern'))">Minimum
+            3 characters</small>
+          <small class="text-danger" *ngIf="accountForm.get('FirstName').hasError('pattern')">Enter
+            only
+            characters</small>
+        </small>
+      </div>
+      <div class="col-sm-3">
+        <label for="">Last Name <i class="required">*</i></label>
+        <input type="text" class="form-control" [(ngModel)]="orgAccountData.LastName" formControlName="LastName"
+          autocomplete="LastName" />
+        <small
+          *ngIf="accountForm.controls['LastName'].errors && (accountForm.controls['LastName'].dirty || accountForm.controls['LastName'].touched)">
+          <small class="text-danger" *ngIf="accountForm.get('LastName').hasError('required')">Last
+            Name is
+            required</small>
+          <small class="text-danger"
+            *ngIf="accountForm.get('LastName').hasError('minlength') && !(accountForm.get('LastName').hasError('pattern'))">Minimum
+            3 characters</small>
+          <small class="text-danger" *ngIf="accountForm.get('LastName').hasError('pattern')">Enter
+            only
+            character</small>
+        </small>
+      </div>
+      <div class="col-sm-3">
+        <label class="text-primary px-20 fs-16 pl-40 pointer mt-30" (click)="passwordPop(passwordref)">Change
+          Password</label>
+      </div>
+    </div>
+    <div class="row mt-20">
+      <div class="col-sm-4">
+        <button class="btn btn-primary px-20" [disabled]="!accountForm.valid">Save</button>
+        <button class="btn btn-outline ml-10 px-20" type="button">Cancel</button>
+      </div>
+    </div>
+  </div>
+</form>
+<ng-template #passwordref let-d="dismiss" id="passwordref" class="w-400">
+  <div class="gl-modal--header p-20 bg-model text-white text-align">
+    <p class="fs-16 mb-0 d-ib">Change Password</p>
+    <span class="modal-close close" (click)="closePasswordPop('close click')">
+      <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-20">
+    <div [formGroup]="passwordFormGroup">
+      <div class="form-group">
+        <label for="CurrentPassword">Current Password <i class="required">*</i></label>
+        <input class="form-control" type="password" name="currentpassword" [(ngModel)]="passwordObj.OldPassword"
+          formControlName="currentpassword">
+      </div>
+      <!-- <p class="bg-danger" *ngIf="passwordFormGroup.controls.currentpassword.errors?.required && passwordFormGroup.controls.currentpassword.touched">CurrentPassword
+            is required</p> -->
+      <small
+        *ngIf="passwordFormGroup.controls['currentpassword'].errors && (passwordFormGroup.controls['currentpassword'].dirty || passwordFormGroup.controls['currentpassword'].touched)">
+        <small class="text-danger" *ngIf="passwordFormGroup.get('currentpassword').hasError('required')">Current
+          Password is
+          required</small>
+        <small class="text-danger" *ngIf="passwordFormGroup.get('currentpassword').hasError('pattern')"> Current
+          Password must
+          consists of at least 8 characters and one special symbol & digit</small>
+      </small>
+
+      <div class="form-group">
+        <label for="password">Password <i class="required">*</i></label>
+        <input class="form-control" type="password" name="password" [(ngModel)]="passwordObj.NewPassword"
+          formControlName="password">
+      </div>
+      <!-- <p class="bg-danger" *ngIf="passwordFormGroup.controls.password.errors?.required && passwordFormGroup.controls.password.touched">Password
+          is required</p> -->
+      <small
+        *ngIf="passwordFormGroup.controls['password'].errors && (passwordFormGroup.controls['password'].dirty || passwordFormGroup.controls['password'].touched)">
+        <small class="text-danger" *ngIf="passwordFormGroup.get('password').hasError('required')">Password is
+          required</small>
+        <small class="text-danger" *ngIf="passwordFormGroup.get('password').hasError('pattern')"> Password must
+          consists of at least 8 characters and one special symbol & digit</small>
+      </small>
+
+      <div class="form-group">
+        <label for="Confirm Password">Confirm Password <i class="required">*</i></label>
+        <input class="form-control" type="password" name="confirmPassword" formControlName="confirmPassword">
+      </div>
+
+      <small class="text-danger"
+        *ngIf="passwordFormGroup.controls.confirmPassword.errors?.required && passwordFormGroup.controls.confirmPassword.touched">Confirm
+        Password is
+        required</small>
+      <small class="text-danger" *ngIf="passwordFormGroup.errors?.doesMatchPassword">Password does not match</small>
+    </div>
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="submit" class="btn btn-primary" (click)="changeaccountpassword()"
+      [disabled]="!passwordFormGroup.valid">Save Changes</button>
+    <button type="button" class="btn btn-outline" (click)="closePasswordPop('close click')">Cancel</button>
+  </div>
+</ng-template>

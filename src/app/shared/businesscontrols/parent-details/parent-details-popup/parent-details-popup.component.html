@@ -1,0 +1,181 @@
+<!-- <div class="card"  [hidden]="isCard">
+    <div class="card-body">
+        <h5>Parent</h5>
+        <button class="float-right mt--15 btn btn-outline-primary btn-sm" (click)="addParentDetails(addParentModalId)">Add details</button>
+        <p class="card-text">Information about your parent i.e father or mother </p>
+    </div>
+</div> -->
+    <div class="gl-modal-header p-20 bg-model text-white text-align" [hidden]="isCard">
+      <span class="fs-16 mb-0 d-ib">Parent details</span>
+      <span class="modal-close close" (click)="cancel()">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-20">
+      <form [formGroup]="parentDetailsForm" autocomplete="off">
+
+      <h5>Parent1's Legal Name</h5>
+      <div class="row">
+        <div class="col-lg-4 form-group">
+          <label>First name(Given name)</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddFirstname') }}</strong></div>
+          <input [hidden]="isCard" type="text" class="form-control" formControlName="AddFirstname" (blur)="logValidationErrors()" />
+          <span class="text-danger" *ngIf="formErrors.AddFirstname">    
+            {{formErrors.AddFirstname}}    
+         </span>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label>Middle Name</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddMiddlename') }}</strong></div>
+          <input [hidden]="isCard" type="text" class="form-control" formControlName="AddMiddlename" (blur)="logValidationErrors()" />
+          <span class="text-danger" *ngIf="formErrors.AddMiddlename">    
+            {{formErrors.AddMiddlename}}    
+         </span>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label>Last name(Family name)</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddLastName') }}</strong></div>
+          <input [hidden]="isCard" type="text" class="form-control" formControlName="AddLastName" (blur)="logValidationErrors()" />
+          <span class="text-danger" *ngIf="formErrors.AddLastName">    
+            {{formErrors.AddLastName}}    
+         </span>
+        </div>
+      </div>
+      <h5>Parent1's Name at Birth(if different form legal name)</h5>
+      <div class="row">
+        <div class="col-lg-4 form-group">
+          <label>First name(Given name)</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddFirstname1') }}</strong></div>
+          <input [hidden]="isCard" type="text" class="form-control" formControlName="AddFirstname1" (blur)="logValidationErrors()" />
+          <span class="text-danger" *ngIf="formErrors.AddFirstname1">    
+            {{formErrors.AddFirstname1}}    
+         </span>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label>Middle Name</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddMiddlename1') }}</strong></div>
+          <input [hidden]="isCard" type="text" class="form-control" formControlName="AddMiddlename1" (blur)="logValidationErrors()" />
+          <span class="text-danger" *ngIf="formErrors.AddMiddlename1">    
+            {{formErrors.AddMiddlename1}}    
+         </span>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label>Last name(Family name)</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddLastName1') }}</strong></div>
+          <input [hidden]="isCard" type="text" class="form-control" formControlName="AddLastName1" (blur)="logValidationErrors()" />
+          <span class="text-danger" *ngIf="formErrors.AddLastName1">    
+            {{formErrors.AddLastName1}}    
+         </span>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-lg-4 form-group">
+          <label>Parent's Gender</label><br/>
+          <div><strong [hidden]="!isCard"> {{ formData('AddChildGender') }}</strong></div>
+          <label [hidden]="isCard">
+            <div class="form-check-inline">
+              <label class="form-check-label">
+                  <input [hidden]="isCard" type="radio" class="form-check-input" value="Male"
+                      formControlName="AddChildGender">Male
+              </label>
+          </div>
+          </label>
+          <label [hidden]="isCard">
+            <div class="form-check-inline">
+            <label class="form-check-label">
+              <input [hidden]="isCard" type="radio" class="form-check-input" value="Female"
+                  formControlName="AddChildGender">Female
+          </label>
+        </div>
+          </label>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label>Parent's Date of Birth</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddDob') }}</strong></div>
+          <input [hidden]="isCard" type="date" class="form-control" formControlName="AddDob" (blur)="logValidationErrors()" />
+          <span class="text-danger" *ngIf="formErrors.AddDob">    
+            {{formErrors.AddDob}}    
+         </span>
+        </div>       
+      </div>
+      <h5>Parent1's Place of Birth</h5>
+      <div class="row">
+        <div class="col-lg-4 form-group">
+          <label for="sel1">Country</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddCountry') }}</strong></div>
+          <select [hidden]="isCard" (change)="commonService.onCountryChange($event.target.value)" class="form-control" formControlName="AddCountry" id="sel1" (blur)="logValidationErrors()">
+            <option hidden></option>
+            <option *ngFor="let countries of commonService.allCountriesList" [value]="countries.name">
+              {{countries.name}}
+            </option>
+          </select>
+          <span class="text-danger" *ngIf="formErrors.AddCountry">    
+            {{formErrors.AddCountry}}    
+         </span>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label for="sel1">State</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddStateorProvince') }}</strong></div>
+          <select [hidden]="isCard" class="form-control" formControlName="AddStateorProvince" id="sel1" (blur)="logValidationErrors()">
+            <option hidden></option>
+                <option *ngFor="let state of commonService.states" [value]="state.name">
+                  {{state.name}}</option>
+          </select>
+          <span class="text-danger" *ngIf="formErrors.AddStateorProvince">    
+            {{formErrors.AddStateorProvince}}    
+         </span>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label>City or town or village</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddCityorTown') }}</strong></div>
+          <input [hidden]="isCard" type="text" class="form-control"
+            formControlName="AddCityorTown" (blur)="logValidationErrors()" />
+            <span class="text-danger" *ngIf="formErrors.AddCityorTown">    
+              {{formErrors.AddCityorTown}}    
+           </span>
+        </div>
+        </div>
+      <h5>Parent1's Current Residence(if currently living)</h5>
+      <div class="row">
+        <div class="col-lg-4 form-group">
+          <label for="sel1">Country</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddCountry1') }}</strong></div>
+          <select [hidden]="isCard" (change)="commonService.onCountryChange($event.target.value)" class="form-control" formControlName="AddCountry1" id="sel1" (blur)="logValidationErrors()">
+            <option hidden></option>
+            <option *ngFor="let countries of commonService.allCountriesList" [value]="countries.name">
+              {{countries.name}}
+            </option>
+          </select>
+          <span class="text-danger" *ngIf="formErrors.AddCountry1">    
+            {{formErrors.AddCountry1}}    
+         </span>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label for="sel1">State</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddStateorProvince1') }}</strong></div>
+          <select [hidden]="isCard" class="form-control" formControlName="AddStateorProvince1" id="sel1" (blur)="logValidationErrors()">
+            <option hidden></option>
+                <option *ngFor="let state of commonService.states" [value]="state.name">
+                  {{state.name}}</option>
+          </select>
+          <span class="text-danger" *ngIf="formErrors.AddStateorProvince1">    
+            {{formErrors.AddStateorProvince1}}    
+         </span>
+        </div>
+        <div class="col-lg-4 form-group">
+          <label>City or town or village</label>
+          <div><strong [hidden]="!isCard"> {{ formData('AddCityorTown1') }}</strong></div>
+          <input [hidden]="isCard" type="text" class="form-control"
+            formControlName="AddCityorTown1" (blur)="logValidationErrors()" />
+            <span class="text-danger" *ngIf="formErrors.AddCityorTown1">    
+              {{formErrors.AddCityorTown1}}    
+           </span>
+        </div>
+      </div>
+      </form>
+    </div>
+    <div class="modal-footer bg-model-footer" [hidden]="isCard">
+      <button type="button" class="btn btn-primary" (click)="save()" [disabled]="!parentDetailsForm.valid">Save</button>
+      <button type="button" class="btn btn-outline"  (click)="cancel()">Cancel</button>
+    </div>

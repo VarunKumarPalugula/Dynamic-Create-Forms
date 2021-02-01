@@ -1,0 +1,61 @@
+<div class="employement">
+
+    <div *ngFor='let in of empArray;let i = index'>
+        <div *ngIf="finalObj() && finalObj(i + 1); then empContlIf else empContlEls"></div>
+        <ng-template #empContlIf>
+            <div class="card__data">
+                <div class="d-flex justify-content-between align-items-center pl-10">
+                    <strong> Employment -{{i + 1}} </strong>
+                    <button class="cursor__pointer button__class" (click)="openEmpDetails(empModel, i + 1)">
+                        Change
+                    </button>
+                </div>
+                <app-employment-history-popup [isCard]="true" [data]="finalObj(i + 1)">
+                </app-employment-history-popup>
+            </div>
+        </ng-template>
+        <ng-template #empContlEls>
+            <div class="d__flex_between employement__div">
+                <div>
+                    <div>Employment -{{i + 1}} </div>
+                </div>
+                <button class="blue__button cursor__pointer" (click)="openEmpDetails(empModel, i + 1)"> Add Details
+                </button>
+            </div>
+        </ng-template>
+    </div>
+
+    <a *ngIf="empArray.length !== maxEmp" class="d__flex_end employement__add cursor__pointer">
+        <span (click)="incEmployment()"> + Add</span>
+    </a>
+
+    <div class="card__data" *ngIf="(finalObj() && finalObj('outsideUSA'))">
+        <div class="d-flex justify-content-between align-items-center pl-10">
+            <strong>Employment - Outside U.S.A</strong>
+            <button class="cursor__pointer button__class" (click)="optionChang()">
+                Change
+            </button>
+        </div>
+        <app-employment-history-popup [isCard]="true" [data]="finalObj('outsideUSA')">
+        </app-employment-history-popup>
+    </div>
+    
+    <div class="d__flex_between employement__div" *ngIf="showOutsideUSA">
+        <div>
+            <div> Employment - Outside U.S.A </div>
+        </div>
+        
+        <label >Choose from employment options</label>
+        <select class="form-control lo-select" (change)="selEmpOption()" [(ngModel)]="selectEmpOption">
+            <option *ngFor="let opt of empOptions; let i=index" value="{{opt}}">
+              {{opt}}</option>
+          </select>
+        <button class="blue__button cursor__pointer" (click)="openEmpDetails(empModel, 'outsideUSA')"> Add Details
+        </button>
+    </div>
+
+</div>
+<ng-template #empModel let-d="dismiss" id="empModel">
+    <app-employment-history-popup (emitCloseModel)="closeModel($event, selectedEmp)" [data]="commonService.fileData['Employment history']['finalObj'][selectedEmp]">
+    </app-employment-history-popup>
+</ng-template>

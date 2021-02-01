@@ -1,0 +1,118 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white lo-navbar shadow-sm">
+    <a class="navbar-brand"  routerLink="/client/applayout/fillings">
+      <img src="../../../assets/logo.jpg" class="logo" />
+    </a>
+    <button class="navbar-toggler" type="button" aria-controls="navbar-menu" aria-label="Toggle navigation"
+      (click)="toggleMenu()" [attr.aria-expanded]="menuHidden">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="navbar-menu" class="collapse navbar-collapse float-xs-none lo-header" [ngbCollapse]="!menuHidden">
+      <div class="navbar-nav">
+        <!-- <a class="nav-item nav-link" routerLink="/client/applayout/home" routerLinkActive="active">
+          <span class="font-weight-bold">Home</span>
+        </a> -->
+        <a class="nav-item nav-link" routerLink="/client/applayout/fillings" routerLinkActive="active">
+          <span class="font-weight-bold">Filings</span>
+        </a>
+        <a class="nav-item nav-link" routerLink="/client/applayout/connections/inviteslist" routerLinkActive="active">
+          <span class="font-weight-bold">Connections</span>
+        </a>
+        <a class="nav-item nav-link" *ngIf="!this.permissionService.isOnlyForApplicant()" routerLink="/client/applayout/team" routerLinkActive="active">
+          <span class="font-weight-bold">Team</span>
+        </a>
+        <!-- <a class="nav-item nav-link" routerLink="/client/applayout/documents" routerLinkActive="active">
+          <span translate>Documents</span>
+        </a> -->
+        <a class="nav-item nav-link" routerLink="/client/applayout/settings" routerLinkActive="active">
+          <span class="font-weight-bold">Settings</span>
+        </a>
+      </div>
+      <!-- <div class="navbar-nav ml-auto">
+        <div class="nav-item" ngbDropdown placement="bottom-right">
+          <div ngbDropdownMenu aria-labelledby="language-dropdown"></div>
+        </div>
+        <div class="nav-item" ngbDropdown placement="bottom-right">
+          <a id="user-dropdown" class="nav-link" ngbDropdownToggle>
+            <i class="fas fa-user-circle"></i>
+          </a>
+          <div ngbDropdownMenu aria-labelledby="user-dropdown">
+            <div class="dropdown-divider"></div>
+          </div>
+        </div>
+      </div> -->
+      <div class="navbar-nav ml-auto">
+        <div class="nav-item" ngbDropdown placement="bottom-right">
+          <a id="user-dropdown" class="nav-link" ngbDropdownToggle>
+            <!-- <span data-letters="U"></span> -->
+            <!-- <span class="uname">{{userLogoName}}</span> -->
+            <span *ngIf=" sessionImage.getImage()">
+              <img class="lo-profile--image small" [src]="sessionImage.getImage()" height="100" />
+            </span>
+            <span class="uname" *ngIf="!sessionImage.getImage()">{{userLogoName}}</span>
+          </a>
+          <div ngbDropdownMenu aria-labelledby="user-dropdown" class="pb-0"
+            style="box-shadow: 1px 1px 10px #888; left: -220px;">
+            <div class="row pb-10">
+              <div class="w-100" *ngIf="sessionImage.getImage()">
+                <img class="inuname" [src]="sessionImage.getImage()" height="100" />
+              </div>
+              <div class="w-100" *ngIf="!sessionImage.getImage()">
+                <span class="inuname">{{userLogoName}}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="w-100 text-center">
+                <span class="normalTextFormat unameEmail"><strong>{{username}}</strong></span><br />
+                <span class="normalTextFormat unameEmail">{{email}}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="logoutdd" translate>
+                  <button class="btn btn-primary btn-sm"
+                    (click)="logOutConfirmationPopUp(logOutConfirmationPopUpModal)">Logout</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- LogOutConfirmation PopUp -->
+
+<ng-template #logOutConfirmationPopUpModal let-d="dismiss" id="logOutConfirmationPopUpModal">
+  <div class="lo-modal--header mt-5 mr-5">
+    <span class="modal-close close" (click)="closeConfirmDelete('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body pb-30 text-cener mx-auto">
+    <div class="row pb-10">
+      <div class="w-100" *ngIf="sessionImage.getImage()">
+        <img class="inuname" [src]="sessionImage.getImage()" height="100" />
+      </div>
+      <div class="w-100" *ngIf="!sessionImage.getImage()">
+        <span class="inuname">{{userLogoName}}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="w-100 text-center">
+        <span class="normalTextFormat unameEmail"><strong>{{username}}</strong></span>
+      </div>
+    </div>
+
+    <p class="fs-20 mt-15">
+      Are you sure you want to Logout??
+    </p>
+    <div class="text-align">
+      <button type="button" class="btn btn-outline fs-12 mt-10" (click)="closeConfirmDelete('close click')">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-danger ml-20 mt-10 fs-12" (click)="logout()">Yes, Confirm</button>
+    </div>
+  </div>
+</ng-template>

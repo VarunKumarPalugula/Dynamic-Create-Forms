@@ -1,0 +1,82 @@
+<form [formGroup]="posValidationRules" (ngSubmit)="submit()">
+  <div class="lo-modal-body p-20">
+    <div class="form-group">
+      <label>Subject's name <i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="SubjectName" />
+      <small
+        *ngIf="posValidationRules.controls['SubjectName'].errors && (posValidationRules.controls['SubjectName'].dirty || posValidationRules.controls['SubjectName'].touched)">
+        <small class="text-danger" *ngIf="posValidationRules.get('SubjectName').hasError('required')">
+          Passport Or Travel Document Number is required.
+        </small>
+      </small>
+      <small class="text-danger" *ngIf="
+posValidationRules.get('SubjectName').hasError('minlength') &&
+!posValidationRules.get('SubjectName').hasError('pattern')
+">Minimum 2 characters</small>
+      <small class="text-danger" *ngIf="
+posValidationRules.get('SubjectName').hasError('maxlength') &&
+!posValidationRules.get('SubjectName').hasError('pattern')
+">Maximum 50 characters</small>
+      <small class="text-danger" *ngIf="posValidationRules.get('SubjectName').hasError('pattern')">Enter only
+        characters
+      </small>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 form-group">
+        <label>Stayed from <i class="required">*</i></label>
+        <div class="input-group calendar">
+          <input type="text" #dp="bsDatepicker" class="form-control" bsDatepicker formControlName="StayedFrom"
+            [value]=" posValidationRules.get('StayedFrom').value | date" [maxDate]="maxDate"
+            [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }">
+          <span class="input-group-prepend">
+            <button type="button" class="btn btn-light" (click)="dp.toggle()">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <small
+          *ngIf="posValidationRules.controls['StayedFrom'].errors && (posValidationRules.controls['StayedFrom'].dirty || posValidationRules.controls['StayedFrom'].touched)">
+          <small class="text-danger" *ngIf="posValidationRules.get('StayedFrom').hasError('required')">
+            Stayed from is required
+          </small>
+        </small>
+      </div>
+      <div class="col-sm-6 form-group">
+        <label>Stayed till <i class="required">*</i></label>
+        <div class="input-group calendar">
+          <input type="text" #dp="bsDatepicker" class="form-control" bsDatepicker formControlName="StayedTill"
+            [value]=" posValidationRules.get('StayedTill').value | date" [maxDate]="maxDate"
+            [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }">
+          <span class="input-group-prepend">
+            <button type="button" class="btn btn-light" (click)="dp.toggle()">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+        <small
+          *ngIf="posValidationRules.controls['StayedTill'].errors && (posValidationRules.controls['StayedTill'].dirty || posValidationRules.controls['StayedTill'].touched)">
+          <small class="text-danger" *ngIf="posValidationRules.get('StayedTill').hasError('required')">
+            Stayed till is required
+          </small>
+        </small>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="">Number of days outside U.S.A <i class="required">*</i></label>
+      <input type="text" class="form-control" formControlName="NoOfDaysOutsideUSA" />
+      <small
+        *ngIf="posValidationRules.controls['NoOfDaysOutsideUSA'].errors && (posValidationRules.controls['NoOfDaysOutsideUSA'].dirty || posValidationRules.controls['NoOfDaysOutsideUSA'].touched)">
+        <small class="text-danger" *ngIf="posValidationRules.get('NoOfDaysOutsideUSA').hasError('required')">
+          Number Of Days Outside U.S.A is required.
+        </small>
+      </small>
+      <small class="text-danger"
+        *ngIf="(posValidationRules.get('NoOfDaysOutsideUSA').hasError('minlength') || posValidationRules.get('NoOfDaysOutsideUSA').hasError('maxlength')) && !(posValidationRules.get('NoOfDaysOutsideUSA').hasError('pattern'))">
+        Number of days outside U.S.A must be greater than 1 digit and less than 6 digits
+      </small>
+      <small class="text-danger" *ngIf="posValidationRules.get('NoOfDaysOutsideUSA').hasError('pattern')">Enter only
+        numbers
+      </small>
+    </div>
+  </div>
+</form>

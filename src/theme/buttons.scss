@@ -1,0 +1,37 @@
+@import "mixins.scss";
+
+.btn {
+  border-radius: 3px;
+}
+
+.btn-outline {
+  @include button($white, $primary, $geyser);
+  &:hover {
+    @include button($white, $primary, $geyser);
+  }
+}
+
+.btn-primary {
+  @include button($primary, $white, $primary);
+  &:hover {
+    @include button($primary, $white, $primary);
+  }
+}
+.btn-import {
+  @include button($kasmir, $white, $kasmir);
+  &:hover {
+    @include button($kasmir, $white, $kasmir);
+  }
+}
+a,
+.btn-link {
+  border: 0px;
+  background: none;
+  padding: 0px;
+  outline: none;
+  text-decoration: none;
+  @include link($primary, none);
+  &.secondary-link {
+    @include link($secondary, underline);
+  }
+}

@@ -1,0 +1,30 @@
+    <div class="container-fluid pt-70 mb-10">
+        <div class="card p-10"  *ngIf="responses && responses.length">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6 mx-auto text-align mt-10">
+                        <img src="../../../assets/invite-sent-graphic.svg" class="img-responsive"><br>
+                        <h4 class="fs-20 mt-10">Your invitations have been sent!</h4>
+                        <p class="fs-16 mt-10">You’ve invited <b>{{responses.length}} Client Member</b> </p>
+                        <!-- to{{OrganisationName}} -->
+                    </div>
+                </div>
+                <div class="row px-20">
+                    <div class="col-sm-4 mx-auto brw mt-10">
+                        <label style="width:50%">Full Name</label> <label style="width:50%;float:right">Email</label>
+                    </div>
+                </div>
+                <div class="row px-20" *ngFor='let response of responses'>
+                    <div class="col-sm-4 mx-auto mt-10">
+                        <label class="three-dots" style="width:50%" title="{{response.FullName}}">{{response.FullName}}</label>
+                        <label style="width:50%;float:right" class="three-dotsemail normalTextFormat" title="{{response.Email}}">{{response.Email}}</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 mx-auto p-30  mb-30">
+                    <div class="btn btn-outline fs-12" routerLink="/admin/clients/pendingclientinvitelist">View Pending Invites</div>
+                    <div class="btn btn-outline fs-12 ml-20" routerLink="/admin/clients/clientinvite">Invite More Members</div>
+                    <div class="btn btn-primary ml-20 fs-12 float-right mr-30 pl-25 pr-25" routerLink="/admin/clients/clientinvitelist">Done</div>
+                </div>
+            </div>
+        </div>
+    </div>

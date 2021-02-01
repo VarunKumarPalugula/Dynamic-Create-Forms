@@ -1,0 +1,238 @@
+<div class="lo-100 overflow">
+  <div class="row bg-white header">
+    <img src="../../../assets/logo.png" class="header-logo" />
+  </div>
+  <div class="container mt-20">
+    <div class="col-md-10 mx-auto">
+      <h4 class="card-title text-center" *ngIf="OrgName">Team Invitation Sign Up for {{ OrgName }}</h4>
+      <div class="row pt-18">
+        <div class="col-sm-6 boredr-right">
+          <form [formGroup]="signupform" autocomplete="off" (ngSubmit)="Register()">
+            <h5 class="card-title text-center">
+              Sign Up As A law office
+            </h5>
+            <div class="row">
+              <div class="col-sm-12">
+                <label>Claim Your Organization Name<i class="required">*</i></label>
+                <div class="input-group form-group mb-5">
+                  <input type="text" #orgNameInput id="orgNameInput" [attr.disabled]="orgDisabled ? '' : null"
+                    class="form-control" [(ngModel)]="admin.OrganisationName"
+                    (blur)="checkAdminOrganisation(admin.OrganisationName, orgNameInput)"
+                    formControlName="OrganisationName" />
+                </div>
+                <small *ngIf="
+                signupform.controls['OrganisationName'].errors &&
+                (signupform.controls['OrganisationName'].dirty || signupform.controls['OrganisationName'].touched)
+              ">
+                  <small class="text-danger"
+                    *ngIf="signupform.get('OrganisationName').hasError('required')">Organisation Name is required
+                  </small>
+                  <small class="text-danger" *ngIf="
+                  signupform.get('OrganisationName').hasError('minlength') &&
+                  !signupform.get('OrganisationName').hasError('pattern')
+                ">Minimum 2 characters</small>
+                  <small class="text-danger" *ngIf="signupform.get('OrganisationName').hasError('pattern')">Enter only
+                    Characters and Numbers</small>
+                </small>
+                <small class="text-danger" *ngIf="
+                signupform.get('OrganisationName').hasError('maxlength') &&
+                !signupform.get('OrganisationName').hasError('pattern') 
+              ">Maximum 30 characters</small>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>First Name<i class="required">*</i></label>
+                  <label class="d-block">
+                    <input type="text" #nameInput class="form-control" (input)="validateFirstname($event)" [(ngModel)]="admin.FirstName"
+                       formControlName="FirstName" autocomplete="FirstName" />
+                       <small class="text-danger" *ngIf="isValidFullName">Enter Valid Data
+                      </small>
+                       <small *ngIf="
+                        signupform.controls['FirstName'].errors &&
+                        (signupform.controls['FirstName'].dirty || signupform.controls['FirstName'].touched)
+                      ">
+                      <small class="text-danger" *ngIf="signupform.get('FirstName').hasError('required')">First Name is
+                        required
+                      </small>
+                      <small class="text-danger" *ngIf="signupform.get('FirstName').hasError('pattern')">Enter only
+                        characters
+                      </small>
+                      <small class="text-danger" *ngIf="
+                          signupform.get('FirstName').hasError('minlength') &&
+                          !signupform.get('FirstName').hasError('pattern')
+                        ">Minimum 3 characters</small>
+                      <small class="text-danger" *ngIf="
+                          signupform.get('FirstName').hasError('maxlength') &&
+                          !signupform.get('FirstName').hasError('pattern')
+                        ">Maximum 20 characters</small>
+                    </small>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Last Name<i class="required">*</i></label>
+                  <label class="d-block">
+                    <input type="text" class="form-control" (input)="validateLastname($event)" [(ngModel)]="admin.LastName" formControlName="LastName"
+                      autocomplete="LastName" />
+                      <small class="text-danger" *ngIf="isValidLastname">Enter Valid Data
+                      </small>
+                    <small *ngIf="
+                        signupform.controls['LastName'].errors &&
+                        (signupform.controls['LastName'].dirty || signupform.controls['LastName'].touched)
+                      ">
+                      <small class="text-danger" *ngIf="signupform.get('LastName').hasError('required')">Last Name is
+                        required
+                      </small>
+                      <small class="text-danger" *ngIf="
+                          signupform.get('LastName').hasError('minlength') &&
+                          !signupform.get('LastName').hasError('pattern')
+                        ">Minimum 3 characters</small>
+                        <small class="text-danger" *ngIf="
+                          signupform.get('LastName').hasError('maxlength') &&
+                          !signupform.get('LastName').hasError('pattern')
+                        ">Maximum 20 characters</small>
+                      <small class="text-danger" *ngIf="signupform.get('LastName').hasError('pattern')">Enter only
+                        characters
+                      </small>
+                    </small>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Username<i class="required">*</i></label>
+                  <label class="d-block">
+                    <input type="text" #userNameInput id="userNameInput" class="form-control"
+                      [(ngModel)]="admin.UserName" formControlName="UserName"
+                      (blur)="checkAdminUsernameExistency(admin.UserName, userNameInput)" autocomplete="UserName" />
+                    <small *ngIf="
+                        signupform.controls['UserName'].errors &&
+                        (signupform.controls['UserName'].dirty || signupform.controls['UserName'].touched)
+                      ">
+                      <small class="text-danger" *ngIf="signupform.get('UserName').hasError('required')">Username is
+                        required
+                      </small>
+                      <small class="text-danger" *ngIf="
+                          signupform.get('UserName').hasError('minlength') &&
+                          !signupform.get('UserName').hasError('pattern')
+                        ">Minimum 3 characters</small>
+                      <small class="text-danger" *ngIf="signupform.get('UserName').hasError('pattern')">Enter only
+                        Characters and Numbers</small>
+                        <small class="text-danger" *ngIf="
+                    signupform.get('UserName').hasError('maxlength') &&
+                    !signupform.get('UserName').hasError('pattern') 
+                  ">Maximum 20 characters</small>
+                    </small>
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Mobile Number<i class="required">*</i></label>
+                  <label class="d-block">
+                    <input type="text" class="form-control" #mobileInput [(ngModel)]="admin.Mobile"
+                      formControlName="Mobile" autocomplete="Mobile" />
+                    <small *ngIf="
+                        signupform.controls['Mobile'].errors &&
+                        (signupform.controls['Mobile'].dirty || signupform.controls['Mobile'].touched)
+                      ">
+                      <small class="text-danger" *ngIf="signupform.get('Mobile').hasError('required')">Mobile Number is
+                        required
+                      </small>
+                      <small class="text-danger" *ngIf="signupform.get('Mobile').hasError('pattern')">Enter valid Mobile
+                        Number</small>
+                    </small>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label>Email<i class="required">*</i></label>
+                  <label class="d-block">
+                    <input type="email" #emailInput id="Email" [attr.disabled]="emailDisabled ? '' : null"
+                      class="form-control" [(ngModel)]="admin.Email"
+                      (blur)="checkAdminOrganisationEmailExistency(admin.Email, emailInput)" formControlName="Email"
+                      autocomplete="Email" />
+                    <small *ngIf="
+                        signupform.controls['Email'].errors &&
+                        (signupform.controls['Email'].dirty || signupform.controls['Email'].touched)
+                      ">
+                      <small class="text-danger" *ngIf="signupform.get('Email').hasError('pattern')">Enter Valid Email
+                        ID</small>
+                      <span class="text-danger" *ngIf="signupform.get('Email').errors?.required &&
+                      signupform.get('Email').touched">
+                        Email is required
+                      </span> 
+                    </small>
+                   
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="d-block">Password<i class="required">*</i></label>
+                    <div class="input-group">
+                    <input [type]="fieldTextType ? 'password' : 'text'" #passwordInput id="passwordInput" class="form-control"
+                      [(ngModel)]="admin.Password" formControlName="Password" autocomplete="Password" />
+                      <div class="input-group-append">
+                        <span class="input-group-text">
+                          <i
+                            class="fa"
+                            [ngClass]="{
+                              'fa-eye-slash': !fieldTextType,
+                              'fa-eye': fieldTextType
+                            }"
+                            (click)="toggleFieldTextType()"
+                          ></i>
+                        </span>
+                      </div>
+                      </div>
+                    <small *ngIf="
+                        signupform.controls['Password'].errors &&
+                        (signupform.controls['Password'].dirty || signupform.controls['Password'].touched)
+                      ">
+                      <small class="text-danger" *ngIf="signupform.get('Password').hasError('required')">Password is
+                        required
+                      </small>
+                      <small class="text-danger normalTextFormat" *ngIf="signupform.get('Password').hasError('pattern')">
+                        Password must consists of at least 8 characters and one special symbol & digit</small>
+                    </small>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary w-100" [disabled]="!signupform.valid">Sign Up</button>
+            <div class="mt-15">
+              <p class="text-center normalTextFormat">
+                By clicking sign up you accept the
+                <a style="color: #0070d2;">dofiling customer Agreement</a>
+              </p>
+              <p class="text-center normalTextFormat mt-10">
+                Already member?
+                <a routerLink="/signin" >Please sign in here</a>
+              </p>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-6">
+          <img src="../../../assets/teamwork.png" class="mt-100 img-res" />
+          <div class="text-center">
+            <div class="fs-24 mt-20 mb-10">Title for image</div>
+            <div class="normalTextFormat">
+              Placeholder for some description text that will go here
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,265 @@
+<div class="row">
+  <div class="col-sm-6">
+    <p class="fs16">Client Members</p>
+  </div>
+  <div class="col-sm-6">
+    <div class="float-right">
+      <button hidden class="btn btn-outline fs-12" [disabled]="clientMembersList.length==0"
+        (click)="editClientMember()">Edit</button>
+      <button hidden class="btn btn-outline ml-10 fs-12">Add New Office Member</button>
+    </div>
+  </div>
+</div>
+<div class="row border-bottom" *ngIf="clientMembersList.length>0">
+  <ng-container *ngFor='let client of clientMembersList;index as i'>
+    <div class="col-lg-11 mb-15">
+      <div class="row">
+        <div class="col-md-1 text-right">
+          <!-- <img src="../../../assets/applicant1.png" alt="" class="lo-profile--image extrasmall float-right"> -->
+          <span class="uname" [style.background-color]="colors[i]">{{getShortName(client.UserName) | uppercase}}</span>
+        </div>
+        <div class="col-md-8 pl-0">
+          <span><b class="normalTextFormat">{{client.UserName}}</b></span><br>
+          <span>{{client.Role == 'Business Client' ? 'team member' : client.Role}}</span>
+        </div>
+        <div class="col-md-3" *ngIf="editClient">
+          <i class="fa fa-minus float-right pointer icon-minus ml-30" aria-hidden="true"
+            (click)="Modeldelete(contant)"></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1 col-sm-1"></div>
+        <div class="col-md-11 col-sm-12">
+          <div class="row">
+            <div class="col-md-2 col-sm-3 pl-0">
+              <div class="mb-2">
+                <span class="text-muted fs-12 pl-0">Mobile Number</span><br>
+                <small class="fs-14">{{client.Mobile}}</small>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-7 mb-2">
+              <span class="text-muted fs-12 Primary Email ">Primary Email</span><br>
+              <small class="fs-14 normalTextFormat">{{client.Email}}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+  <!-- <div class="row">
+    <p class="fs-16 text-primary pointer mt-10">View More</p>
+  </div> -->
+</div>
+<div class="row border-bottom" *ngIf="clientMembersList.length==0">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-md-3 mx-auto text-align">
+        <img src="../../../../../../assets/clientmembersempty.png" style="height: 150px">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mx-auto text-align">
+        <p class="fs-27"> Looks like there are no Client members</p>
+        <p classs="fs-16">
+          <!-- Lorem ipsium lorem some relevant text goes here to help user understand what they can do to
+        search and sort for better results -->
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-20">
+  <div class="col-sm-6">
+    <p class="fs-16">My Team Members</p>
+  </div>
+  <div class="col-sm-6">
+    <div class="float-right">
+      <button class="btn btn-outline fs-12" [disabled]="teamMembersList.length==0"
+        *ngIf="(isAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanDeleteTeamMembers:true)"
+        (click)="editTeamMembers()">{{editTeam? "Save": "Edit"}}</button>
+      <button class="btn btn-outline fs-12 ml-2"
+        *ngIf="(isAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteTeamMembers:true)"
+        (click)="teaMembersListPopup(teamlist)">Add New Team Member</button>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="teamMembersList.length>0">
+  <ng-container *ngFor='let team of teamMembersList;index as i'>
+    <div class="col-lg-11 col-md-12 mb-15">
+      <div class="row">
+        <div class="col-md-1 text-right">
+          <!-- <img src="../../../assets/applicant1.png" alt="" class="lo-profile--image extrasmall float-right"> -->
+          <span class="uname" [style.background-color]="Subcolors[i]">{{getShortName(team.UserName) | uppercase}}</span>
+        </div>
+        <div class="col-md-8 pl-0"><b>{{team.UserName}}</b><br>
+          <label class="fs-14" *ngIf="team.TeamMemberStatus==1 ||team.TeamMemberStatus==null"> Admin</label>
+          <label class="fs-14" *ngIf="team.TeamMemberStatus==2"> Sub Admin</label>
+          <label class="fs-14" *ngIf="team.TeamMemberStatus==3">Team Member</label>
+          <label class="fs-14" *ngIf="team.TeamMemberStatus==4">Applicant</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-1 col-sm-1"></div>
+        <div class="col-md-11 col-sm-11">
+          <div class="row">
+            <div class="col-md-2 col-sm-2 pl-0">
+              <div class="">
+                <span class="text-muted fs-12 pl-0">Mobile Number</span><br>
+                <small class="fs-14">{{team.Mobile}}</small>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-7">
+              <span class="text-muted fs-12 Primary Email">Primary Email</span><br>
+              <small class="fs-14 normalTextFormat">{{team.Email}}</small>
+            </div>
+            <div class="col-md-1" *ngIf="editTeam">
+              <i class="fa fa-minus float-right pointer icon-minus ml-30" 
+                *ngIf="team.Email!=commonService.loggedUserEmail" (click)="deleteTeamMember(teammemberdelete,team)"
+                aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<div class="row" *ngIf="teamMembersList.length==0">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-md-3 mx-auto text-align">
+        <img src="../../../../../../assets/adminmembersempty.png" style="height: 150px">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mx-auto text-align">
+        <p class="fs-27 "> Looks like there are no Team members</p>
+        <p classs="fs-16">Lorem ipsium lorem some relevant text goes here to help user understand what they can do to
+          search and sort for better results</p>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #teamlist let-d="dismiss" id="teamlist">
+  <div class="gl-modal-header p-20 bg-model text-white text-align">
+    <span class="fs-16 mb-0 d-ib">View Office Members</span>
+    <span class="modal-close close" (click)="closeTeamMembers('close click')">
+      <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-20">
+    <div class="row">
+      <div class="col-sm-6 fs-14">
+        Members List
+      </div>
+      <div class="col-sm-6 fs-14 text-primary pointer">
+        <div class="float-right" (click)="teamInvite(team)"
+          *ngIf="(isAuthorize) && (loadSubAdminPermissions ?loadSubAdminPermissions?.CanInviteTeamMembers:true)">
+          <i class="fa fa-plus pointer text-primary fs-14"></i> Invite Team Members
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="selectedTeamMembers.length>0">
+      <div class="row border-bottom pb-10 pt-10" *ngFor='let team of selectedTeamMembers'>
+        <div class="col-sm-1">
+          <span class="lo-profile--image extrasmall">
+            <img src="" alt="">
+          </span>
+        </div>
+        <div class="col-sm-9 fs-13 ml-20">
+          <span><b>{{team.UserName| uppercase}}</b></span><br>
+          <label class="fs-14" *ngIf="team.TeamMemberStatus==1"> Primay Admin</label>
+          <label class="fs-14" *ngIf="team.TeamMemberStatus==2"> Sub Admin</label>
+          <label class="fs-14" *ngIf="team.TeamMemberStatus==3">Team Member</label>
+
+        </div>
+        <div class="col-sm-1">
+          <i class="fa fa-plus plusicon pointer" (click)="addBlockToFilingAdminTeam(team,1)"></i>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="selectedTeamMembers.length==0">
+      <div class="alert alert-secondary">
+        <strong>No Team Members Found!</strong>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="blockedTeamMembersList.length>0">
+      <div class="col-sm-6 fs-14">
+        Blocked Members List
+      </div>
+      <div class="row border-bottom pb-10 pt-10" *ngFor='let team of blockedTeamMembersList'>
+        <div class="col-sm-1">
+          <span class="lo-profile--image extrasmall">
+            <img src="" alt="">
+          </span>
+        </div>
+        <div class="col-sm-9 fs-13 ml-20">
+          <span><b>{{team.UserName| uppercase}}</b></span><br>
+          <label class="fs-14" *ngIf="team.TeamMemberStatus==1"> Primay Admin</label>
+          <label class="fs-14" *ngIf="team.TeamMemberStatus==2"> Sub Admin</label>
+          <label class="fs-14" *ngIf="team.TeamMemberStatus==3">Team Member</label>
+
+        </div>
+        <div class="col-sm-1">
+          <i class="fas fa-unlock-alt pointer" (click)="addBlockToFilingAdminTeam(team,2)"></i>
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+  <div class="modal-footer bg-model-footer">
+    <button type="button" class="btn btn-outline" (click)="closeTeamMembers('close click')">Cancel</button>
+  </div>
+
+</ng-template>
+
+
+<ng-template #team let-d="dismiss" id="team">
+  <team-individual-invite [isSubAdminAcess]="isSubAdminAcess" [tittle]="'Invite New Individual Team Member'"
+    (emitConfirmation)="confirmationSuccessPopup($event,confirmationsucess)"
+    (emitCloseModel)="closeTeamInvite($event,teamsucess)"></team-individual-invite>
+</ng-template>
+
+
+<!-- successpopup-->
+<ng-template #confirmationsucess let-d="dismiss" id="confirmationsucess">
+  <confirmation-notification [confirmData]="confirmData" (emitCloseModel)="closeConfirmSuccess($event)">
+  </confirmation-notification>
+</ng-template>
+
+
+
+
+<ng-template #contant let-d="dismiss" id="Modeldelete">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="Closedelete('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+    <i class="fa fa-user-plus fa-3x ml-190 text-danger text-center" aria-hidden="true"></i>
+    <p class="fs-20 mt-15"> Are you sure you want to remove the member?</p>
+    <div class="text-align">
+      <button class="btn btn-outline fs-12 mt-10">Cancel</button>
+      <button class="btn btn-danger ml-20 mt-10 fs-12">Yes, Confirm</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #teammemberdelete let-d="dismiss" id="teammemberdelete">
+  <div class="lo-modal--header p-20">
+    <span class="modal-close close" (click)="closedeleteTeamMember('close click')">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
+  </div>
+  <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+    <i class="fa fa-user-plus fa-3x ml-190 text-danger text-center" aria-hidden="true"></i>
+    <p class="fs-20 mt-15"> Are you sure you want to remove the member?</p>
+    <div class="text-align">
+      <button class="btn btn-outline fs-12 mt-10" (click)="closedeleteTeamMember('close click')">Cancel</button>
+      <button class="btn btn-danger ml-20 mt-10 fs-12" (click)="addBlockToFilingAdminTeam(null,0)">Yes, Confirm</button>
+    </div>
+  </div>
+</ng-template>

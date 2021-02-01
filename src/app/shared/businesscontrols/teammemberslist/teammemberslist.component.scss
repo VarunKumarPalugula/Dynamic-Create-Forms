@@ -1,0 +1,50 @@
+.lh-6 {
+  line-height: 8px;
+}
+@media (min-width: 1199px) {
+  .col-sm-1.wd {
+    flex: 0 0 8.33333333%;
+    max-width: 5%;
+  }
+}
+
+@media (max-width: 999px) {
+  .col-sm-8.tab {
+    flex: 0 0 55.666667%;
+    max-width: 56.666667%;
+  }
+}
+@media (max-width: 999px) {
+  .col-sm-3.tab {
+    flex: 1 0 25%;
+    max-width: 63%;
+  }
+}
+@media (min-width: 1199px) {
+  .col-sm-1.wd {
+    flex: 0 0 8.33333333%;
+    max-width: 5.3333%;
+  }
+}
+
+.client-name {
+  font-size: 13px;
+  color: #16325c;
+  font-weight: 600;
+  text-align: left;
+}
+
+.uname {
+  display: inline-block;
+  font-size: 1em;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 2.5em;
+  text-align: center;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 1em;
+  color: white;
+  margin-top: 14px !important;
+  padding-top: 3px !important;
+}

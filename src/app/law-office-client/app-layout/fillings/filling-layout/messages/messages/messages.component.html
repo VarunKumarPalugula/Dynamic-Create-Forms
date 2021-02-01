@@ -1,0 +1,214 @@
+<!--***************** empty state start********************* -->
+<div *ngIf="ismessages">
+  <div class="row mt-30">
+    <div class="col-md-3 mx-auto text-align">
+      <img src="../../../../../assets/discussions-empty-state.png">
+    </div>
+  </div>
+  <div class="row mt-20">
+    <div class="col-md-8 mx-auto text-align">
+      <div class="fs-28">Looks like no topics are being discussed yet</div>
+      <p classs="fs-16">Discussions Board is forum for you to have a conversation around a topic. It allows you
+      </p>
+      <button class="btn btn-primary" (click)="CreateTopicModel(task)">Create New Topic</button>
+    </div>
+  </div>
+</div>
+<!--***************** empty state end********************* -->
+<div class="row mr-0">
+  <div class="ml-auto" *ngIf="messages.length>0">
+    <button class="btn btn-primary" (click)="CreateTopicModel(task)">Create New Topic</button>
+  </div>
+</div>
+<div class="row">
+  <ng-container *ngIf="messages.length>0">
+    <div class="col-sm-12" *ngFor="let message of  messages;index as i">
+      <div class="card mt-10">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-11">
+              <p class="text-primary fs-16 three-dots" data-toggle="tooltip" title="{{message.Title}}">{{message.Title}}
+              </p>
+            </div>
+            <div class="col-sm-1">
+              <div class="dot float-right"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-11 fs-14">
+              {{message.Description}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 fs-14">
+              <div class="msg-list">
+                <ul>
+                  <li class="title">
+                    <!-- <span class="lo-profile--image xs">
+                     <img src="" alt="">
+                   </span> {{message.CreatedBy}} -->
+                    <span class="uname mht title" [style.background-color]="colors[i]">
+                      <!-- {{message.userIntiaalName}} -->
+                      {{getShortName(message.CreatedBy) | uppercase}}
+                    </span>
+                    <span class="title">By {{message.CreatedBy}}</span>
+
+
+                  </li>
+                  <li class="mt-4">
+                    <i class="far fa-calendar-alt"></i> {{message.CreatedOn | date: 'MM/dd/yyyy hh:mm  a'}}
+                  </li>
+                  <li class="mt-4 float-right text-primary pointer" (click)="Viewmessage(message)">
+                    <i class="far fa-eye text-primary"></i> View
+                  </li>
+                  <li class="mt-4 float-right text-danger pointer"
+                    *ngIf="message.CreatedBy==username"
+                    (click)="DeleteMessage(deleteMessagePopUpTemp,message)">
+                    <i class="far fa-trash-alt text-danger"></i> Archive
+                  </li>
+                </ul>
+                <div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-11 fs-14">
+              <div class="msg-list">
+                <ul>
+                  <li class="mt-4">
+                    <i class="fas fa-users fs-20"></i><span> Shared With:</span>
+                  </li>
+
+                  <li *ngFor="let user of message.Users;index as j" class="title">
+                    <!-- <span class="lo-profile--image xs">
+                     <img src="" alt="">
+                   </span> {{user.username}} -->
+                    <span class="uname mht"
+                      [style.background-color]="Subcolors[j]">{{getShortName(user.username) | uppercase}}</span>
+                    <span class="title"> {{user.username}}</span>
+                  </li>
+                </ul>
+                <div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  </div>
+
+  <!--***************** Create Topic Model********************* -->
+
+  <ng-template #task let-d="dismiss" id="CreateTopicModel">
+    <div class="tasksmodel">
+      <form [formGroup]="TopicForm">
+        <div class="gl-modal-header p-20 bg-model text-white text-align">
+          <span class="fs-16 mb-0 d-ib">Create New Topic</span>
+          <span class="modal-close close" (click)="Closesent()">
+            <i class="fa fa-times text-white" aria-hidden="true"></i>
+          </span>
+        </div>
+        <div class="lo-modal-body p-20">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Topic or Question<i class="required">*</i></label>
+                <input (focus)="visitingInput()" type="text" class="form-control" formControlName="topic"
+                  name="topic" />
+              </div>
+            </div>
+          </div>
+          <small *ngIf="
+              TopicForm.controls['topic'].errors &&
+              (TopicForm.controls['topic'].dirty || TopicForm.controls['topic'].touched)
+            ">
+            <small class="text-danger" *ngIf="TopicForm.get('topic').hasError('required')">Topic or Question is
+              required.
+            </small>
+          </small>
+
+          <div class="row" (focus)="visitingInput()">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Description <i class="required">*</i> </label>
+                <!-- <angular-editor
+                  (focus)="visitingInput()"
+                  formControlName="description"
+                  name="description"
+                ></angular-editor> -->
+                <textarea class="form-control" (focus)="visitingInput()" [(ngModel)]="description"
+                  formControlName="description" name="description" rows="4" cols="62"
+                  [maxlength]="maxChars"> </textarea>
+                <label class="float-right">{{description.length}}/{{maxChars}}</label>
+              </div>
+            </div>
+          </div>
+
+          <small *ngIf="
+              TopicForm.controls['description'].errors &&
+              (TopicForm.controls['description'].dirty || TopicForm.controls['description'].touched)
+            ">
+            <small class="text-danger" *ngIf="TopicForm.get('description').hasError('required')">Description is
+              required.
+            </small>
+          </small>
+
+          <div class="row" (focus)="visitingInput()">
+            <div class="col-md-12">
+              <label>Add Lawoffice Members <i class="required">*</i></label>
+
+              <ng-multiselect-dropdown [placeholder]="''" class="normalTextFormat"
+                [settings]="adminteamMembersDropsownSettings" [data]="adminteamMembersList"
+                [(ngModel)]="selectedadminTeamMembers" (onSelect)="onadminmemberSelect($event)"
+                (onSelectAll)="onadminMemberSelectAll($event)" (focus)="visitingInput()" formControlName="adminmembers"
+                name="adminmembers"></ng-multiselect-dropdown>
+            </div>
+          </div>
+
+          <div class="row" (focus)="visitingInput()">
+            <div class="col-md-12">
+              <label>Add Client Members <i class="required">*</i> </label>
+
+              <ng-multiselect-dropdown [placeholder]="''" class="normalTextFormat"
+                [settings]="teamMembersDropsownSettings" [data]="teamMembersList" [(ngModel)]="selectedTeamMembers"
+                (onSelect)="onTeamMemberSelect($event)" (onSelectAll)="onTeamMemberSelectAll($event)"
+                (focus)="visitingInput()" formControlName="members" name="members"></ng-multiselect-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-model-footer">
+          <button type="button" class="btn btn-primary" (click)="CreateTopic()" [disabled]="!TopicForm.valid">
+            Save
+          </button>
+          <button type="button" class="btn btn-outline" (click)="Close()">Cancel</button>
+
+        </div>
+        <div class="row" *ngIf="isempty" style="margin-left:20px !important; margin-top:20px !important">
+          <p class="alert alert-danger">{{ errormessage }}</p>
+        </div>
+      </form>
+    </div>
+
+  </ng-template>
+
+
+
+  <ng-template #deleteMessagePopUpTemp let-d="dismiss" id="deleteMessagePopUpTemp">
+    <div class="lo-modal--header p-20">
+      <span class="modal-close close" (click)="closeModal('close click')">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </span>
+    </div>
+    <div class="lo-modal-body p-30 pb-50 text-cener mx-auto">
+      <i class="fa fa-trash-alt fa-3x ml-160" aria-hidden="true"></i>
+      <p class="fs-20 mt-15"> Are you sure you want to archive message?</p>
+      <div class="text-align">
+        <div class="btn btn-outline fs-12 mt-10" (click)="closeModal()">No, keep it</div>
+        <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="Archievemessage()">Yes, Confirm</div>
+      </div>
+    </div>
+  </ng-template>
+  <!--***************** End Create Topic Model********************* -->
