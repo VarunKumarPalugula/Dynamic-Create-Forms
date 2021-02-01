@@ -61,7 +61,7 @@ export class CommonService {
     }
   }
 
-  formObject(fields, initialObj, template, applicantKey) {
+  formObject(fields, initialObj, applicantKey) {
     const obj = initialObj.find(el => (el.Section === fields.Section && el.SubSection === fields.SubSection));
     let finalObject = {};
     if(!this.fileData[applicantKey]) {
@@ -69,14 +69,19 @@ export class CommonService {
           [applicantKey]: {}
       }
     }
-    Object.keys(fields[template]).forEach(kList => {
-      Array.isArray(fields[template][kList]) && fields[template][kList].forEach(ele => {
+    Object.keys(fields.SubSectionTemplateData).forEach(kList => {
+      Array.isArray(fields.SubSectionTemplateData[kList]) && fields.SubSectionTemplateData[kList].forEach(ele => {
         if (ele.name) {
           finalObject[ele.name] = {
             value: (obj && obj.TemplateResult[fields.Section] && obj.TemplateResult[fields.Section][fields.SubSection] && obj.TemplateResult[fields.Section][fields.SubSection][ele.name]) ? obj.TemplateResult[fields.Section][fields.SubSection][ele.name] : '',
             message: '',
             required: ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
             valid: ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true
+          };
+        } else {
+          finalObject[ele.type] = {
+            required: ele.type && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
+            valid: ele.type && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true
           };
         }
         this.fileData[applicantKey][kList] = finalObject;

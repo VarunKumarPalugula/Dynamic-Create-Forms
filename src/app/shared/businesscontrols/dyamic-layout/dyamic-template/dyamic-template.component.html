@@ -141,7 +141,7 @@
     <div *ngSwitchCase="'countryDetails'" [ngStyle]="{'width': '900px' }">
         <app-country-details [data]="commonService.fileData[applicantKey][parent].finalObj"  [fields]="fields"
         [isCard]="commonService.fileData[applicantKey][parent].readOnly" 
-        (detailsEmit)="detailsEmit($event, parent)"></app-country-details>
+        (detailsEmit)="detailsEmit($event, parent, fields)" [applicantKey]="applicantKey"></app-country-details>
     </div>
     
     <div *ngSwitchCase="'empSupportDocs'" [ngStyle]="{'width': '900px' }">

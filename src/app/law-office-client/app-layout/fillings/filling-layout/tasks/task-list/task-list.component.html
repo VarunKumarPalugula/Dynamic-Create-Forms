@@ -713,36 +713,9 @@
                             </ul>
                           </div>
                         </div>
-                        <div *ngFor="let key of subtask.TemplateData | keyvalue : commonService.returnZero"
-                          class="card__data">
-                          <div class="card mt-10">
-                            <div class="card-header">
-                              <h4 class="float-left"> {{ subtask.SubSection }} </h4>
-                              <button
-                                [disabled]="commonService.checkFormValid(commonService.fileData[subtask.SubSection])"
-                                *ngIf="commonService.fileData[subtask.SubSection] && !commonService.fileData[subtask.SubSection].readOnly"
-                                class="pull-right btn btn-sm btn-primary"
-                                (click)="commonService.saveUIControlTemplateResults(subtask.Section, subtask)">
-                                save
-                              </button>
-                              <button
-                                *ngIf="commonService.fileData[subtask.SubSection] && commonService.fileData[subtask.SubSection].readOnly"
-                                class="float-right btn btn-sm btn-primary"
-                                (click)="commonService.edit(subtask.SubSection)">
-                                edit
-                              </button>
-                            </div>
-                            <div class="card-body">
-                              <div class="row">
-                                <div
-                                  *ngFor="let subField of key.value; let i = index; trackBy: commonService.trackByFn">
-                                  <app-dyamic-template [fields]="subField" [parent]="subtask.SubSection"
-                                    [readOnly]="subtask.isSave"></app-dyamic-template>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+
+                        <app-dyamic-layout [data]="data" [applicantKey]="'clientApplicantTaskData'"></app-dyamic-layout>
+
 
                         <!-- <app-dyamic-layout [data]="data" [section]="templateTitle.Section"></app-dyamic-layout>
                         <app-dyamic-layout [data]="subtask" [section]="subtask.Section"></app-dyamic-layout> -->

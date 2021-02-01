@@ -46,8 +46,17 @@ export class ApplicantProfileDetailsComponent implements OnInit {
     });
     this.emitGetUiControlSectionsWithData = this.commonService.emitGetUiControlSectionsWithData.subscribe((res) => {
       if (!commonService.checkNullorUndefined(res)) {
+        res['Templates'][1]['SubSectionTemplateData']['Place And Date Of Birth'][0].validation = {
+          Country: {
+            required: true
+          },
+          // State: {
+          //   required: true
+          // },
+
+        }
         this.allSectionConfigs = res['Templates'];
-        res['Templates'].forEach((resp) => this.commonService.formObject(resp, this.initialObj, "SubSectionTemplateData", 'appProfileDetails'));
+        res['Templates'].forEach((resp) => this.commonService.formObject(resp, this.initialObj, 'appProfileDetails'));
       }
     });
   }

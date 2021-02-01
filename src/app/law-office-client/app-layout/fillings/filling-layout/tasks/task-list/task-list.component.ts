@@ -748,7 +748,7 @@ export class TaskListComponent implements OnInit {
         (res: any) => {
           this.spinner.hide();
           if (res && res.length) {
-            res.forEach((resp) => this.commonService.formObject(resp, this.initialObj, "TemplateData", "clientApplicantTaskData"));
+            res.forEach((resp) => this.commonService.formObject(resp, this.initialObj, "clientApplicantTaskData"));
             this.subTasks = res.sort((a, b) => a['SubTaskId'] - b['SubTaskId']);
             // if (this.subTasks[0]['Title'] && (this.subTasks[0]['Title'] === 'Foreign Addresses' || this.subTasks[0]['Title'] === 'Foreign Address')) {
             //   this.subTasks[0]['Title'] = 'foreign address';

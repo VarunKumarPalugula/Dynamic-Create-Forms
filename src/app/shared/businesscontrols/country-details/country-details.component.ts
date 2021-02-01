@@ -23,8 +23,7 @@ export class CountryDetailsComponent implements OnInit {
         Country: value.Country ? value.Country : null,
         State: value.State ? value.State : null,
         CityOrTown: value.CityOrTown ? value.CityOrTown : null
-      }
-      );
+      });
     }
   }
 
@@ -36,6 +35,14 @@ export class CountryDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.fields.hasOwnProperty('validation') && Object.keys(this.fields.validation).length) {
+      if (this.fields.validation.Country && this.fields.validation.Country.required) {
+        this.detailsForm.controls['Country'].setValidators([Validators.required]);
+      }
+      if (this.fields.validation.State && this.fields.validation.State.required) {
+        this.detailsForm.controls['State'].setValidators([Validators.required]);
+      }
+    }
   }
 
   formGroupData() {
@@ -51,7 +58,7 @@ export class CountryDetailsComponent implements OnInit {
   }
 
   changes() {
-    this.detailsEmit.emit(this.detailsForm.value)
+    this.detailsEmit.emit(this.detailsForm)
   }
 
 }
