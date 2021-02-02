@@ -66,7 +66,7 @@ export class CommonService {
     let finalObject = {};
     if(!this.fileData[applicantKey]) {
       this.fileData = {
-          [applicantKey]: {}
+        [applicantKey]: {}
       }
     }
     Object.keys(fields.SubSectionTemplateData).forEach(kList => {
@@ -114,7 +114,7 @@ export class CommonService {
   }
 
   changeFormValue(control, value, parent, applicantKey) {
-    let obj = { value: this.fileData[applicantKey][parent][control.name].value, message: this.fileData[applicantKey][parent][control.name].message, 
+    let obj = { value: this.fileData[applicantKey][parent][control.name].value, message: this.fileData[applicantKey][parent][control.name].message,
       valid: this.fileData[applicantKey][parent][control.name].valid };
     if (control.hasOwnProperty('validation') && Object.keys(control.validation).length) {
       obj = this.validateTextForm(control, value);
@@ -134,6 +134,11 @@ export class CommonService {
           return { valid: false, message: this.setErrorMessage('minLength', control.name, control.validation.minLength), value: '' };
         } else if (control.validation.hasOwnProperty('maxLength') && value.length > control.validation.maxLength) {
           return { valid: false, message: this.setErrorMessage('maxLength', control.name, control.validation.maxLength), value: '' };
+        } else if (control.validation.hasOwnProperty('pattern') && control.validation.pattern) {
+          const pattern = new RegExp(control.validation.pattern);
+          if (!pattern.test(value)) {
+            return { valid: false, message: this.setErrorMessage('pattern', control.name), value: '' };
+          }
         }
       }
     }
@@ -499,7 +504,7 @@ export class CommonService {
     return index;
   }
 
- 
+
 
 
   clearCommonEmitters() {

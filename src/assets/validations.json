@@ -12,5 +12,13 @@
         "required": "Please enter username this feild",
         "minLength": "Please Enter min length",
         "maxLength": "Please Enter max length"
-    }
+    },
+    "phoneNumber": {
+        "required": "Please enter username this feild",
+        "pattern": "Please enter valid phone number"
+    },
+    "email": {
+        "required": "Please enter username this feild",
+        "pattern": "Email not valid"
+    }    
 }

@@ -55,6 +55,32 @@ export class ApplicantProfileDetailsComponent implements OnInit {
           }
 
         }
+        res['Templates'][2].SubSectionTemplateData['Contact Details'][0] = {
+          Active: false,
+          displayName: "Phone Number",
+          id: "phoneNumber",
+          name: "phoneNumber",
+          type: "textbox",
+          value: "", 
+          validation : {
+            required : true,
+            // pattern : '/(7|8|9)\d{9}/' 
+            // pattern : '/^\d{10}$/' 
+            pattern : /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/ 
+          }
+        }
+        res['Templates'][2].SubSectionTemplateData['Contact Details'][2] = {
+          Active: false,
+          displayName: "Email",
+          id: "email",
+          name: "email",
+          type: "textbox",
+          value: "", 
+          validation : {
+            required : true,
+            pattern : /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+          }
+        }
         this.allSectionConfigs = res['Templates'];
         res['Templates'].forEach((resp) => this.commonService.formObject(resp, this.initialObj, 'appProfileDetails'));
       }
