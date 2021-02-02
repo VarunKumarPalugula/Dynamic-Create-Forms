@@ -53,9 +53,7 @@ export class DyamicTemplateComponent implements OnInit {
   }
 
   detailsEmit(data, parent, fields) {
-    Object.keys(data.value).forEach(res => this.commonService.fileData[this.applicantKey][parent.trim()].finalObj[res] = data[res]);
+    Object.keys(data.value).forEach(res => this.commonService.fileData[this.applicantKey][parent.trim()].finalObj[res] = data.value[res]);
     this.commonService.fileData[this.applicantKey][parent.trim()][fields.type].valid = data.valid
   }
-
-
 }

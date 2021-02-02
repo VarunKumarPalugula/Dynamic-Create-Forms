@@ -50,9 +50,9 @@ export class ApplicantProfileDetailsComponent implements OnInit {
           Country: {
             required: true
           },
-          // State: {
-          //   required: true
-          // },
+          State: {
+            required: true
+          }
 
         }
         this.allSectionConfigs = res['Templates'];

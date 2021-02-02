@@ -43,6 +43,7 @@ export class CountryDetailsComponent implements OnInit {
         this.detailsForm.controls['State'].setValidators([Validators.required]);
       }
     }
+    this.changes();
   }
 
   formGroupData() {
