@@ -1,0 +1,98 @@
+<div class="gl-modal-header p-20 bg-model text-white text-align" [hidden]="isCard">
+    <span class="fs-16 mb-0 d-ib">Add Period Of Stay</span>
+    <span class="modal-close close" (click)="cancel()">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+</div>
+<form [formGroup]="posValidationRules" (ngSubmit)="submit()">
+    <div class="lo-modal-body p-20">
+        <div class="form-group">
+            <label>Subject's name <i [hidden]="isCard" class="required">*</i></label>
+            <div><strong [hidden]="!isCard"> {{ formData('SubjectName') }}</strong></div>
+            <input [hidden]="isCard" type="text" class="form-control" formControlName="SubjectName" />
+            <small [hidden]="isCard"
+                *ngIf="posValidationRules.controls['SubjectName'].errors && (posValidationRules.controls['SubjectName'].dirty || posValidationRules.controls['SubjectName'].touched)">
+                <small class="text-danger" *ngIf="posValidationRules.get('SubjectName').hasError('required')">
+                    Passport Or Travel Document Number is required.
+                </small>
+            </small>
+            <small [hidden]="isCard" class="text-danger" *ngIf="
+                    posValidationRules.get('SubjectName').hasError('minlength') &&
+                    !posValidationRules.get('SubjectName').hasError('pattern')
+                    ">Minimum 2 characters</small>
+            <small [hidden]="isCard" class="text-danger" *ngIf="
+                    posValidationRules.get('SubjectName').hasError('maxlength') &&
+                    !posValidationRules.get('SubjectName').hasError('pattern')
+                    ">Maximum 50 characters</small>
+            <small [hidden]="isCard" class="text-danger"
+                *ngIf="posValidationRules.get('SubjectName').hasError('pattern')">Enter only
+                characters
+            </small>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label>Stayed from <i [hidden]="isCard" class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('StayedFrom') }}</strong></div>
+                <div [hidden]="isCard" class="input-group calendar">
+                    <input type="text" #dp="bsDatepicker" class="form-control" bsDatepicker formControlName="StayedFrom"
+                        [value]=" posValidationRules.get('StayedFrom').value | date" [maxDate]="maxDate"
+                        [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }">
+                    <span class="input-group-prepend">
+                        <button type="button" class="btn btn-light" (click)="dp.toggle()">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
+                <small [hidden]="isCard"
+                    *ngIf="posValidationRules.controls['StayedFrom'].errors && (posValidationRules.controls['StayedFrom'].dirty || posValidationRules.controls['StayedFrom'].touched)">
+                    <small class="text-danger" *ngIf="posValidationRules.get('StayedFrom').hasError('required')">
+                        Stayed from is required
+                    </small>
+                </small>
+            </div>
+            <div class="col-sm-6 form-group">
+                <label>Stayed till <i [hidden]="isCard" class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('StayedTill') }}</strong></div>
+                <div [hidden]="isCard" class="input-group calendar">
+                    <input type="text" #dp="bsDatepicker" class="form-control" bsDatepicker formControlName="StayedTill"
+                        [value]=" posValidationRules.get('StayedTill').value | date" [maxDate]="maxDate"
+                        [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }">
+                    <span class="input-group-prepend">
+                        <button type="button" class="btn btn-light" (click)="dp.toggle()">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
+                <small [hidden]="isCard"
+                    *ngIf="posValidationRules.controls['StayedTill'].errors && (posValidationRules.controls['StayedTill'].dirty || posValidationRules.controls['StayedTill'].touched)">
+                    <small class="text-danger" *ngIf="posValidationRules.get('StayedTill').hasError('required')">
+                        Stayed till is required
+                    </small>
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="">Number of days outside U.S.A <i [hidden]="isCard" class="required">*</i></label>
+            <div><strong [hidden]="!isCard"> {{ formData('NoOfDaysOutsideUSA') }}</strong></div>
+            <input [hidden]="isCard" type="text" class="form-control" formControlName="NoOfDaysOutsideUSA" />
+            <small [hidden]="isCard"
+                *ngIf="posValidationRules.controls['NoOfDaysOutsideUSA'].errors && (posValidationRules.controls['NoOfDaysOutsideUSA'].dirty || posValidationRules.controls['NoOfDaysOutsideUSA'].touched)">
+                <small class="text-danger" *ngIf="posValidationRules.get('NoOfDaysOutsideUSA').hasError('required')">
+                    Number Of Days Outside U.S.A is required.
+                </small>
+            </small>
+            <small class="text-danger" [hidden]="isCard"
+                *ngIf="(posValidationRules.get('NoOfDaysOutsideUSA').hasError('minlength') || posValidationRules.get('NoOfDaysOutsideUSA').hasError('maxlength')) && !(posValidationRules.get('NoOfDaysOutsideUSA').hasError('pattern'))">
+                Number of days outside U.S.A must be greater than 1 digit and less than 6 digits
+            </small>
+            <small  [hidden]="isCard" class="text-danger" *ngIf="posValidationRules.get('NoOfDaysOutsideUSA').hasError('pattern')">Enter
+                only
+                numbers
+            </small>
+        </div>
+    </div>
+</form>
+<div class="modal-footer bg-model-footer" [hidden]="isCard">
+    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="!posValidationRules.valid">Save</button>
+    <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+</div>

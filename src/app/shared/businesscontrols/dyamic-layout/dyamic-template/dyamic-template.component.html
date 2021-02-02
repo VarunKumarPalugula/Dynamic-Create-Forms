@@ -1,5 +1,3 @@
-<form #configurationForm="ngForm">
-
     <div [ngSwitch]="fields.type" class="padding">
 
         <div *ngSwitchCase="'checkbox'" [ngStyle]="{'width': fields.width ? fields.width + 'px' : '300px' }">
@@ -195,6 +193,8 @@
             <app-employement-support-documents [applicantKey]="applicantKey"></app-employement-support-documents>
         </div>
 
-    </div>
+        <div *ngSwitchCase="'periodOfStay'" [ngStyle]="{'width': '900px' }">
+            <app-period-of-stay [applicantKey]="applicantKey"></app-period-of-stay>
+        </div>
 
-</form>
+    </div>

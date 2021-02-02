@@ -1,0 +1,50 @@
+<div>
+    <span class="normalTextFormat">-List each beneficiary's prior periods of stay in H or L classification in
+        the
+        United States for the last
+        six years.</span><br />
+      <span class="normalTextFormat">-Be sure to only list those in which each beneficiary was acutually in the
+        united
+        states in an H or L
+        classsification</span><br />
+      <p class="normalTextFormat">-Do not include periods in which the beneficiary was in dependent status, for
+        example, H-4 or L-2
+        status.</p>
+      <p>Total number of days outside U.S.A - 0 Days</p>
+</div>
+<div class="period">
+    <div *ngFor='let in of periodArray;let i = index'>
+        <div *ngIf="finalObj() && finalObj(i + 1); then periodContlIf else periodContlEls"></div>
+        <ng-template #periodContlIf>
+            <div class="card__data">
+                <div class="d-flex justify-content-between align-items-center pl-10 ">
+                    <strong> period -{{i + 1}} </strong>
+                    <button class="cursor__pointer button__class" (click)="openPeriodDetails(periodModel, i + 1)">
+                        Change
+                    </button>
+                </div>
+                <app-period-of-stay-popup [isCard]="true" [data]="finalObj(i + 1)">
+                </app-period-of-stay-popup>
+            </div>
+        </ng-template>
+        <ng-template #periodContlEls>
+            <div class="d__flex_between period__div">
+                <div>
+                    <div>period -{{i + 1}} </div>
+                </div>
+                <button class="blue__button cursor__pointer" (click)="openPeriodDetails(periodModel, i + 1)"> Add
+                    Details
+                </button>
+            </div>
+        </ng-template>
+    </div>
+
+    <a *ngIf="periodArray.length !== maxPeriod" class="d__flex_end period__add cursor__pointer">
+        <span (click)="incPeriod()"> + Add More Period</span>
+    </a>
+</div>
+
+<ng-template #periodModel let-d="dismiss" id="periodModel">
+    <app-period-of-stay-popup (emitCloseModel)="closeModel($event, index)" [data]="finalObj(index)">
+    </app-period-of-stay-popup>
+</ng-template>
