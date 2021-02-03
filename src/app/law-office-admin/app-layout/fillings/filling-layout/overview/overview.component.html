@@ -253,7 +253,7 @@
       </div>
       <div class="col-sm-3 text-primary "*ngIf="fillingDetails!=={}">
         <span class="float-right pointer" (click)="ModelviewFiling(viewRef)"
-          *ngIf="fillingDetails.FilingStatus!='Completed' ">Edit</span>
+          *ngIf="fillingDetails.FilingStatus!='Completed'">Edit</span>
       </div>
     </div>
     <ng-container *ngIf="fillingDetails!=={}">
@@ -394,15 +394,15 @@
                   <i class="fa fa-calendar" aria-hidden="true"></i>
                 </button>
               </span>
-
             </div>
-          </div>
-          <small
+            <small
             *ngIf="fliingForm.controls['fillingdate'].errors && (fliingForm.controls['fillingdate'].dirty || fliingForm.controls['fillingdate'].touched)">
             <small class="text-danger" *ngIf="fliingForm.get('fillingdate').hasError('required')">Filing Date is
               required.
             </small>
           </small>
+          </div>
+          
         </div>
         <div class="col-sm-6">
           <label for="filing type">Filing Type</label>

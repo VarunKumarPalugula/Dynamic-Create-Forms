@@ -324,6 +324,47 @@ export class FormsComponent implements OnInit {
          'https://usics-forms.s3.amazonaws.com/I-944/i-944-pc_Part18.pdf',
         ];
         this.configForm(i944Forms, FormNameConfig.I944);
+      } else if (params['name'] == 'i-693') {
+        let i693Forms = [
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part1.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part2.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part3.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part4.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part5.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part6.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part7.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part8.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part9.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part10.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part11.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part12.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part13.pdf',
+        'https://usics-forms.s3.amazonaws.com/I693/i-693_Part14.pdf',
+        ];
+        this.configForm(i693Forms, FormNameConfig.I693);
+      } else if (params['name'] == 'i-730') {
+        let i730Forms = [
+        'https://usics-forms.s3.amazonaws.com/I-730/i-730_Part1.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-730/i-730_Part2.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-730/i-730_Part3.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-730/i-730_Part4.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-730/i-730_Part5.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-730/i-730_Part6.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-730/i-730_Part7.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-730/i-730_Part8.pdf'
+        ];
+        this.configForm(i730Forms, FormNameConfig.I730);
+      } else if (params['name'] == 'i-907') {
+        let i907Forms = [
+        'https://usics-forms.s3.amazonaws.com/I-907/i-907_Part1.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-907/i-907_Part2.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-907/i-907_Part3.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-907/i-907_Part4.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-907/i-907_Part5.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-907/i-907_Part6.pdf',
+        'https://usics-forms.s3.amazonaws.com/I-907/i-907_Part7.pdf',
+        ];
+        this.configForm(i907Forms, FormNameConfig.I907);
       }
     });
   }

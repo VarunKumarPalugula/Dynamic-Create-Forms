@@ -515,7 +515,7 @@ export class OverviewComponent implements OnInit {
 
 
   ModelviewFiling(data: any) {
-    this.viewFilingsModel = this.modalService.open(data, { centered: true });
+    this.viewFilingsModel = this.modalService.open(data, { centered: true, size: 'lg' });
   }
   CloseviewFiling(value: string) {
     this.viewFilingsModel.close(value);

@@ -114,7 +114,7 @@ export class AddTemplateComponent implements OnInit {
     }
     this.commonService.saveTemplateOptions(this.isAddMode,this.finalSetArray).subscribe((res: any) => {
       this.toaster.info(res['Message']);
-      this.router.navigate(['/admin/settings']);
+      this.router.navigate(['/admin/settings/templates']);
     });
   }
   deleteTemplateBytempTitle() {

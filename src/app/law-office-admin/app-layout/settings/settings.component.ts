@@ -65,7 +65,9 @@ export class SettingsComponent implements OnInit {
   options: any = { month: 'numeric', day: 'numeric', year: 'numeric' };
   templateTableDta: any;
   filingTypes: any;
-  sortFilter: string
+  
+  activeid;
+  t;
   constructor(
     private modalService: NgbModal,
     private Valid: ValidationService,
@@ -119,6 +121,12 @@ export class SettingsComponent implements OnInit {
     this.previewUrl = null;
     this.fileUploadProgress = null;
     this.uploadedFilePath = null;
+  }
+
+  ngAfterViewInit() {
+    if (this.router.url == '/admin/settings/templates') {
+      this.activeid = 'pendingTeamMembersTab';
+    }
   }
 
   fileProgress(fileInput: any) {
@@ -966,9 +974,7 @@ export class SettingsComponent implements OnInit {
   viewTemplate(templateId:any) {
     this.router.navigate(['/admin/settings/template', templateId]);
   }
-  sortFilingType(value) {
-    this.sortFilter = value
-  }
+  
   
   //Get Fillings
   GetFillingTypes() {

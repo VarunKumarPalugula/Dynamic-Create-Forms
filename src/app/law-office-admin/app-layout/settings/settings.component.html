@@ -2,7 +2,7 @@
   <div class="col-sm-12">
     <div class="card mb-20 mt-20">
       <div class="card-body">
-        <ngb-tabset class="navtabs-modified">
+        <ngb-tabset class="navtabs-modified" #t="ngbTabset" [activeId]="activeid">
           <ngb-tab title="Profile Details" *ngIf="(isAuthorize==false || isSubAdminAuthorize==false)">
             <ng-template ngbTabContent>
               <div class="row mt-6">
@@ -1270,52 +1270,14 @@
               </div>
             </ng-template>
           </ngb-tab>
-          <ngb-tab title="Templates" *ngIf="isAuthorize">
+          <ngb-tab title="Templates" id="pendingTeamMembersTab" *ngIf="isAuthorize">
             <ng-template ngbTabContent>
-              <div class="row mt-20">
-                <div class="col-sm-2">
-                  <label for="filingType">Sort by filing type :</label>
-                  <select #selectedId class="form-control" id="filingType" (change)="sortFilingType($event.target.value)">
-                    <option value="">All</option>
-                    <option *ngFor="let fTypes of filingTypes" value="{{ fTypes.FilingName }}">{{ fTypes.FilingName }}</option>
-                  </select>
-                </div>
-              </div>
-              <button class="btn btn-primary m-auto float-right" [routerLink]="['/admin/settings/template']">Add New Template</button>
-                <table class="table table-striped mt-50">
-                  <thead class="thead-dark">
-                    <tr>
-                      <th>Title</th>
-                      <th>Filing Type</th>
-                      <th>Created By</th>
-                      <th>Created On</th>
-                      <th>Updated By</th>
-                      <th>Updated On</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let templateData of templateTableDta | filter: sortFilter">
-                      <td>{{templateData.DisplayTemplateTitle}}</td>
-                      <td>{{templateData.FilingType}}</td>
-                      <td>
-                        {{templateData.CreatedBy}}
-                      </td>
-                      <td>{{templateData.CreatedOn | date}}</td>
-                      <td>{{templateData.ModifiedBy}}</td>
-                      <td>{{templateData.ModifiedOn | date}}</td>
-                      <td>
-                        <button class="btn btn-link" (click)="viewTemplate(templateData.DisplayTemplateTitle)">View Details</button>
-                      </td>
-                    </tr>
-                    <tr *ngIf="templateTableDta.length == 0" rowspan="7" class="text-center">No records </tr>
-                  </tbody>
-                </table>
+              <app-templates [templateTableDta]="templateTableDta" [filingTypes]="filingTypes" (emitDisplayTitle)="viewTemplate($event)"></app-templates>
               </ng-template>
           </ngb-tab>
           <ngb-tab title="Billings" *ngIf="isAuthorize && isSubAdminAuthorize">
             <ng-template ngbTabContent>
-              sndkjd
+              we're building soon it will available thank you. 
             </ng-template>
           </ngb-tab>
         </ngb-tabset>

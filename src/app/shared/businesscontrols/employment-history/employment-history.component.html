@@ -56,6 +56,6 @@
 
 </div>
 <ng-template #empModel let-d="dismiss" id="empModel">
-    <app-employment-history-popup (emitCloseModel)="closeModel($event, selectedEmp)" [data]="commonService.fileData['Employment history']['finalObj'][selectedEmp]">
+    <app-employment-history-popup (emitCloseModel)="closeModel($event, selectedEmp)" [data]="commonService.fileData[applicantKey]['Employment history']['finalObj'][selectedEmp]">
     </app-employment-history-popup>
 </ng-template>

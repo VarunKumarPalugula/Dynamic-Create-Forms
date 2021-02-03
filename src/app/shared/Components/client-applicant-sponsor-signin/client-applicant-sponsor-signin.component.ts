@@ -13,17 +13,14 @@ import { ClientService } from '@app/law-office-client/law-office-client.service'
 import { AutotimeoutService } from '@app/shared/service/autotimeout.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { PasswordValidator } from '@app/shared/helpers/PasswordValidator';
-
 @Component({
   selector: 'client-applicant-sponsor-signin',
   templateUrl: './client-applicant-sponsor-signin.component.html',
   styleUrls: ['./client-applicant-sponsor-signin.component.scss'],
 })
-
 export class ClientApplicantSponsorSigninComponent implements OnInit {
-
-  @Input()  Role: string;
   
+  @Input() Role: string;
   loginForm: any;
   isLoading: false;
   Error: string;

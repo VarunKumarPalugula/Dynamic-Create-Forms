@@ -57,6 +57,6 @@
 </div>
 
 <ng-template #addrModel let-d="dismiss" id="addrModel">
-    <app-address-history-popup (emitCloseModel)="closeModel($event, selectedAddr)" [data]="commonService.fileData['Address History']['finalObj'][selectedAddr]">
+    <app-address-history-popup (emitCloseModel)="closeModel($event, selectedAddr)" [data]="commonService.fileData[applicantKey]['Address History']['finalObj'][selectedAddr]">
     </app-address-history-popup>
 </ng-template>

@@ -28,5 +28,8 @@ export enum FormNameConfig {
   I566 = 'I-566',
   I485SUPA = 'I485SUPA',
   I485SUPJ = 'I485SUPJ',
-  I944 = 'I944'
+  I944 = 'I944',
+  I693 = 'I693',
+  I730 = 'I730',
+  I907 = 'I907'
 }

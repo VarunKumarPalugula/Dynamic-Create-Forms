@@ -77,6 +77,8 @@ import { CountryDetailsComponent } from './businesscontrols/country-details/coun
 import { EmployementSupportDocumentsComponent } from './businesscontrols/employement-support-documents/employement-support-documents.component';
 import { DyamicLayoutComponent } from './businesscontrols/dyamic-layout/dyamic-layout.component';
 import { DyamicTemplateComponent } from './businesscontrols/dyamic-layout/dyamic-template/dyamic-template.component';
+import { PosDetailsComponent } from './businesscontrols/pos-details/pos-details.component';
+import { PosModalPopupComponent } from './businesscontrols/pos-details/pos-modal-popup/pos-modal-popup.component';
 import { PeriodOfStayComponent } from './businesscontrols/period-of-stay/period-of-stay.component';
 import { PeriodOfStayPopupComponent } from './businesscontrols/period-of-stay/period-of-stay-popup/period-of-stay-popup.component';
 @NgModule({
@@ -159,6 +161,8 @@ import { PeriodOfStayPopupComponent } from './businesscontrols/period-of-stay/pe
     EmployementSupportDocumentsComponent,
     DyamicLayoutComponent,
     DyamicTemplateComponent,
+    PosDetailsComponent,
+    PosModalPopupComponent,
     PeriodOfStayComponent,
     PeriodOfStayPopupComponent,
   ],

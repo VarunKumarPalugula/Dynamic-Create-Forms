@@ -45,6 +45,7 @@ import { FormsComponent } from './app-layout/fillings/filling-layout/case/forms/
 import { CasesubmissionsComponent } from './app-layout/fillings/filling-layout/casesubmissions/casesubmissions.component';
 import { AddTemplateComponent } from './app-layout/settings/add-template/add-template.component';
 import { SettingLayoutComponent } from './app-layout/settings/setting-layout/setting-layout.component';
+import { TemplatesComponent } from './app-layout/settings/templates/templates.component';
 
 const routes: Routes = [
   { path: '', component: SignInComponent },
@@ -81,13 +82,12 @@ const routes: Routes = [
         component: SettingLayoutComponent,
         children: [
           { path: '', component: SettingsComponent },
+          { path: 'templates', component: SettingsComponent},
           { path: 'template', component: AddTemplateComponent },
           { path: 'template/:id', component: AddTemplateComponent}
         ],
       },
-      { path: 'addtemplate', component: AddTemplateComponent },
-      // { path: 'home', component: HomeComponent },
-      { path: 'documents', component: DocumentsComponent },
+            { path: 'documents', component: DocumentsComponent },
       {
         path: 'team',
         component: TeamComponent,

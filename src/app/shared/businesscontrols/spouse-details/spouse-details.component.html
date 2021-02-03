@@ -14,7 +14,7 @@
                 Change
             </button>
         </div>
-        <app-current-spouse-popup [data]="commonService.fileData['Martial Status and History']['finalObj']['married']" [isCard]="true" (cardMode)="openSpouseDetails(currentModel)">
+        <app-current-spouse-popup [data]="commonService.fileData[applicantKey]['Martial Status and History']['finalObj']['married']" [isCard]="true" (cardMode)="openSpouseDetails(currentModel)">
         </app-current-spouse-popup>
 
     </div>
@@ -33,18 +33,18 @@
                 Change
             </button>
         </div>
-        <app-prior-spouse-popup [data]="commonService.fileData['Martial Status and History']['finalObj']['married']" [isCard]="true">
+        <app-prior-spouse-popup [data]="commonService.fileData[applicantKey]['Martial Status and History']['finalObj']['married']" [isCard]="true">
         </app-prior-spouse-popup>
     </div>
 </div>
 
 <ng-template #currentModel let-d="dismiss" id="currentModel">
-    <app-current-spouse-popup [data]="commonService.fileData['Martial Status and History']['finalObj']['married']" (emitCloseModel)="closeModel($event, 'CurrentSpouseDetails')">
+    <app-current-spouse-popup [data]="commonService.fileData[applicantKey]['Martial Status and History']['finalObj']['married']" (emitCloseModel)="closeModel($event, 'CurrentSpouseDetails')">
     </app-current-spouse-popup>
 </ng-template>
 
 
 <ng-template #priorModel let-d="dismiss" id="priorModel">
-    <app-prior-spouse-popup [data]="commonService.fileData['Martial Status and History']['finalObj']['married']" (emitCloseModel)="closeModel($event, 'priorSpouseDetails')">
+    <app-prior-spouse-popup [data]="commonService.fileData[applicantKey]['Martial Status and History']['finalObj']['married']" (emitCloseModel)="closeModel($event, 'priorSpouseDetails')">
     </app-prior-spouse-popup>
 </ng-template>

@@ -1,0 +1,60 @@
+<div class="gl-modal-header p-20 bg-model text-white text-align">
+  <span class="fs-16 mb-0 d-ib">Period of stay</span>
+  <span class="modal-close close"> <em class="fa fa-times text-white" aria-hidden="true"></em>> </span>
+</div>
+<form [formGroup]="posValidationRules">
+  <div class="lo-modal-body p-20">
+    <div class="form-group">
+      <label>Subject's name <em class="required">*</em>></label>
+      <input type="text" class="form-control" formControlName="Firstname" />
+      <span class="text-danger" *ngIf="formErrors.Firstname">    
+        {{formErrors.Firstname}}    
+     </span>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 form-group">
+        <label>Stayed from <em class="required">*</em></label>
+        <div class="input-group calendar">
+          <input
+            type="text"
+            #dp="bsDatepicker"
+            class="form-control"
+            bsDatepicker
+            formControlName="Dob"
+            [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }"
+          />
+          <span class="text-danger" *ngIf="formErrors.Dob">    
+            {{formErrors.Dob}}    
+         </span>
+        </div>
+        <div class="col-sm-6 form-group">
+          <label>Stayed till <em class="required">*</em>></label>
+          <div class="input-group calendar">
+            <input
+              type="text"
+              #dp="bsDatepicker"
+              class="form-control"
+              bsDatepicker
+              formControlName="Dob2"
+              [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }"
+            />
+            <span class="text-danger" *ngIf="formErrors.Dob2">    
+                {{formErrors.Dob2}}    
+             </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="">Number of days outside U.S.A <em class="required">*</em>></label>
+          <input type="text" class="form-control" formControlName="ZipCode" />
+          <span class="text-danger" *ngIf="formErrors.ZipCode">    
+            {{formErrors.ZipCode}}    
+         </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="modal-footer bg-model-footer" >
+    <button type="button" class="btn btn-primary" [disabled]="!posValidationRules.valid">Save</button>
+    <button type="button" class="btn btn-outline" >Cancel</button>
+</div>

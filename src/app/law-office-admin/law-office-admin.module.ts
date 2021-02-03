@@ -66,7 +66,8 @@ import { TourNgxPopperModule } from 'ngx-tour-ngx-popper';
 import { FormsComponent } from './app-layout/fillings/filling-layout/case/forms/forms.component';
 import { CasesubmissionsComponent } from './app-layout/fillings/filling-layout/casesubmissions/casesubmissions.component';
 import { AddTemplateComponent } from './app-layout/settings/add-template/add-template.component';
-import { SettingLayoutComponent } from './app-layout/settings/setting-layout/setting-layout.component'
+import { SettingLayoutComponent } from './app-layout/settings/setting-layout/setting-layout.component';
+import { TemplatesComponent } from './app-layout/settings/templates/templates.component'
 
 @NgModule({
   imports: [
@@ -129,6 +130,7 @@ import { SettingLayoutComponent } from './app-layout/settings/setting-layout/set
     CasesubmissionsComponent,
     AddTemplateComponent,
     SettingLayoutComponent,
+    TemplatesComponent,
   ],
 })
 export class LawOfficeAdminModule { }

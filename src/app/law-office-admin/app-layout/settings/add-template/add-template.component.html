@@ -4,7 +4,7 @@
       <div class="card-body">
         <form [formGroup]="addTemplate" (ngSubmit)="onSubmit()">
           <div>
-            <i class="fas fa-arrow-left text-primary pointer" [routerLink]="['/admin/settings']"></i> Back to template
+            <i class="fas fa-arrow-left text-primary pointer" [routerLink]="['/admin/settings/templates']"></i> Back to template
             list
           </div>
           <div class="row">
@@ -80,7 +80,7 @@
                   <button
                     type="submit"
                     class="btn btn-primary btn-sm mb-10 mr-5 float-right"[disabled]="!addTemplate.valid">Save</button>
-                  <button type="button" class="btn btn-outline btn-sm mr-5 mb-10 float-right">Cancel</button>
+                  <button type="button" class="btn btn-outline btn-sm mr-5 mb-10 float-right" [routerLink]="['/admin/settings/templates']">Cancel</button>
                 </div>
               </div>
             </div>
