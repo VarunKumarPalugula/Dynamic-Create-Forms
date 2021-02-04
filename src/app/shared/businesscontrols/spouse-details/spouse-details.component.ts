@@ -30,8 +30,8 @@ export class SpouseDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.CurrentSpouseDetails = (this.commonService.fileData[this.applicantKey] && this.commonService.fileData[this.applicantKey]['Martial Status and History']['finalObj']['married'] && this.commonService.fileData[this.applicantKey]['Martial Status and History']['finalObj']['married']['CurrentSpouseDetails']) ? false : true;
-    this.priorSpouseDetails = (this.commonService.fileData[this.applicantKey] && this.commonService.fileData[this.applicantKey]['Martial Status and History']['finalObj']['married'] && this.commonService.fileData[this.applicantKey]['Martial Status and History']['finalObj']['married']['priorSpouseDetails']) ? false : true;
+    this.CurrentSpouseDetails = (this.commonService.fileData[this.applicantKey] && this.finalObj() && this.finalObj('CurrentSpouseDetails')) ? false : true;
+    this.priorSpouseDetails = (this.commonService.fileData[this.applicantKey] && this.finalObj() && this.finalObj('priorSpouseDetails')) ? false : true;
   }
 
 
@@ -52,6 +52,15 @@ export class SpouseDetailsComponent implements OnInit {
       this.addSpouseModal.close(value);
     }
   }
+
+  finalObj(i?) {
+    return i ? this.commonService.fileData[this.applicantKey]['Martial Status and History']['finalObj']['married'][i] : this.commonService.fileData[this.applicantKey]['Martial Status and History']['finalObj']['married'];
+  }
+
+  deleteCard(key) {
+    delete this.commonService.fileData[this.applicantKey]['Martial Status and History']['finalObj']['married'][key];
+  }
+
 
 
 }

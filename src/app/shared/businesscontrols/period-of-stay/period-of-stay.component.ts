@@ -68,4 +68,8 @@ export class PeriodOfStayComponent implements OnInit {
     this.periodArray.push(new Array(i));
   }
 
+  deleteCard(key) {
+    delete this.commonService.fileData[this.applicantKey]['Martial Status and History']['finalObj']['married'][`period${key}`];
+  }
+
 }

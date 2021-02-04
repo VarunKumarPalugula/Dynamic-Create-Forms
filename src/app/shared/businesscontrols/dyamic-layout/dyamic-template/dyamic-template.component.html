@@ -44,7 +44,7 @@
                 class="d__flex">
                 <div
                     *ngFor="let hiddenProp of fields[displayValue(parent, parentChild, fields.name)]; let i = index; trackBy: trackByFn">
-                    <app-dyamic-template [fields]="hiddenProp" [parent]="parent"
+                    <app-dyamic-template [fields]="hiddenProp" [parent]="parent" [applicantKey]="applicantKey"
                         [parentChild]="displayValue(parent, parentChild, fields.name)"></app-dyamic-template>
                 </div>
             </div>
@@ -130,7 +130,7 @@
                 <div *ngIf="fields[displayValue(parent, parentChild, fields.name)]">
                     <div
                         *ngFor="let hiddenProp of fields[displayValue(parent, parentChild, fields.name)]; let i = index; trackBy: trackByFn">
-                        <app-dyamic-template [fields]="hiddenProp"
+                        <app-dyamic-template [fields]="hiddenProp" [applicantKey]="applicantKey"
                             [child]="displayValue(parent, parentChild, fields.name)"></app-dyamic-template>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
                     *ngIf="commonService.fileData[applicantKey][parent][fields.name] && fields[commonService.fileData[applicantKey][parent][fields.name].value]">
                     <div
                         *ngFor="let hiddenProp of fields[commonService.fileData[applicantKey][parent][fields.name].value]; let i = index; trackBy: trackByFn">
-                        <app-dyamic-template [fields]="hiddenProp"
+                        <app-dyamic-template [fields]="hiddenProp" [applicantKey]="applicantKey"
                             [child]="commonService.fileData[applicantKey][parent][fields.name].value">
                         </app-dyamic-template>
                     </div>

@@ -5,9 +5,14 @@
             <div class="card__data">
                 <div class="d-flex justify-content-between align-items-center pl-10 ">
                     <strong> Child -{{i + 1}} </strong>
-                    <button class="cursor__pointer button__class" (click)="openChildDetails(childModel, i + 1)">
-                        Change
-                    </button>
+                    <div>
+                        <button class="cursor__pointer button__class bg-danger" (click)="deleteCard(i + 1)">
+                            Delete
+                        </button>
+                        <button class="cursor__pointer button__class" (click)="openChildDetails(childModel, i + 1)">
+                            Change
+                        </button>
+                    </div>
                 </div>
                 <app-child-details-popup [isCard]="true" [data]="finalObj(i + 1)">
                 </app-child-details-popup>

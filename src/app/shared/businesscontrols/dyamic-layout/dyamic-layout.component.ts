@@ -20,4 +20,8 @@ export class DyamicLayoutComponent implements OnInit {
     this.commonService.fileData[this.applicantKey][parent].readOnly = false;
   }
 
+  cancel(parent) {
+    this.commonService.fileData[this.applicantKey][parent].readOnly = true;
+  }
+
 }

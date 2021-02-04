@@ -31,8 +31,7 @@ export class CountryDetailsComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     public commonService: CommonService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     if (this.fields.hasOwnProperty('validation') && Object.keys(this.fields.validation).length) {
@@ -43,7 +42,11 @@ export class CountryDetailsComponent implements OnInit {
         this.detailsForm.controls['State'].setValidators([Validators.required]);
       }
     }
-    this.changes();
+    this.changes();    
+    this.detailsForm.controls['State'].disable();
+    if(this.formData('Country')) {
+      this.detailsForm.controls['State'].enable();
+    }
   }
 
   formGroupData() {
@@ -56,6 +59,10 @@ export class CountryDetailsComponent implements OnInit {
 
   formData(contl) {
     return this.detailsForm.get(contl).value;
+  }
+
+  onCountrySelect() {
+    this.detailsForm.controls['State'].enable();
   }
 
   changes() {

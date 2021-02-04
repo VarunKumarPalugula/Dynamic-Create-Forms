@@ -55,6 +55,10 @@ export class AddressHistoryComponent implements OnInit {
     this.showOutsideUSA = false;
   }
 
+  deleteCard(key) {
+    delete this.commonService.fileData[this.applicantKey]['Address History']['finalObj'][`addr${key}`];
+  }
+
 
   openAddrDetails(content, key) {
     this.selectedAddr = `addr${key}`;

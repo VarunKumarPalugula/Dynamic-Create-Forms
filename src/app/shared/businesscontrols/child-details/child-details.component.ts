@@ -68,4 +68,9 @@ export class ChildDetailsComponent implements OnInit {
     this.childArray.push(new Array(i));
   }
 
+  deleteCard(key) {
+    delete this.commonService.fileData[this.applicantKey]['Children Information']['finalObj'][`child${key}`];
+  }
+
+
 }

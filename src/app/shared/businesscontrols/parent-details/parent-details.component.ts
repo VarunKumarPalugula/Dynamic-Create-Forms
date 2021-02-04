@@ -69,4 +69,8 @@ export class ParentDetailsComponent implements OnInit {
     this.parentArray.push(new Array(i));
   }
 
+  deleteCard(key) {
+    delete this.commonService.fileData[this.applicantKey]['Parent Information']['finalObj'][`parent${key}`];
+  }
+
 }

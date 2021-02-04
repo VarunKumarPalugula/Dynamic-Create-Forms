@@ -51,7 +51,7 @@ export class EducationComponent implements OnInit {
     }
     this.addEducationModal = this.modalService.open(content, { centered: false, keyboard: false, size: 'lg', backdrop: 'static' });
   }
-
+  
   closeModel(value, i) {
     if (value) {
       this.educationFormData = { ...this.educationFormData, ...value }
@@ -89,5 +89,10 @@ export class EducationComponent implements OnInit {
   incEducation(i: number) {
     this.educationArray.push(new Array(i));
   }
+
+  deleteCard(key) {
+    delete this.commonService.fileData[this.applicantKey]['Education Information']['finalObj'][`education${key}`];
+  }
+
 
 }

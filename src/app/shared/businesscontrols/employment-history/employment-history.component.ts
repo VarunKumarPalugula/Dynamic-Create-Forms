@@ -92,4 +92,9 @@ export class EmploymentHistoryComponent implements OnInit {
     this.empArray.push(new Array(i));
   }
 
+  deleteCard(key) {
+    delete this.commonService.fileData[this.applicantKey]['Employment history']['finalObj'][`employment${key}`];
+  }
+
+
 }

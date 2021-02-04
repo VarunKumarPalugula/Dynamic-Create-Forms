@@ -16,25 +16,40 @@
         <div>
             <div> Recent W2's </div>
         </div>
-        <input hidden type="file" accept="image/*" #file2 (change)="uploadFile($event.target.files, 'recentW2', true)">
+        <input hidden type="file" [disabled]="recentW2.length === 2" accept="image/*" #file2 (change)="uploadFile($event.target.files, 'recentW2', false)">
         <button class="blue__button cursor__pointer" (click)="file2.click()"> Attach File
         </button>
+        <div *ngFor="let file of recentW2">
+          {{ file }}
+          <button type="button" class="btn btn-outline-light text-dark btn-sm ml-10"><i
+                  class="fa fa-trash text-secondary" (click)="deletePopup(deleteFile, file, 'recentW2')"></i></button>
+      </div>
     </div>
     <div class="d__flex_between emp__support__div">
         <div>
             <div> 3 Recent Pay-Stubs </div>
         </div>
-        <input hidden type="file" accept="image/*" #file3 (change)="uploadFile($event.target.files, 'recentPayStubs', false)">
+        <input hidden type="file" [disabled]="recentPayStubs.length === 3" accept="image/*" #file3 (change)="uploadFile($event.target.files, 'recentPayStubs', false)">
         <button class="blue__button cursor__pointer" (click)="file3.click()"> Attach File
         </button>
+        <div *ngFor="let file of recentPayStubs">
+          {{ file }}
+          <button type="button" class="btn btn-outline-light text-dark btn-sm ml-10"><i
+                  class="fa fa-trash text-secondary" (click)="deletePopup(deleteFile, file, 'recentPayStubs')"></i></button>
+      </div>
     </div>
     <div class="d__flex_between emp__support__div">
         <div>
             <div> EAD Cards </div>
         </div>
-        <input hidden type="file" accept="image/*" #file4 (change)="uploadFile($event.target.files, 'eadCards', false)">
+        <input hidden type="file" accept="image/*" #file4 (change)="uploadFile($event.target.files, 'eadCards', true)">
         <button class="blue__button cursor__pointer" (click)="file4.click()"> Attach File
         </button>
+        <div *ngFor="let file of eadCards">
+          {{ file }}
+          <button type="button" class="btn btn-outline-light text-dark btn-sm ml-10"><i
+                  class="fa fa-trash text-secondary" (click)="deletePopup(deleteFile, file, 'eadCards')"></i></button>
+      </div>
     </div>
 </div>
 

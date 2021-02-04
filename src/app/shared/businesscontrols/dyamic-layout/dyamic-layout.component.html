@@ -3,7 +3,7 @@
         <div class="card-header">
             <h4 class="float-left"> {{ data.SubSection }} </h4>
             <button [disabled]="commonService.checkFormValid(commonService.fileData[applicantKey][data.SubSection])"
-                *ngIf="commonService.fileData[applicantKey][data.SubSection] && !commonService.fileData[applicantKey][data.SubSection].readOnly"
+            *ngIf="commonService.fileData[applicantKey][data.SubSection] && !commonService.fileData[applicantKey][data.SubSection].readOnly"
                 class="pull-right btn btn-sm btn-primary"
                 (click)="commonService.saveUIControlTemplateResults(data.Section, data, applicantKey)">
                 Save
@@ -11,6 +11,9 @@
             <button *ngIf="commonService.fileData[applicantKey][data.SubSection] && commonService.fileData[applicantKey][data.SubSection].readOnly"
                 class="float-right btn btn-sm btn-primary" (click)="edit(data.SubSection)">
                 Edit
+            </button>
+            <button [disabled]="commonService.fileData[applicantKey][data.SubSection] && commonService.fileData[applicantKey][data.SubSection].readOnly" class="pull-right btn btn-sm btn-secondary mr-3" (click)="cancel(data.SubSection)">
+                Cancel
             </button>
         </div>
         <div class="card-body">

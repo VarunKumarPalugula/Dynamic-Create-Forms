@@ -3,14 +3,14 @@
         the
         United States for the last
         six years.</span><br />
-      <span class="normalTextFormat">-Be sure to only list those in which each beneficiary was acutually in the
+    <span class="normalTextFormat">-Be sure to only list those in which each beneficiary was acutually in the
         united
         states in an H or L
         classsification</span><br />
-      <p class="normalTextFormat">-Do not include periods in which the beneficiary was in dependent status, for
+    <p class="normalTextFormat">-Do not include periods in which the beneficiary was in dependent status, for
         example, H-4 or L-2
         status.</p>
-      <p>Total number of days outside U.S.A - 0 Days</p>
+    <p>Total number of days outside U.S.A - 0 Days</p>
 </div>
 <div class="period">
     <div *ngFor='let in of periodArray;let i = index'>
@@ -19,9 +19,15 @@
             <div class="card__data">
                 <div class="d-flex justify-content-between align-items-center pl-10 ">
                     <strong> period -{{i + 1}} </strong>
-                    <button class="cursor__pointer button__class" (click)="openPeriodDetails(periodModel, i + 1)">
-                        Change
-                    </button>
+                    <div>
+                        <button class="cursor__pointer button__class bg-danger"
+                            (click)="deleteCard(i + 1)">
+                            Delete
+                        </button>
+                        <button class="cursor__pointer button__class" (click)="openPeriodDetails(periodModel, i + 1)">
+                            Change
+                        </button>
+                    </div>
                 </div>
                 <app-period-of-stay-popup [isCard]="true" [data]="finalObj(i + 1)">
                 </app-period-of-stay-popup>
