@@ -186,6 +186,7 @@ export class DynamicFormComponent implements OnInit {
   }
 
   pageRenderedImages(event, img) {
+    this.spinner.show();
     this.thumbnail.unshift({ url: event.source.canvas.toDataURL(), img: img });
     if (this.thumbnail.length === this.pdfs.length) {
       let thunPdf = [];
@@ -197,6 +198,7 @@ export class DynamicFormComponent implements OnInit {
       }
       this.thumbnail = [ ...thunPdf];
       // console.log(this.pdfs, this.thumbnail);
+      this.spinner.hide();
       this.showPdfView = false;
     }
   }

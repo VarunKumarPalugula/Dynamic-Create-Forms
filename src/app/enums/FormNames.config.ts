@@ -1,18 +1,11 @@
 export enum FormNameConfig {
   G28 = 'G-28',
-  G28URL = '../../../../../assets/forms/g28_in_one_page for Adobe DC.pdf',
   I129 = 'I-129',
-  // I129URL = '../../../../../assets/forms/i-129-form-in-one-page.pdf',
-  I129URL = '../../../../../assets/forms/i-129-form-in-one-page-Adobe pro DC.pdf',
   G1145 = 'G-1145',
-  G1145URL = '../../../../../assets/forms/i-1145-form-in-one-page (1).pdf',
   I485 = 'I-485',
   I485URL = 'I485URL',
   I526 = 'I-526',
   I140 = 'I-140',
-  I140URL = '../../../../../assets/forms/i-140_form-in-one-page (1)_Adobe pro dc.pdf',
-  I751 = 'I-751',
-  I751URL = 'I751URL',
   I765 = 'I-765',
   I765URL = 'I765URL',
   I864 = 'I-864',
@@ -31,5 +24,7 @@ export enum FormNameConfig {
   I944 = 'I944',
   I693 = 'I693',
   I730 = 'I730',
-  I907 = 'I907'
+  I907 = 'I907',
+  I590 = 'i-590',
+  I751 = 'I751'
 }
