@@ -59,7 +59,6 @@ export class EmployementSupportDocumentsComponent implements OnInit {
     for (let i = 0; i < file.length; i++) {
       formdata.append(type, file[i]);
     }
-    // formdata.append('Resume', uploadResumeFile), formdata.append('Type', 'Resume');
     formdata.append(type, file), formdata.append('Type', type);
     this.clientService.uploadFile(formdata, this.token).subscribe(
       (res: any) => {

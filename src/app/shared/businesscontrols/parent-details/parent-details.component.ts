@@ -71,6 +71,7 @@ export class ParentDetailsComponent implements OnInit {
 
   deleteCard(key) {
     delete this.commonService.fileData[this.applicantKey]['Parent Information']['finalObj'][`parent${key}`];
+    this.commonService.fileData[this.applicantKey]['Parent Information'].readOnly = false;
   }
 
 }

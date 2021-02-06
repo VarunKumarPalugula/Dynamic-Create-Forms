@@ -50,7 +50,7 @@ export class I94RecordComponent implements OnInit {
         ...this.commonService.fileData[this.applicantKey]['Travel Details']['finalObj']['I94 Record'],
         [`I94Record${i}`]: value
       }
-      this.commonService.fileData[this.applicantKey]['Travel Details']['I94 Record'].readOnly = false;
+      this.commonService.fileData[this.applicantKey]['Travel Details'].readOnly = false;
     }
     if (this.addRecordModal != undefined) {
       this.addRecordModal.close(value);
@@ -70,7 +70,8 @@ export class I94RecordComponent implements OnInit {
   }
 
   deleteCard(key) {
-    delete this.commonService.fileData[this.applicantKey]['I94 Record']['finalObj'][`I94Record${key}`];
+    delete this.commonService.fileData[this.applicantKey]['Travel Details']['finalObj']['I94 Record'][`I94Record${key}`];
+    this.commonService.fileData[this.applicantKey]['Travel Details'].readOnly = false;
   }
 
 

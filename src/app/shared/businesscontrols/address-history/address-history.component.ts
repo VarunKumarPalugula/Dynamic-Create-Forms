@@ -57,6 +57,7 @@ export class AddressHistoryComponent implements OnInit {
 
   deleteCard(key) {
     delete this.commonService.fileData[this.applicantKey]['Address History']['finalObj'][`addr${key}`];
+    this.commonService.fileData[this.applicantKey]['Address History'].readOnly = false;
   }
 
 

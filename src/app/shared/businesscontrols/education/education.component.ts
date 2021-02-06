@@ -92,6 +92,7 @@ export class EducationComponent implements OnInit {
 
   deleteCard(key) {
     delete this.commonService.fileData[this.applicantKey]['Education Information']['finalObj'][`education${key}`];
+    this.commonService.fileData[this.applicantKey]['Education Information'].readOnly = false;
   }
 
 

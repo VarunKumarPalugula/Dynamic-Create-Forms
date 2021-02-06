@@ -59,6 +59,7 @@ export class SpouseDetailsComponent implements OnInit {
 
   deleteCard(key) {
     delete this.commonService.fileData[this.applicantKey]['Martial Status and History']['finalObj']['married'][key];
+    this.commonService.fileData[this.applicantKey]['Martial Status and History'].readOnly = false;
   }
 
 

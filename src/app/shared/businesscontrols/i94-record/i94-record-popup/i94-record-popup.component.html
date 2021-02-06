@@ -1,1 +1,115 @@
-<p>i94-record-popup works!</p>
+<div class="gl-modal-header p-20 bg-model text-white text-align" [hidden]="isCard">
+    <span class="fs-16 mb-0 d-ib">I-94 Record Details</span>
+    <span class="modal-close close" (click)="cancel()">
+        <i class="fa fa-times text-white" aria-hidden="true"></i>
+    </span>
+</div>
+<form [formGroup]="travelDocumentValidationRules" (ngSubmit)="submit()">
+    <div class="lo-modal-body p-20">
+        <div class="row">
+            <div class="col-sm-12 form-group">
+                <label>Passport Or Travel Document Number <i class="required" [hidden]="isCard">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('PassportOrTravelDocumentNumber') }}</strong></div>
+                <input [hidden]="isCard" type="text" class="form-control" formControlName="PassportOrTravelDocumentNumber">
+                <small [hidden]="isCard"
+                    *ngIf="travelDocumentValidationRules.controls['PassportOrTravelDocumentNumber'].errors && (travelDocumentValidationRules.controls['PassportOrTravelDocumentNumber'].dirty || travelDocumentValidationRules.controls['PassportOrTravelDocumentNumber'].touched)">
+                    <small class="text-danger"
+                        *ngIf="travelDocumentValidationRules.get('PassportOrTravelDocumentNumber').hasError('required')">
+                        Passport Or Travel Document Number is required.
+                    </small>
+                </small>
+                <small [hidden]="isCard" class="text-danger" *ngIf="
+    travelDocumentValidationRules.get('PassportOrTravelDocumentNumber').hasError('minlength') &&
+    !travelDocumentValidationRules.get('PassportOrTravelDocumentNumber').hasError('pattern')
+    ">Minimum 5 characters</small>
+                <small [hidden]="isCard" class="text-danger" *ngIf="
+    travelDocumentValidationRules.get('PassportOrTravelDocumentNumber').hasError('maxlength') &&
+    !travelDocumentValidationRules.get('PassportOrTravelDocumentNumber').hasError('pattern')
+    ">Maximum 20 characters</small>
+                <small [hidden]="isCard" class="text-danger"
+                    *ngIf="travelDocumentValidationRules.get('PassportOrTravelDocumentNumber').hasError('pattern')">Enter
+                    only
+                    characters
+                </small>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 form-group">
+                <label>Date Passport Or Travel Document Issued <i [hidden]="isCard" class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('DatePassportOrTravelDocumentIssued') }}</strong></div>
+                <div [hidden]="isCard" class="input-group calendar">
+                    <input type="text" #dp="bsDatepicker" class="form-control"
+                        formControlName="DatePassportOrTravelDocumentIssued" bsDatepicker
+                        [value]=" travelDocumentValidationRules.get('DatePassportOrTravelDocumentIssued').value | date"
+                        [maxDate]="maxDate" [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }">
+                    <span class="input-group-prepend">
+                        <button type="button" class="btn btn-light" (click)="dp.toggle()">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
+                <small [hidden]="isCard"
+                    *ngIf="travelDocumentValidationRules.controls['DatePassportOrTravelDocumentIssued'].errors && (travelDocumentValidationRules.controls['DatePassportOrTravelDocumentIssued'].dirty || travelDocumentValidationRules.controls['DatePassportOrTravelDocumentIssued'].touched)">
+                    <small class="text-danger"
+                        *ngIf="travelDocumentValidationRules.get('DatePassportOrTravelDocumentIssued').hasError('required')">
+                        Date Passport Or Travel Document Issued is Required.
+                    </small>
+                </small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 form-group">
+                <label>Date Passport Or Travel Document Expires <i [hidden]="isCard" class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('DatePassportOrTravelDocumentExpires') }}</strong></div>
+                <div [hidden]="isCard" class="input-group calendar">
+                    <input type="text" #dp="bsDatepicker" class="form-control"
+                        formControlName="DatePassportOrTravelDocumentExpires" bsDatepicker
+                        [value]=" travelDocumentValidationRules.get('DatePassportOrTravelDocumentExpires').value | date"
+                        [minDate]="minDate" [bsConfig]="{ showWeekNumbers: false, containerClass: 'theme-dark-blue' }">
+                    <span class="input-group-prepend">
+                        <button type="button" class="btn btn-light" (click)="dp.toggle()">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </div>
+                <small [hidden]="isCard"
+                    *ngIf="travelDocumentValidationRules.controls['DatePassportOrTravelDocumentExpires'].errors && (travelDocumentValidationRules.controls['DatePassportOrTravelDocumentExpires'].dirty || travelDocumentValidationRules.controls['DatePassportOrTravelDocumentExpires'].touched)">
+                    <small class="text-danger"
+                        *ngIf="travelDocumentValidationRules.get('DatePassportOrTravelDocumentExpires').hasError('required')">
+                        Date Passport Or Travel Document Expires is required.
+                    </small>
+                </small>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12 form-group">
+                <label for="">passport or travel document country of issuance <i [hidden]="isCard" class="required">*</i></label>
+                <div><strong [hidden]="!isCard"> {{ formData('PassportOrTravelDocumentCountryOfIssuance') }}</strong></div>
+                <select [hidden]="isCard" class="form-control" formControlName="PassportOrTravelDocumentCountryOfIssuance">
+                    <option hidden></option>
+                    <option *ngFor="let countries of commonService.allCountriesList" [value]="countries.name">
+                        {{countries.name}}</option>
+                </select>
+                <small [hidden]="isCard"
+                    *ngIf="travelDocumentValidationRules.controls['PassportOrTravelDocumentCountryOfIssuance'].errors && (travelDocumentValidationRules.controls['PassportOrTravelDocumentCountryOfIssuance'].dirty || travelDocumentValidationRules.controls['PassportOrTravelDocumentCountryOfIssuance'].touched)">
+                    <small class="text-danger"
+                        *ngIf="travelDocumentValidationRules.get('PassportOrTravelDocumentCountryOfIssuance').hasError('required')">
+                        Passport Or Travel Document Country Of Issuance is required.
+                    </small>
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <input [hidden]="isCard" type="checkbox" id="94" value="" formControlName="ExpiryEmailRemainder">
+            <label [hidden]="isCard" for="94" class="checkbox"></label>Send email reminders from 3 months before document expiry            
+            <div><strong [hidden]="!isCard"> {{ formData('ExpiryEmailRemainder') }}</strong></div>
+        </div>
+    </div>
+</form>
+
+<div class="modal-footer bg-model-footer" [hidden]="isCard">
+    <button type="button" class="btn btn-primary" (click)="save()" [disabled]="!travelDocumentValidationRules.valid">Save</button>
+    <button type="button" class="btn btn-outline" (click)="cancel()">Cancel</button>
+</div>

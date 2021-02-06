@@ -17,11 +17,11 @@ export class I94RecordPopupComponent implements OnInit {
   @Input() set data(value: any) {
     this.formGroupData();
     if (value) {
-      this.childDetailsForm.patchValue(value);
+      this.travelDocumentValidationRules.patchValue(value);
     }
   }
 
-  childDetailsForm: FormGroup;
+  travelDocumentValidationRules: FormGroup;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -30,29 +30,24 @@ export class I94RecordPopupComponent implements OnInit {
 
   ngOnInit() {}
   formGroupData() {
-    this.childDetailsForm = this.formBuilder.group({
-      AddFirstname: [null],
-      AddMiddlename: [null],
-      AddLastName: [null],
-      AddGender: [null],
-      AddDob: [null],
-      AddCountry: [null],
-      AddStateorProvince: [null],
-      AddCityorTown: [null],
-      AddUSICSnumber: [null],
-      AddANumber: [null]
+    this.travelDocumentValidationRules = this.formBuilder.group({
+      PassportOrTravelDocumentNumber: [null],
+      DatePassportOrTravelDocumentIssued: [null],
+      DatePassportOrTravelDocumentExpires: [null],
+      PassportOrTravelDocumentCountryOfIssuance: [null],
+      ExpiryEmailRemainder: [null]
     });
   }
 
   formData(contl) {
-    return this.childDetailsForm.get(contl).value;
+    return this.travelDocumentValidationRules.get(contl).value;
   }
 
   save() {
-    if (this.childDetailsForm.invalid) {
+    if (this.travelDocumentValidationRules.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.childDetailsForm.value)
+    this.emitCloseModel.emit(this.travelDocumentValidationRules.value)
   }
 
   cancel(): void {

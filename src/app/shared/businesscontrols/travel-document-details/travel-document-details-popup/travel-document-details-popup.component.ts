@@ -18,60 +18,41 @@ export class TravelDocumentDetailsPopupComponent implements OnInit {
 
   @Input() set data(value: any) {
     this.formGroupData();
-    if (value && value.hasOwnProperty('CurrentSpouseDetails')) {
-      this.currentSpouseForm.patchValue(value['CurrentSpouseDetails']);
+    if (value) {
+      this.travelDocumentValidationRules.patchValue(value);
     }
   }
 
-  currentSpouseForm: FormGroup;
+  travelDocumentValidationRules: FormGroup;
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private spinner: NgxSpinnerService,
-    private commonService: CommonService,
-    private dynamicValidationService: JsonSectionValidationService
+    private commonService: CommonService
   ) { }
 
-
   ngOnInit() { }
-  logValidationErrors() {
-  }
-
   formGroupData() {
-    this.currentSpouseForm = this.formBuilder.group({
-      AddFirstname: [null],
-      AddMiddlename: [null],
-      AddLastName: [null],
-      AddGender: [null],
-      AddDob: [null],
-      AddCountry: [null],
-      AddStateorProvince: [null],
-      AddCityorTown: [null],
-      AddUSICSnumber: [null],
-      AddANumber: [null]
+    this.travelDocumentValidationRules = this.formBuilder.group({
+      PassportOrTravelDocumentNumber: [null],
+      DatePassportOrTravelDocumentIssued: [null],
+      DatePassportOrTravelDocumentExpires: [null],
+      PassportOrTravelDocumentCountryOfIssuance: [null]
     });
   }
 
   formData(contl) {
-    return this.currentSpouseForm.get(contl).value;
+    return this.travelDocumentValidationRules.get(contl).value;
   }
+
   save() {
-    if (this.currentSpouseForm.invalid) {
+    if (this.travelDocumentValidationRules.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.currentSpouseForm.value)
-
+    this.emitCloseModel.emit(this.travelDocumentValidationRules.value)
   }
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
-  }
-  detailsEmit(value) {
-    this.currentSpouseForm.patchValue({
-      Country: value.Country,
-      State: value.State,
-      CityOrTown: value.CityOrTown,
-    })
+    this.emitCloseModel.emit(null);
   }
 
 }

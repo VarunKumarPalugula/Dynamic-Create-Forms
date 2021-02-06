@@ -94,6 +94,7 @@ export class EmploymentHistoryComponent implements OnInit {
 
   deleteCard(key) {
     delete this.commonService.fileData[this.applicantKey]['Employment history']['finalObj'][`employment${key}`];
+    this.commonService.fileData[this.applicantKey]['Employment history'].readOnly = false;
   }
 
 

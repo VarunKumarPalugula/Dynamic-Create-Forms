@@ -70,6 +70,7 @@ export class PeriodOfStayComponent implements OnInit {
 
   deleteCard(key) {
     delete this.commonService.fileData[this.applicantKey]['Martial Status and History']['finalObj']['married'][`period${key}`];
+    this.commonService.fileData[this.applicantKey]['period of stay'].readOnly = false;
   }
 
 }
