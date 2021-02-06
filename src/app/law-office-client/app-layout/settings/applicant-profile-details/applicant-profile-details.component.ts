@@ -81,6 +81,15 @@ export class ApplicantProfileDetailsComponent implements OnInit {
             pattern : /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
           }
         }
+        res['Templates'][15].SubSectionTemplateData['Travel Details'][0]['yes'][1].list = [
+          {id: "use-1", text: "Usa"},
+          {id: "use-2", text: "India"}
+        ]
+        res['Templates'][15].SubSectionTemplateData['Travel Details'][0]['yes'][3] = {
+          name: "I94 Record",
+          type: "i94Record",
+        }
+
         this.allSectionConfigs = res['Templates'];
         res['Templates'].forEach((resp) => this.commonService.formObject(resp, this.initialObj, 'appProfileDetails'));
       }

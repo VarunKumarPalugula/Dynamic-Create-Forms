@@ -81,6 +81,12 @@ import { PosDetailsComponent } from './businesscontrols/pos-details/pos-details.
 import { PosModalPopupComponent } from './businesscontrols/pos-details/pos-modal-popup/pos-modal-popup.component';
 import { PeriodOfStayComponent } from './businesscontrols/period-of-stay/period-of-stay.component';
 import { PeriodOfStayPopupComponent } from './businesscontrols/period-of-stay/period-of-stay-popup/period-of-stay-popup.component';
+import { PassportDetailsComponent } from './businesscontrols/passport-details/passport-details.component';
+import { TravelDocumentDetailsComponent } from './businesscontrols/travel-document-details/travel-document-details.component';
+import { I94RecordComponent } from './businesscontrols/i94-record/i94-record.component';
+import { I94RecordPopupComponent } from './businesscontrols/i94-record/i94-record-popup/i94-record-popup.component';
+import { TravelDocumentDetailsPopupComponent } from './businesscontrols/travel-document-details/travel-document-details-popup/travel-document-details-popup.component';
+import { PassportDetailsPopupComponent } from './businesscontrols/passport-details/passport-details-popup/passport-details-popup.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -165,6 +171,12 @@ import { PeriodOfStayPopupComponent } from './businesscontrols/period-of-stay/pe
     PosModalPopupComponent,
     PeriodOfStayComponent,
     PeriodOfStayPopupComponent,
+    PassportDetailsComponent,
+    TravelDocumentDetailsComponent,
+    I94RecordComponent,
+    I94RecordPopupComponent,
+    TravelDocumentDetailsPopupComponent,
+    PassportDetailsPopupComponent,
   ],
   exports: [
     ForgotpasswordComponent,

@@ -18,8 +18,7 @@ export class DyamicTemplateComponent implements OnInit {
 
   constructor(public commonService: CommonService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
 
   trackByFn(index, item) {
@@ -56,4 +55,17 @@ export class DyamicTemplateComponent implements OnInit {
     Object.keys(data.value).forEach(res => this.commonService.fileData[this.applicantKey][parent.trim()].finalObj[res] = data.value[res]);
     this.commonService.fileData[this.applicantKey][parent.trim()][fields.type].valid = data.valid
   }
+
+  readOnlyObj(applicantKey, parent) {
+    return this.commonService.fileData[applicantKey] && this.commonService.fileData[applicantKey][parent] && 
+    this.commonService.fileData[applicantKey][parent].readOnly;
+  }
+
+  asteriskObj(applicantKey, parent, fields) {
+    return this.commonService.fileData[applicantKey] && this.commonService.fileData[applicantKey][parent] && 
+           this.commonService.fileData[applicantKey][parent][fields.name] && 
+          !this.commonService.fileData[applicantKey][parent][fields.name].required && 
+          !this.commonService.fileData[applicantKey][parent].readOnly
+  }
+
 }
