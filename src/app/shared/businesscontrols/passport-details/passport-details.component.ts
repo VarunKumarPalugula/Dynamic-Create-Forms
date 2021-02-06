@@ -48,14 +48,14 @@ openSpouseDetails(content) {
   this.addSpouseModal = this.modalService.open(content, { centered: false, keyboard: false, size: 'lg', backdrop: 'static' });
 }
 
-closeModel(value, key) {
+closeModel(value) {
   if (value) {
     this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'] = {
-      ...this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj']['passportDetails'],
-      [key]: value
+      ...this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'],
+      passportDetails: value
     }
     this.commonService.fileData[this.applicantKey]['passport, visa or travel documents'].readOnly = false;
-    this[key] = false;
+    this.passportDetails = false;
   }
   if (this.addSpouseModal != undefined) {
     this.addSpouseModal.close(value);
@@ -108,7 +108,7 @@ getFile() {
     (res: any) => {
       this.spinner.hide();
       if (res !== null) {
-        this.passportList = res;
+        res.forEach(res => this.passportList.push(res.FileName));
       }
     },
     err => {

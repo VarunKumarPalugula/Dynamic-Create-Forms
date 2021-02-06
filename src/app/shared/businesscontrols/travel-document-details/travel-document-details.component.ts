@@ -47,14 +47,14 @@ export class TravelDocumentDetailsComponent implements OnInit {
     this.addSpouseModal = this.modalService.open(content, { centered: false, keyboard: false, size: 'lg', backdrop: 'static' });
   }
 
-  closeModel(value, key) {
+  closeModel(value) {
     if (value) {
       this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'] = {
         ...this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'],
-        [key]: value
+        travelDocumentDetails: value
       }
       this.commonService.fileData[this.applicantKey]['passport, visa or travel documents'].readOnly = false;
-      this[key] = false;
+      this.travelDocumentDetails = false;
     }
     if (this.addSpouseModal != undefined) {
       this.addSpouseModal.close(value);
@@ -109,7 +109,7 @@ export class TravelDocumentDetailsComponent implements OnInit {
       (res: any) => {
         this.spinner.hide();
         if (res !== null) {
-          this.travelList = res;
+          res.forEach(res => this.travelList.push(res.FileName));
         }
       },
       err => {

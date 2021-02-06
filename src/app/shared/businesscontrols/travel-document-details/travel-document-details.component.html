@@ -38,7 +38,7 @@
 
 <ng-template #travelModel let-d="dismiss" id="travelModel">
     <app-travel-document-details-popup
-        [data]="finalObj()"
+        [data]="finalObj('travelDocumentDetails')"
         (emitCloseModel)="closeModel($event, 'travelDocumentDetails')">
     </app-travel-document-details-popup>
 </ng-template>

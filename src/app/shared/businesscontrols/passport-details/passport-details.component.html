@@ -37,7 +37,7 @@
 </div>
 
 <ng-template #passportModel let-d="dismiss" id="passportModel">
-    <app-passport-details-popup [data]="finalObj()" (emitCloseModel)="closeModel($event, 'passportDetails')">
+    <app-passport-details-popup [data]="finalObj('passportDetails')" (emitCloseModel)="closeModel($event, 'passportDetails')">
     </app-passport-details-popup>
 </ng-template>
 
