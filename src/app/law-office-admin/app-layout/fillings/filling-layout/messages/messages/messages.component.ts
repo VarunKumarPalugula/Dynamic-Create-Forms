@@ -115,7 +115,7 @@ export class MessagesComponent implements OnInit {
     this.filingService.GetFilingAdminTeammembers(clientobj, this.token).subscribe(
       (res: any) => {
         this.adminteamMembersList = res;
-
+        this.adminteamMembersList = this.adminteamMembersList.filter(x=>x.Status == true);
         this.adminteamMembersDropsownSettings = {
           singleSelection: false,
           idField: 'AdminID',

@@ -3,23 +3,25 @@
         <div class="card-header">
             <h4 class="float-left"> {{ data.SubSection }} </h4>
             <button [disabled]="commonService.checkFormValid(commonService.fileData[applicantKey][data.SubSection])"
-            *ngIf="commonService.fileData[applicantKey][data.SubSection] && !commonService.fileData[applicantKey][data.SubSection].readOnly"
+                *ngIf="!commonService.fileData[applicantKey][data.SubSection].readOnly"
                 class="pull-right btn btn-sm btn-primary"
                 (click)="commonService.saveUIControlTemplateResults(data.Section, data, applicantKey)">
                 Save
             </button>
-            <button *ngIf="commonService.fileData[applicantKey][data.SubSection] && commonService.fileData[applicantKey][data.SubSection].readOnly"
+            <button *ngIf="commonService.fileData[applicantKey][data.SubSection].readOnly"
                 class="float-right btn btn-sm btn-primary" (click)="edit(data.SubSection)">
                 Edit
             </button>
-            <button [disabled]="commonService.fileData[applicantKey][data.SubSection] && commonService.fileData[applicantKey][data.SubSection].readOnly" class="pull-right btn btn-sm btn-secondary mr-3" (click)="cancel(data.SubSection)">
+            <button [disabled]="commonService.fileData[applicantKey][data.SubSection].readOnly"
+                class="pull-right btn btn-sm btn-secondary mr-3" (click)="cancel(data.SubSection)">
                 Cancel
             </button>
         </div>
         <div class="card-body">
             <div class="row">
                 <div *ngFor="let subField of key.value; let i = index; trackBy: commonService.trackByFn">
-                     <app-dyamic-template [fields]="subField" [parent]="data.SubSection" [readOnly]="data.isSave" [applicantKey]="applicantKey"></app-dyamic-template>
+                    <app-dyamic-template [fields]="subField" [parent]="data.SubSection" [readOnly]="data.isSave"
+                        [applicantKey]="applicantKey"></app-dyamic-template>
                 </div>
             </div>
         </div>

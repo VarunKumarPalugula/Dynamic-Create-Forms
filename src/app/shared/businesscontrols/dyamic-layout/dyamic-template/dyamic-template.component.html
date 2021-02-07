@@ -4,7 +4,7 @@
 
         <label> <strong> {{ fields.displayName }} </strong></label>
 
-        <span *ngIf="asteriskObj(applicantKey, parent, fields)" class="danger">*</span>
+        <span *ngIf="asteriskObj(applicantKey, parent, parentChild, fields)" class="danger">*</span>
 
         <div *ngIf="readOnlyObj(applicantKey, parent); then checkboxContlIf else checkboxContlEls">
         </div>
@@ -24,7 +24,7 @@
 
         <label> <strong> {{ fields.displayName }} </strong></label>
 
-        <span *ngIf="asteriskObj(applicantKey, parent, fields)" class="danger">*</span>
+        <span *ngIf="asteriskObj(applicantKey, parent, parentChild, fields)" class="danger">*</span>
 
         <div *ngIf="readOnlyObj(applicantKey, parent); then radioContlIf else radioContlEls"> </div>
 
@@ -43,10 +43,10 @@
             </div>
         </ng-template>
 
-        <div *ngIf="commonService.fileData[applicantKey] && commonService.fileData[applicantKey][parent][fields.name] && 
-                        fields[displayValue(parent, parentChild, fields.name)]" class="d__flex">
+        <div *ngIf="fields[displayValue(parent, parentChild, fields.name)]" class="d__flex">
 
-            <div *ngFor="let hiddenProp of fields[displayValue(parent, parentChild, fields.name)]; let i = index; trackBy: trackByFn">
+            <div
+                *ngFor="let hiddenProp of fields[displayValue(parent, parentChild, fields.name)]; let i = index; trackBy: trackByFn">
 
                 <app-dyamic-template [fields]="hiddenProp" [parent]="parent" [applicantKey]="applicantKey"
                     [parentChild]="displayValue(parent, parentChild, fields.name)"></app-dyamic-template>
@@ -61,7 +61,7 @@
 
         <label> <strong> {{ fields.displayName }} </strong></label>
 
-        <span *ngIf="asteriskObj(applicantKey, parent, fields)" class="danger">*</span>
+        <span *ngIf="asteriskObj(applicantKey, parent, parentChild, fields)" class="danger">*</span>
 
         <div *ngIf="readOnlyObj(applicantKey, parent);then textboxContlIf else textboxContlEls"></div>
 
@@ -71,18 +71,37 @@
 
         <ng-template #textboxContlEls>
 
-            <input [name]="fields.name" class="form-control" type="text" #textField
-                [value]="displayValue(parent, parentChild, fields.name)"
-                (input)="change($event.target.value, fields, parent, parentChild);">
+            <div *ngIf="parentChild;then textboxChildContlIf else textboxChildContlEls"></div>
 
-            <span *ngIf="commonService.fileData[applicantKey] && commonService.fileData[applicantKey] && 
-                commonService.fileData[applicantKey][parent] && commonService.fileData[applicantKey][parent][fields.name] && 
-                !commonService.fileData[applicantKey][parent][fields.name].valid" class="danger">
-                {{ commonService.fileData[applicantKey][parent][fields.name].message ?
-                commonService.fileData[applicantKey][parent][fields.name].message :
-                commonService.validationMessage.common.required &&
-                !commonService.fileData[applicantKey][parent].readOnly }}
-            </span>
+            <ng-template #textboxChildContlIf>
+
+                <input [name]="fields.name" class="form-control" type="text" #textField
+                    [value]="displayValue(parent, parentChild, fields.name)"
+                    (input)="change($event.target.value, fields, parent, parentChild);">
+
+                <span *ngIf="!commonService.fileData[applicantKey][parent][parentChild][fields.name].valid" class="danger">
+                    {{ commonService.fileData[applicantKey][parent][parentChild][fields.name].message ?
+                    commonService.fileData[applicantKey][parent][parentChild][fields.name].message :
+                    commonService.validationMessage.common.required &&
+                    !commonService.fileData[applicantKey][parent][parentChild].readOnly }}
+                </span>
+
+            </ng-template>
+
+            <ng-template #textboxChildContlEls>
+
+                <input [name]="fields.name" class="form-control" type="text" #textField
+                    [value]="displayValue(parent, parentChild, fields.name)"
+                    (input)="change($event.target.value, fields, parent, parentChild);">
+
+                <span *ngIf="!commonService.fileData[applicantKey][parent][fields.name].valid" class="danger">
+                    {{ commonService.fileData[applicantKey][parent][fields.name].message ?
+                    commonService.fileData[applicantKey][parent][fields.name].message :
+                    commonService.validationMessage.common.required &&
+                    !commonService.fileData[applicantKey][parent].readOnly }}
+                </span>
+
+            </ng-template>
 
         </ng-template>
 
@@ -92,7 +111,7 @@
 
         <label> <strong> {{ fields.displayName }} </strong></label>
 
-        <span *ngIf="asteriskObj(applicantKey, parent, fields)" class="danger">*</span>
+        <span *ngIf="asteriskObj(applicantKey, parent, parentChild, fields)" class="danger">*</span>
 
         <div *ngIf="readOnlyObj(applicantKey, parent);then textareaContlIf else textareaContlEls"></div>
 
@@ -111,7 +130,7 @@
 
         <label> <strong>{{ fields.displayName }}</strong></label>
 
-        <span *ngIf="asteriskObj(applicantKey, parent, fields)" class="danger">*</span>
+        <span *ngIf="asteriskObj(applicantKey, parent, parentChild, fields)" class="danger">*</span>
 
         <div *ngIf="readOnlyObj(applicantKey, parent);then dateContlIf else dateContlEls"></div>
 
@@ -131,7 +150,7 @@
 
         <label> <strong>{{ fields.displayName }} </strong></label>
 
-        <span *ngIf="asteriskObj(applicantKey, parent, fields)" class="danger">*</span>
+        <span *ngIf="asteriskObj(applicantKey, parent, parentChild, fields)" class="danger">*</span>
 
         <div *ngIf="readOnlyObj(applicantKey, parent);then dropdownContlIf else dropdownContlEls"></div>
 
@@ -151,7 +170,7 @@
             <div *ngIf="parentChild;then dropdownChildContlIf else dropdownChildContlEls"></div>
 
             <ng-template #dropdownChildContlIf>
-                
+
                 <select [name]="fields.name" class="form-control" #selectVal
                     [(ngModel)]="commonService.fileData[applicantKey][parent][parentChild][fields.name].value"
                     (change)="change(selectVal.value, fields, parent, parentChild);">
@@ -168,8 +187,7 @@
                     <option *ngFor="let value of fields.list" [value]="value.text">{{ value.text }} </option>
                 </select>
 
-                <div *ngIf="commonService.fileData[applicantKey][parent][fields.name] && 
-                fields[commonService.fileData[applicantKey][parent][fields.name].value]">
+                <div *ngIf="fields[commonService.fileData[applicantKey][parent][fields.name].value]">
 
                     <div
                         *ngFor="let hiddenProp of fields[commonService.fileData[applicantKey][parent][fields.name].value]; let i = index; trackBy: trackByFn">

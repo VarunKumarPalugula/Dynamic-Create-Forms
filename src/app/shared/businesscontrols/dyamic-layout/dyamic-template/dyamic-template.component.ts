@@ -18,7 +18,7 @@ export class DyamicTemplateComponent implements OnInit {
 
   constructor(public commonService: CommonService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
 
   trackByFn(index, item) {
@@ -26,8 +26,13 @@ export class DyamicTemplateComponent implements OnInit {
   }
 
   change(val, fields, parent, parentChild) {
+    let obj = { id: '', text: '' };
+    if (fields.type === 'dropdown') {
+      obj = fields.list.find(res => res.text === val);
+      val = { [obj.id]: obj.text };
+    }
     if (parentChild) {
-      this.commonService.fileData[this.applicantKey][parent.trim()][parentChild][fields.name].value = val;
+      this.commonService.fileData[this.applicantKey][parent.trim()][parentChild][fields.name].value = (fields.type === 'dropdown') ? obj.text : val;
       this.commonService.fileData[this.applicantKey][parent.trim()].finalObj = {
         ...this.commonService.fileData[this.applicantKey][parent.trim()].finalObj,
         [parentChild]: {
@@ -37,7 +42,7 @@ export class DyamicTemplateComponent implements OnInit {
       }
     } else {
       this.commonService.fileData[this.applicantKey][parent.trim()].finalObj[fields.name] = val;
-      this.commonService.fileData[this.applicantKey][parent.trim()][fields.name].value = val;
+      this.commonService.fileData[this.applicantKey][parent.trim()][fields.name].value = (fields.type === 'dropdown') ? obj.text : val;
       this.commonService.changeFormValue(fields, val, parent, this.applicantKey);
     }
   }
@@ -45,9 +50,9 @@ export class DyamicTemplateComponent implements OnInit {
 
   displayValue(parent, child, name) {
     if (child) {
-      return (this.commonService.fileData[this.applicantKey] && this.commonService.fileData[this.applicantKey][parent] && this.commonService.fileData[this.applicantKey][parent][child] && this.commonService.fileData[this.applicantKey][parent][child][name] && this.commonService.fileData[this.applicantKey][parent][child][name].value) ? this.commonService.fileData[this.applicantKey][parent][child][name].value : '';
+      return (this.commonService.fileData[this.applicantKey][parent][child][name].value) ? this.commonService.fileData[this.applicantKey][parent][child][name].value : '';
     } else {
-      return (this.commonService.fileData[this.applicantKey] && this.commonService.fileData[this.applicantKey][parent]  && this.commonService.fileData[this.applicantKey][parent][name] && this.commonService.fileData[this.applicantKey][parent][name].value) ? this.commonService.fileData[this.applicantKey][parent][name].value : '';
+      return (this.commonService.fileData[this.applicantKey][parent][name].value) ? this.commonService.fileData[this.applicantKey][parent][name].value : '';
     }
   }
 
@@ -57,15 +62,14 @@ export class DyamicTemplateComponent implements OnInit {
   }
 
   readOnlyObj(applicantKey, parent) {
-    return this.commonService.fileData[applicantKey] && this.commonService.fileData[applicantKey][parent] && 
-    this.commonService.fileData[applicantKey][parent].readOnly;
+    return this.commonService.fileData[applicantKey][parent].readOnly;
   }
 
-  asteriskObj(applicantKey, parent, fields) {
-    return this.commonService.fileData[applicantKey] && this.commonService.fileData[applicantKey][parent] && 
-           this.commonService.fileData[applicantKey][parent][fields.name] && 
-          !this.commonService.fileData[applicantKey][parent][fields.name].required && 
-          !this.commonService.fileData[applicantKey][parent].readOnly
+  asteriskObj(applicantKey, parent, parentChild, fields) {
+    return parentChild ? !this.commonService.fileData[applicantKey][parent][parentChild][fields.name].required &&
+      !this.commonService.fileData[applicantKey][parent].readOnly :
+      !this.commonService.fileData[applicantKey][parent][fields.name].required &&
+      !this.commonService.fileData[applicantKey][parent].readOnly
   }
 
 }

@@ -64,7 +64,7 @@ export class CommonService {
   formObject(fields, initialObj, applicantKey) {
     const obj = initialObj.find(el => (el.Section === fields.Section && el.SubSection === fields.SubSection));
     let finalObject = {};
-    if(!this.fileData[applicantKey]) {
+    if (!this.fileData[applicantKey]) {
       this.fileData = {
         [applicantKey]: {}
       }
@@ -73,26 +73,42 @@ export class CommonService {
       Array.isArray(fields.SubSectionTemplateData[kList]) && fields.SubSectionTemplateData[kList].forEach(ele => {
         if (ele.name) {
           finalObject[ele.name] = {
-            value: (obj && obj.TemplateResult[fields.Section] && obj.TemplateResult[fields.Section][fields.SubSection] && obj.TemplateResult[fields.Section][fields.SubSection][ele.name]) ? obj.TemplateResult[fields.Section][fields.SubSection][ele.name] : '',
+            value: this.getValue(obj, fields, ele),
             message: '',
             required: ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
             valid: ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true
           };
+          this.fileData[applicantKey][kList] = finalObject;
+          this.fileData[applicantKey][kList].finalObj = {
+            ...this.fileData[applicantKey][kList].finalObj,
+            [ele.name]: this.getValue(obj, fields, ele)
+          }
         } else {
           finalObject[ele.type] = {
             required: ele.type && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
             valid: ele.type && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true
           };
+          this.fileData[applicantKey][kList] = finalObject;
+          this.fileData[applicantKey][kList].finalObj =
+            (obj && obj.TemplateResult[fields.Section] && obj.TemplateResult[fields.Section][fields.SubSection]) ? obj.TemplateResult[fields.Section][fields.SubSection] : {};
         }
-        this.fileData[applicantKey][kList] = finalObject;
         if (ele.name) {
           this.changeFormValue(ele, finalObject[ele.name].value, kList, applicantKey);
           this.setChildContrl(ele, kList, obj ? obj.TemplateResult[fields.Section][fields.SubSection] : null, applicantKey);
         }
       });
-      this.fileData[applicantKey][kList].finalObj = (obj && obj.TemplateResult[fields.Section] && obj.TemplateResult[fields.Section][fields.SubSection]) ? obj.TemplateResult[fields.Section][fields.SubSection] : {};
       this.fileData[applicantKey][kList].readOnly = obj && obj.IsSaved == 'Y' ? true : false;
     });
+  }
+
+  getValue(obj, fields, ele) {
+    return (obj && obj.TemplateResult[fields.Section] &&
+      obj.TemplateResult[fields.Section][fields.SubSection] &&
+      obj.TemplateResult[fields.Section][fields.SubSection][ele.name]) ?
+      ((ele.type === 'dropdown') ?
+        Object.keys(obj.TemplateResult[fields.Section][fields.SubSection][ele.name])
+          .forEach(res => obj.TemplateResult[fields.Section][fields.SubSection][ele.name][res])
+        : obj.TemplateResult[fields.Section][fields.SubSection][ele.name]) : ''
   }
 
   setChildContrl(ele, parent, obj, applicantKey) {
@@ -104,8 +120,19 @@ export class CommonService {
             finalObject[el.name] = {
               value: (obj && obj[kList] && obj[kList][el.name]) ? obj[kList][el.name] : '',
               message: '',
-              valid: el.value && el.hasOwnProperty('validation') && Object.keys(el.validation).length ? false : true
+              valid: el.value && el.hasOwnProperty('validation') && Object.keys(el.validation).length ? false : true,
+              required: ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
             };
+            if (!this.fileData[applicantKey][parent].finalObj[kList]) {
+              this.fileData[applicantKey][parent].finalObj = {
+                ...this.fileData[applicantKey][parent].finalObj,
+                [kList]: {}
+              }
+            }
+            this.fileData[applicantKey][parent].finalObj[kList] = {
+              ...this.fileData[applicantKey][parent].finalObj[kList],
+              [el.name]: (obj && obj[kList] && obj[kList][el.name]) ? obj[kList][el.name] : '',
+            }
           }
           this.fileData[applicantKey][parent][kList] = finalObject;
         });
@@ -114,8 +141,10 @@ export class CommonService {
   }
 
   changeFormValue(control, value, parent, applicantKey) {
-    let obj = { value: this.fileData[applicantKey][parent][control.name].value, message: this.fileData[applicantKey][parent][control.name].message,
-      valid: this.fileData[applicantKey][parent][control.name].valid };
+    let obj = {
+      value: this.fileData[applicantKey][parent][control.name].value, message: this.fileData[applicantKey][parent][control.name].message,
+      valid: this.fileData[applicantKey][parent][control.name].valid
+    };
     if (control.hasOwnProperty('validation') && Object.keys(control.validation).length) {
       obj = this.validateTextForm(control, value);
       this.fileData[applicantKey][parent][control.name].valid = obj.valid;
