@@ -1,0 +1,120 @@
+<div class="billing">
+    <div id="PlanDetails">
+        <h2> Plan Details</h2>
+        <div class="billing__radio">
+            <input type="radio" id="Startup" name="planDetails" value="Startup">
+            <label for="startup">Startup</label>
+            <label for="startup">$49.99/month ($499/ yr)</label>
+            <a href="#">View Details</a>
+            <br>
+
+            <input type="radio" id="Business" name="planDetails" value="Business">
+            <label for="Business">Business</label>
+            <label for="startup">$49.99/month ($499/ yr)</label>
+            <a href="#">View Details</a>
+            <br>
+
+            <input type="radio" id="Enterprise" name="planDetails" value="Enterprise">
+            <label for="Enterprise">Enterprise</label>
+            <label for="startup">$49.99/month ($499/ yr)</label>
+            <a href="#">View Details</a>
+            <br>
+
+            <input type="checkbox" id="annualBilling" name="annualBilling" value="annualBilling">
+            <label for="annualBilling">Annual billing (Save 10%)</label><br>
+            <!-- <input type="checkbox" id="annualBilling" value="annualBilling"> Annual billing (Save 10%) -->
+        </div>
+        <div class="row mt-20">
+            <div class="col-sm-4">
+                <!-- [disabled]="!accountForm.valid" -->
+                <button class="btn btn-primary px-20" type="submit">Save</button>
+                <button class="btn btn-outline ml-10 px-20" type="button">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div id="PaymentMethod">
+        <h2> Payment Method</h2>
+
+        <div class="col-sm-6">
+            <h3>Please note that updating your location could affect your tax rates.</h3>
+            <div class="card mb-20 mt-20">
+                <div class="card-header bg-white">
+                    <span>Bank of America - Credit card</span>
+                    <button class="btn btn-primary px-30 change" type="submit">Change</button>
+                </div>
+                <div class="row mt-6 ml-6">
+                    <div class="col-sm-3">
+                        <label class="fs-12">First Name</label><br>
+                        <b>{{billingDetails.firstName}}</b>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Last Name</label><br>
+                        <b>{{billingDetails.lastName}}</b>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Email Address</label><br>
+                        <b>{{billingDetails.email}}</b>
+                    </div>
+                </div><br>
+                <div class="row mt-6 ml-6">
+                    <div class="col-sm-6">
+                        <label>Card Number</label><br>
+                        <b>{{billingDetails.cardNumber}}</b>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Expiration Date</label><br>
+                        <b>{{billingDetails.expirationDate}}</b>
+                    </div>
+                    <div class="col-sm-4">
+                        <label>Security Code(CVC)</label><br>
+                        <b>{{billingDetails.securityCode}}</b>
+                    </div>
+                </div>
+                <div class="row mt-6 ml-6">
+                    <div class="col-sm-6">
+                        <label>Country/Region</label><br>
+                        <b>{{billingDetails.contryOrReg}}</b>
+                    </div>
+                    <div class="col-sm-6">
+                        <label>Zip/Postal</label><br>
+                        <b>{{billingDetails.zipOrpostal}}</b>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="billingHistory" class="col-sm-6">
+        <h2>Billing History</h2>
+        <div class="col-sm-6">
+            <p>Sort by filing type</p>
+            <select class="form-control lo-select" name="types" id="role">
+                <option selected>All</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select>
+        </div>
+
+        <table class="table table-striped mt-50">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th><a>Actions</a></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let each of billingDetails.billingHistory">
+                    <td>{{each.date}}</td>
+                    <td>{{each.description}}</td>
+                    <td>{{each.amount}}</td>
+                    <td>{{each.status}}</td>
+                    <td><a href="#">View Details</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
