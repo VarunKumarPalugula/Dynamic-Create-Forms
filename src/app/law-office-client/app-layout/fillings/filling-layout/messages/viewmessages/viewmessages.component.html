@@ -172,7 +172,7 @@
 
 <ng-template #deleteMainMessagePopUpTemp let-d="dismiss" id="deleteMainMessagePopUpTemp">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeModal('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -188,7 +188,7 @@
 
 <ng-template #deleteMessagePopUpTemp let-d="dismiss" id="deleteMessagePopUpTemp">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeModal('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -209,7 +209,7 @@
     <form [formGroup]="TopicForm">
       <div class="gl-modal-header p-20 bg-model text-white text-align">
         <span class="fs-16 mb-0 d-ib">Edit Topic</span>
-        <span class="modal-close close" (click)="Closesent()">
+        <span class="modal-close close" ngbAutofocus (click)="Closesent()">
           <i class="fa fa-times text-white" aria-hidden="true"></i>
         </span>
       </div>

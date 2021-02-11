@@ -7,7 +7,7 @@ import { ShellComponent } from '@app/shell/shell.component';
 import { HeaderComponent } from '@app/shell/header/header.component';
 
 @NgModule({
-  imports: [ TranslateModule, SharedModule, RouterModule],
+  imports: [TranslateModule, SharedModule, RouterModule],
   declarations: [HeaderComponent, ShellComponent],
 })
 export class ShellModule {}

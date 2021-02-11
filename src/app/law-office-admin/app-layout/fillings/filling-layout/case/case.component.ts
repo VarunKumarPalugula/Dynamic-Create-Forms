@@ -38,8 +38,8 @@ export class CaseComponent implements OnInit {
   selectedIds: any = [];
   filesAll: boolean;
   Salli: any;
-caseId: any;
-caseIdzero:any;
+  caseId: any;
+  caseIdzero: any;
   constructor(
     private modalService: NgbModal,
     private filingService: FilingsService,
@@ -49,10 +49,7 @@ caseIdzero:any;
     private toaster: ToastrService,
     private formService: FormService,
     private activatedRoute: ActivatedRoute
-    
-  ) {
-
-   }
+  ) {}
 
   ngOnInit() {
     // subscribe to router event
@@ -142,7 +139,14 @@ caseIdzero:any;
     if (fileids.length == 0) {
     } else {
       this.filingService
-        .AddFilesAndFoldersToSupportingFilesSection(this.orgId, this.filingId, this.caseId, fileids.toString(), '', this.token)
+        .AddFilesAndFoldersToSupportingFilesSection(
+          this.orgId,
+          this.filingId,
+          this.caseId,
+          fileids.toString(),
+          '',
+          this.token
+        )
         .subscribe(
           (res: any) => {
             this.GetFilesInSupportingFilesSection();
@@ -158,7 +162,7 @@ caseIdzero:any;
 
   g28click(item) {
     this.router.navigate(['admin/fillings/form']);
-    return
+    return;
     // if (item.FormName == 'g-28') {
     //   this.spinner.show();
     //   this.router.navigate(['admin/fillings/g28']);
@@ -182,15 +186,13 @@ caseIdzero:any;
     // }
   }
 
-
-
   G28viewforfiling(item, caseId) {
     this.formPrintAndDownLoad(false, item.FormName, caseId);
   }
 
   Printdocument(item, caseId) {
     // if (item.FormName == 'g-28') {
-      this.formPrintAndDownLoad(true, item.FormName, caseId);
+    this.formPrintAndDownLoad(true, item.FormName, caseId);
     // } else if (item.FormName == 'i-129') {
     //   this.spinner.show();
     //   this.filingService.I129viewforfiling(this.orgId, this.filingId).subscribe(
@@ -214,20 +216,18 @@ caseIdzero:any;
     // }
   }
 
-
   formPrintAndDownLoad(isPrint, formName, caseId) {
     if (formName === 'g-28') {
-      formName = FormNameConfig.G28
+      formName = FormNameConfig.G28;
     } else if (formName == 'i-129') {
-      formName = FormNameConfig.I129
+      formName = FormNameConfig.I129;
     }
     let formObj = {
-      "FilingId": sessionStorage.getItem('FillingId'),
-      "VersionId": "0",
-      "FormName": formName,
-      "FormValues": {
-      }
-    }
+      FilingId: sessionStorage.getItem('FillingId'),
+      VersionId: '0',
+      FormName: formName,
+      FormValues: {},
+    };
     this.spinner.show();
     this.formService.previewImmigrationFormData(this.orgId, formObj, caseId).subscribe(
       (res: any) => {
@@ -239,7 +239,7 @@ caseIdzero:any;
             this.DownloadSingleFile(res.Message, formName + '-' + Date.now() + '.pdf');
           }
         } else if (res.Status == 0) {
-          this.toaster.error(res.Message)
+          this.toaster.error(res.Message);
         }
       },
       (err) => {
@@ -247,8 +247,6 @@ caseIdzero:any;
       }
     );
   }
-
-
 
   PrintSingleFile(filepath: any) {
     const url = filepath;
@@ -342,20 +340,22 @@ caseIdzero:any;
     } else {
       this.spinner.show();
       var tokenid = 'Authorization:Bearer ' + sessionStorage.getItem('A_AccessToken');
-      this.filingService.AddingToForms(this.orgId, this.filingId, this.caseId,tokenid, 'H1', this.GformsSelected).subscribe(
-        (res) => {
-          this.spinner.hide();
-          this.Closeadd('close click');
-          if (res == null) {
-          } else {
+      this.filingService
+        .AddingToForms(this.orgId, this.filingId, this.caseId, tokenid, 'H1', this.GformsSelected)
+        .subscribe(
+          (res) => {
+            this.spinner.hide();
             this.Closeadd('close click');
-            this.GetCaseforms();
+            if (res == null) {
+            } else {
+              this.Closeadd('close click');
+              this.GetCaseforms();
+            }
+          },
+          (err) => {
+            this.spinner.hide();
           }
-        },
-        (err) => {
-          this.spinner.hide();
-        }
-      );
+        );
     }
   }
   visitingInput() {
@@ -378,7 +378,7 @@ caseIdzero:any;
   downloadselected() {
     if (this.FormsDownload.length > 0) {
       for (var i = 0; i < this.FormsDownload.length; i++) {
-        this.formPrintAndDownLoad(false, this.FormsDownload[i].FormName,this.caseId);
+        this.formPrintAndDownLoad(false, this.FormsDownload[i].FormName, this.caseId);
         // if (this.FormsDownload[i].FormName == 'g-28') {
         //   var tokenid = 'Access-Control-Allow-Origin:*';
         //   this.filingService.G28viewforfiling(this.orgId, this.filingId).subscribe(
@@ -412,7 +412,7 @@ caseIdzero:any;
   printselected() {
     if (this.FormsDownload.length > 0) {
       for (var i = 0; i < this.FormsDownload.length; i++) {
-        this.formPrintAndDownLoad(true, this.FormsDownload[i].FormName,this.caseId);
+        this.formPrintAndDownLoad(true, this.FormsDownload[i].FormName, this.caseId);
         // if (this.FormsDownload[i].FormName == 'g-28') {
         //   this.spinner.show();
         //   var tokenid = 'Access-Control-Allow-Origin:*';
@@ -487,7 +487,7 @@ caseIdzero:any;
     this.SUfiles = [];
     this.caseIdzero = 0;
     var tokenid = 'Authorization:Bearer ' + sessionStorage.getItem('A_AccessToken');
-    this.filingService.GetFilesInSupportingFilesSection(this.orgId, this.filingId,this.caseId, tokenid).subscribe(
+    this.filingService.GetFilesInSupportingFilesSection(this.orgId, this.filingId, this.caseId, tokenid).subscribe(
       (res: any = []) => {
         for (let i = 0; i < res.length; i++) {
           this.splittedFile = res[i].FileName.split('.');
@@ -510,7 +510,7 @@ caseIdzero:any;
   }
   GetFoldersInSupportingFilesSection() {
     var tokenid = 'Authorization:Bearer ' + sessionStorage.getItem('A_AccessToken');
-    this.filingService.GetFoldersInSupportingFilesSection(this.orgId, this.filingId, this.caseId,tokenid).subscribe(
+    this.filingService.GetFoldersInSupportingFilesSection(this.orgId, this.filingId, this.caseId, tokenid).subscribe(
       (res: any = []) => {
         //console.log(res);
 
@@ -557,7 +557,7 @@ caseIdzero:any;
 
         // window.location.href = res.Message;
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -710,10 +710,10 @@ caseIdzero:any;
       // console.log(index)
       this.selectedIds.splice(index, 1);
     }
-    if(this.selectedIds.length == this.SUfiles.length) {
-      this.Salli = true
+    if (this.selectedIds.length == this.SUfiles.length) {
+      this.Salli = true;
     } else {
-      this.Salli = false
+      this.Salli = false;
     }
   }
 
@@ -739,7 +739,7 @@ caseIdzero:any;
         this.filesAll = false;
         this.selectedIds = [];
       }
-    } 
+    }
   }
 
   downloadMultipleFiles() {
@@ -766,7 +766,7 @@ caseIdzero:any;
 
             this.spinner.hide();
           },
-          (error) => { }
+          (error) => {}
         );
       }
     }
@@ -796,7 +796,7 @@ caseIdzero:any;
 
             this.spinner.hide();
           },
-          (error) => { }
+          (error) => {}
         );
       }
     }

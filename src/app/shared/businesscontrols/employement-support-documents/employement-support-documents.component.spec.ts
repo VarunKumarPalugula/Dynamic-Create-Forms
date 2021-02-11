@@ -8,9 +8,8 @@ describe('EmployementSupportDocumentsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EmployementSupportDocumentsComponent ]
-    })
-    .compileComponents();
+      declarations: [EmployementSupportDocumentsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

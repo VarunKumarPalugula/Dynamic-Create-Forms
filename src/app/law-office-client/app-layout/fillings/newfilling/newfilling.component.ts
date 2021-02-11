@@ -168,16 +168,14 @@ export class NewfillingComponent implements OnInit {
   }
   onConnectionSelect(event: any) {
     this.fillingData.AdminOrgId = event.AdminOrgId;
-    if (this.selectedConnection.length <=0 ) {
+    if (this.selectedConnection.length <= 0) {
       this.isCreatedFillingDisabled = true;
-    } 
-    else if(this.isCreatedFillingDisabled && this.selectedTeamMembers.length) {
+    } else if (this.isCreatedFillingDisabled && this.selectedTeamMembers.length) {
       this.isCreatedFillingDisabled = false;
     }
     this.isConnectionDisabled = false;
     this.isApplicantDisabled = false;
   }
-
 
   clientApplicants() {
     this.spinner.show();

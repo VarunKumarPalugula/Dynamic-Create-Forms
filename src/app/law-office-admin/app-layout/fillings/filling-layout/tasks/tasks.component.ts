@@ -26,7 +26,7 @@ export class TasksComponent implements OnInit {
   isTaskGroup = true;
   taskTitle: string;
   FillingPermissions: any = {};
-  username:any; 
+  username: any;
   constructor(
     private modalService: NgbModal,
     private Valid: ValidationService,

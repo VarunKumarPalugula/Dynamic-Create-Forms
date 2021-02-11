@@ -129,9 +129,6 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
       });
     });
 
-
-
-
     let onReceiveMessage$ = this.connection.listenForRaw('receiveMessage');
     onReceiveMessage$.subscribe((OldMessages: any[]) => {
       this.message = '';
@@ -166,7 +163,7 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
         this.message = '';
         this.sending = false;
         this.spinner.hide();
-      })
+      });
   }
 
   async SendClientMessage() {
@@ -189,7 +186,7 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
         this.message = '';
         this.sending = false;
         this.refresh();
-      })
+      });
   }
 
   async SendClientSubMessage(data: any) {
@@ -209,13 +206,8 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
       .then(() => {
         this.submessage = '';
         this.sending = false;
-      })
-
+      });
   }
-
-
-
-
 
   toggler(ev: any, id: any) {
     document.getElementById(id).classList.toggle('d-n');
@@ -234,11 +226,10 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
     }
   }
 
-
   checkCanReplay(username, i) {
     if (!this.commonService.checkNullorUndefined(this.FillingPermissions)) {
       let businessClient;
-      businessClient = this.adminteamMembersList.find((r) => r.Status == true && r.UserName==username);
+      businessClient = this.adminteamMembersList.find((r) => r.Status == true && r.UserName == username);
       if (!this.commonService.checkNullorUndefined(businessClient)) {
         if (this.FillingPermissions.CanReplyToConnections) {
           return true;
@@ -246,7 +237,9 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
           return false;
         }
       }
-      let applicant: any = this.teamMembersList.find((r) => r.Status == true &&  r.UserName==username && r.Role == 'Applicant')
+      let applicant: any = this.teamMembersList.find(
+        (r) => r.Status == true && r.UserName == username && r.Role == 'Applicant'
+      );
       if (!this.commonService.checkNullorUndefined(applicant)) {
         if (this.FillingPermissions.CanReplyToApplicants) {
           return true;
@@ -279,9 +272,8 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
           allowSearchFilter: true,
         };
       },
-      (error) => { }
+      (error) => {}
     );
-
   }
 
   GetFilingClientTeammembers() {
@@ -366,9 +358,9 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
   }
 
   DeleteMessage(deleteMessagePopUpTemp, item) {
-    debugger
+    debugger;
     console.log(item);
-    
+
     this.GroupMessagingId = item.GroupMessagingId;
 
     this.DeleteMessModel = this.modalService.open(deleteMessagePopUpTemp, {
@@ -404,17 +396,17 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
   editTopicModel(content: any, viewdata: any) {
     this.selectedadminTeamMembers = [];
     this.selectedTeamMembers = [];
-    viewdata.Users.forEach(element => {
-      const adminMembers = this.adminteamMembersList.find(a => a.UserName == element.username);
+    viewdata.Users.forEach((element) => {
+      const adminMembers = this.adminteamMembersList.find((a) => a.UserName == element.username);
       if (adminMembers) {
-        const seletedMemebers: any = {}
+        const seletedMemebers: any = {};
         seletedMemebers.AdminID = adminMembers.AdminID;
         seletedMemebers.Email = adminMembers.Email;
         this.selectedadminTeamMembers.push(seletedMemebers);
       } else {
-        const clientMembers = this.teamMembersList.find(a => a.UserName == element.username);
+        const clientMembers = this.teamMembersList.find((a) => a.UserName == element.username);
         if (clientMembers) {
-          const seletedClientMembers: any = {}
+          const seletedClientMembers: any = {};
           seletedClientMembers.LawOfficeClientID = clientMembers.LawOfficeClientID;
           seletedClientMembers.Email = clientMembers.Email;
           this.selectedTeamMembers.push(seletedClientMembers);
@@ -425,11 +417,6 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
     this.viewdata = viewdata;
     this.topicModel = this.modalService.open(content, { centered: true });
   }
-
-
-
-
-
 
   editformvalidation() {
     // this.TopicForm = this.fb.group({
@@ -457,10 +444,10 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
   visitingInput() {
     this.isempty = false;
   }
-  onadminmemberSelect(eve) { }
-  onadminMemberSelectAll(eve) { }
+  onadminmemberSelect(eve) {}
+  onadminMemberSelectAll(eve) {}
 
-  onTeamMemberSelect(eve) { }
+  onTeamMemberSelect(eve) {}
   onTeamMemberSelectAll(eve) {
     this.memberids = [];
   }
@@ -479,14 +466,14 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
       });
 
       var data = {
-        OrgId:  sessionStorage.getItem('ClientAdminOrgId'),
-        FilingId:  sessionStorage.getItem('FillingId'),
+        OrgId: sessionStorage.getItem('ClientAdminOrgId'),
+        FilingId: sessionStorage.getItem('FillingId'),
         Title: this.TopicForm.value.topic,
         Description: this.TopicForm.value.description,
         AdminIds: this.adminmemberids.toString(),
         LawOfficeClientIds: this.memberids.toString(),
         TopicID: this.topicId,
-        IsUpdateAction: true
+        IsUpdateAction: true,
       };
       this.filingService.CreateTopicForFiling(data).subscribe(
         (res: any[]) => {
@@ -507,21 +494,21 @@ export class ViewmessagesComponent implements OnInit, OnDestroy {
     }
   }
 
-
   GetTopicsForFilings() {
     this.spinner.show();
-    this.filingService.getClientTopics( sessionStorage.getItem('ClientAdminOrgId'),  sessionStorage.getItem('FillingId')).subscribe(
-      (res: any = []) => {
-        this.spinner.hide();
-        sessionStorage.setItem('message_data', JSON.stringify(res.find(r => r.TopicID == this.TopicId)));
-        this.viewdata = JSON.parse(sessionStorage.getItem('message_data'));
-      },
-      (error) => {
-        this.spinner.hide();
-      }
-    );
+    this.filingService
+      .getClientTopics(sessionStorage.getItem('ClientAdminOrgId'), sessionStorage.getItem('FillingId'))
+      .subscribe(
+        (res: any = []) => {
+          this.spinner.hide();
+          sessionStorage.setItem('message_data', JSON.stringify(res.find((r) => r.TopicID == this.TopicId)));
+          this.viewdata = JSON.parse(sessionStorage.getItem('message_data'));
+        },
+        (error) => {
+          this.spinner.hide();
+        }
+      );
   }
-
 
   Close() {
     this.topicModel.close();

@@ -9,7 +9,7 @@ export class AppComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-  
+
   settings: UppyConfig = {
     uploadAPI: {
       endpoint: '' + 'files/Upload',

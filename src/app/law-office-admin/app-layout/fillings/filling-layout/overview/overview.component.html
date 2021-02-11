@@ -1,7 +1,8 @@
 <div class="row" *ngIf="overviewSection">
   <div class="col-sm-9 box-shadow">
+    <button class="btn btn-primary" (click)="tour()">Want tour</button>
     <div class="row">
-      <div class="col-sm-6 colsm-12 p-5">
+      <div class="col-sm-6 colsm-12 p-5"  joyrideStep="firstStepApplicantSection" [stepContent]="customContent"  [prevTemplate]="prevButton" [nextTemplate]="nextButton" [doneTemplate]="doneButton" title="Applicant section" text="Here you can see your applicant details">
         <div class="card shadow-sm">
           <div class="card-body pd">
             <div class="row">
@@ -9,6 +10,7 @@
                 <span><i class="fas fa-user usericon"></i></span><span class="fs-20 p-5 vertical-align">Applicant</span>
               </div>
             </div>
+            <div >
             <ng-container *ngIf="applicantdetails!={}">
               <div class="row pt-10">
                 <div class="col-sm-5">
@@ -38,6 +40,7 @@
                 </div>
               </div>
             </ng-container>
+          </div>
             <ng-container *ngIf="applicantdetails=={}">
               <div class="mx-auto text-align" *ngIf="applicantdetails=={}">
                 <img src="../../../../../../assets/inbox.png" class="addnoteempty text-center pt-25" />
@@ -47,7 +50,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6 colsm-12 p-5">
+      <div class="col-sm-6 colsm-12 p-5" joyrideStep="secondStepSponserSection" title="Sponser section" text="Here you can see filing sponserer details">
         <div class="card shadow-sm">
           <div class="card-body pd">
             <div class="row">
@@ -95,7 +98,7 @@
       </div>
     </div>
     <div class="row mt-10">
-      <div class="col-sm-6 colsm-12 p-5">
+      <div class="col-sm-6 colsm-12 p-5" joyrideStep="thirdStepActivitySection" title="Activity section" text="Here you can see Your activity Info">
         <div class="card shadow-sm">
           <div class="card-body pd">
             <div class="row">
@@ -124,7 +127,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6 colsm-12 p-5">
+      <div class="col-sm-6 colsm-12 p-5" joyrideStep="fourthStepNotesSection" title="Notes section" text="Here you can see take your notes about this filing">
         <div class="card shadow-sm">
           <div class="card-body pd">
             <div class="row">
@@ -155,8 +158,8 @@
       </div>
     </div>
     <div class="row mt-10">
-      <div class="col-sm-12 colsm-12 p-5">
-        <div class="card shadow-sm">
+      <div class="col-sm-12 colsm-12 p-5" joyrideStep="fifthStepTrackingSection" title="Shipment tracking section"  text="Here you can track your documents about this filing">
+        <div class="card shadow-sm" >
           <div class="card-body pd">
             <div class="row">
               <div class="col-md-4">
@@ -246,7 +249,7 @@
       </div>
     </div>
   </div>
-  <div class="col-sm-3 p-16 bg-white shadow-sm rounded">
+  <div class="col-sm-3 p-16 bg-white shadow-sm rounded" joyrideStep="sixthStepFilingStatus" title="Status section"  text="Here you can track your filing status and tasks status">
     <div class="row">
       <div class="col-sm-9 fs-16 font-weight-bold">
         Filing Details
@@ -374,7 +377,7 @@
 <ng-template #viewRef let-d="dismiss" id="ModelviewFiling">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Filing Details</span>
-    <span class="modal-close close" (click)="CloseviewFiling('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="CloseviewFiling('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -494,7 +497,7 @@
 <ng-template #noteRef let-d="dismiss" id="Modeladdnote">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Add Note</span>
-    <span class="modal-close close" (click)="Closeaddnote('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="Closeaddnote('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -524,7 +527,7 @@
 <ng-template #track let-d="dismiss" id="Modeladdtrack">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Add Shipment</span>
-    <span class="modal-close close" (click)="Closeaddtrack('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="Closeaddtrack('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -582,7 +585,7 @@
   </div>
   <div class="gl-modal-header p-20 bg-model text-white text-align" *ngIf="relatedfilling.length!=0">
     <span class="fs-16 mb-0 d-ib">Related Filings</span>
-    <span class="modal-close close" (click)="relatedFilingsclose('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="relatedFilingsclose('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
     <div class="lo-modal-body p-20">
@@ -626,7 +629,7 @@
 
 <ng-template #deleteshipmentPopUp let-d="dismiss" id="deleteshipmentPopUp">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeModal('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -641,7 +644,7 @@
 </ng-template>
 <ng-template #FilingStatusCompleted let-d="dismiss" id="FilingStatusCompleted">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeModal('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -703,7 +706,7 @@
 <!-- approve Modal -->
 <ng-template #approve let-d="dismiss" id="approveModel">
   <div class="gl-modal-header p-20 bg-white text-white text-align">
-    <span class="modal-close close" (click)="closeModal()">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -718,3 +721,22 @@
   </div>
 </ng-template>
 <!-- end -->
+
+<ng-template #prevButton>
+  <button class="btn btn-warning btn-sm">Previous</button>
+</ng-template>
+<ng-template #nextButton>
+  <button class="btn btn-primary btn-sm">Next</button>
+</ng-template>
+<ng-template #doneButton>
+  <button class="btn btn-danger btn-sm">Done</button>
+</ng-template>
+<ng-template #customContent>
+  <div class="card" style="width:400px">
+    <img class="card-img-top" src="../../../../../../assets/icons/add-note.svg" class="sample text-center" alt="sample">
+    <div class="card-body">
+      <h4 class="card-title">John Doe</h4>
+      <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
+    </div>
+  </div>
+</ng-template>

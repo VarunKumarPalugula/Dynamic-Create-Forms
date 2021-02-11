@@ -316,7 +316,6 @@ export class ApicallsService {
   public MarkClientSubTaskAsCompleted = this.domain + 'api/client/MarkSubTaskAsCompleted';
   public MarkClientSubTaskAsReviewed = this.domain + 'api/client/MarkSubTaskAsReviewed';
 
-
   //for setting
   public getTeamRoles: string = this.domain + 'api/monitor/GetRoles';
   public GetTeambersOnTeamMemberStatus: string = this.domain + 'api/Admin/GetTeambersOnTeamMemberStatus';
@@ -493,14 +492,14 @@ export class ApicallsService {
   public getImmigrationTravelDetails: string = this.domain + 'api/client/GetApplicantImmigrationDetailsPassport';
 
   // applicant education
-  public deleteApplicantEducationInfo: string = this.domain + 'api/client/DeleteApplicantEducationDetails'
+  public deleteApplicantEducationInfo: string = this.domain + 'api/client/DeleteApplicantEducationDetails';
   public uploadEmployementFiles: string = this.domain + 'api/client/ApplicantEmployementFiles';
   public getEmployementFiles: string = this.domain + 'api/client/GetApplicantEmployementFiles';
   public deleteEmployementFiles: string = this.domain + 'api/client/DeleteApplicantEmployementFiles';
   public viewEmployementFile: string = this.domain + 'api/client/GetApplicantEmployementFiles';
 
   // applicant period of stay
-  public deleteApplicantPeriodofStayInfo: string = this.domain + 'api/client/DeleteApplicantPOSDetails'
+  public deleteApplicantPeriodofStayInfo: string = this.domain + 'api/client/DeleteApplicantPOSDetails';
   public postPosInfo: string = this.domain + 'api/client/ApplicantPeriodOfStay';
   public getPosInfo: string = this.domain + 'api/client/GetApplicantPeriodOfStay';
   //form api
@@ -508,32 +507,29 @@ export class ApicallsService {
   public saveImmigrationFormData: string = this.domain + 'api/saveImmigrationFormData';
   public previewImmigrationFormData: string = this.domain + 'api/previewImmigrationFormData';
 
-    // case submissions
-    public getCaseSubmissionsApiUrl: string = this.domain + 'api/admin/case/getcasedetails';
-    public postCaseSubmissionsApiUrl: string = this.domain + 'api/admin/case/createcase';
-    public editCaseDetails: string = this.domain + 'api/admin/case/updatecase';
-    public deleteCaseSubmissionsApiUrl: string = this.domain + 'api/admin/case/deletecase';
-    public caseSubmissionPrivacy: string = this.domain + 'api/admin/case/caseviewPermission'
+  // case submissions
+  public getCaseSubmissionsApiUrl: string = this.domain + 'api/admin/case/getcasedetails';
+  public postCaseSubmissionsApiUrl: string = this.domain + 'api/admin/case/createcase';
+  public editCaseDetails: string = this.domain + 'api/admin/case/updatecase';
+  public deleteCaseSubmissionsApiUrl: string = this.domain + 'api/admin/case/deletecase';
+  public caseSubmissionPrivacy: string = this.domain + 'api/admin/case/caseviewPermission';
 
-    // client side
-    public getCaseSubmissions: string = this.domain + 'api/client/case/getcasedetails';
-
+  // client side
+  public getCaseSubmissions: string = this.domain + 'api/client/case/getcasedetails';
 
   // json templates aps
-   public getUIControlTemplateToShowSections: string = this.domain + 'api/data/getUIControlTemplateToShowSections';
+  public getUIControlTemplateToShowSections: string = this.domain + 'api/data/getUIControlTemplateToShowSections';
 
-   public getTemplatesForSection: string = this.domain + 'api/data/GetTemplatesForSection';
+  public getTemplatesForSection: string = this.domain + 'api/data/GetTemplatesForSection';
 
-   public getDefaultTemplates: string = this.domain + 'api/data/GetDefaultTemplates';
-   public saveUIControlTemplateResults: string = this.domain + 'api/data/SaveUIControlTemplateResults';
+  public getDefaultTemplates: string = this.domain + 'api/data/GetDefaultTemplates';
+  public saveUIControlTemplateResults: string = this.domain + 'api/data/SaveUIControlTemplateResults';
 
-   public getUIControlTemplateResultsUrl: string = this.domain + 'api/data/GetUIControlTemplateResults';
-   
-   public getFilingTemplates: string = this.domain + 'api/data/getFilingTemplates';
+  public getUIControlTemplateResultsUrl: string = this.domain + 'api/data/GetUIControlTemplateResults';
 
-   public saveTemplateOptions: string = this.domain + 'api/data/SaveCustomConfiguredTemplate'
-   public getSaveTemps: string = this.domain + 'api/data/getCustomConfiguredTemplate';
-   public deleteTemplateUrl: string = this.domain + 'api/data/DeleteCustomConfiguredTemplate';
+  public getFilingTemplates: string = this.domain + 'api/data/getFilingTemplates';
 
-   
+  public saveTemplateOptions: string = this.domain + 'api/data/SaveCustomConfiguredTemplate';
+  public getSaveTemps: string = this.domain + 'api/data/getCustomConfiguredTemplate';
+  public deleteTemplateUrl: string = this.domain + 'api/data/DeleteCustomConfiguredTemplate';
 }

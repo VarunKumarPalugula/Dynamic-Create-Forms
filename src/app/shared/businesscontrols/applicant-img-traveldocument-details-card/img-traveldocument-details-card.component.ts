@@ -35,11 +35,10 @@ export class ImgTraveldocumentDetailsCardComponent implements OnInit {
   filesNames: any = [];
   selectedFile: any = [];
   loginUser: any;
-  constructor(private toaster: ToastrService) { }
+  constructor(private toaster: ToastrService) {}
 
   ngOnInit() {
     this.loginUser = sessionStorage.getItem('Login_User');
-
   }
 
   changeInfo() {
@@ -69,18 +68,20 @@ export class ImgTraveldocumentDetailsCardComponent implements OnInit {
     let unSupportedFiles = [];
     for (let i = 0; i < this.filesList.length; i++) {
       this.filesList[i] = this.selectedFilesList[i].file;
-      if ((
-        this.filesList[i]['fileType'] == 'pdf' || this.filesList[i]['fileType'] == 'PDF' ||
-        this.filesList[i]['fileType'] == 'JPEG' ||
-        this.filesList[i]['fileType'] == 'jpeg' ||
-        this.filesList[i]['fileType'] == 'PNG' ||
-        this.filesList[i]['fileType'] == 'png' ||
-        this.filesList[i]['fileType'] == 'jpg' ||
-        this.filesList[i]['fileType'] == 'JPG') && (!this.imgTravelDocFile.find((x => x.FileName === this.filesList[i].name)))
+      if (
+        (this.filesList[i]['fileType'] == 'pdf' ||
+          this.filesList[i]['fileType'] == 'PDF' ||
+          this.filesList[i]['fileType'] == 'JPEG' ||
+          this.filesList[i]['fileType'] == 'jpeg' ||
+          this.filesList[i]['fileType'] == 'PNG' ||
+          this.filesList[i]['fileType'] == 'png' ||
+          this.filesList[i]['fileType'] == 'jpg' ||
+          this.filesList[i]['fileType'] == 'JPG') &&
+        !this.imgTravelDocFile.find((x) => x.FileName === this.filesList[i].name)
       ) {
-        finalFiles.push(this.filesList[i])
+        finalFiles.push(this.filesList[i]);
       } else {
-        unSupportedFiles.push(this.filesList[i])
+        unSupportedFiles.push(this.filesList[i]);
       }
     }
     if (finalFiles.length != 0) {
@@ -93,9 +94,14 @@ export class ImgTraveldocumentDetailsCardComponent implements OnInit {
     if (unSupportedFiles.length != 0) {
       let unSupportedFileNames = [];
       for (let i = 0; i < unSupportedFiles.length; i++) {
-        unSupportedFileNames.push(unSupportedFiles[i].name)
+        unSupportedFileNames.push(unSupportedFiles[i].name);
       }
-      this.toaster.warning(unSupportedFileNames + " This files are not supported to upload as immigration travel document please upload pdf/images/not exisisting files", '', { timeOut: 10000 });
+      this.toaster.warning(
+        unSupportedFileNames +
+          ' This files are not supported to upload as immigration travel document please upload pdf/images/not exisisting files',
+        '',
+        { timeOut: 10000 }
+      );
     }
   }
   remove(i: any) {
@@ -105,7 +111,7 @@ export class ImgTraveldocumentDetailsCardComponent implements OnInit {
     if (this.filesNames.length <= 0) {
       this.selectedImgFileToUpload = false;
     } else {
-      this.selectedImgFileToUpload = true
+      this.selectedImgFileToUpload = true;
     }
     this.selectedFilesList.splice(i, 1);
     for (let i = 0; i < this.selectedFilesList.length; i++) {

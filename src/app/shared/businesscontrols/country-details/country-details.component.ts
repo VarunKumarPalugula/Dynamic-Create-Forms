@@ -5,11 +5,9 @@ import { CommonService } from '../../service/common.service';
 @Component({
   selector: 'app-country-details',
   templateUrl: './country-details.component.html',
-  styleUrls: ['./country-details.component.css']
+  styleUrls: ['./country-details.component.css'],
 })
-
 export class CountryDetailsComponent implements OnInit {
-
   detailsForm: FormGroup;
 
   @Input() isCard = false;
@@ -22,16 +20,12 @@ export class CountryDetailsComponent implements OnInit {
       this.detailsForm.patchValue({
         Country: value.Country ? value.Country : null,
         State: value.State ? value.State : null,
-        CityOrTown: value.CityOrTown ? value.CityOrTown : null
+        CityOrTown: value.CityOrTown ? value.CityOrTown : null,
       });
     }
   }
 
-
-  constructor(
-    private readonly formBuilder: FormBuilder,
-    public commonService: CommonService
-  ) {}
+  constructor(private readonly formBuilder: FormBuilder, public commonService: CommonService) {}
 
   ngOnInit(): void {
     if (this.fields.hasOwnProperty('validation') && Object.keys(this.fields.validation).length) {
@@ -42,9 +36,9 @@ export class CountryDetailsComponent implements OnInit {
         this.detailsForm.controls['State'].setValidators([Validators.required]);
       }
     }
-    this.changes();    
+    this.changes();
     this.detailsForm.controls['State'].disable();
-    if(this.formData('Country')) {
+    if (this.formData('Country')) {
       this.detailsForm.controls['State'].enable();
     }
   }
@@ -53,7 +47,7 @@ export class CountryDetailsComponent implements OnInit {
     this.detailsForm = this.formBuilder.group({
       Country: [null],
       State: [null],
-      CityOrTown: [null]
+      CityOrTown: [null],
     });
   }
 
@@ -66,7 +60,6 @@ export class CountryDetailsComponent implements OnInit {
   }
 
   changes() {
-    this.detailsEmit.emit(this.detailsForm)
+    this.detailsEmit.emit(this.detailsForm);
   }
-
 }

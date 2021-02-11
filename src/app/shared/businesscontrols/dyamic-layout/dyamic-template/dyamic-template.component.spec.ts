@@ -8,9 +8,8 @@ describe('DyamicTemplateComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DyamicTemplateComponent ]
-    })
-    .compileComponents();
+      declarations: [DyamicTemplateComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

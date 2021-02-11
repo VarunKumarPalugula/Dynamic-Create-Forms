@@ -6,12 +6,11 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-education-popup',
   templateUrl: './education-popup.component.html',
-  styleUrls: ['./education-popup.component.scss']
+  styleUrls: ['./education-popup.component.scss'],
 })
 export class EducationPopupComponent implements OnInit {
-
   @Output() emitCloseModel = new EventEmitter();
-  
+
   @Input() isCard = false;
 
   @Input() set tempData(value: any) {
@@ -25,24 +24,20 @@ export class EducationPopupComponent implements OnInit {
 
   educationDetailsForm: FormGroup;
 
-  constructor(
-    private readonly formBuilder: FormBuilder,
-    private commonService: CommonService
-  ) { }
+  constructor(private readonly formBuilder: FormBuilder, private commonService: CommonService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   patchValue(value) {
     if (value) {
       this.educationDetailsForm.patchValue({
         FieldOfStudy: value.FieldOfStudy ? value.FieldOfStudy : null,
-        DegreeAwarded: value.DegreeAwarded ?  value.DegreeAwarded : null,
+        DegreeAwarded: value.DegreeAwarded ? value.DegreeAwarded : null,
         UniversityType: value.UniversityType ? value.UniversityType : null,
-        UniversityName: value.UniversityName ? value.UniversityName: null,
-        DateOfDegreeAwarded: value.DateOfDegreeAwarded ? value.DateOfDegreeAwarded: null,
-        IsHighestLevelOfEducation: value.IsHighestLevelOfEducation ? value.IsHighestLevelOfEducation: null
-      })
+        UniversityName: value.UniversityName ? value.UniversityName : null,
+        DateOfDegreeAwarded: value.DateOfDegreeAwarded ? value.DateOfDegreeAwarded : null,
+        IsHighestLevelOfEducation: value.IsHighestLevelOfEducation ? value.IsHighestLevelOfEducation : null,
+      });
     }
   }
 
@@ -53,7 +48,7 @@ export class EducationPopupComponent implements OnInit {
       UniversityType: [null],
       UniversityName: [],
       DateOfDegreeAwarded: [null],
-      IsHighestLevelOfEducation: [null]
+      IsHighestLevelOfEducation: [null],
     });
   }
 
@@ -65,12 +60,10 @@ export class EducationPopupComponent implements OnInit {
     if (this.educationDetailsForm.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.educationDetailsForm.value)
+    this.emitCloseModel.emit(this.educationDetailsForm.value);
   }
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
+    this.emitCloseModel.emit(null);
   }
-
-
 }

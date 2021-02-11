@@ -141,9 +141,9 @@ export class OverviewComponent implements OnInit {
     this.clientFilingService.GetApplicantDetails(data).subscribe(
       (res) => {
         this.applicantdetails = JSON.parse(JSON.stringify(res));
-        // sessionStorage.setItem('LawOfficeClientID',this.applicantdetails.LawOfficeClientID); 
+        // sessionStorage.setItem('LawOfficeClientID',this.applicantdetails.LawOfficeClientID);
       },
-      (err) => { }
+      (err) => {}
     );
   }
 
@@ -263,7 +263,6 @@ export class OverviewComponent implements OnInit {
     }
   }
 
-
   GetShipmentTrackingList() {
     this.spinner.show();
     var tokenid = 'Authorization:Bearer ' + sessionStorage.getItem('A_AccessToken');
@@ -283,7 +282,7 @@ export class OverviewComponent implements OnInit {
       }
     );
   }
-  clearShipTracking(){
+  clearShipTracking() {
     this.Shipmentnumber = '';
     this.Shipmenttittle = '';
     this.ShippingDeatilsId = '';
@@ -454,7 +453,6 @@ export class OverviewComponent implements OnInit {
     this.ShimentModel = this.modalService.open(deleteshipmentPopUp, { centered: true });
   }
 
-
   SubmitTrackingid() {
     let tokenid = 'Authorization:Bearer ' + sessionStorage.getItem('A_AccessToken');
     let data = {
@@ -478,7 +476,6 @@ export class OverviewComponent implements OnInit {
     );
     this.Closeaddtrack('close click');
   }
-
 
   getShipmentDetails() {
     const data = {
@@ -512,7 +509,7 @@ export class OverviewComponent implements OnInit {
           this.isLetClientInviteApplicant = true;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -561,7 +558,7 @@ export class OverviewComponent implements OnInit {
           this.applicantsDataList[i].assign = false;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -692,7 +689,6 @@ export class OverviewComponent implements OnInit {
     id = 'togg' + id;
     document.getElementById(id).classList.toggle('d-n');
   }
-
 
   DeleteShipment() {
     this.modalService.dismissAll();

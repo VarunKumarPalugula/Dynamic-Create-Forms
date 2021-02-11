@@ -6,27 +6,21 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-education',
   templateUrl: './education.component.html',
-  styleUrls: ['./education.component.scss']
+  styleUrls: ['./education.component.scss'],
 })
 export class EducationComponent implements OnInit {
-
-
   @Input() fields: any;
   @Input() applicantKey: any;
 
   addEducationModal: any;
   index = 0;
 
-
   educationFormData = null;
   priorSpouseDetailsArray: any;
   educationArray = [];
   maxEducation = 3;
 
-  constructor(public dialog: MatDialog,
-    public commonService: CommonService,
-    public modalService: NgbModal) {
-  }
+  constructor(public dialog: MatDialog, public commonService: CommonService, public modalService: NgbModal) {}
 
   ngOnInit(): void {
     if (this.finalObj() && Object.keys(this.finalObj()).length) {
@@ -37,28 +31,36 @@ export class EducationComponent implements OnInit {
     }
   }
 
-
-
   openEducationDetails(content, i) {
     this.educationFormData = null;
     this.index = i;
-    this.addEducationModal = this.modalService.open(content, { centered: false, keyboard: false, size: 'lg', backdrop: 'static' });
+    this.addEducationModal = this.modalService.open(content, {
+      centered: false,
+      keyboard: false,
+      size: 'lg',
+      backdrop: 'static',
+    });
   }
 
   backToModel1(content) {
     if (this.addEducationModal != undefined) {
       this.addEducationModal.close();
     }
-    this.addEducationModal = this.modalService.open(content, { centered: false, keyboard: false, size: 'lg', backdrop: 'static' });
+    this.addEducationModal = this.modalService.open(content, {
+      centered: false,
+      keyboard: false,
+      size: 'lg',
+      backdrop: 'static',
+    });
   }
-  
+
   closeModel(value, i) {
     if (value) {
-      this.educationFormData = { ...this.educationFormData, ...value }
+      this.educationFormData = { ...this.educationFormData, ...value };
       this.commonService.fileData[this.applicantKey]['Education Information']['finalObj'] = {
         ...this.commonService.fileData[this.applicantKey]['Education Information']['finalObj'],
-        [`education${i}`]: this.educationFormData
-      }
+        [`education${i}`]: this.educationFormData,
+      };
       this.educationFormData = null;
       this.commonService.fileData[this.applicantKey]['Education Information'].readOnly = false;
     }
@@ -74,12 +76,19 @@ export class EducationComponent implements OnInit {
     if (value) {
       this.educationFormData = value;
       this.index = i;
-      this.addEducationModal = this.modalService.open(content, { centered: false, keyboard: false, size: 'lg', backdrop: 'static' });
+      this.addEducationModal = this.modalService.open(content, {
+        centered: false,
+        keyboard: false,
+        size: 'lg',
+        backdrop: 'static',
+      });
     }
   }
 
   finalObj(i?) {
-    return i ? this.commonService.fileData[this.applicantKey]['Education Information']['finalObj'][`education${i}`] : this.commonService.fileData[this.applicantKey]['Education Information']['finalObj'];
+    return i
+      ? this.commonService.fileData[this.applicantKey]['Education Information']['finalObj'][`education${i}`]
+      : this.commonService.fileData[this.applicantKey]['Education Information']['finalObj'];
   }
 
   counter(i: number) {
@@ -94,6 +103,4 @@ export class EducationComponent implements OnInit {
     delete this.commonService.fileData[this.applicantKey]['Education Information']['finalObj'][`education${key}`];
     this.commonService.fileData[this.applicantKey]['Education Information'].readOnly = false;
   }
-
-
 }

@@ -48,102 +48,118 @@ export class CommonService {
     private formService: FormService,
     private router: Router,
     public appService: AppService
-  ) { }
+  ) {}
 
   fileData = {};
   validationMessage: any;
 
   getEnvDetails() {
     if (window.location.origin == UrlConfig.ENVDOMAIN) {
-      return 'Dev'
+      return 'Dev';
     } else {
-      return 'TEST'
+      return 'TEST';
     }
   }
 
   formObject(fields, initialObj, applicantKey) {
-    const obj = initialObj.find(el => (el.Section === fields.Section && el.SubSection === fields.SubSection));
+    const obj = initialObj.find((el) => el.Section === fields.Section && el.SubSection === fields.SubSection);
     let finalObject = {};
     if (!this.fileData[applicantKey]) {
       this.fileData = {
-        [applicantKey]: {}
-      }
+        [applicantKey]: {},
+      };
     }
-    Object.keys(fields.SubSectionTemplateData).forEach(kList => {
-      Array.isArray(fields.SubSectionTemplateData[kList]) && fields.SubSectionTemplateData[kList].forEach(ele => {
-        if (ele.name) {
-          finalObject[ele.name] = {
-            value: this.getValue(obj, fields, ele),
-            message: '',
-            required: ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
-            valid: ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true
-          };
-          this.fileData[applicantKey][kList] = finalObject;
-          this.fileData[applicantKey][kList].finalObj = {
-            ...this.fileData[applicantKey][kList].finalObj,
-            [ele.name]: this.getValue(obj, fields, ele)
+    Object.keys(fields.SubSectionTemplateData).forEach((kList) => {
+      Array.isArray(fields.SubSectionTemplateData[kList]) &&
+        fields.SubSectionTemplateData[kList].forEach((ele) => {
+          if (ele.name) {
+            finalObject[ele.name] = {
+              value: this.getValue(obj, fields, ele),
+              message: '',
+              required:
+                ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
+              valid: ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
+            };
+            this.fileData[applicantKey][kList] = finalObject;
+            this.fileData[applicantKey][kList].finalObj = {
+              ...this.fileData[applicantKey][kList].finalObj,
+              [ele.name]: this.getValue(obj, fields, ele),
+            };
+          } else {
+            finalObject[ele.type] = {
+              required:
+                ele.type && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
+              valid: ele.type && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
+            };
+            this.fileData[applicantKey][kList] = finalObject;
+            this.fileData[applicantKey][kList].finalObj =
+              obj && obj.TemplateResult[fields.ObjSection] && obj.TemplateResult[fields.ObjSection][fields.ObjSubSection]
+                ? obj.TemplateResult[fields.ObjSection][fields.ObjSubSection]
+                : {};
           }
-        } else {
-          finalObject[ele.type] = {
-            required: ele.type && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
-            valid: ele.type && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true
-          };
-          this.fileData[applicantKey][kList] = finalObject;
-          this.fileData[applicantKey][kList].finalObj =
-            (obj && obj.TemplateResult[fields.Section] && obj.TemplateResult[fields.Section][fields.SubSection]) ? obj.TemplateResult[fields.Section][fields.SubSection] : {};
-        }
-        if (ele.name) {
-          this.changeFormValue(ele, finalObject[ele.name].value, kList, applicantKey);
-          this.setChildContrl(ele, kList, obj ? obj.TemplateResult[fields.Section][fields.SubSection] : null, applicantKey);
-        }
-      });
+          if (ele.name) {
+            this.changeFormValue(ele, finalObject[ele.name].value, kList, applicantKey);
+            this.setChildContrl(
+              ele,
+              kList,
+              obj ? obj.TemplateResult[fields.ObjSection][fields.ObjSubSection] : null,
+              applicantKey
+            );
+          }
+        });
       this.fileData[applicantKey][kList].readOnly = obj && obj.IsSaved == 'Y' ? true : false;
     });
   }
 
   getValue(obj, fields, ele) {
-    return (obj && obj.TemplateResult[fields.Section] &&
-      obj.TemplateResult[fields.Section][fields.SubSection] &&
-      obj.TemplateResult[fields.Section][fields.SubSection][ele.name]) ?
-      ((ele.type === 'dropdown') ?
-        Object.keys(obj.TemplateResult[fields.Section][fields.SubSection][ele.name])
-          .forEach(res => obj.TemplateResult[fields.Section][fields.SubSection][ele.name][res])
-        : obj.TemplateResult[fields.Section][fields.SubSection][ele.name]) : ''
+    return obj &&
+      obj.TemplateResult[fields.ObjSection] &&
+      obj.TemplateResult[fields.ObjSection][fields.ObjSubSection] &&
+      obj.TemplateResult[fields.ObjSection][fields.ObjSubSection][ele.name]
+      ? ele.type === 'dropdown'
+        ? Object.keys(obj.TemplateResult[fields.ObjSection][fields.ObjSubSection][ele.name]).forEach(
+            (res) => obj.TemplateResult[fields.ObjSection][fields.ObjSubSection][ele.name][res]
+          )
+        : obj.TemplateResult[fields.ObjSection][fields.ObjSubSection][ele.name]
+      : '';
   }
 
   setChildContrl(ele, parent, obj, applicantKey) {
-    Object.keys(ele).forEach(kList => {
+    Object.keys(ele).forEach((kList) => {
       if (kList !== 'values' && Array.isArray(ele[kList]) && ele[kList].length) {
         let finalObject = {};
-        Array.isArray(ele[kList]) && ele[kList].forEach(el => {
-          if (el.name) {
-            finalObject[el.name] = {
-              value: (obj && obj[kList] && obj[kList][el.name]) ? obj[kList][el.name] : '',
-              message: '',
-              valid: el.value && el.hasOwnProperty('validation') && Object.keys(el.validation).length ? false : true,
-              required: ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
-            };
-            if (!this.fileData[applicantKey][parent].finalObj[kList]) {
-              this.fileData[applicantKey][parent].finalObj = {
-                ...this.fileData[applicantKey][parent].finalObj,
-                [kList]: {}
+        Array.isArray(ele[kList]) &&
+          ele[kList].forEach((el) => {
+            if (el.name) {
+              finalObject[el.name] = {
+                value: obj && obj[kList] && obj[kList][el.name] ? obj[kList][el.name] : '',
+                message: '',
+                valid: el.value && el.hasOwnProperty('validation') && Object.keys(el.validation).length ? false : true,
+                required:
+                  ele.value && ele.hasOwnProperty('validation') && Object.keys(ele.validation).length ? false : true,
+              };
+              if (!this.fileData[applicantKey][parent].finalObj[kList]) {
+                this.fileData[applicantKey][parent].finalObj = {
+                  ...this.fileData[applicantKey][parent].finalObj,
+                  [kList]: {},
+                };
               }
+              this.fileData[applicantKey][parent].finalObj[kList] = {
+                ...this.fileData[applicantKey][parent].finalObj[kList],
+                [el.name]: obj && obj[kList] && obj[kList][el.name] ? obj[kList][el.name] : '',
+              };
             }
-            this.fileData[applicantKey][parent].finalObj[kList] = {
-              ...this.fileData[applicantKey][parent].finalObj[kList],
-              [el.name]: (obj && obj[kList] && obj[kList][el.name]) ? obj[kList][el.name] : '',
-            }
-          }
-          this.fileData[applicantKey][parent][kList] = finalObject;
-        });
+            this.fileData[applicantKey][parent][kList] = finalObject;
+          });
       }
     });
   }
 
   changeFormValue(control, value, parent, applicantKey) {
     let obj = {
-      value: this.fileData[applicantKey][parent][control.name].value, message: this.fileData[applicantKey][parent][control.name].message,
-      valid: this.fileData[applicantKey][parent][control.name].valid
+      value: this.fileData[applicantKey][parent][control.name].value,
+      message: this.fileData[applicantKey][parent][control.name].message,
+      valid: this.fileData[applicantKey][parent][control.name].valid,
     };
     if (control.hasOwnProperty('validation') && Object.keys(control.validation).length) {
       obj = this.validateTextForm(control, value);
@@ -160,9 +176,17 @@ export class CommonService {
 
       if (control.type == 'textbox') {
         if (control.validation.hasOwnProperty('minLength') && value.length <= control.validation.minLength) {
-          return { valid: false, message: this.setErrorMessage('minLength', control.name, control.validation.minLength), value: '' };
+          return {
+            valid: false,
+            message: this.setErrorMessage('minLength', control.name, control.validation.minLength),
+            value: '',
+          };
         } else if (control.validation.hasOwnProperty('maxLength') && value.length > control.validation.maxLength) {
-          return { valid: false, message: this.setErrorMessage('maxLength', control.name, control.validation.maxLength), value: '' };
+          return {
+            valid: false,
+            message: this.setErrorMessage('maxLength', control.name, control.validation.maxLength),
+            value: '',
+          };
         } else if (control.validation.hasOwnProperty('pattern') && control.validation.pattern) {
           const pattern = new RegExp(control.validation.pattern);
           if (!pattern.test(value)) {
@@ -175,7 +199,12 @@ export class CommonService {
   }
 
   setErrorMessage(col, name, dispFlag?) {
-    if (this.validationMessage && this.validationMessage.hasOwnProperty(name) && this.validationMessage[name].hasOwnProperty(col) && this.validationMessage[name][col]) {
+    if (
+      this.validationMessage &&
+      this.validationMessage.hasOwnProperty(name) &&
+      this.validationMessage[name].hasOwnProperty(col) &&
+      this.validationMessage[name][col]
+    ) {
       return this.customMessage(col, name, dispFlag);
     } else if (this.validationMessage['common'].hasOwnProperty(col) && this.validationMessage['common'][col]) {
       return this.customMessage(col, 'common', dispFlag);
@@ -185,11 +214,10 @@ export class CommonService {
 
   customMessage(col, name, dispFlag) {
     if (dispFlag) {
-      return `${this.validationMessage[name][col]} ${dispFlag}`
+      return `${this.validationMessage[name][col]} ${dispFlag}`;
     }
     return this.validationMessage[name][col];
   }
-
 
   validations(): any {
     this.httpClient.get('assets/validations.json').subscribe(
@@ -201,7 +229,6 @@ export class CommonService {
       }
     );
   }
-
 
   openModel(template, size?) {
     this.openModelRef = this.modalService.open(template, {
@@ -347,7 +374,6 @@ export class CommonService {
     );
   }
 
-
   //saveImmigrationFormData
   saveImmigrationFormData(formName, formData, caseId) {
     this.spinner.show();
@@ -399,7 +425,6 @@ export class CommonService {
     );
   }
 
-
   // it will returns the templates(custom and predefined)
   getFilingTemplates(fillingtype, adminId, orgId) {
     this.spinner.show();
@@ -413,7 +438,7 @@ export class CommonService {
       (err) => {
         this.toaster.error('Error Occured');
       }
-    )
+    );
   }
 
   //template related methods
@@ -461,7 +486,7 @@ export class CommonService {
       (err) => {
         this.toaster.error('Error Occured');
       }
-    )
+    );
   }
 
   //this api will give data for sections
@@ -481,7 +506,7 @@ export class CommonService {
       (err) => {
         this.toaster.error('Error Occured');
       }
-    )
+    );
   }
 
   saveUIControlTemplateResults(title, data, applicantKey) {
@@ -496,8 +521,8 @@ export class CommonService {
         FilingType: data.FilingType,
         IsCreatedByAdmin: 'true',
         TemplateResult: {
-          [title]: {
-            [data.SubSection]: this.fileData[applicantKey][data.SubSection.trim()].finalObj,
+          [data.ObjSection]: {
+            [data.ObjSubSection]: this.fileData[applicantKey][data.SubSection.trim()].finalObj,
           },
         },
       },
@@ -515,8 +540,6 @@ export class CommonService {
     });
   }
 
-
-
   checkFormValid(value) {
     for (const key in value) {
       if (value[key].hasOwnProperty('valid') && !value[key].valid && Object.keys(value[key]).length) {
@@ -526,15 +549,12 @@ export class CommonService {
   }
 
   returnZero() {
-    return 0
+    return 0;
   }
 
   trackByFn(index, item) {
     return index;
   }
-
-
-
 
   clearCommonEmitters() {
     this.emitGetImmigrationFormData.next(null);
@@ -546,7 +566,6 @@ export class CommonService {
     this.emitGetUITemplateResults.next(null);
     this.versionId = null;
   }
-
 
   getUiControlSections() {
     return this.httpClient.get(this.global.getUIControlTemplateToShowSections);
@@ -561,6 +580,14 @@ export class CommonService {
     return this.httpClient.get(this.global.getSaveTemps + '?orgId=' + OrgId);
   }
   deleteTemplate(orgId: any, templateTitle: any, filingType: any) {
-    return this.httpClient.delete(this.global.deleteTemplateUrl + '?orgId=' + orgId + '&templateTitleName=' + templateTitle + '&filingType=' + filingType)
+    return this.httpClient.delete(
+      this.global.deleteTemplateUrl +
+        '?orgId=' +
+        orgId +
+        '&templateTitleName=' +
+        templateTitle +
+        '&filingType=' +
+        filingType
+    );
   }
 }

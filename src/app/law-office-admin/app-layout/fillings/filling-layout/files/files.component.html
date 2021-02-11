@@ -281,7 +281,7 @@
 <ng-template #sent let-d="dismiss" id="Modelsent">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Import</span>
-    <span class="modal-close close" (click)="closeModal()">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal()">
       <i class="fa fa-times text-white" aria-hidden="true"></i>
     </span>
   </div>
@@ -325,7 +325,7 @@
   <form [formGroup]="FolderForm">
     <div class="gl-modal-header p-20 bg-model text-white text-align">
       <span class="fs-16 mb-0 d-ib">New Folder</span>
-      <span class="modal-close close" (click)="closeModal()">
+      <span class="modal-close close" ngbAutofocus (click)="closeModal()">
         <i class="fa fa-times text-white" aria-hidden="true"></i>
       </span>
     </div>
@@ -364,7 +364,7 @@
 <ng-template #privacy let-d="dismiss" id="Modelprivacy">
   <div class="gl-modal-header p-20 text-align">
     <span class="fs-16 mb-0 d-ib">File Privacy</span>
-    <span class="modal-close close" (click)="closeModal()">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -502,7 +502,7 @@
 <ng-template #filedelete let-d="dismiss" id="ModelFiledelete">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Are you sure want to delete this file?</span>
-    <span class="modal-close close" (click)="closeModal()">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -519,7 +519,7 @@
 <ng-template #uploadfiledelete let-d="dismiss" id="ModelUploadFiledelete">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Are you sure want to delete this file?</span>
-    <span class="modal-close close" (click)="closeModal()">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -532,7 +532,7 @@
 <ng-template #folderdelete let-d="dismiss" id="ModelFolderdelete">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Are you sure want to delete this folder?</span>
-    <span class="modal-close close" (click)="closeModal()">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -547,7 +547,7 @@
 
 <ng-template #deletefolderPopUpTemp let-d="dismiss" id="deletefolderPopUpTemp">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeModal('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -563,7 +563,7 @@
 
 <ng-template #deletefilePopUpTemp let-d="dismiss" id="deletefilePopUpTemp">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeModal('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>

@@ -142,7 +142,7 @@
 
     <ng-template #contant let-d="dismiss" id="deleteModel">
         <div class="lo-modal--header p-20">
-            <span class="modal-close close" (click)="Close('close click')">
+            <span class="modal-close close" ngbAutofocus (click)="Close('close click')">
                 <i class="fa fa-times" aria-hidden="true"></i>
             </span>
         </div>
@@ -157,7 +157,7 @@
     </ng-template>
     <ng-template #sent let-d="dismiss" id="Modelsent">
         <div class="lo-modal--header p-20">
-            <span class="modal-close close" (click)="Closesent('close click')">
+            <span class="modal-close close" ngbAutofocus (click)="Closesent('close click')">
                 <i class="fa fa-times" aria-hidden="true"></i>
             </span>
         </div>
@@ -174,7 +174,7 @@
     <!-- activate inactivateTeam Modal Popup -->
     <ng-template #inactiveModal let-d="dismiss" id="inactivateTeamMember">
         <div class="lo-modal--header p-20">
-          <span class="modal-close close" (click)="Close('close click')">
+          <span class="modal-close close" ngbAutofocus (click)="Close('close click')">
             <i class="fa fa-times" aria-hidden="true"></i>
           </span>
         </div>

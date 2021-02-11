@@ -52,11 +52,11 @@ export class AdminService {
   }
 
   // Register Admin
-  Register(data: AdminSignup, env:any) {
+  Register(data: AdminSignup, env: any) {
     return this.httpClient.post(this.global.AdminRegister + '?environment=' + env, data);
   }
   // non-registered team admin in code
-  UnregisteredTeamMember(dataobj: any, env:any) {
+  UnregisteredTeamMember(dataobj: any, env: any) {
     return this.httpClient.post(this.global.unregisteredadminjoin + '?environment=' + env, dataobj);
   }
   // TeamClearance api
@@ -105,10 +105,10 @@ export class AdminService {
     return this.httpClient.get(this.global.TeamInviteesList + '?OrgId=' + obj, { headers: accesstoken });
   }
   // sending team member invitation list
-  TeamInvitation(obj: any, acesstoken: any, env:any) {
+  TeamInvitation(obj: any, acesstoken: any, env: any) {
     return this.httpClient.post(this.global.invitetem + '?environment=' + env, obj, { headers: acesstoken });
   }
-  ResendDelete(obj: any, acesstoken: any, env:any) {
+  ResendDelete(obj: any, acesstoken: any, env: any) {
     return this.httpClient.post(this.global.ResendInvitation + '?environment=' + env, obj, { headers: acesstoken });
   }
   MakeTeamMemberInActive(OrgId, TeamMemberid, accesstoken: any) {
@@ -127,7 +127,7 @@ export class AdminService {
     return this.httpClient.post(this.global.ClientJoiningAsPerUserExistency, data);
   }
 
-  ClientSetUpByLawofficeOrgLink(data: any, env:any) {
+  ClientSetUpByLawofficeOrgLink(data: any, env: any) {
     return this.httpClient.post(this.global.ClientSetUpByLawofficeOrgLink + '?environment=' + env, data);
   }
 
@@ -231,7 +231,7 @@ export class AdminService {
     );
   }
   //mark subtask reviewed
-  MarkTaskAsReviewed(OrgId, FilingId, TaskGroupId, TaskId, accesstoken,IsTaskReviewed) {
+  MarkTaskAsReviewed(OrgId, FilingId, TaskGroupId, TaskId, accesstoken, IsTaskReviewed) {
     return this.httpClient.post(
       this.global.MarkTaskAsReviewed +
         '?OrgId=' +
@@ -241,13 +241,15 @@ export class AdminService {
         '&TaskGroupId=' +
         TaskGroupId +
         '&TaskId=' +
-        TaskId + '&IsTaskReviewed=' + IsTaskReviewed,
+        TaskId +
+        '&IsTaskReviewed=' +
+        IsTaskReviewed,
       '',
       { headers: accesstoken }
     );
   }
   //mark sub task as completed
-  MarkTaskAsCompleted(OrgId, FilingId, TaskGroupId, TaskId, accesstoken,IsTaskCompleted) {
+  MarkTaskAsCompleted(OrgId, FilingId, TaskGroupId, TaskId, accesstoken, IsTaskCompleted) {
     return this.httpClient.post(
       this.global.MarkTaskAsCompleted +
         '?OrgId=' +
@@ -258,7 +260,8 @@ export class AdminService {
         TaskGroupId +
         '&TaskId=' +
         TaskId +
-        '&IsTaskCompleted=' + IsTaskCompleted,
+        '&IsTaskCompleted=' +
+        IsTaskCompleted,
       '',
       { headers: accesstoken }
     );
@@ -267,11 +270,17 @@ export class AdminService {
   //get subtasks
   GetSubTasksInTask(OrgId, FilingId, TaskGroupId, TaskId, accesstoken, adminId) {
     return this.httpClient.get(
-      this.global.GetSubTasksInTask +'?OrgId=' +OrgId +'&FilingId=' + FilingId +
+      this.global.GetSubTasksInTask +
+        '?OrgId=' +
+        OrgId +
+        '&FilingId=' +
+        FilingId +
         '&TaskGroupId=' +
         TaskGroupId +
         '&TaskId=' +
-        TaskId + '&adminId=' + adminId,
+        TaskId +
+        '&adminId=' +
+        adminId,
       { headers: accesstoken }
     );
   }
@@ -299,7 +308,7 @@ export class AdminService {
     );
   }
   //mark subtask reviewed
-  MarkSubTaskAsReviewed(OrgId, FilingId, TaskGroupId, TaskId, SubTaskId, accesstoken,isSubtaskReviewed) {
+  MarkSubTaskAsReviewed(OrgId, FilingId, TaskGroupId, TaskId, SubTaskId, accesstoken, isSubtaskReviewed) {
     return this.httpClient.post(
       this.global.MarkSubTaskAsReviewed +
         '?OrgId=' +
@@ -311,13 +320,15 @@ export class AdminService {
         '&TaskId=' +
         TaskId +
         '&SubTaskId=' +
-        SubTaskId + '&isSubtaskReviewed=' + isSubtaskReviewed + 
-      '',
+        SubTaskId +
+        '&isSubtaskReviewed=' +
+        isSubtaskReviewed +
+        '',
       { headers: accesstoken }
     );
   }
   //mark sub task as completed
-  MarkSubTaskAsCompleted(OrgId, FilingId, TaskGroupId, TaskId, SubTaskId, accesstoken,IsSubTaskCompleted) {
+  MarkSubTaskAsCompleted(OrgId, FilingId, TaskGroupId, TaskId, SubTaskId, accesstoken, IsSubTaskCompleted) {
     return this.httpClient.post(
       this.global.MarkSubTaskAsCompleted +
         '?OrgId=' +
@@ -329,8 +340,10 @@ export class AdminService {
         '&TaskId=' +
         TaskId +
         '&SubTaskId=' +
-        SubTaskId + '&IsSubTaskCompleted=' + IsSubTaskCompleted +
-      '',
+        SubTaskId +
+        '&IsSubTaskCompleted=' +
+        IsSubTaskCompleted +
+        '',
       { headers: accesstoken }
     );
   }

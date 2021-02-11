@@ -89,16 +89,17 @@ const routes: Routes = [
                 children: [
                   { path: 'overview', component: OverviewComponent },
                   { path: 'members', component: MembersComponent },
-                  { path: 'casesubmission', component: CaseSubmissionsComponent},
-                  { path: 'casesubmission/:id', component: CaseComponent},
+                  { path: 'casesubmission', component: CaseSubmissionsComponent },
+                  { path: 'casesubmission/:id', component: CaseComponent },
                   { path: 'case', component: CaseComponent },
                   { path: 'cases', component: CaseComponent },
                   { path: 'taskslist', component: TasksComponent },
                   { path: 'task/:id', component: TaskListComponent },
                   { path: 'messages', component: MessagesComponent },
                   {
-                    path: 'viewmessages', component: ViewmessagesComponent,
-                    resolve: { connection: ConnectionResloveService }
+                    path: 'viewmessages',
+                    component: ViewmessagesComponent,
+                    resolve: { connection: ConnectionResloveService },
                   },
                   { path: 'files/folder', component: FolderComponent },
                   { path: 'files', component: FilesComponent },
@@ -151,7 +152,6 @@ const routes: Routes = [
         ],
       },
     ],
-    
   },
 ];
 
@@ -160,4 +160,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [ClientauthGuard],
 })
-export class LawOfficeClientRoutingModule { }
+export class LawOfficeClientRoutingModule {}

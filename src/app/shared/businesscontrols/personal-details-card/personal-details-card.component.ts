@@ -6,7 +6,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
   styleUrls: ['./personal-details-card.component.scss'],
 })
 export class PersonalDetailsCardComponent implements OnInit {
-  constructor() { }
+  constructor() {}
   @Input()
   personalInfo: any;
   @Output()

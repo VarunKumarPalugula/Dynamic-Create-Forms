@@ -7,12 +7,12 @@ import { JsonSectionValidationService } from '@app/shared/service/json-section-v
 @Component({
   selector: 'app-child-details-popup',
   templateUrl: './child-details-popup.component.html',
-  styleUrls: ['./child-details-popup.component.scss']
+  styleUrls: ['./child-details-popup.component.scss'],
 })
 export class ChildDetailsPopupComponent implements OnInit {
   formErrors: any = {};
   @Output() emitCloseModel = new EventEmitter();
-  
+
   @Input() isCard = false;
 
   @Input() set data(value: any) {
@@ -28,17 +28,18 @@ export class ChildDetailsPopupComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private commonService: CommonService,
     private dynamicValidationService: JsonSectionValidationService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.childDetailsForm.valueChanges.subscribe(
-      value => {
-          this.logValidationErrors()
-      }
-  );
+    this.childDetailsForm.valueChanges.subscribe((value) => {
+      this.logValidationErrors();
+    });
   }
   logValidationErrors() {
-    this.formErrors = this.dynamicValidationService.getValidationErrors(this.childDetailsForm, this.dynamicValidationService.validationMessages);
+    this.formErrors = this.dynamicValidationService.getValidationErrors(
+      this.childDetailsForm,
+      this.dynamicValidationService.validationMessages
+    );
   }
 
   formGroupData() {
@@ -64,11 +65,10 @@ export class ChildDetailsPopupComponent implements OnInit {
     if (this.childDetailsForm.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.childDetailsForm.value)
+    this.emitCloseModel.emit(this.childDetailsForm.value);
   }
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
+    this.emitCloseModel.emit(null);
   }
-
 }

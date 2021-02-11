@@ -4,17 +4,15 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'app-dyamic-layout',
   templateUrl: './dyamic-layout.component.html',
-  styleUrls: ['./dyamic-layout.component.css']
+  styleUrls: ['./dyamic-layout.component.css'],
 })
 export class DyamicLayoutComponent implements OnInit {
-
   @Input() data;
   @Input() applicantKey;
 
-  constructor(public commonService: CommonService) { }
+  constructor(public commonService: CommonService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   edit(parent) {
     this.commonService.fileData[this.applicantKey][parent].readOnly = false;
@@ -23,5 +21,4 @@ export class DyamicLayoutComponent implements OnInit {
   cancel(parent) {
     this.commonService.fileData[this.applicantKey][parent].readOnly = true;
   }
-
 }

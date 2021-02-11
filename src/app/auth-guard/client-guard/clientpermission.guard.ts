@@ -12,7 +12,7 @@ export class ClientpermissionGuard implements CanActivate {
     private auth: ClientauthService,
     private permissionService: ClientpermissionService,
     private myRoute: Router
-  ) { }
+  ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -41,7 +41,7 @@ export class ClientpermissionGuard implements CanActivate {
             }
           }
         }
-         
+
         if (permission[0].Role.RoleName === 'SubAdmin') {
           if (
             state.url === '/client/applayout/team/teaminvite' ||
@@ -65,17 +65,17 @@ export class ClientpermissionGuard implements CanActivate {
             state.url === '/client/applayout/connections/import' ||
             state.url === '/client/applayout/connections/connectionimportmatch' ||
             state.url === '/client/applayout/connections/connectionimportcopy' ||
-            state.url === '/client/applayout/connections/connectionimportinvite'
-            || state.url === '/client/applayout/connections/inviteslist'
+            state.url === '/client/applayout/connections/connectionimportinvite' ||
+            state.url === '/client/applayout/connections/inviteslist'
           ) {
             let GenericPermissions: any = {};
             GenericPermissions = this.permissionService.GenericPermissions();
             if (GenericPermissions) {
               if (GenericPermissions.CanInviteConnections) {
                 return true;
-              } else if(state.url === '/client/applayout/connections/inviteslist') {
+              } else if (state.url === '/client/applayout/connections/inviteslist') {
                 return true;
-              } 
+              }
             }
           }
         } else if (state.url === '/client/applayout/connections/inviteslist') {

@@ -8,9 +8,8 @@ describe('AddressHistoryPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddressHistoryPopupComponent ]
-    })
-    .compileComponents();
+      declarations: [AddressHistoryPopupComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

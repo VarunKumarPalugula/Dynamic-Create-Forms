@@ -26,8 +26,8 @@ export class CaseComponent implements OnInit {
   fileName: any;
   fileType: any;
   Files: any = [];
-  Salli: boolean = false
-  caseId:any;
+  Salli: boolean = false;
+  caseId: any;
   constructor(
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
@@ -100,8 +100,6 @@ export class CaseComponent implements OnInit {
       }
     }
   }
-
-
 
   Printdocument(item) {
     this.formPrintAndDownLoad(true, item.FormName);
@@ -243,33 +241,32 @@ export class CaseComponent implements OnInit {
   }
 
   G28viewforfiling(item) {
-    this.formPrintAndDownLoad(false,item.FormName);
+    this.formPrintAndDownLoad(false, item.FormName);
   }
   formPrintAndDownLoad(isPrint, formName) {
     if (formName === 'g-28') {
-      formName = FormNameConfig.G28
+      formName = FormNameConfig.G28;
     } else if (formName == 'i-129') {
-      formName = FormNameConfig.I129
+      formName = FormNameConfig.I129;
     }
     let formObj = {
-      "FilingId": sessionStorage.getItem('FillingId'),
-      "VersionId": "0",
-      "FormName": formName,
-      "FormValues": {
-      }
-    }
+      FilingId: sessionStorage.getItem('FillingId'),
+      VersionId: '0',
+      FormName: formName,
+      FormValues: {},
+    };
     this.spinner.show();
-    this.formService.previewImmigrationFormData(this.orgId, formObj,1).subscribe(
+    this.formService.previewImmigrationFormData(this.orgId, formObj, 1).subscribe(
       (res: any) => {
         this.spinner.hide();
         if (res.Status == 1) {
           if (isPrint) {
             this.PrintSingleFile(res.Message);
           } else {
-            this.DownloadSingleFile(res.Message, formName+'-'+Date.now()+'.pdf');
+            this.DownloadSingleFile(res.Message, formName + '-' + Date.now() + '.pdf');
           }
         } else if (res.Status == 0) {
-          this.toaster.error(res.Message)
+          this.toaster.error(res.Message);
         }
       },
       (err) => {
@@ -278,38 +275,37 @@ export class CaseComponent implements OnInit {
     );
   }
 
-
-
-
   GetFilesInSupportingFilesSection() {
     //this.SUfiles = [];
 
-    this.filingService.GetFilesInSupportingFilesSectionClient(this.orgId, this.filingId, this.caseId, this.token).subscribe(
-      (res: any = []) => {
-        if (res == null) {
-          this.SUfiles = [];
-        } else {
-          let sf = JSON.parse(JSON.stringify(res));
+    this.filingService
+      .GetFilesInSupportingFilesSectionClient(this.orgId, this.filingId, this.caseId, this.token)
+      .subscribe(
+        (res: any = []) => {
+          if (res == null) {
+            this.SUfiles = [];
+          } else {
+            let sf = JSON.parse(JSON.stringify(res));
 
-          for (let i = 0; i < sf.length; i++) {
-            this.splittedFile = sf[i].FileName.split('.');
+            for (let i = 0; i < sf.length; i++) {
+              this.splittedFile = sf[i].FileName.split('.');
 
-            this.SUfiles.push({
-              $id: sf[i].$id,
-              FileId: 's' + sf[i].FileId,
-              FileName: sf[i].FileName,
-              S3BucketPath: sf[i].S3BucketPath,
-              fileType: this.splittedFile[1],
-              Sfileid: sf[i].FileId,
-              selected: false,
-            });
+              this.SUfiles.push({
+                $id: sf[i].$id,
+                FileId: 's' + sf[i].FileId,
+                FileName: sf[i].FileName,
+                S3BucketPath: sf[i].S3BucketPath,
+                fileType: this.splittedFile[1],
+                Sfileid: sf[i].FileId,
+                selected: false,
+              });
+            }
           }
+        },
+        (err) => {
+          this.toaster.error('Error occurred while archiveing Topic..', 'Error');
         }
-      },
-      (err) => {
-        this.toaster.error('Error occurred while archiveing Topic..', 'Error');
-      }
-    );
+      );
   }
   selectAllFiles(event: any) {
     if (event.target.checked === true) {
@@ -334,10 +330,10 @@ export class CaseComponent implements OnInit {
       // console.log(index)
       this.selectedIds.splice(index, 1);
     }
-    if(this.selectedIds.length == this.SUfiles.length) {
-      this.Salli = true
+    if (this.selectedIds.length == this.SUfiles.length) {
+      this.Salli = true;
     } else {
-      this.Salli = false
+      this.Salli = false;
     }
   }
 

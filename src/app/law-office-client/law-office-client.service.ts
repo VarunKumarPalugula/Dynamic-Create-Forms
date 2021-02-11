@@ -7,7 +7,7 @@ import { HelperService } from '@app/shared/helpers/helper.service';
 
 @Injectable({ providedIn: 'root' })
 export class ClientService {
-  constructor(private httpClient: HttpClient, private global: ApicallsService, private helper: HelperService) { }
+  constructor(private httpClient: HttpClient, private global: ApicallsService, private helper: HelperService) {}
 
   // Client Registration
   Register(data: ClientSignup, env: any) {
@@ -89,7 +89,7 @@ export class ClientService {
     return this.httpClient.post(this.global.SendClientTempPassword, data);
   }
 
-  TeamInvitation(obj: any, env: any ) {
+  TeamInvitation(obj: any, env: any) {
     return this.httpClient.post(this.global.clientOrgTeamInvite + '?environment=' + env, obj);
   }
 
@@ -117,12 +117,14 @@ export class ClientService {
     return this.httpClient.get(this.global.ClientRoles, { headers: token });
   }
 
-  resendClientAdminTeamInvitation(client: any, token: any, env:any) {
-    return this.httpClient.post(this.global.clientAdminTeamResendDelete +'?environment=' + env, client, { headers: token });
+  resendClientAdminTeamInvitation(client: any, token: any, env: any) {
+    return this.httpClient.post(this.global.clientAdminTeamResendDelete + '?environment=' + env, client, {
+      headers: token,
+    });
   }
 
-  clientTeamMemberSignup(clientTeamMember: any, env:any) {
-    return this.httpClient.post(this.global.clientTeamMemberSingup + '?environment=' + env,clientTeamMember);
+  clientTeamMemberSignup(clientTeamMember: any, env: any) {
+    return this.httpClient.post(this.global.clientTeamMemberSingup + '?environment=' + env, clientTeamMember);
   }
 
   GetTeambersOnTeamMemberStatus(OrgId, TeamMemStatus, accesstoken) {
@@ -296,8 +298,8 @@ export class ClientService {
   }
 
   //applicant perosnal details
-  getApplicantPersonalDetails(token: any,LawOfficeClientID) {
-    return this.httpClient.get(this.global.getApplicantPersonalDetails + '?LawOfficeClientId=' + LawOfficeClientID,  {
+  getApplicantPersonalDetails(token: any, LawOfficeClientID) {
+    return this.httpClient.get(this.global.getApplicantPersonalDetails + '?LawOfficeClientId=' + LawOfficeClientID, {
       headers: token,
     });
   }
@@ -313,7 +315,7 @@ export class ClientService {
       headers: accesstoken,
     });
   }
-  getImmigrationDetails(token: any,LawOfficeClientID) {
+  getImmigrationDetails(token: any, LawOfficeClientID) {
     return this.httpClient.get(this.global.getImmigrationDetails + '?LawOfficeClientId=' + LawOfficeClientID, {
       headers: token,
     });
@@ -323,9 +325,8 @@ export class ClientService {
       headers: accesstoken,
     });
   }
-  getImmigrationTravelDetails(token: any,LawOfficeClientID) {
-    return this.httpClient.get(this.global.getImmigrationTravelDetails + '?LawOfficeClientId=' + LawOfficeClientID
-    , {
+  getImmigrationTravelDetails(token: any, LawOfficeClientID) {
+    return this.httpClient.get(this.global.getImmigrationTravelDetails + '?LawOfficeClientId=' + LawOfficeClientID, {
       headers: token,
     });
   }
@@ -337,14 +338,14 @@ export class ClientService {
     });
   }
 
-  getApplicantAddressAndContact(token: any,LawOfficeClientID) {
-    return this.httpClient.get(this.global.getApplicantAddressAndContact+ '?LawOfficeClientId=' + LawOfficeClientID, {
+  getApplicantAddressAndContact(token: any, LawOfficeClientID) {
+    return this.httpClient.get(this.global.getApplicantAddressAndContact + '?LawOfficeClientId=' + LawOfficeClientID, {
       headers: token,
     });
   }
 
   //applicant perosnal details
-  getApplicantEducationalnfo(token: any,LawOfficeClientID) {
+  getApplicantEducationalnfo(token: any, LawOfficeClientID) {
     return this.httpClient.get(this.global.getApplicantEducationalnfo + '?LawOfficeClientId=' + LawOfficeClientID, {
       headers: token,
     });
@@ -362,10 +363,13 @@ export class ClientService {
       headers: accesstoken,
     });
   }
-  getFile(resume: any, token: any,LawOfficeClientID) {
-    return this.httpClient.get(this.global.getEmployementFiles + '?Type=' + resume  + '&LawOfficeClientId=' + LawOfficeClientID, {
-      headers: token,
-    });
+  getFile(resume: any, token: any, LawOfficeClientID) {
+    return this.httpClient.get(
+      this.global.getEmployementFiles + '?Type=' + resume + '&LawOfficeClientId=' + LawOfficeClientID,
+      {
+        headers: token,
+      }
+    );
   }
   deleteFile(id: number, token: any) {
     return this.httpClient.delete(this.global.deleteEmployementFiles + '?EFileId=' + id, {
@@ -383,17 +387,17 @@ export class ClientService {
     return this.httpClient.post(this.global.postPosInfo, posInfo, { headers: accesstoken });
   }
 
-  getPeriodOfStay(token: any,LawOfficeClientID) {
+  getPeriodOfStay(token: any, LawOfficeClientID) {
     return this.httpClient.get(this.global.getPosInfo + '?LawOfficeClientId=' + LawOfficeClientID, { headers: token });
   }
   deleteApplicantEduInfo(id: number, accesstoken: any) {
     return this.httpClient.delete(this.global.deleteApplicantEducationInfo + '?EducationDtlId=' + id, {
-      headers: accesstoken
-    })
+      headers: accesstoken,
+    });
   }
   deleteApplicantPosInfo(id: number, accesstoken: any) {
     return this.httpClient.delete(this.global.deleteApplicantPeriodofStayInfo + '?PSId=' + id, {
-      headers: accesstoken
-    })
+      headers: accesstoken,
+    });
   }
 }

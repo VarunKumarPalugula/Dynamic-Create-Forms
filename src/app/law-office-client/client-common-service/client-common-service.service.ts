@@ -11,7 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 // import { forEach } from '@angular/router/src/utils/collection';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClientCommonServiceService {
   personalDetailsForm: FormGroup;
@@ -73,7 +73,7 @@ export class ClientCommonServiceService {
   deleteEduInfoPopup: any;
   totalNumberOfDaysOutsideUsa: number;
   getResumeFile: any = {};
-  tasklistResume: boolean = false
+  tasklistResume: boolean = false;
   EFileId: any;
   recentPyStubViewFile: any = {};
   fileType: string;
@@ -146,7 +146,7 @@ export class ClientCommonServiceService {
     private clientService: ClientService,
     public commonService: CommonService,
     private http: Http
-  ) { }
+  ) {}
 
   personalForm() {
     this.personalDetailsForm = this.fb.group({
@@ -159,7 +159,7 @@ export class ClientCommonServiceService {
       CountryOfCitizenShip: this.Valid.validateform.Required,
       PDId: [],
       LawOfficeClientId: [],
-      Status: []
+      Status: [],
     });
   }
 
@@ -173,7 +173,7 @@ export class ClientCommonServiceService {
       CurrentTotalNumberOfEmployees: this.Valid.validateform.NoOfEmployees,
       TotalFullTimeEmployees: this.Valid.validateform.NoOfEmployees,
       NumberOfEmployeesOnH1B: this.Valid.validateform.NoOfEmployees,
-      OIId: []
+      OIId: [],
     });
   }
   mailingAddressBuildForm() {
@@ -186,7 +186,7 @@ export class ClientCommonServiceService {
       ZipCode: this.Valid.validateform.ZipCode,
       DayTimePhone: ['', Validators.pattern('^(?!0+$)((\\+91-?))?(?!0+$)[1-9][0-9]{9}$')],
       MobilePhone: ['', Validators.pattern('^(?!0+$)((\\+91-?))?(?!0+$)[1-9][0-9]{9}$')],
-      Email:  ['', [Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      Email: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       Fax: this.Valid.validateform.Fax,
       AptSteFlrNumber: [
         '',
@@ -194,14 +194,14 @@ export class ClientCommonServiceService {
           Validators.minLength(4),
           // Validators.requiredTrue,
           Validators.maxLength(15),
-          Validators.pattern('^[a-zA-Z0-9][. /]*$')
-        ]
+          Validators.pattern('^[a-zA-Z0-9][. /]*$'),
+        ],
       ],
       aptSteFlr: [],
       Apt: [],
       Ste: [],
       Flr: [],
-      MAId: ['']
+      MAId: [''],
     });
   }
 
@@ -214,7 +214,7 @@ export class ClientCommonServiceService {
       State: this.Valid.validateform.Required,
       Province: this.Valid.validateform.Province,
       Country: ['USA'],
-      Email:  ['', [Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      Email: ['', [Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
       DayTimePhone: ['', Validators.pattern('^(?!0+$)((\\+91-?))?(?!0+$)[1-9][0-9]{9}$')],
       MobilePhone: ['', Validators.pattern('^(?!0+$)((\\+91-?))?(?!0+$)[1-9][0-9]{9}$')],
       AptSteFlrNumber: [
@@ -231,7 +231,7 @@ export class ClientCommonServiceService {
       Apt: [],
       Ste: [],
       Flr: [],
-      AOPOBId: []
+      AOPOBId: [],
     });
   }
   pocForm() {
@@ -243,7 +243,7 @@ export class ClientCommonServiceService {
       Email: this.Valid.validateform.Email,
       DayTimePhone: this.Valid.validateform.MobileNumber,
       MobilePhone: this.Valid.validateform.MobileNumber,
-      POCId: []
+      POCId: [],
     });
   }
 
@@ -255,7 +255,7 @@ export class ClientCommonServiceService {
       JobTitle: this.Valid.validateform.Taskname,
       Email: this.Valid.validateform.Email,
       DayTimePhone: this.Valid.validateform.MobileNumber,
-      MobilePhone: this.Valid.validateform.MobileNumber
+      MobilePhone: this.Valid.validateform.MobileNumber,
     });
   }
   financialsForm() {
@@ -267,7 +267,7 @@ export class ClientCommonServiceService {
       CGrossAnnualIncome: this.Valid.validateform.ZipCode,
       CNetAnnualIncome: this.Valid.validateform.ZipCode,
       LGrossAnnualIncome: this.Valid.validateform.ZipCode,
-      LNetAnnualIncome: this.Valid.validateform.ZipCode
+      LNetAnnualIncome: this.Valid.validateform.ZipCode,
     });
   }
   loadmaxDate() {
@@ -281,16 +281,16 @@ export class ClientCommonServiceService {
   Submit() {
     let totalFullTimeEmps = this.Orgdetails.value.TotalFullTimeEmployees;
     console.log(totalFullTimeEmps);
-    if((this.Orgdetails.value.TotalFullTimeEmployees < parseInt(this.Orgdetails.value.CurrentTotalNumberOfEmployees))){
+    if (this.Orgdetails.value.TotalFullTimeEmployees < parseInt(this.Orgdetails.value.CurrentTotalNumberOfEmployees)) {
       this.toaster.info('Total number of employees must greater than or equal current number of employees');
-      return
+      return;
     }
-    if((this.Orgdetails.value.CurrentTotalNumberOfEmployees < parseInt(this.Orgdetails.value.NumberOfEmployeesOnH1B))){
+    if (this.Orgdetails.value.CurrentTotalNumberOfEmployees < parseInt(this.Orgdetails.value.NumberOfEmployeesOnH1B)) {
       this.toaster.info('Total number of current employees must greater than or equal number of employes on H1-B');
-      return
+      return;
     }
     let formattedDate = new Date(this.Orgdetails.value.CompanyFormedOn);
-    this.Orgdetails.value.CompanyFormedOn = formattedDate.toLocaleDateString("en-US", this.options);
+    this.Orgdetails.value.CompanyFormedOn = formattedDate.toLocaleDateString('en-US', this.options);
     this.spinner.show();
     this.clientService
       .OrganisationInfo(sessionStorage.getItem('ClientOrganisationID'), this.Orgdetails.value, this.token)
@@ -305,18 +305,17 @@ export class ClientCommonServiceService {
             this.toaster.error('Failed to set  contact information');
           }
         },
-        err => {
+        (err) => {
           this.toaster.error('Error Occured');
         }
       );
-    } 
-    
+  }
 
   getOrganisationInfo() {
     this.spinner.show();
     console.log(sessionStorage.getItem('ClientOrganisationID'));
     this.clientService.getOrganisationInfo(sessionStorage.getItem('ClientOrganisationID'), this.token).subscribe(
-      res => {
+      (res) => {
         this.spinner.hide();
         if (res != null) {
           this.Orgdetails.patchValue(res);
@@ -329,7 +328,7 @@ export class ClientCommonServiceService {
           this.uid = 0;
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -345,15 +344,15 @@ export class ClientCommonServiceService {
         {
           Year: 2020,
           GrossAnnualIncome: this.financials.value.CGrossAnnualIncome,
-          NetAnnualIncome: this.financials.value.CNetAnnualIncome
+          NetAnnualIncome: this.financials.value.CNetAnnualIncome,
         },
         {
           year: 2019,
           GrossAnnualIncome: this.financials.value.LGrossAnnualIncome,
-          NetAnnualIncome: this.financials.value.LNetAnnualIncome
-        }
+          NetAnnualIncome: this.financials.value.LNetAnnualIncome,
+        },
       ],
-      FIId: this.fid
+      FIId: this.fid,
     };
     this.clientService.Financials(sessionStorage.getItem('ClientOrganisationID'), data, this.token).subscribe(
       (res: any) => {
@@ -366,7 +365,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to set  contact information');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -376,7 +375,7 @@ export class ClientCommonServiceService {
   getfinancialsInformation() {
     this.spinner.show();
     this.clientService.getFinancialInfo(sessionStorage.getItem('ClientOrganisationID'), this.token).subscribe(
-      res => {
+      (res) => {
         this.spinner.hide();
         if (res != null) {
           this.financialInfo = JSON.parse(JSON.stringify(res));
@@ -394,7 +393,7 @@ export class ClientCommonServiceService {
           this.financialObj = {};
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -410,7 +409,7 @@ export class ClientCommonServiceService {
       LawOfficeClientId: [],
       CreatedOn: [],
       ModifiedOn: [],
-      Status: []
+      Status: [],
     });
   }
   buildEducationForm() {
@@ -422,7 +421,7 @@ export class ClientCommonServiceService {
       DateOfDegreeAwarded: this.Valid.validateform.Required,
       IsHighestLevelOfEducation: [false],
       EducationDetailsId: [],
-      LawOfficeClientId: []
+      LawOfficeClientId: [],
     });
   }
   //Immigration Validation rules
@@ -434,7 +433,7 @@ export class ClientCommonServiceService {
       AnyI40PetitionField: this.Valid.validateform.Required,
       ApprovedReciptNumber: this.Valid.validateform.reciptNumber,
       IMId: [],
-      LawOfficeClientId: []
+      LawOfficeClientId: [],
     });
   }
   immigrationTravelDocumentVRules() {
@@ -445,7 +444,7 @@ export class ClientCommonServiceService {
       PassportOrTravelDocumentCountryOfIssuance: this.Valid.validateform.Required,
       ExpiryEmailRemainder: this.Valid.validateform.Required,
       IMDPId: [],
-      LawOfficeClientId: []
+      LawOfficeClientId: [],
     });
   }
 
@@ -468,7 +467,7 @@ export class ClientCommonServiceService {
       aptSteFlr: [],
       AddressId: [],
       LawOfficeClientId: [],
-      InUSA: [false]
+      InUSA: [false],
     });
   }
 
@@ -490,7 +489,7 @@ export class ClientCommonServiceService {
       Ste: [],
       Flr: [],
       InUSA: [true],
-      AddressId: []
+      AddressId: [],
     });
   }
 
@@ -506,7 +505,7 @@ export class ClientCommonServiceService {
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(100),
-        Validators.pattern('[a-zA-Z0-9]*$')
+        Validators.pattern('[a-zA-Z0-9]*$'),
       ]);
     } else {
       selectedroleControl.clearValidators();
@@ -528,7 +527,7 @@ export class ClientCommonServiceService {
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(100),
-        Validators.pattern('[a-zA-Z0-9]*$')
+        Validators.pattern('[a-zA-Z0-9]*$'),
       ]);
     } else {
       selectedroleControl.clearValidators();
@@ -537,9 +536,6 @@ export class ClientCommonServiceService {
     }
     selectedroleControl.updateValueAndValidity();
   }
-
-
-
 
   // Adding and getting address and contact information
   addAddressAndContact(contactFormObj) {
@@ -574,7 +570,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to set  contact information');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -582,34 +578,36 @@ export class ClientCommonServiceService {
 
   getForeginAddressAndContact() {
     this.spinner.show();
-    this.clientService.getApplicantAddressAndContact(this.token, sessionStorage.getItem('LawOfficeClientID')).subscribe((res: any[]) => {
-      this.spinner.hide();
-      for (let i = 0; i < res.length; i++) {
-        if (res == null) {
-          this.isForginContactInfoShow = false;
-        } else if (res && Object.keys(res).length && res[i].InUSA === false) {
-          this.foreginAddressValidationRules.patchValue(res[i]);
-          if (this.foreginAddressValidationRules.value.Apt == true) {
-            this.foreginAddressValidationRules.get('aptSteFlr').patchValue('Apt');
-          } else if (this.foreginAddressValidationRules.value.Ste == true) {
-            this.foreginAddressValidationRules.get('aptSteFlr').patchValue('Ste');
-          } else if (this.foreginAddressValidationRules.value.Flr == true) {
-            this.foreginAddressValidationRules.get('aptSteFlr').patchValue('Flr');
+    this.clientService
+      .getApplicantAddressAndContact(this.token, sessionStorage.getItem('LawOfficeClientID'))
+      .subscribe((res: any[]) => {
+        this.spinner.hide();
+        for (let i = 0; i < res.length; i++) {
+          if (res == null) {
+            this.isForginContactInfoShow = false;
+          } else if (res && Object.keys(res).length && res[i].InUSA === false) {
+            this.foreginAddressValidationRules.patchValue(res[i]);
+            if (this.foreginAddressValidationRules.value.Apt == true) {
+              this.foreginAddressValidationRules.get('aptSteFlr').patchValue('Apt');
+            } else if (this.foreginAddressValidationRules.value.Ste == true) {
+              this.foreginAddressValidationRules.get('aptSteFlr').patchValue('Ste');
+            } else if (this.foreginAddressValidationRules.value.Flr == true) {
+              this.foreginAddressValidationRules.get('aptSteFlr').patchValue('Flr');
+            }
+            this.isForginContactInfoShow = true;
           }
-          this.isForginContactInfoShow = true;
+          (err) => {
+            this.toaster.error('Error Occured');
+          };
         }
-        err => {
-          this.toaster.error('Error Occured');
-        };
-      }
-    });
+      });
   }
 
   //getOrganisationInfo --to get personal information
   getPersonalInfo() {
     this.spinner.show();
     this.clientService.getApplicantPersonalDetails(this.token, sessionStorage.getItem('LawOfficeClientID')).subscribe(
-      res => {
+      (res) => {
         this.spinner.hide();
         if (res != null) {
           this.personalDetailsForm.patchValue(res);
@@ -621,7 +619,7 @@ export class ClientCommonServiceService {
           }
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -630,7 +628,7 @@ export class ClientCommonServiceService {
   submitPersonalInfo(personalInfo) {
     this.spinner.show();
     let formattedDate = new Date(personalInfo.DateOfBirth);
-    personalInfo.DateOfBirth = formattedDate.toLocaleDateString("en-US", this.options);
+    personalInfo.DateOfBirth = formattedDate.toLocaleDateString('en-US', this.options);
     this.clientService.ApplicantPersonalDetails(personalInfo, this.token).subscribe(
       (res: any) => {
         this.spinner.hide();
@@ -642,7 +640,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update perosnal information');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -674,7 +672,7 @@ export class ClientCommonServiceService {
           }
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -698,11 +696,11 @@ export class ClientCommonServiceService {
   }
 
   checkHighestLevelOfEducation(addCurrentUsaAddress) {
-    let IsHighestLevelOfEducationInfo = this.educationInfoList.find(e => e.IsHighestLevelOfEducation == true);
+    let IsHighestLevelOfEducationInfo = this.educationInfoList.find((e) => e.IsHighestLevelOfEducation == true);
     if (
       IsHighestLevelOfEducationInfo &&
       this.educationDetailsValidationRules.get('EducationDetailsId').value !=
-      IsHighestLevelOfEducationInfo.EducationDetailsId &&
+        IsHighestLevelOfEducationInfo.EducationDetailsId &&
       this.educationDetailsValidationRules.get('IsHighestLevelOfEducation').value == true
     ) {
       this.toaster.info('Already highest level of education selected, please change');
@@ -713,7 +711,6 @@ export class ClientCommonServiceService {
     this.currentAddress = 'Step 2 - Institute Address';
 
     if (this.educationDetailsValidationRules.value.EducationDetailsId) {
-
     } else {
       this.currentUsaAddreesValidationRules.reset();
     }
@@ -722,11 +719,14 @@ export class ClientCommonServiceService {
 
   submitEducationalInfo() {
     let formattedDate = new Date(this.educationDetailsValidationRules.value.DateOfDegreeAwarded);
-    this.educationDetailsValidationRules.value.DateOfDegreeAwarded = formattedDate.toLocaleDateString("en-US", this.options);
+    this.educationDetailsValidationRules.value.DateOfDegreeAwarded = formattedDate.toLocaleDateString(
+      'en-US',
+      this.options
+    );
     let educationalInfo = {
       EducationDetailsId:
         this.educationDetailsValidationRules.value.EducationDetailsId != undefined &&
-          this.educationDetailsValidationRules.value.EducationDetailsId != 0
+        this.educationDetailsValidationRules.value.EducationDetailsId != 0
           ? this.educationDetailsValidationRules.value.EducationDetailsId
           : 0,
       LawOfficeClientId: this.educationDetailsValidationRules.value.LawOfficeClientId,
@@ -754,7 +754,7 @@ export class ClientCommonServiceService {
       Email: this.currentUsaAddreesValidationRules.value.Email,
       // "CreatedOn": this.educationInfoData.CreatedOn ? this.educationInfoData.CreatedOn: "",
       // "ModifiedOn": "2020-03-10T15:59:51.846Z",
-      Status: true
+      Status: true,
     };
     this.spinner.show();
     this.clientService.applicantEducationDetails(educationalInfo, this.token).subscribe(
@@ -772,7 +772,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update education details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -791,7 +791,7 @@ export class ClientCommonServiceService {
   PostImmigrationDetails() {
     // console.log(this.immiggrationDetails.value);
     let formattedDate = new Date(this.immiggrationDetails.value.DateOfLastArrival);
-    this.immiggrationDetails.value.DateOfLastArrival = formattedDate.toLocaleDateString("en-US", this.options);
+    this.immiggrationDetails.value.DateOfLastArrival = formattedDate.toLocaleDateString('en-US', this.options);
     this.spinner.show();
     this.clientService.saveImmigrationDetails(this.immiggrationDetails.value, this.token).subscribe(
       (res: any) => {
@@ -804,28 +804,30 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to set  contact information');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
   }
 
   getImmigrationDetails() {
-    this.clientService.getImmigrationDetails(this.token, sessionStorage.getItem('LawOfficeClientID')).subscribe(res => {
-      this.spinner.hide();
-      if (res != null) {
-        let immiggrationDetails = res;
-        this.immiggrationDetails.patchValue(res);
-        if (immiggrationDetails && Object.keys(immiggrationDetails).length) {
-          this.showImmigrationDetailsForm = true;
+    this.clientService
+      .getImmigrationDetails(this.token, sessionStorage.getItem('LawOfficeClientID'))
+      .subscribe((res) => {
+        this.spinner.hide();
+        if (res != null) {
+          let immiggrationDetails = res;
+          this.immiggrationDetails.patchValue(res);
+          if (immiggrationDetails && Object.keys(immiggrationDetails).length) {
+            this.showImmigrationDetailsForm = true;
+          } else {
+            this.showImmigrationDetailsForm = false;
+          }
         } else {
-          this.showImmigrationDetailsForm = false;
+          this.IMId = 0;
         }
-      } else {
-        this.IMId = 0;
-      }
-    }),
-      err => {
+      }),
+      (err) => {
         this.toaster.error('Error Occured');
       };
   }
@@ -837,14 +839,14 @@ export class ClientCommonServiceService {
   postPosInfo() {
     // console.log(this.posValidationRules.value);
     if (new Date(this.posValidationRules.value.StayedFrom) >= new Date(this.posValidationRules.value.StayedTill)) {
-      this.toaster.info("stayed till date accepts only stayed from after date", "info");
+      this.toaster.info('stayed till date accepts only stayed from after date', 'info');
       return;
     }
     this.commonService.closeModel('close click');
     let formattedDate = new Date(this.posValidationRules.value.StayedFrom);
-    this.posValidationRules.value.StayedFrom = formattedDate.toLocaleDateString("en-US", this.options);
+    this.posValidationRules.value.StayedFrom = formattedDate.toLocaleDateString('en-US', this.options);
     let formattedDate1 = new Date(this.posValidationRules.value.StayedTill);
-    this.posValidationRules.value.StayedTill = formattedDate1.toLocaleDateString("en-US", this.options);
+    this.posValidationRules.value.StayedTill = formattedDate1.toLocaleDateString('en-US', this.options);
     this.spinner.show();
     this.clientService.postPeriodOfStay(this.posValidationRules.value, this.token).subscribe(
       (res: any) => {
@@ -858,7 +860,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update period of stay details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -866,7 +868,7 @@ export class ClientCommonServiceService {
 
   getPosInformation() {
     this.spinner.show();
-    this.clientService.getPeriodOfStay(this.token, sessionStorage.getItem('LawOfficeClientID')).subscribe(res => {
+    this.clientService.getPeriodOfStay(this.token, sessionStorage.getItem('LawOfficeClientID')).subscribe((res) => {
       this.spinner.hide();
       if (res !== null) {
         this.posInfoObj = res;
@@ -878,7 +880,7 @@ export class ClientCommonServiceService {
         this.showPosForm = false;
       }
     }),
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       };
   }
@@ -898,7 +900,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update education details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -912,7 +914,7 @@ export class ClientCommonServiceService {
           this.getResumeFile = res[res.length - 1];
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -937,7 +939,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update education details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -953,7 +955,7 @@ export class ClientCommonServiceService {
         } else {
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -977,7 +979,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update education details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -985,17 +987,19 @@ export class ClientCommonServiceService {
 
   getRecentPayStubs() {
     this.spinner.show();
-    this.clientService.getFile('PayStubs', this.token, sessionStorage.getItem('LawOfficeClientID')).subscribe((res: any) => {
-      this.spinner.hide();
-      if (res !== null && res !== undefined) {
-        this.getRecentPaystubfiles = res;
-        for (let i = 0; i < this.recentPatStubs.length; i++) {
-          this.splittedFile = this.recentPatStubs[i].FileName.split('.');
-          this.recentPatStubs[i].fileType = this.splittedFile[1];
+    this.clientService
+      .getFile('PayStubs', this.token, sessionStorage.getItem('LawOfficeClientID'))
+      .subscribe((res: any) => {
+        this.spinner.hide();
+        if (res !== null && res !== undefined) {
+          this.getRecentPaystubfiles = res;
+          for (let i = 0; i < this.recentPatStubs.length; i++) {
+            this.splittedFile = this.recentPatStubs[i].FileName.split('.');
+            this.recentPatStubs[i].fileType = this.splittedFile[1];
+          }
         }
-      }
-      error => { };
-    });
+        (error) => {};
+      });
   }
 
   uploadEadCard(uploadEadcardFile) {
@@ -1017,7 +1021,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update education details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1033,7 +1037,7 @@ export class ClientCommonServiceService {
           // console.log(this.getEadCardFile);
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1053,7 +1057,7 @@ export class ClientCommonServiceService {
     this.DeletefileModel = this.modalService.open(popup, {
       centered: true,
       keyboard: false,
-      backdrop: 'static'
+      backdrop: 'static',
     });
   }
 
@@ -1063,7 +1067,7 @@ export class ClientCommonServiceService {
     this.deleteEduInfoPopup = this.modalService.open(popup, {
       centered: true,
       keyboard: false,
-      backdrop: 'static'
+      backdrop: 'static',
     });
   }
   deletePosPopup(popup: any, $event) {
@@ -1071,7 +1075,7 @@ export class ClientCommonServiceService {
     this.deleteEduInfoPopup = this.modalService.open(popup, {
       centered: true,
       keyboard: false,
-      backdrop: 'static'
+      backdrop: 'static',
     });
   }
 
@@ -1104,7 +1108,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to delete your file');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1118,31 +1122,31 @@ export class ClientCommonServiceService {
       this.filepath = this.EFileId.S3Path;
       this.printSpecificFile(this.filepath, this.fileName);
     } else if (this.fileType === 'recentW2s') {
-      let printRecentW2s = this.getRecentw2s.filter(x => x.EFileId === this.EFileId);
+      let printRecentW2s = this.getRecentw2s.filter((x) => x.EFileId === this.EFileId);
       this.filepath = printRecentW2s[0].S3Path;
       this.printSpecificFile(this.filepath, this.fileName);
     } else if (this.fileType === '3recentPayStubs') {
-      let print3RecentPayStubs = this.getRecentPaystubfiles.filter(x => x.EFileId === this.EFileId);
+      let print3RecentPayStubs = this.getRecentPaystubfiles.filter((x) => x.EFileId === this.EFileId);
       this.filepath = print3RecentPayStubs[0].S3Path;
       this.printSpecificFile(this.filepath, this.fileName);
     } else if (this.fileType === 'eadCards') {
-      let printEadCard = this.getEadCardFile.filter(x => x.EFileId === this.EFileId);
+      let printEadCard = this.getEadCardFile.filter((x) => x.EFileId === this.EFileId);
       this.filepath = printEadCard[0].S3Path;
       this.printSpecificFile(this.filepath, this.fileName);
     } else if (this.fileType === 'travelDocument') {
-      let printTravelDoc = this.imgTravelDocFile.filter(x => x.EFileId === this.EFileId);
+      let printTravelDoc = this.imgTravelDocFile.filter((x) => x.EFileId === this.EFileId);
       this.filepath = printTravelDoc[0].S3Path;
       this.printSpecificFile(this.filepath, this.fileName);
     } else if (this.fileType === 'Education') {
-      let printEduFile = this.getEduFiles.filter(x => x.EFileId === this.EFileId);
+      let printEduFile = this.getEduFiles.filter((x) => x.EFileId === this.EFileId);
       this.filepath = printEduFile[0].S3Path;
       this.printSpecificFile(this.filepath, this.fileName);
     } else if (this.fileType === 'POS') {
-      let printPosFile = this.getPosFiles.filter(x => x.EFileId === this.EFileId);
+      let printPosFile = this.getPosFiles.filter((x) => x.EFileId === this.EFileId);
       this.filepath = printPosFile[0].S3Path;
       this.printSpecificFile(this.filepath, this.fileName);
     } else {
-      let printImg94DocFile = this.imgI94DocFile.filter(x => x.EFileId === this.EFileId);
+      let printImg94DocFile = this.imgI94DocFile.filter((x) => x.EFileId === this.EFileId);
       this.filepath = printImg94DocFile[0].S3Path;
       this.printSpecificFile(this.filepath, this.fileName);
     }
@@ -1153,7 +1157,7 @@ export class ClientCommonServiceService {
     this.splittedFileType = this.splittedFile[1];
     this.http
       .get(filepath, {
-        responseType: ResponseContentType.Blob
+        responseType: ResponseContentType.Blob,
       })
       .subscribe((response: any) => {
         var mediaType = response._body.type;
@@ -1191,25 +1195,25 @@ export class ClientCommonServiceService {
       this.EFileId = this.getResumeFile;
       window.open(this.EFileId.S3Path, '_blank');
     } else if (this.fileType === 'recentW2s') {
-      let viewRecentWrsFile = this.getRecentw2s.filter(x => x.EFileId === this.EFileId);
+      let viewRecentWrsFile = this.getRecentw2s.filter((x) => x.EFileId === this.EFileId);
       window.open(viewRecentWrsFile[0].S3Path, '_blank');
     } else if (this.fileType === '3recentPayStubs') {
-      let view3RecentPaystubs = this.getRecentPaystubfiles.filter(x => x.EFileId === this.EFileId);
+      let view3RecentPaystubs = this.getRecentPaystubfiles.filter((x) => x.EFileId === this.EFileId);
       window.open(view3RecentPaystubs[0].S3Path, '_blank');
     } else if (this.fileType === 'eadCards') {
-      let viewEadCards = this.getEadCardFile.filter(x => x.EFileId === this.EFileId);
+      let viewEadCards = this.getEadCardFile.filter((x) => x.EFileId === this.EFileId);
       window.open(viewEadCards[0].S3Path, '_blank');
     } else if (this.fileType === 'Education') {
-      let viewEduFiles = this.getEduFiles.filter(x => x.EFileId === this.EFileId);
+      let viewEduFiles = this.getEduFiles.filter((x) => x.EFileId === this.EFileId);
       window.open(viewEduFiles[0].S3Path, '_blank');
     } else if (this.fileType === 'travelDocument') {
-      let viewimgTravelDocFile = this.imgTravelDocFile.filter(x => x.EFileId === this.EFileId);
+      let viewimgTravelDocFile = this.imgTravelDocFile.filter((x) => x.EFileId === this.EFileId);
       window.open(viewimgTravelDocFile[0].S3Path, '_blank');
     } else if (this.fileType === 'POS') {
-      let viewPosFile = this.getPosFiles.filter(x => x.EFileId === this.EFileId);
+      let viewPosFile = this.getPosFiles.filter((x) => x.EFileId === this.EFileId);
       window.open(viewPosFile[0].S3Path, '_blank');
     } else {
-      let viewImg94DocFile = this.imgI94DocFile.filter(x => x.EFileId === this.EFileId);
+      let viewImg94DocFile = this.imgI94DocFile.filter((x) => x.EFileId === this.EFileId);
       window.open(viewImg94DocFile[0].S3Path, '_blank');
     }
   }
@@ -1223,71 +1227,70 @@ export class ClientCommonServiceService {
       const mediaType = this.fileType;
       const blob = new Blob([this.filepath], { type: mediaType });
       saveAs(blob, this.fileName);
-      err => {
+      (err) => {
         this.toaster.error('error occured');
       };
     } else if (this.fileType === 'recentW2s') {
-      let downloadRecentW2s = this.getRecentw2s.filter(x => x.EFileId === this.EFileId);
+      let downloadRecentW2s = this.getRecentw2s.filter((x) => x.EFileId === this.EFileId);
       this.filepath = downloadRecentW2s[0].S3Path;
       const mediaType = this.fileType;
       const blob = new Blob([this.filepath], { type: mediaType });
       saveAs(blob, this.fileName);
-      err => {
+      (err) => {
         this.toaster.error('error occured');
       };
     } else if (this.fileType === '3recentPayStubs') {
-      let download3RecentPaystubs = this.getRecentPaystubfiles.filter(x => x.EFileId === this.EFileId);
+      let download3RecentPaystubs = this.getRecentPaystubfiles.filter((x) => x.EFileId === this.EFileId);
       this.filepath = download3RecentPaystubs[0].S3Path;
       const mediaType = this.fileType;
       const blob = new Blob([this.filepath], { type: mediaType });
       saveAs(blob, this.fileName);
-      err => {
+      (err) => {
         this.toaster.error('error occured');
       };
     } else if (this.fileType === 'eadCards') {
-      let downloadEadcardFile = this.getEadCardFile.filter(x => x.EFileId === this.EFileId);
+      let downloadEadcardFile = this.getEadCardFile.filter((x) => x.EFileId === this.EFileId);
       this.filepath = downloadEadcardFile[0].S3Path;
       const mediaType = this.fileType;
       const blob = new Blob([this.filepath], { type: mediaType });
       saveAs(blob, this.fileName);
-      err => {
+      (err) => {
         this.toaster.error('error occured');
       };
     } else if (this.fileType === 'travelDocument') {
-      let downloadTravelDoc = this.imgTravelDocFile.filter(x => x.EFileId === this.EFileId);
+      let downloadTravelDoc = this.imgTravelDocFile.filter((x) => x.EFileId === this.EFileId);
       this.filepath = downloadTravelDoc[0].S3Path;
       const mediaType = this.fileType;
       const blob = new Blob([this.filepath], { type: mediaType });
       saveAs(blob, this.fileName);
-      err => {
+      (err) => {
         this.toaster.error('error occured');
       };
     } else if (this.fileType === 'Education') {
-      let downloadEducationFile = this.getEduFiles.filter(x => x.EFileId === this.EFileId);
+      let downloadEducationFile = this.getEduFiles.filter((x) => x.EFileId === this.EFileId);
       this.filepath = downloadEducationFile[0].S3Path;
       const mediaType = this.fileType;
       const blob = new Blob([this.filepath], { type: mediaType });
       saveAs(blob, this.fileName);
-      err => {
+      (err) => {
         this.toaster.error('error occured');
       };
     } else if (this.fileType === 'POS') {
-      let downloadPosFile = this.getPosFiles.filter(x => x.EFileId === this.EFileId);
+      let downloadPosFile = this.getPosFiles.filter((x) => x.EFileId === this.EFileId);
       this.filepath = downloadPosFile[0].S3Path;
       const mediaType = this.fileType;
       const blob = new Blob([this.filepath], { type: mediaType });
       saveAs(blob, this.fileName);
-      err => {
+      (err) => {
         this.toaster.error('error occured');
       };
-    }
-    else {
-      let downloadImgDocFile = this.imgI94DocFile.filter(x => x.EFileId === this.EFileId);
+    } else {
+      let downloadImgDocFile = this.imgI94DocFile.filter((x) => x.EFileId === this.EFileId);
       this.filepath = downloadImgDocFile[0].S3Path;
       const mediaType = this.fileType;
       const blob = new Blob([this.filepath], { type: mediaType });
       saveAs(blob, this.fileName);
-      err => {
+      (err) => {
         this.toaster.error('error occured');
       };
     }
@@ -1297,16 +1300,24 @@ export class ClientCommonServiceService {
     // console.log(this.travelDocumentValidationRules.value.DatePassportOrTravelDocumentIssued);
     let dateOfTravelDocIssued = new Date(this.travelDocumentValidationRules.value.DatePassportOrTravelDocumentIssued);
     let dateOfTravelDocExpires = new Date(this.travelDocumentValidationRules.value.DatePassportOrTravelDocumentExpires);
-    dateOfTravelDocIssued.setFullYear(dateOfTravelDocIssued.getFullYear() + 100)
+    dateOfTravelDocIssued.setFullYear(dateOfTravelDocIssued.getFullYear() + 100);
     if (!(dateOfTravelDocIssued >= dateOfTravelDocExpires)) {
-      this.toaster.info("Date Passport Or Travel Document Expires not exceed 100 years of Date Passport Or Travel Document Issued");
-      return
+      this.toaster.info(
+        'Date Passport Or Travel Document Expires not exceed 100 years of Date Passport Or Travel Document Issued'
+      );
+      return;
     }
     let formattedDate = new Date(this.travelDocumentValidationRules.value.DatePassportOrTravelDocumentIssued);
-    this.travelDocumentValidationRules.value.DatePassportOrTravelDocumentIssued = formattedDate.toLocaleDateString("en-US", this.options);
+    this.travelDocumentValidationRules.value.DatePassportOrTravelDocumentIssued = formattedDate.toLocaleDateString(
+      'en-US',
+      this.options
+    );
     let formattedDate1 = new Date(this.travelDocumentValidationRules.value.DatePassportOrTravelDocumentExpires);
-    this.travelDocumentValidationRules.value.DatePassportOrTravelDocumentExpires = formattedDate1.toLocaleDateString("en-US", this.options);
-    this.travelDocumentValidationRules.value.LawOfficeClientId = sessionStorage.getItem('LawOfficeClientID')
+    this.travelDocumentValidationRules.value.DatePassportOrTravelDocumentExpires = formattedDate1.toLocaleDateString(
+      'en-US',
+      this.options
+    );
+    this.travelDocumentValidationRules.value.LawOfficeClientId = sessionStorage.getItem('LawOfficeClientID');
     this.spinner.show();
     this.clientService.saveImmigrationTravelDetails(this.travelDocumentValidationRules.value, this.token).subscribe(
       (res: any) => {
@@ -1320,7 +1331,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to set  contact information');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1328,7 +1339,7 @@ export class ClientCommonServiceService {
   getImgTravelDetails() {
     this.spinner.show();
     this.clientService.getImmigrationTravelDetails(this.token, sessionStorage.getItem('LawOfficeClientID')).subscribe(
-      res => {
+      (res) => {
         this.spinner.hide();
         if (res != null) {
           this.imgTravelDetail = res;
@@ -1341,7 +1352,7 @@ export class ClientCommonServiceService {
           }
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1367,7 +1378,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update education details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1383,7 +1394,7 @@ export class ClientCommonServiceService {
         } else {
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1406,7 +1417,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update education details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1422,7 +1433,7 @@ export class ClientCommonServiceService {
         } else {
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1434,32 +1445,33 @@ export class ClientCommonServiceService {
       this.pocObj.POCId = 0;
     }
     this.spinner.show();
-    this.clientService.pocInformation(sessionStorage.getItem('ClientOrganisationID'), this.pocObj, this.token).subscribe(
-      (res: any) => {
-        if (res.Status == 1) {
-          this.spinner.hide();
-          this.toaster.success('Your poc details updated successfully', 'Success');
-          this.getPocInfromation();
-          // this.emitPocInfoResponce.next(true);
-        } else if (res.Status == 0) {
-          this.toaster.error('Failed updated set poc information');
+    this.clientService
+      .pocInformation(sessionStorage.getItem('ClientOrganisationID'), this.pocObj, this.token)
+      .subscribe(
+        (res: any) => {
+          if (res.Status == 1) {
+            this.spinner.hide();
+            this.toaster.success('Your poc details updated successfully', 'Success');
+            this.getPocInfromation();
+            // this.emitPocInfoResponce.next(true);
+          } else if (res.Status == 0) {
+            this.toaster.error('Failed updated set poc information');
+          }
+        },
+        (err) => {
+          this.toaster.error('Error Occured');
         }
-      },
-      err => {
-        this.toaster.error('Error Occured');
-      }
-    );
+      );
   }
   getPocInfromation() {
     this.spinner.show();
-    this.clientService.getPoc(sessionStorage.getItem('ClientOrganisationID'), this.token).subscribe(res => {
+    this.clientService.getPoc(sessionStorage.getItem('ClientOrganisationID'), this.token).subscribe((res) => {
       this.spinner.hide();
       if (res != null) {
         this.pocObj = res;
         if (this.pocObj && Object.keys(this.pocObj).length) {
           this.pocValidated = true;
           this.showPocContactInfo = true;
-
         } else {
           this.showPocContactInfo = false;
         }
@@ -1491,7 +1503,7 @@ export class ClientCommonServiceService {
             this.toaster.error('Failed updated set poc information');
           }
         },
-        err => {
+        (err) => {
           this.toaster.error('Error Occured');
         }
       );
@@ -1500,21 +1512,23 @@ export class ClientCommonServiceService {
   //get authrized signatory info
   getauthSignatoryInformation() {
     this.spinner.show();
-    this.clientService.getauthSigntotaryInfo(sessionStorage.getItem('ClientOrganisationID'), this.token).subscribe(res => {
-      this.spinner.hide();
-      if (res != null) {
-        this.authSignatoryObj = res;
-        this.tempAuthSignatoryObj = res;
-        if (this.authSignatoryObj && Object.keys(this.authSignatoryObj).length) {
-          this.showAutoryhSigntContactInfo = true;
-        } else {
-          this.showAutoryhSigntContactInfo = false;
+    this.clientService
+      .getauthSigntotaryInfo(sessionStorage.getItem('ClientOrganisationID'), this.token)
+      .subscribe((res) => {
+        this.spinner.hide();
+        if (res != null) {
+          this.authSignatoryObj = res;
+          this.tempAuthSignatoryObj = res;
+          if (this.authSignatoryObj && Object.keys(this.authSignatoryObj).length) {
+            this.showAutoryhSigntContactInfo = true;
+          } else {
+            this.showAutoryhSigntContactInfo = false;
+          }
         }
-      }
-      err => {
-        this.toaster.error('Error Occured');
-      };
-    });
+        (err) => {
+          this.toaster.error('Error Occured');
+        };
+      });
   }
 
   sameeAsPOCAuthorizedSignatory(val) {
@@ -1568,7 +1582,7 @@ export class ClientCommonServiceService {
             this.toaster.error('Failed to set  contact information');
           }
         },
-        err => {
+        (err) => {
           this.toaster.error('Error Occured');
         }
       );
@@ -1608,7 +1622,7 @@ export class ClientCommonServiceService {
             this.toaster.error('Failed to set  contact information');
           }
         },
-        err => {
+        (err) => {
           this.toaster.error('Error Occured');
         }
       );
@@ -1638,7 +1652,7 @@ export class ClientCommonServiceService {
           this.isContactInfoShow = false;
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1652,7 +1666,7 @@ export class ClientCommonServiceService {
     this.spinner.show();
     (this.currentUsaAddreesValidationRules.value.AOPOBId =
       this.currentUsaAddreesValidationRules.value.AOPOBId != undefined &&
-        this.currentUsaAddreesValidationRules.value.AOPOBId != 0
+      this.currentUsaAddreesValidationRules.value.AOPOBId != 0
         ? this.currentUsaAddreesValidationRules.value.AOPOBId
         : 0),
       (this.currentUsaAddreesValidationRules.value.InUSA = true);
@@ -1683,7 +1697,7 @@ export class ClientCommonServiceService {
             this.toaster.error('Failed to set  contact information');
           }
         },
-        err => {
+        (err) => {
           this.toaster.error('Error Occured');
         }
       );
@@ -1711,34 +1725,36 @@ export class ClientCommonServiceService {
             // this.teamAddContactFormObj = JSON.parse(JSON.stringify(res));
           }
         },
-        err => {
+        (err) => {
           this.toaster.error('Error Occured');
         }
       );
   }
   getCurrentUsaAddress() {
     this.spinner.show();
-    this.clientService.getApplicantAddressAndContact(this.token, sessionStorage.getItem('LawOfficeClientID')).subscribe((res: any[]) => {
-      this.spinner.hide();
-      for (let i = 0; i < res.length; i++) {
-        if (res == null) {
-          this.isCurrentUsaAddress = false;
-        } else if (res && Object.keys(res).length && res[i].InUSA === true) {
-          this.currentUsaAddreesValidationRules.patchValue(res[i]);
-          if (this.currentUsaAddreesValidationRules.value.Apt == true) {
-            this.currentUsaAddreesValidationRules.get('aptSteFlr').patchValue('Apt');
-          } else if (this.currentUsaAddreesValidationRules.value.Ste == true) {
-            this.currentUsaAddreesValidationRules.get('aptSteFlr').patchValue('Ste');
-          } else if (this.currentUsaAddreesValidationRules.value.Flr == true) {
-            this.currentUsaAddreesValidationRules.get('aptSteFlr').patchValue('Flr');
+    this.clientService
+      .getApplicantAddressAndContact(this.token, sessionStorage.getItem('LawOfficeClientID'))
+      .subscribe((res: any[]) => {
+        this.spinner.hide();
+        for (let i = 0; i < res.length; i++) {
+          if (res == null) {
+            this.isCurrentUsaAddress = false;
+          } else if (res && Object.keys(res).length && res[i].InUSA === true) {
+            this.currentUsaAddreesValidationRules.patchValue(res[i]);
+            if (this.currentUsaAddreesValidationRules.value.Apt == true) {
+              this.currentUsaAddreesValidationRules.get('aptSteFlr').patchValue('Apt');
+            } else if (this.currentUsaAddreesValidationRules.value.Ste == true) {
+              this.currentUsaAddreesValidationRules.get('aptSteFlr').patchValue('Ste');
+            } else if (this.currentUsaAddreesValidationRules.value.Flr == true) {
+              this.currentUsaAddreesValidationRules.get('aptSteFlr').patchValue('Flr');
+            }
+            this.isCurrentUsaAddress = true;
           }
-          this.isCurrentUsaAddress = true;
+          (err) => {
+            this.toaster.error('Error Occured');
+          };
         }
-        err => {
-          this.toaster.error('Error Occured');
-        };
-      }
-    });
+      });
   }
 
   uploadPosDocumentFile($event) {
@@ -1749,7 +1765,7 @@ export class ClientCommonServiceService {
     }
     formdata.append('Type', 'POS');
     formdata.append('TypeId', $event.posId);
-    formdata.getAll('POS')
+    formdata.getAll('POS');
     this.clientService.uploadFile(formdata, this.token).subscribe(
       (res: any) => {
         this.spinner.hide();
@@ -1762,7 +1778,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update education details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1789,7 +1805,7 @@ export class ClientCommonServiceService {
         } else {
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1803,7 +1819,7 @@ export class ClientCommonServiceService {
     }
     formdata.append('Type', 'Education');
     formdata.append('TypeId', $event.educationDetailsId);
-    formdata.getAll('Education')
+    formdata.getAll('Education');
     this.clientService.uploadFile(formdata, this.token).subscribe(
       (res: any) => {
         this.spinner.hide();
@@ -1815,7 +1831,7 @@ export class ClientCommonServiceService {
           this.toaster.error('Failed to update education details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1841,7 +1857,7 @@ export class ClientCommonServiceService {
         } else {
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -1860,7 +1876,7 @@ export class ClientCommonServiceService {
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(100),
-        Validators.pattern('[a-zA-Z0-9]*$')
+        Validators.pattern('[a-zA-Z0-9]*$'),
       ]);
     } else {
       selectedroleControl.clearValidators();
@@ -1881,7 +1897,7 @@ export class ClientCommonServiceService {
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(100),
-        Validators.pattern('[a-zA-Z0-9]*$')
+        Validators.pattern('[a-zA-Z0-9]*$'),
       ]);
     } else {
       selectedroleControl.clearValidators();
@@ -1906,22 +1922,17 @@ export class ClientCommonServiceService {
     this.clientService.deleteApplicantEduInfo(this.eduInfoForDelete, this.token).subscribe(
       (res: any) => {
         deleteEduFiles.forEach(function (eduFileId) {
-          that.clientService.deleteFile(eduFileId.EFileId, that.token).subscribe(
-            (res: any) => {
-
-            }
-          )
+          that.clientService.deleteFile(eduFileId.EFileId, that.token).subscribe((res: any) => {});
         });
         this.spinner.hide();
         this.closeModal();
         this.toaster.info('Education info deleted successfully along with files');
         this.getEducationalnfo();
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
-
   }
   deletePosInfo() {
     this.spinner.show();
@@ -1938,18 +1949,14 @@ export class ClientCommonServiceService {
     this.clientService.deleteApplicantPosInfo(this.posInfoForDelete, this.token).subscribe(
       (res: any) => {
         deletePosFiles.forEach(function (eduFileId) {
-          that.clientService.deleteFile(eduFileId.EFileId, that.token).subscribe(
-            (res: any) => {
-
-            }
-          )
+          that.clientService.deleteFile(eduFileId.EFileId, that.token).subscribe((res: any) => {});
         });
         this.spinner.hide();
         this.closeModal();
         this.toaster.info('Period of stay info deleted successfully along with files');
         this.getPosInformation();
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );

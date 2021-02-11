@@ -309,7 +309,6 @@ export class ClientApplicantSponsorSignupComponent implements OnInit {
     this.fieldTextType = !this.fieldTextType;
   }
 
-
   // intialzing form
   buildForm() {
     this.signupform = this.fb.group({

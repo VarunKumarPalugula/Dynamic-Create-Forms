@@ -8,9 +8,8 @@ describe('DynModelComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DynModelComponent ]
-    })
-    .compileComponents();
+      declarations: [DynModelComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

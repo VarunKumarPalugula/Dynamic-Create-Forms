@@ -7,14 +7,13 @@ import { JsonSectionValidationService } from '@app/shared/service/json-section-v
 @Component({
   selector: 'app-parent-details-popup',
   templateUrl: './parent-details-popup.component.html',
-  styleUrls: ['./parent-details-popup.component.scss']
+  styleUrls: ['./parent-details-popup.component.scss'],
 })
 export class ParentDetailsPopupComponent implements OnInit {
   formErrors: any = {};
   @Output() emitCloseModel = new EventEmitter();
   @Input() isCard = false;
 
-  
   @Input() set data(value: any) {
     this.formGroupData();
     if (value) {
@@ -29,18 +28,18 @@ export class ParentDetailsPopupComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private commonService: CommonService,
     private dynamicValidationService: JsonSectionValidationService
-  ) { }
-
+  ) {}
 
   ngOnInit() {
-    this.parentDetailsForm.valueChanges.subscribe(
-      value => {
-          this.logValidationErrors()
-      }
-  );
+    this.parentDetailsForm.valueChanges.subscribe((value) => {
+      this.logValidationErrors();
+    });
   }
   logValidationErrors() {
-    this.formErrors = this.dynamicValidationService.getValidationErrors(this.parentDetailsForm, this.dynamicValidationService.validationMessages);
+    this.formErrors = this.dynamicValidationService.getValidationErrors(
+      this.parentDetailsForm,
+      this.dynamicValidationService.validationMessages
+    );
   }
   formGroupData() {
     this.parentDetailsForm = this.formBuilder.group({
@@ -65,21 +64,14 @@ export class ParentDetailsPopupComponent implements OnInit {
     return this.parentDetailsForm.get(contl).value;
   }
 
-
-
   save() {
     if (this.parentDetailsForm.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.parentDetailsForm.value)
-
+    this.emitCloseModel.emit(this.parentDetailsForm.value);
   }
-
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
+    this.emitCloseModel.emit(null);
   }
-
-
-
 }

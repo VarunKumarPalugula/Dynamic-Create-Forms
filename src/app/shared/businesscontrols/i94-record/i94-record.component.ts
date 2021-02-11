@@ -6,27 +6,20 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-i94-record',
   templateUrl: './i94-record.component.html',
-  styleUrls: ['./i94-record.component.scss']
+  styleUrls: ['./i94-record.component.scss'],
 })
 export class I94RecordComponent implements OnInit {
-
- 
   @Input() fields: any;
   @Input() applicantKey: any;
 
   addRecordModal: any;
   index = 0;
 
-
-
   priorSpouseDetailsArray: any;
   recordArray = [];
   maxRecord = 10;
 
-  constructor(public dialog: MatDialog,
-    public commonService: CommonService,
-    public modalService: NgbModal) {
-  }
+  constructor(public dialog: MatDialog, public commonService: CommonService, public modalService: NgbModal) {}
 
   ngOnInit(): void {
     if (this.finalObj() && Object.keys(this.finalObj()).length) {
@@ -37,19 +30,22 @@ export class I94RecordComponent implements OnInit {
     }
   }
 
-
-
   openRecordDetails(content, i) {
     this.index = i;
-    this.addRecordModal = this.modalService.open(content, { centered: false, keyboard: false, size: 'lg', backdrop: 'static' });
+    this.addRecordModal = this.modalService.open(content, {
+      centered: false,
+      keyboard: false,
+      size: 'lg',
+      backdrop: 'static',
+    });
   }
 
   closeModel(value, i) {
     if (value) {
       this.commonService.fileData[this.applicantKey]['Travel Details']['finalObj']['I94 Record'] = {
         ...this.commonService.fileData[this.applicantKey]['Travel Details']['finalObj']['I94 Record'],
-        [`I94Record${i}`]: value
-      }
+        [`I94Record${i}`]: value,
+      };
       this.commonService.fileData[this.applicantKey]['Travel Details'].readOnly = false;
     }
     if (this.addRecordModal != undefined) {
@@ -58,7 +54,9 @@ export class I94RecordComponent implements OnInit {
   }
 
   finalObj(i?) {
-    return i ? this.commonService.fileData[this.applicantKey]['Travel Details']['finalObj']['I94 Record'][`I94Record${i}`] : this.commonService.fileData[this.applicantKey]['Travel Details']['finalObj']['I94 Record'];
+    return i
+      ? this.commonService.fileData[this.applicantKey]['Travel Details']['finalObj']['I94 Record'][`I94Record${i}`]
+      : this.commonService.fileData[this.applicantKey]['Travel Details']['finalObj']['I94 Record'];
   }
 
   counter(i: number) {
@@ -70,9 +68,9 @@ export class I94RecordComponent implements OnInit {
   }
 
   deleteCard(key) {
-    delete this.commonService.fileData[this.applicantKey]['Travel Details']['finalObj']['I94 Record'][`I94Record${key}`];
+    delete this.commonService.fileData[this.applicantKey]['Travel Details']['finalObj']['I94 Record'][
+      `I94Record${key}`
+    ];
     this.commonService.fileData[this.applicantKey]['Travel Details'].readOnly = false;
   }
-
-
 }

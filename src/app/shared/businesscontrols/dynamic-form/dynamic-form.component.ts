@@ -191,12 +191,12 @@ export class DynamicFormComponent implements OnInit {
     if (this.thumbnail.length === this.pdfs.length) {
       let thunPdf = [];
       for (let p = 0; p < this.pdfs.length; p++) {
-        const pdf = this.thumbnail.find(res => res.img === this.pdfs[p]);
+        const pdf = this.thumbnail.find((res) => res.img === this.pdfs[p]);
         if (pdf) {
           thunPdf.push(pdf);
         }
       }
-      this.thumbnail = [ ...thunPdf];
+      this.thumbnail = [...thunPdf];
       // console.log(this.pdfs, this.thumbnail);
       this.spinner.hide();
       this.showPdfView = false;
@@ -204,7 +204,6 @@ export class DynamicFormComponent implements OnInit {
   }
 
   pageRendered(event) {
-
     if (this.inputLists[this.pagesNumber] != undefined) {
       if (this.inputLists[this.pagesNumber].list.length) {
         this.showData = true;
@@ -293,11 +292,12 @@ export class DynamicFormComponent implements OnInit {
     }
 
     if (input.type == 'radio') {
-      input.value = this.listObj[input.key] != null && this.listObj[input.key] != undefined ? this.listObj[input.key] : false;
+      input.value =
+        this.listObj[input.key] != null && this.listObj[input.key] != undefined ? this.listObj[input.key] : false;
     } else {
-      input.value = this.listObj[input.name] != null && this.listObj[input.name] != undefined ? this.listObj[input.name] : '';
+      input.value =
+        this.listObj[input.name] != null && this.listObj[input.name] != undefined ? this.listObj[input.name] : '';
     }
-
 
     this.inputList.push(input);
 
@@ -354,8 +354,8 @@ export class DynamicFormComponent implements OnInit {
   }
 
   setRadioValue(input, i) {
-    console.log(input, i, this.inputLists[this.pagesNumber].list)
-    this.inputLists[this.pagesNumber].list.map(element => {
+    console.log(input, i, this.inputLists[this.pagesNumber].list);
+    this.inputLists[this.pagesNumber].list.map((element) => {
       if (element.name == input.name) {
         if (element.key == input.key) {
           element.value = true;

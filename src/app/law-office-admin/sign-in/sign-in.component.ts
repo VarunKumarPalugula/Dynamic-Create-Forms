@@ -58,8 +58,6 @@ export class SignInComponent implements OnInit {
     private autoTimeService: AutotimeoutService
   ) {}
 
-
-
   @HostListener('window:popstate', ['$event'])
   onPopState(event) {
     this.route.navigateByUrl('/signin');
@@ -232,5 +230,4 @@ export class SignInComponent implements OnInit {
   toggleFieldTextType() {
     this.fieldTextType = !this.fieldTextType;
   }
-
 }

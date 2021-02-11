@@ -6,7 +6,7 @@ import { ApicallsService } from '@app/shared/service/apicalls.service';
 export class AdminClientService {
   constructor(private httpClient: HttpClient, private global: ApicallsService) {}
 
-  sendInvite(client: any, env:any) {
+  sendInvite(client: any, env: any) {
     return this.httpClient.post(this.global.clientInvitation + '?environment=' + env, client);
   }
 
@@ -33,7 +33,7 @@ export class AdminClientService {
     );
   }
 
-  resendAdminClientInvitation(orgID: any, DrBit: any, client: any, token: any, env:any) {
+  resendAdminClientInvitation(orgID: any, DrBit: any, client: any, token: any, env: any) {
     return this.httpClient.post(
       this.global.AdminClientResendInvitation + '?OrId=' + orgID + '&DRbit=' + DrBit + '?environment=' + env,
       client,

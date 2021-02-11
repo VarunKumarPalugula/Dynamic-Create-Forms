@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'applicant-education-details-card',
   templateUrl: './applicant-education-details-card.component.html',
-  styleUrls: ['./applicant-education-details-card.component.scss']
+  styleUrls: ['./applicant-education-details-card.component.scss'],
 })
 export class ApplicantEducationDetailsCardComponent implements OnInit {
   selectedEduFileToUpload: boolean = false;
@@ -42,14 +42,14 @@ export class ApplicantEducationDetailsCardComponent implements OnInit {
 
   educationDetailsId: any;
   loginUser: any;
-  constructor(private toaster: ToastrService) { }
+  constructor(private toaster: ToastrService) {}
 
   ngOnInit() {
     this.loginUser = sessionStorage.getItem('Login_User');
   }
 
   selectedEduFile(event, educationDetailsId) {
-    debugger
+    debugger;
     this.selectedFilesList = [];
     this.filesList = [];
     this.filesNames = [];
@@ -92,7 +92,7 @@ export class ApplicantEducationDetailsCardComponent implements OnInit {
     if (this.filesNames.length <= 0) {
       this.selectedEduFileToUpload = false;
     } else {
-      this.selectedEduFileToUpload = true
+      this.selectedEduFileToUpload = true;
     }
     this.selectedFilesList.splice(i, 1);
     for (let i = 0; i < this.selectedFilesList.length; i++) {
@@ -105,22 +105,25 @@ export class ApplicantEducationDetailsCardComponent implements OnInit {
     for (let i = 0; i < this.filesList.length; i++) {
       this.filesList[i] = this.selectedFilesList[i].file;
       if (
-        (this.filesList[i]['fileType'] == 'doc' ||this.filesList[i]['fileType'] == 'DOC' ||
-        this.filesList[i]['fileType'] == 'docx' ||  this.filesList[i]['fileType'] == 'DOCX' ||
-        this.filesList[i]['fileType'] == 'pdf' || this.filesList[i]['fileType'] == 'PDF' ||
-        this.filesList[i]['fileType'] == 'JPEG' ||
-        this.filesList[i]['fileType'] == 'jpeg' ||
-        this.filesList[i]['fileType'] == 'PNG' ||
-        this.filesList[i]['fileType'] == 'png' ||
-        this.filesList[i]['fileType'] == 'jpg' ||
-        this.filesList[i]['fileType'] == 'JPG')
-        && (!this.getEduFile.find((x => x.FileName === this.filesList[i].name)))
+        (this.filesList[i]['fileType'] == 'doc' ||
+          this.filesList[i]['fileType'] == 'DOC' ||
+          this.filesList[i]['fileType'] == 'docx' ||
+          this.filesList[i]['fileType'] == 'DOCX' ||
+          this.filesList[i]['fileType'] == 'pdf' ||
+          this.filesList[i]['fileType'] == 'PDF' ||
+          this.filesList[i]['fileType'] == 'JPEG' ||
+          this.filesList[i]['fileType'] == 'jpeg' ||
+          this.filesList[i]['fileType'] == 'PNG' ||
+          this.filesList[i]['fileType'] == 'png' ||
+          this.filesList[i]['fileType'] == 'jpg' ||
+          this.filesList[i]['fileType'] == 'JPG') &&
+        !this.getEduFile.find((x) => x.FileName === this.filesList[i].name)
       ) {
-        finalFiles.push(this.filesList[i])
+        finalFiles.push(this.filesList[i]);
       } else {
-        unSupportedFiles.push(this.filesList[i])
+        unSupportedFiles.push(this.filesList[i]);
       }
-    } 
+    }
     if (finalFiles.length != 0) {
       this.emitUploadEduTravelDocument.emit({ eduImages: finalFiles, educationDetailsId: this.educationDetailsId });
       this.emitUploadEduTravelDocument = null;
@@ -128,13 +131,16 @@ export class ApplicantEducationDetailsCardComponent implements OnInit {
       this.filesNames = [];
       this.allFiles = [];
     }
-    if(unSupportedFiles.length != 0) {
+    if (unSupportedFiles.length != 0) {
       let unSupportedFileNames = [];
       for (let i = 0; i < unSupportedFiles.length; i++) {
-        unSupportedFileNames.push(unSupportedFiles[i].name)
+        unSupportedFileNames.push(unSupportedFiles[i].name);
       }
-      this.toaster.warning(unSupportedFileNames + " This files are not supported to upload as educational document please upload pdf/images/docs/not exisisting files");
-    } 
+      this.toaster.warning(
+        unSupportedFileNames +
+          ' This files are not supported to upload as educational document please upload pdf/images/docs/not exisisting files'
+      );
+    }
   }
   deleteEduInfo(EducationDetailsId) {
     this.emitEduInfo.emit(EducationDetailsId);

@@ -5,13 +5,11 @@ import { CommonService } from '../../../../shared/service/common.service';
 @Component({
   selector: 'app-i94-record-popup',
   templateUrl: './i94-record-popup.component.html',
-  styleUrls: ['./i94-record-popup.component.css']
+  styleUrls: ['./i94-record-popup.component.css'],
 })
 export class I94RecordPopupComponent implements OnInit {
-
- 
   @Output() emitCloseModel = new EventEmitter();
-  
+
   @Input() isCard = false;
 
   @Input() set data(value: any) {
@@ -23,10 +21,7 @@ export class I94RecordPopupComponent implements OnInit {
 
   travelDocumentValidationRules: FormGroup;
 
-  constructor(
-    private readonly formBuilder: FormBuilder,
-    private commonService: CommonService
-  ) { }
+  constructor(private readonly formBuilder: FormBuilder, private commonService: CommonService) {}
 
   ngOnInit() {}
   formGroupData() {
@@ -35,7 +30,7 @@ export class I94RecordPopupComponent implements OnInit {
       DatePassportOrTravelDocumentIssued: [null],
       DatePassportOrTravelDocumentExpires: [null],
       PassportOrTravelDocumentCountryOfIssuance: [null],
-      ExpiryEmailRemainder: [null]
+      ExpiryEmailRemainder: [null],
     });
   }
 
@@ -47,11 +42,10 @@ export class I94RecordPopupComponent implements OnInit {
     if (this.travelDocumentValidationRules.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.travelDocumentValidationRules.value)
+    this.emitCloseModel.emit(this.travelDocumentValidationRules.value);
   }
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
+    this.emitCloseModel.emit(null);
   }
-
 }

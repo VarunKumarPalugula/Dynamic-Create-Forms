@@ -11,7 +11,7 @@ export class OrganizationCardComponent implements OnInit {
   @Output()
   changeOrgInformation = new EventEmitter();
   loginUser: any;
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.loginUser = sessionStorage.getItem('Login_User');

@@ -14,7 +14,7 @@ export class AddressCardComponent implements OnInit {
   @Output()
   emitChangeInfo = new EventEmitter();
   loginUser: any;
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.loginUser = sessionStorage.getItem('Login_User');

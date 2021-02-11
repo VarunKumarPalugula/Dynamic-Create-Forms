@@ -57,7 +57,7 @@ export class FolderComponent implements OnInit {
   allConections: boolean = false;
   searchele: any;
   folderName: any;
-  selectAll: boolean = false
+  selectAll: boolean = false;
   constructor(
     private filingService: FilingsService,
     private http: Http,
@@ -112,9 +112,6 @@ export class FolderComponent implements OnInit {
       .join('');
   }
 
-
-
-
   selectAllConnectionMembers(event: any, userType: number) {
     if (event.target.checked === true) {
       this.connectionData.forEach((element, index) => {
@@ -125,7 +122,6 @@ export class FolderComponent implements OnInit {
         this.connectionData[index].selected = false;
       });
     }
-
   }
 
   selectConnectionMembers(event: any, index: any) {
@@ -134,7 +130,7 @@ export class FolderComponent implements OnInit {
     } else {
       this.connectionData[index].selected = false;
     }
-    const selectedClient = this.connectionData.filter(i => i.selected == true);
+    const selectedClient = this.connectionData.filter((i) => i.selected == true);
     if (selectedClient.length == this.connectionData.length) {
       this.allConections = true;
     } else {
@@ -160,7 +156,7 @@ export class FolderComponent implements OnInit {
     } else {
       this.teamMembersList[index].selected = false;
     }
-    const selectedTeamList = this.teamMembersList.filter(i => i.selected == true);
+    const selectedTeamList = this.teamMembersList.filter((i) => i.selected == true);
     if (selectedTeamList.length == this.teamMembersList.length) {
       this.allTeam = true;
     } else {
@@ -169,9 +165,12 @@ export class FolderComponent implements OnInit {
   }
 
   Modelprivacy(data: any, fileName: string, fileId: any, fileinfo: any) {
-    if (!this.commonService.checkNullorUndefined(fileinfo.FileAccessClientMemberIds) && fileinfo.FileAccessClientMemberIds.length) {
-      fileinfo.FileAccessClientMemberIds.forEach(element => {
-        let index = this.teamMembersList.findIndex(c => c.LawOfficeClientID == element);
+    if (
+      !this.commonService.checkNullorUndefined(fileinfo.FileAccessClientMemberIds) &&
+      fileinfo.FileAccessClientMemberIds.length
+    ) {
+      fileinfo.FileAccessClientMemberIds.forEach((element) => {
+        let index = this.teamMembersList.findIndex((c) => c.LawOfficeClientID == element);
         if (index != -1) {
           this.teamMembersList[index].selected = true;
         }
@@ -180,9 +179,12 @@ export class FolderComponent implements OnInit {
         this.allTeam = true;
       }
     }
-    if (!this.commonService.checkNullorUndefined(fileinfo.FileAccesAdminMemeberIds) && fileinfo.FileAccesAdminMemeberIds.length) {
-      fileinfo.FileAccesAdminMemeberIds.forEach(element => {
-        let index = this.connectionData.findIndex(c => c.AdminID == element);
+    if (
+      !this.commonService.checkNullorUndefined(fileinfo.FileAccesAdminMemeberIds) &&
+      fileinfo.FileAccesAdminMemeberIds.length
+    ) {
+      fileinfo.FileAccesAdminMemeberIds.forEach((element) => {
+        let index = this.connectionData.findIndex((c) => c.AdminID == element);
         if (index != -1) {
           this.connectionData[index].selected = true;
         }
@@ -226,7 +228,7 @@ export class FolderComponent implements OnInit {
         this.toaster.info('Permissions updated to file');
         this.folderFilesList();
       },
-      (error) => { }
+      (error) => {}
     );
   }
   private selectedTeamMembers(index: any, CanViewUploadedFile) {
@@ -251,7 +253,6 @@ export class FolderComponent implements OnInit {
     });
   }
 
-
   adminTeamList() {
     const obj = {
       FilingId: sessionStorage.getItem('FillingId'),
@@ -261,7 +262,7 @@ export class FolderComponent implements OnInit {
       (res: any) => {
         this.connectionData = res;
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -340,10 +341,10 @@ export class FolderComponent implements OnInit {
   SelectedOptionalFiles(fileId: string, fileName: string, fileType: string, event: any) {
     if (event.target.checked === true) {
       this.selectedIds.push({ fileId: fileId, filename: fileName, fileType: fileType });
-    }else {
+    } else {
       const index = this.selectedIds.findIndex((file) => file.fileId === fileId);
       this.selectedIds.splice(index, 1);
-      this.selectAll = false
+      this.selectAll = false;
     }
   }
 
@@ -363,32 +364,32 @@ export class FolderComponent implements OnInit {
           }
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
   downloadMultipleFiles() {
-    let files = this.Files.filter(i => i.selected == true);
+    let files = this.Files.filter((i) => i.selected == true);
     if (files.length > 0) {
-        this.selectedIds = [];
-        for (let i = 0; i < files.length; i++) {
-          this.selectedIds.push({
-            fileId: files[i].FileId,
-            filename: files[i].FileName,
-            fileType: files[i].fileType,
-          });
-        }
+      this.selectedIds = [];
+      for (let i = 0; i < files.length; i++) {
+        this.selectedIds.push({
+          fileId: files[i].FileId,
+          filename: files[i].FileName,
+          fileType: files[i].fileType,
+        });
+      }
       for (let i = 0; i < this.selectedIds.length; i++) {
         this.clientfilingService.viewFile(this.orgId, this.filingId, this.selectedIds[i].fileId, this.token).subscribe(
           (res: any) => {
             this.DownloadSingleFile(res.Message, res.Message1);
             this.spinner.hide();
           },
-          (error) => { }
+          (error) => {}
         );
       }
     } else {
-      this.toaster.error('Please select atleast one file to download')
+      this.toaster.error('Please select atleast one file to download');
     }
   }
 
@@ -440,7 +441,7 @@ export class FolderComponent implements OnInit {
           for (let i = 0; i < this.Files.length; i++) {
             this.Files[i].selected = false;
           }
-          this.selectAll = false
+          this.selectAll = false;
         },
         (err) => {
           this.toaster.error('error occured');
@@ -463,7 +464,7 @@ export class FolderComponent implements OnInit {
         this.spinner.hide();
         // this.DownloadSingleFile(res.Message, res.Message1);
       },
-      (error) => { }
+      (error) => {}
     );
   }
   backToFiles() {
@@ -559,7 +560,7 @@ export class FolderComponent implements OnInit {
           this.PrintSingleFile(res.Message);
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -638,5 +639,4 @@ export class FolderComponent implements OnInit {
       }
     );
   }
-
 }

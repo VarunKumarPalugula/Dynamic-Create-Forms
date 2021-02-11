@@ -1,31 +1,26 @@
 .current__spouse__header {
-    height: 10px;
+  height: 10px;
 }
 
-
 .popup-class {
-    & mat-form-field {
-      margin: 5px;
-      flex: 0 0 24%;
-    }
-    & mat-card-title {
-      min-height: 35px;
-      height: 35px;
-      z-index: 1000;
-      font-size: 20px;    
-    }
-    & mat-card-content {
-      max-height: 400px;
-    }
+  & mat-form-field {
+    margin: 5px;
+    flex: 0 0 24%;
   }
-
-
-  .boader--color {
-    padding: .30rem 1.25rem;
-    margin-bottom: 0;
-    background-color: #80808029;
-    color: white;
+  & mat-card-title {
+    min-height: 35px;
+    height: 35px;
+    z-index: 1000;
+    font-size: 20px;
   }
-  
+  & mat-card-content {
+    max-height: 400px;
+  }
+}
 
- 
+.boader--color {
+  padding: 0.3rem 1.25rem;
+  margin-bottom: 0;
+  background-color: #80808029;
+  color: white;
+}

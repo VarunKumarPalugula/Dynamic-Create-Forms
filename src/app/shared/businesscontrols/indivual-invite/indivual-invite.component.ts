@@ -86,7 +86,7 @@ export class IndivualInviteComponent implements OnInit {
     }
     this.data.OrgId = sessionStorage.getItem('OrganisationID');
     this.invity.push(this.data);
-    this.adminService.sendInvite(this.invity,this.commonService.getEnvDetails()).subscribe(
+    this.adminService.sendInvite(this.invity, this.commonService.getEnvDetails()).subscribe(
       (data: any) => {
         this.spinner.hide();
         this.inviationResponse = data;

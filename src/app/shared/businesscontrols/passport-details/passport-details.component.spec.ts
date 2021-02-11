@@ -8,9 +8,8 @@ describe('PassportDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PassportDetailsComponent ]
-    })
-    .compileComponents();
+      declarations: [PassportDetailsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

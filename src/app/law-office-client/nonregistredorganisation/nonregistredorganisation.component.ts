@@ -37,7 +37,7 @@ export class NonregistredorganisationComponent implements OnInit {
     private Valid: ValidationService,
     private spinner: NgxSpinnerService,
     private toaster: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.CheckEmailExistency();
@@ -126,7 +126,7 @@ export class NonregistredorganisationComponent implements OnInit {
           this.commonservice.emailMessage(this.admin.Email);
           sessionStorage.setItem('tempEmailRole', '0');
           this.route.navigate(['/emailverify']);
-        }else if (res.Status === 0) {
+        } else if (res.Status === 0) {
           this.toaster.error(res.Message);
         }
       },
@@ -203,7 +203,7 @@ export class NonregistredorganisationComponent implements OnInit {
       UserName: this.Valid.validateform.UserName,
       Mobile: this.Valid.validateform.MobileNumber,
       Email: this.Valid.validateform.Email,
-      Password: this.Valid.validateform.Password
+      Password: this.Valid.validateform.Password,
     });
   }
 }

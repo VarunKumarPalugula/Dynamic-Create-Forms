@@ -87,6 +87,7 @@ import { I94RecordComponent } from './businesscontrols/i94-record/i94-record.com
 import { I94RecordPopupComponent } from './businesscontrols/i94-record/i94-record-popup/i94-record-popup.component';
 import { TravelDocumentDetailsPopupComponent } from './businesscontrols/travel-document-details/travel-document-details-popup/travel-document-details-popup.component';
 import { PassportDetailsPopupComponent } from './businesscontrols/passport-details/passport-details-popup/passport-details-popup.component';
+import { FileUploadComponent } from './businesscontrols/file-upload/file-upload.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -102,7 +103,7 @@ import { PassportDetailsPopupComponent } from './businesscontrols/passport-detai
     MatTabsModule,
     MatDialogModule,
     BsDatepickerModule.forRoot(),
-    SignalRModule.forRoot(createConfig)
+    SignalRModule.forRoot(createConfig),
   ],
   declarations: [
     ForgotpasswordComponent,
@@ -177,6 +178,7 @@ import { PassportDetailsPopupComponent } from './businesscontrols/passport-detai
     I94RecordPopupComponent,
     TravelDocumentDetailsPopupComponent,
     PassportDetailsPopupComponent,
+    FileUploadComponent,
   ],
   exports: [
     ForgotpasswordComponent,
@@ -235,15 +237,14 @@ import { PassportDetailsPopupComponent } from './businesscontrols/passport-detai
   providers: [
     {
       provide: MatDialogRef,
-      useValue: {}
+      useValue: {},
     },
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class SharedModule { }
+export class SharedModule {}
 // >= v2.0.0
 export function createConfig(): SignalRConfiguration {
-
   const c = new SignalRConfiguration();
   c.hubName = 'chatHub';
   //c.qs = { user: 'donald' };

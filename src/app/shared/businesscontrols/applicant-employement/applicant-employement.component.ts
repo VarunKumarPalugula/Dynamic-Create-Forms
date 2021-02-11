@@ -16,7 +16,7 @@ export class ApplicantEmployementComponent implements OnInit {
   @Input()
   isShowEadCard = true;
 
-  resumeFileToUpload: any
+  resumeFileToUpload: any;
   recentw2sFileToUpload: boolean = false;
   selectedFilesList: any = [];
   filesList: any = [];
@@ -55,8 +55,8 @@ export class ApplicantEmployementComponent implements OnInit {
   emitPrintFile = new EventEmitter();
   @Output()
   emitDeleteFile = new EventEmitter();
-  loginUser: any
-  constructor(private toaster: ToastrService) { }
+  loginUser: any;
+  constructor(private toaster: ToastrService) {}
 
   ngOnInit() {
     this.loginUser = sessionStorage.getItem('Login_User');
@@ -127,9 +127,12 @@ export class ApplicantEmployementComponent implements OnInit {
   }
   uploadResume() {
     if (
-      this.resumeFileToUpload.fileType == 'pdf' || this.resumeFileToUpload.fileType == 'PDF' ||
-      this.resumeFileToUpload.fileType == 'doc' || this.resumeFileToUpload.fileType == 'DOC' ||
-      this.resumeFileToUpload.fileType == 'docx' || this.resumeFileToUpload.fileType == 'DOCX'
+      this.resumeFileToUpload.fileType == 'pdf' ||
+      this.resumeFileToUpload.fileType == 'PDF' ||
+      this.resumeFileToUpload.fileType == 'doc' ||
+      this.resumeFileToUpload.fileType == 'DOC' ||
+      this.resumeFileToUpload.fileType == 'docx' ||
+      this.resumeFileToUpload.fileType == 'DOCX'
     ) {
       this.emitUploadResumeFile.emit(this.resumeFileToUpload);
       this.resumeFileToUpload = null;
@@ -146,19 +149,23 @@ export class ApplicantEmployementComponent implements OnInit {
     for (let i = 0; i < this.filesList.length; i++) {
       this.filesList[i] = this.selectedFilesList[i].file;
       if (
-        (this.filesList[i]['fileType'] == 'doc' || this.filesList[i]['fileType'] == 'DOC' || 
-        this.filesList[i]['fileType'] == 'docx' || this.filesList[i]['fileType'] == 'DOCX' ||
-        this.filesList[i]['fileType'] == 'pdf' || this.filesList[i]['fileType'] == 'PDF' ||
-        this.filesList[i]['fileType'] == 'JPEG' ||
-        this.filesList[i]['fileType'] == 'jpeg' ||
-        this.filesList[i]['fileType'] == 'PNG' ||
-        this.filesList[i]['fileType'] == 'png' ||
-        this.filesList[i]['fileType'] == 'jpg' ||
-        this.filesList[i]['fileType'] == 'JPG') && (!this.getRecentw2s.find((x => x.FileName === this.filesList[i].name)))
+        (this.filesList[i]['fileType'] == 'doc' ||
+          this.filesList[i]['fileType'] == 'DOC' ||
+          this.filesList[i]['fileType'] == 'docx' ||
+          this.filesList[i]['fileType'] == 'DOCX' ||
+          this.filesList[i]['fileType'] == 'pdf' ||
+          this.filesList[i]['fileType'] == 'PDF' ||
+          this.filesList[i]['fileType'] == 'JPEG' ||
+          this.filesList[i]['fileType'] == 'jpeg' ||
+          this.filesList[i]['fileType'] == 'PNG' ||
+          this.filesList[i]['fileType'] == 'png' ||
+          this.filesList[i]['fileType'] == 'jpg' ||
+          this.filesList[i]['fileType'] == 'JPG') &&
+        !this.getRecentw2s.find((x) => x.FileName === this.filesList[i].name)
       ) {
-        finalRecentw2sFiles.push(this.filesList[i])
+        finalRecentw2sFiles.push(this.filesList[i]);
       } else {
-        unSupportedRecentw2sFiles.push(this.filesList[i])
+        unSupportedRecentw2sFiles.push(this.filesList[i]);
       }
     }
     if (finalRecentw2sFiles.length != 0) {
@@ -171,9 +178,14 @@ export class ApplicantEmployementComponent implements OnInit {
     if (unSupportedRecentw2sFiles.length != 0) {
       let unSupportedRecentw2sFileNames = [];
       for (let i = 0; i < unSupportedRecentw2sFiles.length; i++) {
-        unSupportedRecentw2sFileNames.push(unSupportedRecentw2sFiles[i].name)
+        unSupportedRecentw2sFileNames.push(unSupportedRecentw2sFiles[i].name);
       }
-      this.toaster.warning(unSupportedRecentw2sFileNames + " This files are not supported to upload as Recent w2s please upload pdf/images/docs/not exisisting files", '', { timeOut: 10000 });
+      this.toaster.warning(
+        unSupportedRecentw2sFileNames +
+          ' This files are not supported to upload as Recent w2s please upload pdf/images/docs/not exisisting files',
+        '',
+        { timeOut: 10000 }
+      );
     }
   }
   removeSelectedRecentw2s(i) {
@@ -183,7 +195,7 @@ export class ApplicantEmployementComponent implements OnInit {
     if (this.filesNames.length <= 0) {
       this.recentw2sFileToUpload = false;
     } else {
-      this.recentw2sFileToUpload = true
+      this.recentw2sFileToUpload = true;
     }
     this.selectedFilesList.splice(i, 1);
     for (let i = 0; i < this.selectedFilesList.length; i++) {
@@ -195,19 +207,24 @@ export class ApplicantEmployementComponent implements OnInit {
     let unSupportedRecentPayStubsFiles = [];
     for (let i = 0; i < this.filesList.length; i++) {
       this.filesList[i] = this.selectedFilesList[i].file;
-      if ((this.filesList[i]['fileType'] == 'doc' || this.filesList[i]['fileType'] == 'DOC' || 
-      this.filesList[i]['fileType'] == 'docx' || this.filesList[i]['fileType'] == 'DOCX' ||
-        this.filesList[i]['fileType'] == 'pdf' || this.filesList[i]['fileType'] == 'PDF' ||
-        this.filesList[i]['fileType'] == 'JPEG' ||
-        this.filesList[i]['fileType'] == 'jpeg' ||
-        this.filesList[i]['fileType'] == 'PNG' ||
-        this.filesList[i]['fileType'] == 'png' ||
-        this.filesList[i]['fileType'] == 'jpg' ||
-        this.filesList[i]['fileType'] == 'JPG') && (!this.getRecentPaystubfiles.find((x => x.FileName === this.filesList[i].name)))
+      if (
+        (this.filesList[i]['fileType'] == 'doc' ||
+          this.filesList[i]['fileType'] == 'DOC' ||
+          this.filesList[i]['fileType'] == 'docx' ||
+          this.filesList[i]['fileType'] == 'DOCX' ||
+          this.filesList[i]['fileType'] == 'pdf' ||
+          this.filesList[i]['fileType'] == 'PDF' ||
+          this.filesList[i]['fileType'] == 'JPEG' ||
+          this.filesList[i]['fileType'] == 'jpeg' ||
+          this.filesList[i]['fileType'] == 'PNG' ||
+          this.filesList[i]['fileType'] == 'png' ||
+          this.filesList[i]['fileType'] == 'jpg' ||
+          this.filesList[i]['fileType'] == 'JPG') &&
+        !this.getRecentPaystubfiles.find((x) => x.FileName === this.filesList[i].name)
       ) {
-        finalRecentPayStubsFiles.push(this.filesList[i])
+        finalRecentPayStubsFiles.push(this.filesList[i]);
       } else {
-        unSupportedRecentPayStubsFiles.push(this.filesList[i])
+        unSupportedRecentPayStubsFiles.push(this.filesList[i]);
       }
     }
     if (finalRecentPayStubsFiles.length != 0) {
@@ -220,9 +237,14 @@ export class ApplicantEmployementComponent implements OnInit {
     if (unSupportedRecentPayStubsFiles.length != 0) {
       let unSupportedRecentPayStubsFileNames = [];
       for (let i = 0; i < unSupportedRecentPayStubsFiles.length; i++) {
-        unSupportedRecentPayStubsFileNames.push(unSupportedRecentPayStubsFiles[i].name)
+        unSupportedRecentPayStubsFileNames.push(unSupportedRecentPayStubsFiles[i].name);
       }
-      this.toaster.warning(unSupportedRecentPayStubsFileNames + " This files are not supported to upload as Recent w2s document please upload pdf/images/docs/not exisisting files", '', { timeOut: 10000 });
+      this.toaster.warning(
+        unSupportedRecentPayStubsFileNames +
+          ' This files are not supported to upload as Recent w2s document please upload pdf/images/docs/not exisisting files',
+        '',
+        { timeOut: 10000 }
+      );
     }
   }
   removeSelected3RecentPaystubs(i: any) {
@@ -233,7 +255,7 @@ export class ApplicantEmployementComponent implements OnInit {
     if (this.filesNames.length <= 0) {
       this.paystubsFileInfo = false;
     } else {
-      this.paystubsFileInfo = true
+      this.paystubsFileInfo = true;
     }
     this.selectedFilesList.splice(i, 1);
     for (let i = 0; i < this.selectedFilesList.length; i++) {
@@ -245,19 +267,24 @@ export class ApplicantEmployementComponent implements OnInit {
     let unSupportedEadcardFiles = [];
     for (let i = 0; i < this.filesList.length; i++) {
       this.filesList[i] = this.selectedFilesList[i].file;
-      if ((this.filesList[i]['fileType'] == 'doc' || this.filesList[i]['fileType'] == 'DOC' || 
-        this.filesList[i]['fileType'] == 'docx' || this.filesList[i]['fileType'] == 'DOCX' ||
-        this.filesList[i]['fileType'] == 'pdf' || this.filesList[i]['fileType'] == 'PDF' ||
-        this.filesList[i]['fileType'] == 'JPEG' ||
-        this.filesList[i]['fileType'] == 'jpeg' ||
-        this.filesList[i]['fileType'] == 'PNG' ||
-        this.filesList[i]['fileType'] == 'png' ||
-        this.filesList[i]['fileType'] == 'jpg' ||
-        this.filesList[i]['fileType'] == 'JPG') && (!this.getEadCardFile.find((x => x.FileName === this.filesList[i].name)))
+      if (
+        (this.filesList[i]['fileType'] == 'doc' ||
+          this.filesList[i]['fileType'] == 'DOC' ||
+          this.filesList[i]['fileType'] == 'docx' ||
+          this.filesList[i]['fileType'] == 'DOCX' ||
+          this.filesList[i]['fileType'] == 'pdf' ||
+          this.filesList[i]['fileType'] == 'PDF' ||
+          this.filesList[i]['fileType'] == 'JPEG' ||
+          this.filesList[i]['fileType'] == 'jpeg' ||
+          this.filesList[i]['fileType'] == 'PNG' ||
+          this.filesList[i]['fileType'] == 'png' ||
+          this.filesList[i]['fileType'] == 'jpg' ||
+          this.filesList[i]['fileType'] == 'JPG') &&
+        !this.getEadCardFile.find((x) => x.FileName === this.filesList[i].name)
       ) {
-        finalEadcardFiles.push(this.filesList[i])
+        finalEadcardFiles.push(this.filesList[i]);
       } else {
-        unSupportedEadcardFiles.push(this.filesList[i])
+        unSupportedEadcardFiles.push(this.filesList[i]);
       }
     }
     if (finalEadcardFiles.length != 0) {
@@ -270,9 +297,14 @@ export class ApplicantEmployementComponent implements OnInit {
     if (unSupportedEadcardFiles.length != 0) {
       let unSupportedEadcardFileNames = [];
       for (let i = 0; i < unSupportedEadcardFiles.length; i++) {
-        unSupportedEadcardFileNames.push(unSupportedEadcardFiles[i].name)
+        unSupportedEadcardFileNames.push(unSupportedEadcardFiles[i].name);
       }
-      this.toaster.warning(unSupportedEadcardFileNames + " This files are not supported to upload as eadcard please upload pdf/images/docs/not exisisting files", '', { timeOut: 10000 });
+      this.toaster.warning(
+        unSupportedEadcardFileNames +
+          ' This files are not supported to upload as eadcard please upload pdf/images/docs/not exisisting files',
+        '',
+        { timeOut: 10000 }
+      );
     }
   }
   removeSelectedEadCard(i: any) {
@@ -282,7 +314,7 @@ export class ApplicantEmployementComponent implements OnInit {
     if (this.filesNames.length <= 0) {
       this.eadCardToUpload = false;
     } else {
-      this.eadCardToUpload = true
+      this.eadCardToUpload = true;
     }
     this.selectedFilesList.splice(i, 1);
     for (let i = 0; i < this.selectedFilesList.length; i++) {

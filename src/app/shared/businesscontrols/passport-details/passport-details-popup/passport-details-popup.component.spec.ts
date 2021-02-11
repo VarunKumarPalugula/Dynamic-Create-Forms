@@ -8,9 +8,8 @@ describe('PassportDetailsPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PassportDetailsPopupComponent ]
-    })
-    .compileComponents();
+      declarations: [PassportDetailsPopupComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

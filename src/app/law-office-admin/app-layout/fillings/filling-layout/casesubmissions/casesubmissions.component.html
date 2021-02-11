@@ -58,7 +58,7 @@
   <form [formGroup]="caseSubmissionForm">
     <div class="gl-modal-header p-20 bg-model text-white text-align">
       <span class="fs-16 mb-0 d-ib">{{caseActionTitle}} Case</span>
-      <span class="modal-close close" (click)="closeConfirmDelete()">
+      <span class="modal-close close" ngbAutofocus (click)="closeConfirmDelete()">
         <i class="fa fa-times text-white" aria-hidden="true"></i>
       </span>
     </div>
@@ -112,7 +112,7 @@
 
 <ng-template #deleteCaseSection let-d="dismiss" id="deleteCaseSection">
     <div class="lo-modal--header p-20">
-      <span class="modal-close close" (click)="closeConfirmArchive()">
+      <span class="modal-close close" ngbAutofocus (click)="closeConfirmArchive()">
         <i class="fa fa-times" aria-hidden="true"></i>
       </span>
     </div>
@@ -136,7 +136,7 @@
   <ng-template #caseSubmissionPrivacy let-d="dismiss" id="caseSubmissionPrivacy">
     <div class="gl-modal-header p-20 text-align">
       <span class="fs-16 mb-0 d-ib">Case submission privacy </span>
-      <span class="modal-close close" (click)="closeCSPrivacyModal()">
+      <span class="modal-close close" ngbAutofocus (click)="closeCSPrivacyModal()">
         <i class="fa fa-times" aria-hidden="true"></i>
       </span>
     </div>

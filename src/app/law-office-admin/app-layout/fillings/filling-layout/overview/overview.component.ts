@@ -10,6 +10,7 @@ import { AdminClientService } from '@app/law-office-admin/app-layout/clients/cli
 import { CommonService } from '@app/shared/service/common.service';
 import { ValidationService } from '@app/shared/service/validation.service';
 import { Subscription } from 'rxjs';
+import { JoyrideService } from 'ngx-joyride';
 
 @Component({
   selector: 'app-overview',
@@ -17,7 +18,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./overview.component.scss'],
 })
 export class OverviewComponent implements OnInit {
-
   applicantdetails: any = {};
   sponserdetails: any = {};
   fillingDetails: any = {};
@@ -81,7 +81,7 @@ export class OverviewComponent implements OnInit {
     private clientService: AdminClientService,
     private commonService: CommonService,
     private Valid: ValidationService,
-
+    private readonly joyrideService: JoyrideService
   ) {
     this.filingName = sessionStorage.getItem('FName');
     this.emitGetUITemplateResults = this.commonService.emitGetUITemplateResults.subscribe((res) => {
@@ -89,7 +89,6 @@ export class OverviewComponent implements OnInit {
         this.templateList = res['Templates'];
       }
     });
-
   }
 
   ngOnInit() {
@@ -119,9 +118,29 @@ export class OverviewComponent implements OnInit {
     this.checkFilingName();
     this.fillingformvalidation();
     this.GetFillingTypes();
-    if (this.filingName == 'InComplete' && this.IsClientInitiated) {
-      this.commonService.getFilingTemplates(this.selectedFillingType = 'H1', sessionStorage.getItem('LoguserId'), sessionStorage.getItem('OrganisationID'));
-    }
+
+    // if (this.filingName == 'InComplete' && this.IsClientInitiated) {
+    //   this.commonService.getFilingTemplates(this.selectedFillingType = 'H1', sessionStorage.getItem('LoguserId'), sessionStorage.getItem('OrganisationID'));
+    // }
+    // if (confirm('Do you want tour of this section')) {
+    //   this.tour()
+    // } else {
+
+    // }
+  }
+
+  tour() {
+    console.log('heyCame');
+    this.joyrideService.startTour({
+      steps: [
+        'firstStepApplicantSection',
+        'secondStepSponserSection',
+        'thirdStepActivitySection',
+        'fourthStepNotesSection',
+        'fifthStepTrackingSection',
+        'sixthStepFilingStatus',
+      ],
+    });
   }
 
   shipInfo() {
@@ -130,6 +149,7 @@ export class OverviewComponent implements OnInit {
       Shipmentnumber: this.Valid.validateform.Required,
     });
   }
+
   fillingformvalidation() {
     this.fliingForm = this.fb.group({
       fillingdate: this.Valid.validateform.Required,
@@ -151,7 +171,7 @@ export class OverviewComponent implements OnInit {
           sessionStorage.setItem('LawOfficeClientID', this.applicantdetails.LawOfficeClientID);
         }
       },
-      (err) => { }
+      (err) => {}
     );
   }
   //relatedfillings
@@ -275,7 +295,6 @@ export class OverviewComponent implements OnInit {
     );
   }
 
-
   toggler(ev: any, id: any) {
     id = 'togg' + id;
     document.getElementById(id).classList.toggle('d-n');
@@ -295,7 +314,7 @@ export class OverviewComponent implements OnInit {
     );
   }
 
-  selectFillingType(event: any) { }
+  selectFillingType(event: any) {}
 
   checkFilingName() {
     if (this.filingName == 'InComplete') {
@@ -306,19 +325,18 @@ export class OverviewComponent implements OnInit {
   }
 
   approveFiling() {
-    
     const reqObj = {
-      "Templates": this.templateList.filter(res => res.DisplayTemplateTitle == this.selectedTemplate),
-      "OrgID": this.orgId,
-      "FilingId": this.filingId
-    }
+      Templates: this.templateList.filter((res) => res.DisplayTemplateTitle == this.selectedTemplate),
+      OrgID: this.orgId,
+      FilingId: this.filingId,
+    };
     this.filingService.ApproveFiling(reqObj).subscribe(
       (res: any) => {
         this.toaster.success('Filling approved successfully.');
         this.closeModal();
         this.GetFiledFilings();
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -350,13 +368,13 @@ export class OverviewComponent implements OnInit {
         this.filingService.filingName = this.filingName;
         this.checkFilingName();
       },
-      (err) => { }
+      (err) => {}
     );
   }
 
   approveModel(approve: any) {
     if (!this.selectedTemplate) {
-      this.toaster.error('Please select template before creating filing')
+      this.toaster.error('Please select template before creating filing');
       return;
     }
     this.modelApprove = this.modalService.open(approve, { centered: true });
@@ -365,8 +383,6 @@ export class OverviewComponent implements OnInit {
   Viewlcanumber() {
     window.open('https://icert.doleta.gov/', '_blank');
   }
-
-
 
   //adminClientsList
   adminClientsList() {
@@ -381,7 +397,6 @@ export class OverviewComponent implements OnInit {
     );
   }
 
-
   getFilingClientTeammembers() {
     let teamobj = {
       FilingId: sessionStorage.getItem('FillingId'),
@@ -390,17 +405,19 @@ export class OverviewComponent implements OnInit {
     this.adminService.GetFilingClientTeammembers(teamobj).subscribe(
       (res: any[]) => {
         if (res != null && res != undefined) {
-          let businessClient: any = res.find((r) => r.Status == true && r.Role == 'Business Client')
+          let businessClient: any = res.find((r) => r.Status == true && r.Role == 'Business Client');
           if (!this.commonService.checkNullorUndefined(businessClient)) {
             sessionStorage.setItem('ClientOrganisationID', businessClient.ClientOrgId);
           } else {
-            let businessClient: any = res.find((r) => r.Status == true && r.Role == 'Sponserer')
-            let isClient = this.adminClientsListData.find(c => c.SetType == 1 && c.UserName == businessClient.UserName);
+            let businessClient: any = res.find((r) => r.Status == true && r.Role == 'Sponserer');
+            let isClient = this.adminClientsListData.find(
+              (c) => c.SetType == 1 && c.UserName == businessClient.UserName
+            );
             if (!this.commonService.checkNullorUndefined(isClient)) {
               sessionStorage.setItem('ClientOrganisationID', businessClient.ClientOrgId);
             }
           }
-          let applicant: any = res.find((r) => r.Status == true && r.Role == 'Applicant')
+          let applicant: any = res.find((r) => r.Status == true && r.Role == 'Applicant');
           if (!this.commonService.checkNullorUndefined(applicant)) {
             sessionStorage.setItem('LawOfficeClientID', applicant.LawOfficeClientID);
           }
@@ -435,12 +452,6 @@ export class OverviewComponent implements OnInit {
       this.notesview = 'View All';
     }
   }
-
-
-
-
-
-
 
   clearShipTracking() {
     this.Shipmentnumber = '';
@@ -512,7 +523,6 @@ export class OverviewComponent implements OnInit {
       }
     );
   }
-
 
   ModelviewFiling(data: any) {
     this.viewFilingsModel = this.modalService.open(data, { centered: true, size: 'lg' });
@@ -635,8 +645,6 @@ export class OverviewComponent implements OnInit {
     this.trackModel = this.modalService.open(track, { centered: true });
   }
 
-
-
   DeleteShippopup(shipment, deleteshipmentPopUp) {
     this.DeleteShipmentnumber = shipment.TrackingNumber;
     this.ShimentModel = this.modalService.open(deleteshipmentPopUp, { centered: true });
@@ -663,6 +671,5 @@ export class OverviewComponent implements OnInit {
     this.modalService.dismissAll();
     this.emitGetUITemplateResults.unsubscribe();
     this.commonService.clearCommonEmitters();
-
   }
 }

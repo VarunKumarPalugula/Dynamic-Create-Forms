@@ -8,9 +8,8 @@ describe('DyamicLayoutComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DyamicLayoutComponent ]
-    })
-    .compileComponents();
+      declarations: [DyamicLayoutComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

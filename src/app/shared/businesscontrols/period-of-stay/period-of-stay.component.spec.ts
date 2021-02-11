@@ -8,9 +8,8 @@ describe('PeriodOfStayComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PeriodOfStayComponent ]
-    })
-    .compileComponents();
+      declarations: [PeriodOfStayComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

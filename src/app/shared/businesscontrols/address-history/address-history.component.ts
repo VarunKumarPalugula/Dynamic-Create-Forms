@@ -5,12 +5,11 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'app-address-history',
   templateUrl: './address-history.component.html',
-  styleUrls: ['./address-history.component.scss']
+  styleUrls: ['./address-history.component.scss'],
 })
 export class AddressHistoryComponent implements OnInit {
-
   @Input() applicantKey: any;
-  
+
   addrModal: any;
   selectedAddr: any;
 
@@ -21,10 +20,7 @@ export class AddressHistoryComponent implements OnInit {
   addrOptions = [];
   selectAddrOption: string;
 
-  constructor(
-    public commonService: CommonService,
-    public modalService: NgbModal) {
-  }
+  constructor(public commonService: CommonService, public modalService: NgbModal) {}
 
   ngOnInit(): void {
     if (this.finalObj() && Object.keys(this.finalObj()).length) {
@@ -39,19 +35,22 @@ export class AddressHistoryComponent implements OnInit {
 
   setAddrOpions() {
     this.addrOptions = [];
-    Object.keys(this.finalObj()).forEach(ele => ele != 'addroutsideUSA' ? this.addrOptions.push(ele) : null);
+    Object.keys(this.finalObj()).forEach((ele) => (ele != 'addroutsideUSA' ? this.addrOptions.push(ele) : null));
   }
 
-
   finalObj(key?) {
-    return key ? this.commonService.fileData[this.applicantKey]['Address History']['finalObj'][`addr${key}`] : this.commonService.fileData[this.applicantKey]['Address History']['finalObj'];
+    return key
+      ? this.commonService.fileData[this.applicantKey]['Address History']['finalObj'][`addr${key}`]
+      : this.commonService.fileData[this.applicantKey]['Address History']['finalObj'];
   }
 
   selAddrOption() {
     this.commonService.fileData[this.applicantKey]['Address History']['finalObj'] = {
       ...this.commonService.fileData[this.applicantKey]['Address History']['finalObj'],
-      'addroutsideUSA': this.commonService.fileData[this.applicantKey]['Address History']['finalObj'][this.selectAddrOption]
-    }
+      addroutsideUSA: this.commonService.fileData[this.applicantKey]['Address History']['finalObj'][
+        this.selectAddrOption
+      ],
+    };
     this.showOutsideUSA = false;
   }
 
@@ -59,7 +58,6 @@ export class AddressHistoryComponent implements OnInit {
     delete this.commonService.fileData[this.applicantKey]['Address History']['finalObj'][`addr${key}`];
     this.commonService.fileData[this.applicantKey]['Address History'].readOnly = false;
   }
-
 
   openAddrDetails(content, key) {
     this.selectedAddr = `addr${key}`;
@@ -69,20 +67,19 @@ export class AddressHistoryComponent implements OnInit {
   optionChang() {
     this.showOutsideUSA = true;
     this.selectAddrOption = '';
-    delete this.commonService.fileData[this.applicantKey]['Address History']['finalObj']['addroutsideUSA']
+    delete this.commonService.fileData[this.applicantKey]['Address History']['finalObj']['addroutsideUSA'];
   }
-
 
   closeModel(value, key) {
     if (value) {
       this.commonService.fileData[this.applicantKey]['Address History']['finalObj'] = {
         ...this.commonService.fileData[this.applicantKey]['Address History']['finalObj'],
-        [key]: value
-      }
+        [key]: value,
+      };
       this.commonService.fileData[this.applicantKey]['Address History'].readOnly = false;
       if (key == 'addroutsideUSA') {
         this.showOutsideUSA = false;
-      } 
+      }
       // this.setAddrOpions();
     }
     if (this.addrModal != undefined) {
@@ -97,6 +94,4 @@ export class AddressHistoryComponent implements OnInit {
   incAddr(i: number) {
     this.addrArray.push(new Array(i));
   }
-
-
 }

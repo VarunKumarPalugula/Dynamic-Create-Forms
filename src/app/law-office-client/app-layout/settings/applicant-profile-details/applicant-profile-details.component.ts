@@ -28,7 +28,7 @@ export class ApplicantProfileDetailsComponent implements OnInit {
     public fb: FormBuilder,
     public spinner: NgxSpinnerService,
     public clientCommonService: ClientCommonServiceService,
-    public commonService: CommonService,
+    public commonService: CommonService
   ) {
     this.commonService.validations();
     this.emitGetUiTemplateControlSections = this.commonService.emitGetUiTemplateControlSections.subscribe((res) => {
@@ -46,50 +46,48 @@ export class ApplicantProfileDetailsComponent implements OnInit {
     });
     this.emitGetUiControlSectionsWithData = this.commonService.emitGetUiControlSectionsWithData.subscribe((res) => {
       if (!commonService.checkNullorUndefined(res)) {
-        res['Templates'][1]['SubSectionTemplateData']['Place And Date Of Birth'][0].validation = {
-          Country: {
-            required: true
-          },
-          State: {
-            required: true
-          }
-
-        }
-        res['Templates'][2].SubSectionTemplateData['Contact Details'][0] = {
-          Active: false,
-          displayName: "Phone Number",
-          id: "phoneNumber",
-          name: "phoneNumber",
-          type: "textbox",
-          value: "", 
-          validation : {
-            required : true,
-            // pattern : '/(7|8|9)\d{9}/' 
-            // pattern : '/^\d{10}$/' 
-            pattern : /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/ 
-          }
-        }
-        res['Templates'][2].SubSectionTemplateData['Contact Details'][2] = {
-          Active: false,
-          displayName: "Email",
-          id: "email",
-          name: "email",
-          type: "textbox",
-          value: "", 
-          validation : {
-            required : true,
-            pattern : /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
-          }
-        }
-        res['Templates'][15].SubSectionTemplateData['Travel Details'][0]['yes'][1].list = [
-          {id: "use-1", text: "Usa"},
-          {id: "use-2", text: "India"}
-        ]
-        res['Templates'][15].SubSectionTemplateData['Travel Details'][0]['yes'][3] = {
-          name: "I94 Record",
-          type: "i94Record",
-        }
-
+        // res['Templates'][1]['SubSectionTemplateData']['Place And Date Of Birth'][0].validation = {
+        //   Country: {
+        //     required: true
+        //   },
+        //   State: {
+        //     required: true
+        //   }
+        // }
+        // res['Templates'][2].SubSectionTemplateData['Contact Details'][0] = {
+        //   Active: false,
+        //   displayName: "Phone Number",
+        //   id: "phoneNumber",
+        //   name: "phoneNumber",
+        //   type: "textbox",
+        //   value: "",
+        //   validation : {
+        //     required : true,
+        //     // pattern : '/(7|8|9)\d{9}/'
+        //     // pattern : '/^\d{10}$/'
+        //     pattern : /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/
+        //   }
+        // }
+        // res['Templates'][2].SubSectionTemplateData['Contact Details'][2] = {
+        //   Active: false,
+        //   displayName: "Email",
+        //   id: "email",
+        //   name: "email",
+        //   type: "textbox",
+        //   value: "",
+        //   validation : {
+        //     required : true,
+        //     pattern : /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+        //   }
+        // }
+        // res['Templates'][15].SubSectionTemplateData['Travel Details'][0]['yes'][1].list = [
+        //   {id: "use-1", text: "Usa"},
+        //   {id: "use-2", text: "India"}
+        // ]
+        // res['Templates'][15].SubSectionTemplateData['Travel Details'][0]['yes'][3] = {
+        //   name: "I94 Record",
+        //   type: "i94Record",
+        // }
         this.allSectionConfigs = res['Templates'];
         res['Templates'].forEach((resp) => this.commonService.formObject(resp, this.initialObj, 'appProfileDetails'));
       }
@@ -111,9 +109,6 @@ export class ApplicantProfileDetailsComponent implements OnInit {
       backdrop: 'static',
     });
   }
-
-
-
 
   tabChanger(ev: any, elem?: any) {
     // this.clientCommonService.resetForms();

@@ -7,7 +7,7 @@ import { JsonSectionValidationService } from '@app/shared/service/json-section-v
 @Component({
   selector: 'app-prior-spouse-popup',
   templateUrl: './prior-spouse-popup.component.html',
-  styleUrls: ['./prior-spouse-popup.component.scss']
+  styleUrls: ['./prior-spouse-popup.component.scss'],
 })
 export class PriorSpousePopupComponent implements OnInit {
   @Input() isCard = false;
@@ -27,19 +27,19 @@ export class PriorSpousePopupComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private commonService: CommonService,
     private dynamicValidationService: JsonSectionValidationService
-  ) { }
-
+  ) {}
 
   ngOnInit() {
-    this.priorSpouseForm.valueChanges.subscribe(
-      value => {
-          this.logValidationErrors()
-      }
-  );
+    this.priorSpouseForm.valueChanges.subscribe((value) => {
+      this.logValidationErrors();
+    });
   }
 
   logValidationErrors() {
-    this.formErrors = this.dynamicValidationService.getValidationErrors(this.priorSpouseForm, this.dynamicValidationService.validationMessages);
+    this.formErrors = this.dynamicValidationService.getValidationErrors(
+      this.priorSpouseForm,
+      this.dynamicValidationService.validationMessages
+    );
   }
   formGroupData() {
     this.priorSpouseForm = this.formBuilder.group({
@@ -62,18 +62,14 @@ export class PriorSpousePopupComponent implements OnInit {
     return this.priorSpouseForm.get(contl).value;
   }
 
-
   save() {
     if (this.priorSpouseForm.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.priorSpouseForm.value)
-
+    this.emitCloseModel.emit(this.priorSpouseForm.value);
   }
-
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
+    this.emitCloseModel.emit(null);
   }
-
 }

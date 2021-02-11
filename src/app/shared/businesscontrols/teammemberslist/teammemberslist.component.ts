@@ -39,7 +39,7 @@ export class TeammemberslistComponent implements OnInit {
   teamMemberUserName: string;
   colors: any = [];
   Subcolors: any = [];
-  username: any
+  username: any;
   constructor(
     private modalService: NgbModal,
     private router: Router,

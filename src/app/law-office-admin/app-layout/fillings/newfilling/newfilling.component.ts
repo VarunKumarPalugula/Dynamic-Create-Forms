@@ -118,7 +118,11 @@ export class NewfillingComponent implements OnInit {
         this.spinner.hide();
         this.fillingTypes = res;
         if (this.fillingTypes.length == 1) {
-          this.commonService.getFilingTemplates(this.fillingTypes[0].FilingName, sessionStorage.getItem('LoguserId'), sessionStorage.getItem('OrganisationID'));
+          this.commonService.getFilingTemplates(
+            this.fillingTypes[0].FilingName,
+            sessionStorage.getItem('LoguserId'),
+            sessionStorage.getItem('OrganisationID')
+          );
         }
       },
       (err) => {
@@ -134,9 +138,12 @@ export class NewfillingComponent implements OnInit {
     this.selectedFillingType = event.target.options[event.target.selectedIndex].text;
     this.isSponsorshipTypesDisabled = false;
     this.isClearDisabled = false;
-    this.commonService.getFilingTemplates(this.selectedFillingType, sessionStorage.getItem('LoguserId'), sessionStorage.getItem('OrganisationID'));
+    this.commonService.getFilingTemplates(
+      this.selectedFillingType,
+      sessionStorage.getItem('LoguserId'),
+      sessionStorage.getItem('OrganisationID')
+    );
   }
-
 
   selectTemplateType(event) {
     this.selectedTemplate = event.target.value;
@@ -147,8 +154,6 @@ export class NewfillingComponent implements OnInit {
       this.isCreatedFillingDisabled = true;
     }
   }
-
-
 
   //get Sponsortypes radio buttons
   GetSponserShipTypes() {
@@ -273,7 +278,12 @@ export class NewfillingComponent implements OnInit {
         this.spinner.hide();
         if (res == null || res.length == 0) {
         } else {
-          this.teamMembersList = res.filter((item) => item.TeamMemberStatus != 4 && item.Status == true && item.UserName != sessionStorage.getItem('AdminUserName'));
+          this.teamMembersList = res.filter(
+            (item) =>
+              item.TeamMemberStatus != 4 &&
+              item.Status == true &&
+              item.UserName != sessionStorage.getItem('AdminUserName')
+          );
         }
         // this.teamMembersList = res;
         this.teamMembersDropsownSettings = {
@@ -313,10 +323,10 @@ export class NewfillingComponent implements OnInit {
   //create filling
   CreateFilling() {
     if (!this.selectedTemplate) {
-      this.toaster.error('Please select template before creating filing')
+      this.toaster.error('Please select template before creating filing');
       return;
     }
-    this.fillingData.Templates =this.templateList.filter(res => res.DisplayTemplateTitle == this.selectedTemplate);
+    this.fillingData.Templates = this.templateList.filter((res) => res.DisplayTemplateTitle == this.selectedTemplate);
     this.spinner.show();
     //this.fillingData.Templates = this.selectedTeamplate;
     let OrgId = sessionStorage.getItem('OrganisationID');
@@ -490,11 +500,9 @@ export class NewfillingComponent implements OnInit {
     );
   }
 
-
   ngOnDestroy() {
     this.emitGetUITemplateResults.unsubscribe();
     this.commonService.clearCommonEmitters();
     this.commonService.closeModel('close click');
   }
-
 }

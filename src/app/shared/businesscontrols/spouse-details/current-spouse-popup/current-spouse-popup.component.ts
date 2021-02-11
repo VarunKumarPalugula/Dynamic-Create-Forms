@@ -7,7 +7,7 @@ import { JsonSectionValidationService } from '@app/shared/service/json-section-v
 @Component({
   selector: 'app-current-spouse-popup',
   templateUrl: './current-spouse-popup.component.html',
-  styleUrls: ['./current-spouse-popup.component.scss']
+  styleUrls: ['./current-spouse-popup.component.scss'],
 })
 export class CurrentSpousePopupComponent implements OnInit {
   formErrors: any = {};
@@ -28,18 +28,18 @@ export class CurrentSpousePopupComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private commonService: CommonService,
     private dynamicValidationService: JsonSectionValidationService
-  ) { }
-
+  ) {}
 
   ngOnInit() {
-    this.currentSpouseForm.valueChanges.subscribe(
-      value => {
-          this.logValidationErrors()
-      }
-  );
+    this.currentSpouseForm.valueChanges.subscribe((value) => {
+      this.logValidationErrors();
+    });
   }
   logValidationErrors() {
-    this.formErrors = this.dynamicValidationService.getValidationErrors(this.currentSpouseForm, this.dynamicValidationService.validationMessages);
+    this.formErrors = this.dynamicValidationService.getValidationErrors(
+      this.currentSpouseForm,
+      this.dynamicValidationService.validationMessages
+    );
   }
 
   formGroupData() {
@@ -67,19 +67,17 @@ export class CurrentSpousePopupComponent implements OnInit {
     if (this.currentSpouseForm.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.currentSpouseForm.value)
-
+    this.emitCloseModel.emit(this.currentSpouseForm.value);
   }
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
+    this.emitCloseModel.emit(null);
   }
   detailsEmit(value) {
     this.currentSpouseForm.patchValue({
       Country: value.Country,
       State: value.State,
       CityOrTown: value.CityOrTown,
-    })
+    });
   }
-
 }

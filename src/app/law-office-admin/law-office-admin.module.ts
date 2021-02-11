@@ -67,8 +67,8 @@ import { FormsComponent } from './app-layout/fillings/filling-layout/case/forms/
 import { CasesubmissionsComponent } from './app-layout/fillings/filling-layout/casesubmissions/casesubmissions.component';
 import { AddTemplateComponent } from './app-layout/settings/add-template/add-template.component';
 import { SettingLayoutComponent } from './app-layout/settings/setting-layout/setting-layout.component';
-import { TemplatesComponent } from './app-layout/settings/templates/templates.component'
-
+import { TemplatesComponent } from './app-layout/settings/templates/templates.component';
+import { JoyrideModule } from 'ngx-joyride';
 @NgModule({
   imports: [
     LawOfficeAdminRoutingModule,
@@ -84,7 +84,8 @@ import { TemplatesComponent } from './app-layout/settings/templates/templates.co
     TypeaheadModule.forRoot(),
     NgMultiSelectDropDownModule.forRoot(),
     NgCircleProgressModule.forRoot(),
-    TourNgxPopperModule
+    TourNgxPopperModule,
+    JoyrideModule.forRoot(),
   ],
   declarations: [
     SignUpComponent,
@@ -133,4 +134,4 @@ import { TemplatesComponent } from './app-layout/settings/templates/templates.co
     TemplatesComponent,
   ],
 })
-export class LawOfficeAdminModule { }
+export class LawOfficeAdminModule {}

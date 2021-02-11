@@ -20,11 +20,11 @@ export class AddTemplateComponent implements OnInit {
   finalSetArray = [];
   isCollapsed = false;
   editTemplateTitle: any;
-  isAddMode: boolean = true
+  isAddMode: boolean = true;
   deleteTemplate: any;
   deleteTemplateTitle: string;
-  templateTitleForDelete: any
-  templateFilingTypeForDelete: any
+  templateTitleForDelete: any;
+  templateFilingTypeForDelete: any;
   filingTypes: any;
   constructor(
     private commonService: CommonService,
@@ -32,18 +32,18 @@ export class AddTemplateComponent implements OnInit {
     private fb: FormBuilder,
     private toaster: ToastrService,
     private router: Router,
-    private route:ActivatedRoute,
+    private route: ActivatedRoute,
     private modalService: NgbModal,
-    private adminService: AdminService,
+    private adminService: AdminService
   ) {}
 
   ngOnInit(): void {
     this.addTemplateBuildForm();
     this.getUiControlSections();
     this.editTemplateTitle = this.route.snapshot.paramMap.get('id');
-    if(this.editTemplateTitle) {
-      this.getTemplates()
-      this.isAddMode = false
+    if (this.editTemplateTitle) {
+      this.getTemplates();
+      this.isAddMode = false;
     }
     this.GetFillingTypes();
   }
@@ -62,15 +62,14 @@ export class AddTemplateComponent implements OnInit {
   }
   templateTitle(templateTitle) {
     this.spinner.show();
-    if(this.editTemplateTitle) {
-      this.getTemplates()
-    } 
-    else {
-    this.commonService.getTeplatesDatabyTemplate(templateTitle).subscribe((res: any) => {
-      this.sectionsData = res['Templates'];
-      this.spinner.hide();
-    });
-  }
+    if (this.editTemplateTitle) {
+      this.getTemplates();
+    } else {
+      this.commonService.getTeplatesDatabyTemplate(templateTitle).subscribe((res: any) => {
+        this.sectionsData = res['Templates'];
+        this.spinner.hide();
+      });
+    }
   }
   selectAllFields(templateTitle, value) {
     let index = this.sectionsData.findIndex((res) => res.SubSection == templateTitle);
@@ -90,14 +89,14 @@ export class AddTemplateComponent implements OnInit {
     this.sectionsData[index]['SubSectionTemplateData'][templateTitle].forEach((element, index) => {
       if (index == k && value) {
         element.Active = true;
-      } else if(index == k && !value) {
+      } else if (index == k && !value) {
         element.Active = false;
       }
-      if(element.Active == false) {
-        selectAll = false
+      if (element.Active == false) {
+        selectAll = false;
       }
     });
-    this.sectionsData[index]['ActiveFlag'] = selectAll
+    this.sectionsData[index]['ActiveFlag'] = selectAll;
   }
   onSubmit() {
     for (let i = 0; i < this.sectionsData.length; i++) {
@@ -112,51 +111,54 @@ export class AddTemplateComponent implements OnInit {
       };
       this.finalSetArray.push(finalArray);
     }
-    this.commonService.saveTemplateOptions(this.isAddMode,this.finalSetArray).subscribe((res: any) => {
+    this.commonService.saveTemplateOptions(this.isAddMode, this.finalSetArray).subscribe((res: any) => {
       this.toaster.info(res['Message']);
       this.router.navigate(['/admin/settings/templates']);
     });
   }
   deleteTemplateBytempTitle() {
-    this.commonService.deleteTemplate(sessionStorage.getItem('OrganisationID'), this.templateTitleForDelete, this.templateFilingTypeForDelete ).subscribe(
-      (res: any) => {
-        this.modalService.dismissAll();
-        this.toaster.info(res['Message']);
-      this.router.navigate(['/admin/settings']);
-      },
-      (err) => {
-        this.toaster.error('Error Occured');
-      }
-    )
+    this.commonService
+      .deleteTemplate(
+        sessionStorage.getItem('OrganisationID'),
+        this.templateTitleForDelete,
+        this.templateFilingTypeForDelete
+      )
+      .subscribe(
+        (res: any) => {
+          this.modalService.dismissAll();
+          this.toaster.info(res['Message']);
+          this.router.navigate(['/admin/settings']);
+        },
+        (err) => {
+          this.toaster.error('Error Occured');
+        }
+      );
   }
 
   getTemplates() {
     this.spinner.hide();
-    this.commonService.getSavedTemplates(sessionStorage.getItem('OrganisationID')).subscribe(
-      (res: any) => {
-        res;
-        let arrays = res.reduce(function(a, e) {
-          let estKey = (e['DisplayTemplateTitle']); 
-          (a[estKey] ? a[estKey] : (a[estKey] = null || [])).push(e);
-          return a;
-        }, {});
-        this.sectionsData = res.filter(x=> x.DisplayTemplateTitle == this.editTemplateTitle)
-        console.log(this.sectionsData);
-        
-        this.addTemplate.patchValue({
-          templateName: this.sectionsData[0]['DisplayTemplateTitle'],
-          filingType: this.sectionsData[0]['FilingType']
-        })
-        console.log(this.addTemplate.value);
-        
-      } 
-    )
+    this.commonService.getSavedTemplates(sessionStorage.getItem('OrganisationID')).subscribe((res: any) => {
+      res;
+      let arrays = res.reduce(function (a, e) {
+        let estKey = e['DisplayTemplateTitle'];
+        (a[estKey] ? a[estKey] : (a[estKey] = null || [])).push(e);
+        return a;
+      }, {});
+      this.sectionsData = res.filter((x) => x.DisplayTemplateTitle == this.editTemplateTitle);
+      console.log(this.sectionsData);
+
+      this.addTemplate.patchValue({
+        templateName: this.sectionsData[0]['DisplayTemplateTitle'],
+        filingType: this.sectionsData[0]['FilingType'],
+      });
+      console.log(this.addTemplate.value);
+    });
   }
 
-  confirmDeteleteTemplate(popup: any,templateTitle: any,templateFilingType: any) {
+  confirmDeteleteTemplate(popup: any, templateTitle: any, templateFilingType: any) {
     this.templateTitleForDelete = templateTitle;
-    this.templateFilingTypeForDelete = templateFilingType
-    this.deleteTemplate = this.modalService.open(popup, { centered: true, keyboard: false, backdrop: 'static', });
+    this.templateFilingTypeForDelete = templateFilingType;
+    this.deleteTemplate = this.modalService.open(popup, { centered: true, keyboard: false, backdrop: 'static' });
   }
   cancelDeteleteTemplate(value: string) {
     this.deleteTemplate.close(value);

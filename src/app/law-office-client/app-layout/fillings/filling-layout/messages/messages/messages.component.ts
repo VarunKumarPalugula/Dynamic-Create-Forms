@@ -130,7 +130,7 @@ export class MessagesComponent implements OnInit {
           allowSearchFilter: true,
         };
       },
-      (error) => { }
+      (error) => {}
     );
     // this.filingService.GetFilingAdminTeammembers(data).subscribe(
     //   (res: any) => {
@@ -198,8 +198,7 @@ export class MessagesComponent implements OnInit {
     //   }
     // );
   }
-  ngOnInit() {
-   }
+  ngOnInit() {}
   CreateTopicModel(content: any) {
     this.topicModel = this.modalService.open(content, { centered: true });
   }
@@ -244,10 +243,10 @@ export class MessagesComponent implements OnInit {
     this.router.navigate(['/client/applayout/fillings/viewmessages']);
   }
 
-  onadminmemberSelect(eve) { }
-  onadminMemberSelectAll(eve) { }
+  onadminmemberSelect(eve) {}
+  onadminMemberSelectAll(eve) {}
 
-  onTeamMemberSelect(eve) { }
+  onTeamMemberSelect(eve) {}
   onTeamMemberSelectAll(eve) {
     this.memberids = [];
   }
@@ -273,7 +272,7 @@ export class MessagesComponent implements OnInit {
         Description: this.TopicForm.value.description,
         AdminIds: this.adminmemberids.toString(),
         LawOfficeClientIds: this.memberids.toString(),
-        IsUpdateAction: false
+        IsUpdateAction: false,
       };
 
       var tokenid = 'Authorization:Bearer ' + sessionStorage.getItem('A_AccessToken');

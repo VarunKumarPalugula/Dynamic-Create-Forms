@@ -6,13 +6,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-education-popup2',
   templateUrl: './education-popup2.component.html',
-  styleUrls: ['./education-popup2.component.scss']
+  styleUrls: ['./education-popup2.component.scss'],
 })
 export class EducationPopup2Component implements OnInit {
-
   @Output() emitCloseModel = new EventEmitter();
   @Output() emitBackModel = new EventEmitter();
-  
+
   @Input() isCard = false;
 
   @Input() set data(value: any) {
@@ -20,29 +19,25 @@ export class EducationPopup2Component implements OnInit {
     if (value) {
       this.education2DetailsForm.patchValue({
         StreetNumberAndName: value.StreetNumberAndName ? value.StreetNumberAndName : null,
-        aptSteFlr: value.aptSteFlr ?  value.aptSteFlr : null,
+        aptSteFlr: value.aptSteFlr ? value.aptSteFlr : null,
         AptSteFlrNumber: value.AptSteFlrNumber ? value.AptSteFlrNumber : null,
-        Country: value.Country ? value.Country: null,
-        State: value.State ? value.State: null,
-        CityOrTown: value.CityOrTown ? value.CityOrTown: null,
-        ZipCode: value.ZipCode ? value.ZipCode: null,
-        Fax: value.Fax ? value.Fax: null,
-        DayTimePhone: value.DayTimePhone ? value.DayTimePhone: null,
-        MobilePhone: value.MobilePhone ? value.MobilePhone: null,
-        Email: value.Email ? value.Email: null
-      })
+        Country: value.Country ? value.Country : null,
+        State: value.State ? value.State : null,
+        CityOrTown: value.CityOrTown ? value.CityOrTown : null,
+        ZipCode: value.ZipCode ? value.ZipCode : null,
+        Fax: value.Fax ? value.Fax : null,
+        DayTimePhone: value.DayTimePhone ? value.DayTimePhone : null,
+        MobilePhone: value.MobilePhone ? value.MobilePhone : null,
+        Email: value.Email ? value.Email : null,
+      });
     }
   }
 
   education2DetailsForm: FormGroup;
 
-  constructor(
-    private readonly formBuilder: FormBuilder,
-    private commonService: CommonService
-  ) { }
+  constructor(private readonly formBuilder: FormBuilder, private commonService: CommonService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   formGroupData() {
     this.education2DetailsForm = this.formBuilder.group({
@@ -57,7 +52,7 @@ export class EducationPopup2Component implements OnInit {
       Fax: [null],
       DayTimePhone: [null],
       MobilePhone: [null],
-      Email: [null]
+      Email: [null],
     });
   }
 
@@ -69,15 +64,14 @@ export class EducationPopup2Component implements OnInit {
     if (this.education2DetailsForm.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.education2DetailsForm.value)
+    this.emitCloseModel.emit(this.education2DetailsForm.value);
   }
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
+    this.emitCloseModel.emit(null);
   }
 
   back() {
     this.emitBackModel.emit();
   }
-
 }

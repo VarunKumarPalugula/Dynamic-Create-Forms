@@ -42,7 +42,7 @@ export class TeamInviteComponent implements OnInit {
     private permissionService: ClientpermissionService,
     private toaster: ToastrService,
     private commonService: CommonService
-  ) { }
+  ) {}
   ngOnInit() {
     this.teamInviteForm = this.fb.group({
       teamInvite: this.fb.array([this.addSkillFormGroup()]),
@@ -89,7 +89,7 @@ export class TeamInviteComponent implements OnInit {
     (<FormArray>this.teamInviteForm.get('teamInvite')).removeAt(inviteGroupIndex);
   }
 
-  sendInvitation1(): void { }
+  sendInvitation1(): void {}
 
   sendInvitation() {
     this.spinner.show();
@@ -125,7 +125,7 @@ export class TeamInviteComponent implements OnInit {
             this.toaster.error('Email Already Existed');
           }
         },
-        (error) => { }
+        (error) => {}
       );
     }
   }

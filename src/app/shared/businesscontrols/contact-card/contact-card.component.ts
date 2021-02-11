@@ -13,8 +13,8 @@ export class ContactCardComponent implements OnInit {
 
   @Output()
   emitChangeInfo = new EventEmitter();
-  loginUser: any
-  constructor() { }
+  loginUser: any;
+  constructor() {}
 
   ngOnInit() {
     this.loginUser = sessionStorage.getItem('Login_User');

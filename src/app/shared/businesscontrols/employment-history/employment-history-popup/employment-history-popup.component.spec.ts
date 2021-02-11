@@ -8,9 +8,8 @@ describe('EmploymentHistoryPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EmploymentHistoryPopupComponent ]
-    })
-    .compileComponents();
+      declarations: [EmploymentHistoryPopupComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

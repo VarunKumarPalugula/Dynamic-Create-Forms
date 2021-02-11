@@ -39,8 +39,8 @@ export class ApplicantPosCardComponent implements OnInit {
   allFiles: any = [];
   filesNames: any = [];
   selectedFile: any = [];
-  loginUser: any
-  constructor(private toaster: ToastrService) { }
+  loginUser: any;
+  constructor(private toaster: ToastrService) {}
 
   ngOnInit() {
     this.loginUser = sessionStorage.getItem('Login_User');
@@ -76,7 +76,7 @@ export class ApplicantPosCardComponent implements OnInit {
     if (this.filesNames.length <= 0) {
       this.posFileInfo = false;
     } else {
-      this.posFileInfo = true
+      this.posFileInfo = true;
     }
     this.selectedFilesList.splice(i, 1);
     for (let i = 0; i < this.selectedFilesList.length; i++) {
@@ -88,18 +88,24 @@ export class ApplicantPosCardComponent implements OnInit {
     let unSupportedFiles = [];
     for (let i = 0; i < this.filesList.length; i++) {
       this.filesList[i] = this.selectedFilesList[i].file;
-      if ((this.filesList[i]['fileType'] == 'doc' || this.filesList[i]['fileType'] == 'DOC' || 
-          this.filesList[i]['fileType'] == 'docx' || this.filesList[i]['fileType'] == 'DOCX' || 
-          this.filesList[i]['fileType'] == 'pdf' || this.filesList[i]['fileType'] == 'PDF' ||
+      if (
+        (this.filesList[i]['fileType'] == 'doc' ||
+          this.filesList[i]['fileType'] == 'DOC' ||
+          this.filesList[i]['fileType'] == 'docx' ||
+          this.filesList[i]['fileType'] == 'DOCX' ||
+          this.filesList[i]['fileType'] == 'pdf' ||
+          this.filesList[i]['fileType'] == 'PDF' ||
           this.filesList[i]['fileType'] == 'JPEG' ||
           this.filesList[i]['fileType'] == 'jpeg' ||
           this.filesList[i]['fileType'] == 'PNG' ||
           this.filesList[i]['fileType'] == 'png' ||
-          this.filesList[i] ['fileType']== 'JPG' || this.filesList[i] ['fileType']== 'jpg') && (!this.getPosFile.find((x => x.FileName === this.filesList[i].name)))
+          this.filesList[i]['fileType'] == 'JPG' ||
+          this.filesList[i]['fileType'] == 'jpg') &&
+        !this.getPosFile.find((x) => x.FileName === this.filesList[i].name)
       ) {
-        finalFiles.push(this.filesList[i])
+        finalFiles.push(this.filesList[i]);
       } else {
-        unSupportedFiles.push(this.filesList[i])
+        unSupportedFiles.push(this.filesList[i]);
       }
     }
     if (finalFiles.length != 0) {
@@ -113,9 +119,14 @@ export class ApplicantPosCardComponent implements OnInit {
     if (unSupportedFiles.length != 0) {
       let unSupportedFileNames = [];
       for (let i = 0; i < unSupportedFiles.length; i++) {
-        unSupportedFileNames.push(unSupportedFiles[i].name)
+        unSupportedFileNames.push(unSupportedFiles[i].name);
       }
-      this.toaster.warning(unSupportedFileNames + " This files are not supported to upload as period of stay document please upload pdf/images/docs/not exisisting files", '',  {timeOut: 10000});
+      this.toaster.warning(
+        unSupportedFileNames +
+          ' This files are not supported to upload as period of stay document please upload pdf/images/docs/not exisisting files',
+        '',
+        { timeOut: 10000 }
+      );
     }
   }
   view(fileId: any, fileType: any) {

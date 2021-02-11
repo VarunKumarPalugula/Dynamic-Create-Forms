@@ -6,11 +6,11 @@ import { ApicallsService } from '@app/shared/service/apicalls.service';
 export class ConnectionService {
   constructor(private httpClient: HttpClient, private global: ApicallsService) {}
 
-  sendInvite(client: any, env:any) {
+  sendInvite(client: any, env: any) {
     return this.httpClient.post(this.global.ConnectionInvite + '?environment=' + env, client);
   }
 
-  connectionSignup(connection: any, env:any) {
+  connectionSignup(connection: any, env: any) {
     return this.httpClient.post(this.global.ConnectionSignup + '?environment=' + env, connection);
   }
 

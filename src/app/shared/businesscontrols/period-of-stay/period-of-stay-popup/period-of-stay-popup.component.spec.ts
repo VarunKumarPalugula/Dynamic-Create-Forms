@@ -8,9 +8,8 @@ describe('PeriodOfStayPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PeriodOfStayPopupComponent ]
-    })
-    .compileComponents();
+      declarations: [PeriodOfStayPopupComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

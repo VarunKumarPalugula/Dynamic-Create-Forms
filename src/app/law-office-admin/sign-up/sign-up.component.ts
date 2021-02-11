@@ -52,7 +52,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit() {
     this.buildForm();
     console.log(this.admin.LastName);
-    console.log(this.admin.FirstName)
+    console.log(this.admin.FirstName);
   }
 
   // intialzing form

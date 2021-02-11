@@ -9,10 +9,9 @@ import { ClientService } from '../../../law-office-client/law-office-client.serv
 @Component({
   selector: 'app-travel-document-details',
   templateUrl: './travel-document-details.component.html',
-  styleUrls: ['./travel-document-details.component.scss']
+  styleUrls: ['./travel-document-details.component.scss'],
 })
 export class TravelDocumentDetailsComponent implements OnInit {
-
   token = 'Authorization:Bearer ' + sessionStorage.getItem('C_AccessToken');
 
   @Input() fields: any;
@@ -24,35 +23,42 @@ export class TravelDocumentDetailsComponent implements OnInit {
 
   travelList = [];
 
-  selectDeleteFile: string
+  selectDeleteFile: string;
 
-  constructor(public dialog: MatDialog,
+  constructor(
+    public dialog: MatDialog,
     public commonService: CommonService,
     public modalService: NgbModal,
     public spinner: NgxSpinnerService,
     private clientService: ClientService,
-    private toaster: ToastrService,
-  ) {
-  }
+    private toaster: ToastrService
+  ) {}
 
   ngOnInit(): void {
-    this.travelDocumentDetails = (this.commonService.fileData[this.applicantKey] && this.finalObj() && this.finalObj('travelDocumentDetails')) ? false : true;
+    this.travelDocumentDetails =
+      this.commonService.fileData[this.applicantKey] && this.finalObj() && this.finalObj('travelDocumentDetails')
+        ? false
+        : true;
     if (Object.keys(this.finalObj()).length && this.finalObj(['travelList']) && this.finalObj(['travelList']).length) {
       this.getFile();
     }
   }
 
-
   openSpouseDetails(content) {
-    this.addSpouseModal = this.modalService.open(content, { centered: false, keyboard: false, size: 'lg', backdrop: 'static' });
+    this.addSpouseModal = this.modalService.open(content, {
+      centered: false,
+      keyboard: false,
+      size: 'lg',
+      backdrop: 'static',
+    });
   }
 
   closeModel(value) {
     if (value) {
       this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'] = {
         ...this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'],
-        travelDocumentDetails: value
-      }
+        travelDocumentDetails: value,
+      };
       this.commonService.fileData[this.applicantKey]['passport, visa or travel documents'].readOnly = false;
       this.travelDocumentDetails = false;
     }
@@ -62,14 +68,15 @@ export class TravelDocumentDetailsComponent implements OnInit {
   }
 
   finalObj(i?) {
-    return i ? this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'][i] : this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'];
+    return i
+      ? this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'][i]
+      : this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'];
   }
 
   deleteCard(key) {
     delete this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'][key];
     this.commonService.fileData[this.applicantKey]['passport, visa or travel documents'].readOnly = false;
   }
-
 
   uploadFile(file) {
     this.spinner.show();
@@ -88,15 +95,15 @@ export class TravelDocumentDetailsComponent implements OnInit {
           }
           this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'] = {
             ...this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'],
-            travelList: this.travelList
-          }
+            travelList: this.travelList,
+          };
           this.commonService.fileData[this.applicantKey]['passport, visa or travel documents'].readOnly = false;
           this.toaster.success(`travel uploaded successfulley`, 'Success');
         } else {
           this.toaster.error('Failed to update education details');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -109,10 +116,10 @@ export class TravelDocumentDetailsComponent implements OnInit {
       (res: any) => {
         this.spinner.hide();
         if (res !== null) {
-          res.forEach(res => this.travelList.push(res.FileName));
+          res.forEach((res) => this.travelList.push(res.FileName));
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
@@ -123,7 +130,7 @@ export class TravelDocumentDetailsComponent implements OnInit {
     this.modalService.open(popup, {
       centered: true,
       keyboard: false,
-      backdrop: 'static'
+      backdrop: 'static',
     });
   }
 
@@ -137,18 +144,19 @@ export class TravelDocumentDetailsComponent implements OnInit {
       (res: any) => {
         this.spinner.hide();
         if (res.Status == 1) {
-          delete this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'][this.travelList][file];
+          delete this.commonService.fileData[this.applicantKey]['passport, visa or travel documents']['finalObj'][
+            this.travelList
+          ][file];
           this.closeModal();
-          this.travelList = this.travelList.filter(res => res)
+          this.travelList = this.travelList.filter((res) => res);
           this.toaster.error('Your file deleted successfully', 'File Delete');
         } else if (res.Status == 0) {
           this.toaster.error('Failed to delete your file');
         }
       },
-      err => {
+      (err) => {
         this.toaster.error('Error Occured');
       }
     );
   }
-
 }

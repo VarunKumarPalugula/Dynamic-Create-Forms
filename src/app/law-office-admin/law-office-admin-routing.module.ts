@@ -82,12 +82,12 @@ const routes: Routes = [
         component: SettingLayoutComponent,
         children: [
           { path: '', component: SettingsComponent },
-          { path: 'templates', component: SettingsComponent},
+          { path: 'templates', component: SettingsComponent },
           { path: 'template', component: AddTemplateComponent },
-          { path: 'template/:id', component: AddTemplateComponent}
+          { path: 'template/:id', component: AddTemplateComponent },
         ],
       },
-            { path: 'documents', component: DocumentsComponent },
+      { path: 'documents', component: DocumentsComponent },
       {
         path: 'team',
         component: TeamComponent,
@@ -125,15 +125,16 @@ const routes: Routes = [
             children: [
               { path: 'overview', component: OverviewComponent },
               { path: 'members', component: MembersComponent },
-              { path: 'casesubmission', component: CasesubmissionsComponent},
-              { path: 'casesubmission/:id', component: CaseComponent},
+              { path: 'casesubmission', component: CasesubmissionsComponent },
+              { path: 'casesubmission/:id', component: CaseComponent },
               // { path: 'cases', component: CaseComponent },
               { path: 'taskslist', component: TasksComponent },
               { path: 'task/:id', component: TaskListComponent },
               { path: 'messages', component: MessagesComponent },
               {
-                path: 'viewmessages', component: ViewmessagesComponent,
-                resolve: { connection: ConnectionResloveService }
+                path: 'viewmessages',
+                component: ViewmessagesComponent,
+                resolve: { connection: ConnectionResloveService },
               },
               { path: 'files/folder', component: FolderComponent },
               { path: 'files', component: FilesComponent },
@@ -177,4 +178,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [AdminauthGuard],
 })
-export class LawOfficeAdminRoutingModule { }
+export class LawOfficeAdminRoutingModule {}

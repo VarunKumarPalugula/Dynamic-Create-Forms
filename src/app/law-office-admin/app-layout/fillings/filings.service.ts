@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class FilingsService {
   filingName = sessionStorage.getItem('FName');
-  constructor(private httpClient: HttpClient, private globalApi: ApicallsService) { }
+  constructor(private httpClient: HttpClient, private globalApi: ApicallsService) {}
 
   fileUpload(orgId: string, filingId: string, formdata: any, accesstoken: any) {
     return this.httpClient.post(this.globalApi.UploadFiles + '?OrgId=' + orgId + '&FillingId=' + filingId, formdata, {
@@ -14,15 +14,21 @@ export class FilingsService {
   }
 
   getFiles(orgId: string, filingId: string, caseId: any, accesstoken: any) {
-    return this.httpClient.get(this.globalApi.FetechingFiles + '?OrgId=' + orgId + '&FillingId=' + filingId + '&caseId=' + caseId, {
-      headers: accesstoken,
-    });
+    return this.httpClient.get(
+      this.globalApi.FetechingFiles + '?OrgId=' + orgId + '&FillingId=' + filingId + '&caseId=' + caseId,
+      {
+        headers: accesstoken,
+      }
+    );
   }
 
   getFilesCaseSubmission(orgId: string, filingId: string, caseId: any, accesstoken: any) {
-    return this.httpClient.get(this.globalApi.FetechingFilesByCaseId + '?OrgId=' + orgId + '&FillingId=' + filingId + '&caseId=' + caseId, {
-      headers: accesstoken,
-    });
+    return this.httpClient.get(
+      this.globalApi.FetechingFilesByCaseId + '?OrgId=' + orgId + '&FillingId=' + filingId + '&caseId=' + caseId,
+      {
+        headers: accesstoken,
+      }
+    );
   }
 
   deleteFiles(orgId: string, filingId: string, fileId: any, accesstoken: any) {
@@ -178,7 +184,9 @@ export class FilingsService {
 
   getShipmentTrackingList(orgId: any, filingId: any) {
     return this.httpClient.post(
-      this.globalApi.GetShipmentTrackingList + '?OrgId=' + orgId + '&FilingId=' + filingId, '');
+      this.globalApi.GetShipmentTrackingList + '?OrgId=' + orgId + '&FilingId=' + filingId,
+      ''
+    );
   }
 
   ShipMentTrackingNumber(OrgId: any, formdata: any, accesstoken: any) {
@@ -217,7 +225,15 @@ export class FilingsService {
   }
   GetCaseForms(OrgId: any, fillingId: any, caseId: any, accesstoken: any, FilingName: any) {
     return this.httpClient.get(
-      this.globalApi.FetchingFormsFiling + '?OrgId=' + OrgId + '&fillingId=' + fillingId + '&caseId=' + caseId + '&FilingName=' + FilingName,
+      this.globalApi.FetchingFormsFiling +
+        '?OrgId=' +
+        OrgId +
+        '&fillingId=' +
+        fillingId +
+        '&caseId=' +
+        caseId +
+        '&FilingName=' +
+        FilingName,
       {
         headers: accesstoken,
       }
@@ -226,17 +242,26 @@ export class FilingsService {
 
   // case submissions
   getCaseSubmissionsList(orgId: any, filingId: any, filingType: any, accesstoken: any) {
-    return this.httpClient.get(this.globalApi.getCaseSubmissionsApiUrl + '?OrgId=' + orgId + '&FilingId=' + filingId + '&filingType=' + filingType, {
-      headers: accesstoken,
-    })
+    return this.httpClient.get(
+      this.globalApi.getCaseSubmissionsApiUrl +
+        '?OrgId=' +
+        orgId +
+        '&FilingId=' +
+        filingId +
+        '&filingType=' +
+        filingType,
+      {
+        headers: accesstoken,
+      }
+    );
   }
 
   deleteCaseSubmission(orgId: any, formData: any) {
-    return this.httpClient.post(this.globalApi.deleteCaseSubmissionsApiUrl + '?OrgId=' + orgId, formData)
+    return this.httpClient.post(this.globalApi.deleteCaseSubmissionsApiUrl + '?OrgId=' + orgId, formData);
   }
 
   postCaseSubmissions(OrgId: any, formdata: any) {
-    return this.httpClient.post(this.globalApi.postCaseSubmissionsApiUrl + '?OrgId=' + OrgId, formdata)
+    return this.httpClient.post(this.globalApi.postCaseSubmissionsApiUrl + '?OrgId=' + OrgId, formdata);
   }
   editIndividualCaseSubmission(orgId: any, formData: any) {
     return this.httpClient.post(this.globalApi.editCaseDetails + '?OrgId=' + orgId, formData);
@@ -252,7 +277,15 @@ export class FilingsService {
     });
 
     return this.httpClient.post(
-      this.globalApi.AddingToForms + '?OrgId=' + OrgId + '&FilingId=' + fillingId + '&caseId=' + caseId + '&FilingName=' + FilingName,
+      this.globalApi.AddingToForms +
+        '?OrgId=' +
+        OrgId +
+        '&FilingId=' +
+        fillingId +
+        '&caseId=' +
+        caseId +
+        '&FilingName=' +
+        FilingName,
       formdata,
       {
         headers: headersnew,
@@ -289,14 +322,14 @@ export class FilingsService {
   Groupmessagearchive(OrgId: any, FilingId: any, accesstoken: any, TopicId: any, GroupMessagingId: any) {
     return this.httpClient.get(
       this.globalApi.Groupmessagearchive +
-      '?OrgId=' +
-      OrgId +
-      '&FilingId=' +
-      FilingId +
-      '&TopicId=' +
-      TopicId +
-      '&GroupMessagingId=' +
-      GroupMessagingId,
+        '?OrgId=' +
+        OrgId +
+        '&FilingId=' +
+        FilingId +
+        '&TopicId=' +
+        TopicId +
+        '&GroupMessagingId=' +
+        GroupMessagingId,
       {
         headers: accesstoken,
       }
@@ -312,16 +345,16 @@ export class FilingsService {
   ) {
     return this.httpClient.get(
       this.globalApi.Groupsubmessagearchive +
-      '?OrgId=' +
-      OrgId +
-      '&FilingId=' +
-      FilingId +
-      '&TopicId=' +
-      TopicId +
-      '&GroupMessagingId=' +
-      GroupMessagingId +
-      '&GroupSubMessagingId=' +
-      GroupSubMessagingId,
+        '?OrgId=' +
+        OrgId +
+        '&FilingId=' +
+        FilingId +
+        '&TopicId=' +
+        TopicId +
+        '&GroupMessagingId=' +
+        GroupMessagingId +
+        '&GroupSubMessagingId=' +
+        GroupSubMessagingId,
       {
         headers: accesstoken,
       }
@@ -330,7 +363,13 @@ export class FilingsService {
 
   GetFilesInSupportingFilesSection(OrgId: any, FilingId: any, caseId: any, accesstoken: any) {
     return this.httpClient.get(
-      this.globalApi.GetFilesInSupportingFilesSection + '?OrgId=' + OrgId + '&FilingId=' + FilingId + '&caseId=' + caseId,
+      this.globalApi.GetFilesInSupportingFilesSection +
+        '?OrgId=' +
+        OrgId +
+        '&FilingId=' +
+        FilingId +
+        '&caseId=' +
+        caseId,
       {
         headers: accesstoken,
       }
@@ -339,7 +378,13 @@ export class FilingsService {
 
   GetFoldersInSupportingFilesSection(OrgId: any, FilingId: any, caseId: any, accesstoken: any) {
     return this.httpClient.get(
-      this.globalApi.GetFoldersInSupportingFilesSection + '?OrgId=' + OrgId + '&FilingId=' + FilingId + '&caseId=' + caseId,
+      this.globalApi.GetFoldersInSupportingFilesSection +
+        '?OrgId=' +
+        OrgId +
+        '&FilingId=' +
+        FilingId +
+        '&caseId=' +
+        caseId,
       {
         headers: accesstoken,
       }
@@ -355,16 +400,16 @@ export class FilingsService {
   ) {
     return this.httpClient.get(
       this.globalApi.AddFilesAndFoldersToSupportingFilesSection +
-      '?OrgId=' +
-      OrgId +
-      '&FilingId=' +
-      FilingId +
-      '&caseId=' +
-      caseIdzero +
-      '&FileIds=' +
-      FileIds +
-      '&FolderIds=' +
-      FolderIds,
+        '?OrgId=' +
+        OrgId +
+        '&FilingId=' +
+        FilingId +
+        '&caseId=' +
+        caseIdzero +
+        '&FileIds=' +
+        FileIds +
+        '&FolderIds=' +
+        FolderIds,
       {
         headers: accesstoken,
       }
@@ -377,12 +422,12 @@ export class FilingsService {
   deleteshipmenttrackingnumber(OrgId, FilingId, TrackingNumber, accesstoken) {
     return this.httpClient.get(
       this.globalApi.deleteshipmenttrackingnumber +
-      '?OrgId=' +
-      OrgId +
-      '&FilingId=' +
-      FilingId +
-      '&TrackingNumber=' +
-      TrackingNumber,
+        '?OrgId=' +
+        OrgId +
+        '&FilingId=' +
+        FilingId +
+        '&TrackingNumber=' +
+        TrackingNumber,
       { headers: accesstoken }
     );
   }

@@ -3,7 +3,7 @@ import { ValidationService } from '@app/shared/service/validation.service';
 import { AdminService } from '@app/law-office-admin/admin.service';
 import { DataService } from '@app/shared/service/data.service';
 import { Router } from '@angular/router';
-import {  FormGroup, FormBuilder, FormArray} from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 import { AdminpermissionService } from '@app/auth-guard/admin/adminpermission.service';
@@ -38,7 +38,7 @@ export class TeamInviteComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private permissionService: AdminpermissionService,
     private toaster: ToastrService,
-    private commonService:CommonService
+    private commonService: CommonService
   ) {}
   ngOnInit() {
     this.teamInviteForm = this.fb.group({
@@ -85,7 +85,7 @@ export class TeamInviteComponent implements OnInit {
 
   sendInvitation1(): void {}
 
-   sendInvitation() {
+  sendInvitation() {
     this.spinner.show();
     this.teamInvites = this.teamInviteForm.value['teamInvite'];
     this.teamInvites.forEach(function (newItem: any) {

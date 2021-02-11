@@ -19,7 +19,6 @@ import { PasswordValidator } from '@app/shared/helpers/PasswordValidator';
   styleUrls: ['./client-applicant-sponsor-signin.component.scss'],
 })
 export class ClientApplicantSponsorSigninComponent implements OnInit {
-  
   @Input() Role: string;
   loginForm: any;
   isLoading: false;
@@ -76,7 +75,6 @@ export class ClientApplicantSponsorSigninComponent implements OnInit {
       }
     );
   }
-
 
   login() {
     sessionStorage.clear();

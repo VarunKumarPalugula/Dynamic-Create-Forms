@@ -118,7 +118,7 @@ export class NonregisteredclientinvitiesComponent implements OnInit {
       UserName: this.Valid.validateform.UserName,
       Mobile: this.Valid.validateform.MobileNumber,
       Email: this.Valid.validateform.Email,
-      Password: this.Valid.validateform.Password
+      Password: this.Valid.validateform.Password,
     });
   }
 

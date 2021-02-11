@@ -5,7 +5,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AdminpermissionService } from '@app/auth-guard/admin/adminpermission.service';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-allfillings',
   templateUrl: './allfillings.component.html',
@@ -24,7 +23,7 @@ export class AllfillingsComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private permissionService: AdminpermissionService,
     private toaster: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.FillingPermissions = this.permissionService.FillingPermissions();
@@ -65,7 +64,7 @@ export class AllfillingsComponent implements OnInit {
   }
 
   selectFillingStatus(status) {
-        this.searchFilter = status;
+    this.searchFilter = status;
     this.fillingList - this.fillingList.filter((item) => item.FilingStatus === status);
   }
 }

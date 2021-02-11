@@ -8,9 +8,8 @@ describe('TravelDocumentDetailsPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TravelDocumentDetailsPopupComponent ]
-    })
-    .compileComponents();
+      declarations: [TravelDocumentDetailsPopupComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

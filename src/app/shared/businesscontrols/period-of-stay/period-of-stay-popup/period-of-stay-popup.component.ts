@@ -5,12 +5,11 @@ import { CommonService } from '../../../../shared/service/common.service';
 @Component({
   selector: 'app-period-of-stay-popup',
   templateUrl: './period-of-stay-popup.component.html',
-  styleUrls: ['./period-of-stay-popup.component.scss']
+  styleUrls: ['./period-of-stay-popup.component.scss'],
 })
 export class PeriodOfStayPopupComponent implements OnInit {
-
   @Output() emitCloseModel = new EventEmitter();
-  
+
   @Input() isCard = false;
 
   @Input() set data(value: any) {
@@ -22,23 +21,18 @@ export class PeriodOfStayPopupComponent implements OnInit {
 
   posValidationRules: FormGroup;
 
-  constructor(
-    private readonly formBuilder: FormBuilder,
-    private commonService: CommonService
-  ) { }
+  constructor(private readonly formBuilder: FormBuilder, private commonService: CommonService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   formGroupData() {
     this.posValidationRules = this.formBuilder.group({
       SubjectName: [null],
       StayedFrom: [null],
       StayedTill: [null],
-      NoOfDaysOutsideUSA: [null]
+      NoOfDaysOutsideUSA: [null],
     });
   }
-
 
   formData(contl) {
     return this.posValidationRules.get(contl).value;
@@ -48,11 +42,10 @@ export class PeriodOfStayPopupComponent implements OnInit {
     if (this.posValidationRules.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.posValidationRules.value)
+    this.emitCloseModel.emit(this.posValidationRules.value);
   }
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
+    this.emitCloseModel.emit(null);
   }
-
 }

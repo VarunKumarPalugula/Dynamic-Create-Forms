@@ -71,7 +71,7 @@
     <form [formGroup]="TaskForm">
       <div class="gl-modal-header p-20 bg-model text-white text-align">
         <span class="fs-16 mb-0 d-ib">{{taskTittleName}}</span>
-        <span class="modal-close close" (click)="closeTask('close click')">
+        <span class="modal-close close" ngbAutofocus (click)="closeTask('close click')">
           <i class="fa fa-times text-white" aria-hidden="true"></i>
         </span>
       </div>
@@ -273,7 +273,7 @@
 <!--*****************  Archive task group model ********************* -->
 <ng-template #deleteTaskGroupPopup let-d="dismiss" id="deleteTaskGroupPopup">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeConfirmDelete('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeConfirmDelete('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -1038,7 +1038,7 @@
 <!--*****************  Archive task model ********************* -->
 <ng-template #deletePopUpTemp let-d="dismiss" id="deletePopUpTemp">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="Closedelete('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="Closedelete('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -1062,7 +1062,7 @@
     <form [formGroup]="TaskForm">
       <div class="gl-modal-header p-20 bg-model text-white text-align">
         <span class="fs-16 mb-0 d-ib">{{subtaskTittleName}}</span>
-        <span class="modal-close close" (click)="closeSubTask('close click')">
+        <span class="modal-close close" ngbAutofocus (click)="closeSubTask('close click')">
           <i class="fa fa-times text-white" aria-hidden="true"></i>
         </span>
       </div>
@@ -1254,7 +1254,7 @@
 <!--*****************  Archive task model ********************* -->
 <ng-template #deleteSubTaskPopUpTemp let-d="dismiss" id="deleteSubTaskPopUpTemp">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="CloseSubTaskPop('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="CloseSubTaskPop('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -1279,7 +1279,7 @@
 <!--*****************  conform complete task model ********************* -->
 <ng-template #markascomtask let-d="dismiss" id="markascomtask">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeMarkAsCompletePopUp('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeMarkAsCompletePopUp('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -1299,7 +1299,7 @@
 <!--*****************  conform reviewed complete task model ********************* -->
 <ng-template #markasreviewedtask let-d="dismiss" id="markasreviewedtask">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeMarkAsReviewedCompletePopUp('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeMarkAsReviewedCompletePopUp('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -1320,7 +1320,7 @@
 <!--*****************  conform complete task model ********************* -->
 <ng-template #markascomsubtask let-d="dismiss" id="markascomsubtask">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeMarkAsCompleteSubPopUp('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeMarkAsCompleteSubPopUp('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -1342,7 +1342,7 @@
 <!--*****************  conform reviewed complete sub task model ********************* -->
 <ng-template #markasreviewedsubtask let-d="dismiss" id="markasreviewedsubtask">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeMarkAsReviewedSubTaskCompletePopUp('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeMarkAsReviewedSubTaskCompletePopUp('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -1369,7 +1369,7 @@
     <form [formGroup]="TopicForm">
       <div class="gl-modal-header p-20 bg-model text-white text-align">
         <span class="fs-16 mb-0 d-ib">Create New Topic</span>
-        <span class="modal-close close" (click)="closeCreateTopic('close click')">
+        <span class="modal-close close" ngbAutofocus (click)="closeCreateTopic('close click')">
           <i class="fa fa-times text-white" aria-hidden="true"></i>
         </span>
       </div>
@@ -1596,7 +1596,7 @@
 
 <ng-template #deletefilePopUpTemp let-d="dismiss" id="deletefilePopUpTemp">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="clientCommonService.closeModal('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="clientCommonService.closeModal('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -1613,7 +1613,7 @@
 
 <ng-template #deleteEduInfo let-d="dismiss" id="deleteEduInfo">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="clientCommonService.closeModal('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="clientCommonService.closeModal('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -1631,7 +1631,7 @@
 </ng-template>
 <ng-template #afterTopicCreate let-d="dismiss" id="afterTopicCreate">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeMarkAsReviewedSubTaskCompletePopUp('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="closeMarkAsReviewedSubTaskCompletePopUp('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -1647,7 +1647,7 @@
 </ng-template>
 <ng-template #deletePosInfo let-d="dismiss" id="deletePosInfo">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="clientCommonService.closeModal('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="clientCommonService.closeModal('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>

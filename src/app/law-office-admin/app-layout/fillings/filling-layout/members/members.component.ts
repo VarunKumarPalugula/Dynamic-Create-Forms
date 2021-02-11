@@ -167,7 +167,7 @@ export class MembersComponent implements OnInit {
           var onlyInTeam = this.selectedTeamMembers.filter(comparerBlockedTeam(this.blockedTeamMembersList));
           var onlyInBlock = this.blockedTeamMembersList.filter(comparerBlockedTeam(this.selectedTeamMembers));
           this.selectedTeamMembers = onlyInTeam.concat(onlyInBlock);
-          this.selectedTeamMembers = this.selectedTeamMembers.filter(x=> x.TeamMemId != 0); 
+          this.selectedTeamMembers = this.selectedTeamMembers.filter((x) => x.TeamMemId != 0);
         },
         (err) => {
           this.toaster.error('error occured');

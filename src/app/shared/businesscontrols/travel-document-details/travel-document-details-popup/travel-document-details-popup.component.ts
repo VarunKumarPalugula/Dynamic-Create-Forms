@@ -7,11 +7,9 @@ import { JsonSectionValidationService } from '@app/shared/service/json-section-v
 @Component({
   selector: 'app-travel-document-details-popup',
   templateUrl: './travel-document-details-popup.component.html',
-  styleUrls: ['./travel-document-details-popup.component.css']
+  styleUrls: ['./travel-document-details-popup.component.css'],
 })
 export class TravelDocumentDetailsPopupComponent implements OnInit {
-
-
   @Output() emitCloseModel = new EventEmitter();
 
   @Input() isCard = false;
@@ -25,18 +23,15 @@ export class TravelDocumentDetailsPopupComponent implements OnInit {
 
   travelDocumentValidationRules: FormGroup;
 
-  constructor(
-    private readonly formBuilder: FormBuilder,
-    private commonService: CommonService
-  ) { }
+  constructor(private readonly formBuilder: FormBuilder, private commonService: CommonService) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
   formGroupData() {
     this.travelDocumentValidationRules = this.formBuilder.group({
       PassportOrTravelDocumentNumber: [null],
       DatePassportOrTravelDocumentIssued: [null],
       DatePassportOrTravelDocumentExpires: [null],
-      PassportOrTravelDocumentCountryOfIssuance: [null]
+      PassportOrTravelDocumentCountryOfIssuance: [null],
     });
   }
 
@@ -48,11 +43,10 @@ export class TravelDocumentDetailsPopupComponent implements OnInit {
     if (this.travelDocumentValidationRules.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.travelDocumentValidationRules.value)
+    this.emitCloseModel.emit(this.travelDocumentValidationRules.value);
   }
 
   cancel(): void {
     this.emitCloseModel.emit(null);
   }
-
 }

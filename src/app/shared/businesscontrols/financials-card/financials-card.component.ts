@@ -10,8 +10,8 @@ export class FinancialsCardComponent implements OnInit {
   finInfo: any;
   @Output()
   editFininfo = new EventEmitter();
-  loginUser: any
-  constructor() { }
+  loginUser: any;
+  constructor() {}
 
   ngOnInit() {
     this.loginUser = sessionStorage.getItem('Login_User');

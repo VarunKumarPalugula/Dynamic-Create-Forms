@@ -8,9 +8,8 @@ describe('AddressHistoryComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddressHistoryComponent ]
-    })
-    .compileComponents();
+      declarations: [AddressHistoryComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

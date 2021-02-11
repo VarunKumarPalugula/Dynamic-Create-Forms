@@ -61,7 +61,7 @@ export class AdminClientListComponent implements OnInit {
   ngOnInit() {
     // here we are getting role team member/primary admin/sub admin
     this.isTeamMemberAuthorize = this.permissionService.isGetAcess();
-    this.isSubAdminAcess=this.permissionService.isSubAdminGetAcess();
+    this.isSubAdminAcess = this.permissionService.isSubAdminGetAcess();
     this.loadSubAdminPermissions = this.permissionService.GenericPermissions();
     this.adminClientsList();
     this.adminInvitedClientsList();
@@ -150,26 +150,34 @@ export class AdminClientListComponent implements OnInit {
       clientinviteinfo = this.clientInviteData;
     }
     this.OrgId = sessionStorage.getItem('OrganisationID');
-    this.clientService.resendAdminClientInvitation(this.OrgId, EDStatus, clientinviteinfo, this.token, this.commonService.getEnvDetails()).subscribe(
-      (res: any) => {
-        this.spinner.hide();
-        if (res.Status === 1) {
-          this.recordDeltedMessage();
+    this.clientService
+      .resendAdminClientInvitation(
+        this.OrgId,
+        EDStatus,
+        clientinviteinfo,
+        this.token,
+        this.commonService.getEnvDetails()
+      )
+      .subscribe(
+        (res: any) => {
+          this.spinner.hide();
+          if (res.Status === 1) {
+            this.recordDeltedMessage();
+          }
+          this.response = res;
+          this.adminInvitedClientsList();
+          if (this.response.Status === 1) {
+            this.Close('close click');
+          } else if (this.response.Status === 2) {
+            this.inviteName = clientinviteinfo.FullName;
+            this.Modelsent(popup);
+          }
+        },
+        (err) => {
+          this.spinner.hide();
+          this.toaster.error('error occured');
         }
-        this.response = res;
-        this.adminInvitedClientsList();
-        if (this.response.Status === 1) {
-          this.Close('close click');
-        } else if (this.response.Status === 2) {
-          this.inviteName = clientinviteinfo.FullName;
-          this.Modelsent(popup);
-        }
-      },
-      (err) => {
-        this.spinner.hide();
-        this.toaster.error('error occured');
-      }
-    );
+      );
   }
 
   //inactive client member

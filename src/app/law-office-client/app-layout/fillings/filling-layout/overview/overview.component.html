@@ -56,7 +56,7 @@
   <form [formGroup]="InviteForm">
     <div class="gl-modal-header p-20 bg-model text-white text-align">
       <span class="fs-16 mb-0 d-ib">Invite New Applicant Member</span>
-      <span class="modal-close close" (click)="Closeinvitenewteammember('close')">
+      <span class="modal-close close" ngbAutofocus (click)="Closeinvitenewteammember('close')">
         <i class="fa fa-times" aria-hidden="true"></i>
       </span>
     </div>
@@ -113,7 +113,7 @@
 <ng-template #assignapp let-d="dismiss" id="AssignApplicant">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Assign Applicant</span>
-    <span class="modal-close close" (click)="CloseaddRelatedfilings('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="CloseaddRelatedfilings('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -175,7 +175,7 @@
 <ng-template #AssignApplicant let-d="dismiss" id="openApplicants">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Assign Applicant</span>
-    <span class="modal-close close" (click)="closeModal()">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -228,7 +228,7 @@
 <!-- approve Modal -->
 <ng-template #approve let-d="dismiss" id="approveModel">
   <div class="gl-modal-header p-20 bg-white text-white text-align">
-    <span class="modal-close close" (click)="CloseApprove('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="CloseApprove('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -629,7 +629,7 @@
 <ng-template #view let-d="dismiss" id="ModelviewFiling">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Filing Details</span>
-    <span class="modal-close close" (click)="CloseviewFiling('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="CloseviewFiling('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -701,7 +701,7 @@
 <ng-template #note let-d="dismiss" id="Modeladdnote">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Add Note</span>
-    <span class="modal-close close" (click)="Closeaddnote('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="Closeaddnote('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -737,7 +737,7 @@
 <ng-template #track let-d="dismiss" id="Modeladdtrack">
   <div class="gl-modal-header p-20 bg-model text-white text-align">
     <span class="fs-16 mb-0 d-ib">Add Shipment</span>
-    <span class="modal-close close" (click)="Closeaddtrack('close click')">
+    <span class="modal-close close" ngbAutofocus (click)="Closeaddtrack('close click')">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>
@@ -790,7 +790,7 @@
 <!-- *****************end Add tracking *********************-->
 <ng-template #deleteshipmentPopUp let-d="dismiss" id="deleteshipmentPopUp">
   <div class="lo-modal--header p-20">
-    <span class="modal-close close" (click)="closeModal()">
+    <span class="modal-close close" ngbAutofocus (click)="closeModal()">
       <i class="fa fa-times" aria-hidden="true"></i>
     </span>
   </div>

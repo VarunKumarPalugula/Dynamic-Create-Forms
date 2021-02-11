@@ -36,7 +36,7 @@ export class CasesubmissionsComponent implements OnInit {
   caseSubmissionsDataForPrivacy: any;
   members: any = [];
   selectedClientUserIds: any = [];
-  caseActionTitle:string = 'Add New'
+  caseActionTitle: string = 'Add New';
   constructor(
     private modalService: NgbModal,
     private route: Router,
@@ -82,7 +82,7 @@ export class CasesubmissionsComponent implements OnInit {
     this.caseSubmissionForm.get('FilingType').patchValue('H1');
     this.caseSubmissionForm.get('FilingId').patchValue(sessionStorage.getItem('FillingId'));
     this.caseSubmissionForm.get('CreatedById').patchValue(sessionStorage.getItem('LoguserId'));
-    
+
     if (!this.caseSubmissionForm.value.CaseId) {
       this.spinner.show();
       this.filingService.postCaseSubmissions(this.orgId, this.caseSubmissionForm.value).subscribe((res: any) => {
@@ -124,7 +124,7 @@ export class CasesubmissionsComponent implements OnInit {
   }
   // edit Single case
   editCaseSubmission(data: any, specificCaseData?) {
-    this.caseActionTitle = 'Edit'
+    this.caseActionTitle = 'Edit';
     this.caseSubmissionForm.patchValue(specificCaseData);
     this.addNewCaseSubModal = this.modalService.open(data, { centered: true, keyboard: false, backdrop: 'static' });
   }
@@ -165,9 +165,12 @@ export class CasesubmissionsComponent implements OnInit {
     );
   }
   caseSubPrivacy(data: any, caseSubmission: any) {
-    if (!this.commonService.checkNullorUndefined(caseSubmission.CaseAccessClientMemberIds) && caseSubmission.CaseAccessClientMemberIds) {
-      caseSubmission.CaseAccessClientMemberIds.forEach(element => {
-        let index = this.clientclientTeammembersList.findIndex(c => c.LawOfficeClientID == element);
+    if (
+      !this.commonService.checkNullorUndefined(caseSubmission.CaseAccessClientMemberIds) &&
+      caseSubmission.CaseAccessClientMemberIds
+    ) {
+      caseSubmission.CaseAccessClientMemberIds.forEach((element) => {
+        let index = this.clientclientTeammembersList.findIndex((c) => c.LawOfficeClientID == element);
         if (index != -1) {
           this.clientclientTeammembersList[index].selected = true;
         }
@@ -189,11 +192,9 @@ export class CasesubmissionsComponent implements OnInit {
     // }
     this.caseSubmissionsDataForPrivacy = caseSubmission;
     this.caseSubprivacyModel = this.modalService.open(data, { size: 'lg' });
-
   }
 
   caseSubmissionsPrivacy(caseId: any) {
-   
     this.members = [];
     this.clientclientTeammembersList.forEach((element, index) => {
       if (this.clientclientTeammembersList[index].selected == true) {

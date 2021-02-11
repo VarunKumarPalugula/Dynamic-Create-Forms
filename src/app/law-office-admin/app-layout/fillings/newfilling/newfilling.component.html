@@ -159,7 +159,7 @@
   <form [formGroup]="fillingBuildForm" autocomplete="off" (ngSubmit)="requestForFilling()">
     <div class="gl-modal-header p-20 bg-model text-white text-align">
       <span class="fs-16 mb-0 d-ib">Request it now for new Filing</span>
-      <span class="modal-close close" (click)="closerequestForFilling('close click')">
+      <span class="modal-close close" ngbAutofocus (click)="closerequestForFilling('close click')">
         <i class="fa fa-times text-white" aria-hidden="true"></i>
       </span>
     </div>

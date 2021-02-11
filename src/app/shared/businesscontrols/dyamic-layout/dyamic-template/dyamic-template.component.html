@@ -10,11 +10,11 @@
         </div>
 
         <ng-template #checkboxContlIf>
-            <div> {{ displayValue(parent, parentChild, fields.name) }} </div>
+            <div> {{ displayValue(parent, parentChild, fields) }} </div>
         </ng-template>
 
         <ng-template #checkboxContlEls>
-            <input [name]="fields.name" type="checkbox" [value]="displayValue(parent, parentChild, fields.name)"
+            <input [name]="fields.name" type="checkbox" [value]="displayValue(parent, parentChild, fields)"
                 [checked]="fields.value" (change)="change($event.target.checked, fields, parent, parentChild)">
         </ng-template>
 
@@ -29,27 +29,27 @@
         <div *ngIf="readOnlyObj(applicantKey, parent); then radioContlIf else radioContlEls"> </div>
 
         <ng-template #radioContlIf>
-            <div> {{ displayValue(parent, parentChild, fields.name) }} </div>
+            <div> {{ displayValue(parent, parentChild, fields) }} </div>
         </ng-template>
 
         <ng-template #radioContlEls>
             <div class="d__flex padding">
                 <div *ngFor="let radioOpt of fields.values" class="padding">
                     <input type="radio" [name]="fields.name" [id]="radioOpt.id"
-                        [checked]="displayValue(parent, parentChild, fields.name) == radioOpt.id"
+                        [checked]="displayValue(parent, parentChild, fields) == radioOpt.id"
                         (change)="change(radioOpt.id, fields, parent, parentChild)">
                     {{radioOpt.text}}
                 </div>
             </div>
         </ng-template>
 
-        <div *ngIf="fields[displayValue(parent, parentChild, fields.name)]" class="d__flex">
+        <div *ngIf="fields[displayValue(parent, parentChild, fields)]" class="d__flex">
 
             <div
-                *ngFor="let hiddenProp of fields[displayValue(parent, parentChild, fields.name)]; let i = index; trackBy: trackByFn">
+                *ngFor="let hiddenProp of fields[displayValue(parent, parentChild, fields)]; let i = index; trackBy: trackByFn">
 
                 <app-dyamic-template [fields]="hiddenProp" [parent]="parent" [applicantKey]="applicantKey"
-                    [parentChild]="displayValue(parent, parentChild, fields.name)"></app-dyamic-template>
+                    [parentChild]="displayValue(parent, parentChild, fields)"></app-dyamic-template>
             </div>
 
         </div>
@@ -66,7 +66,7 @@
         <div *ngIf="readOnlyObj(applicantKey, parent);then textboxContlIf else textboxContlEls"></div>
 
         <ng-template #textboxContlIf>
-            <div> {{ displayValue(parent, parentChild, fields.name) }} </div>
+            <div> {{ displayValue(parent, parentChild, fields) }} </div>
         </ng-template>
 
         <ng-template #textboxContlEls>
@@ -76,7 +76,7 @@
             <ng-template #textboxChildContlIf>
 
                 <input [name]="fields.name" class="form-control" type="text" #textField
-                    [value]="displayValue(parent, parentChild, fields.name)"
+                    [value]="displayValue(parent, parentChild, fields)"
                     (input)="change($event.target.value, fields, parent, parentChild);">
 
                 <span *ngIf="!commonService.fileData[applicantKey][parent][parentChild][fields.name].valid" class="danger">
@@ -91,7 +91,7 @@
             <ng-template #textboxChildContlEls>
 
                 <input [name]="fields.name" class="form-control" type="text" #textField
-                    [value]="displayValue(parent, parentChild, fields.name)"
+                    [value]="displayValue(parent, parentChild, fields)"
                     (input)="change($event.target.value, fields, parent, parentChild);">
 
                 <span *ngIf="!commonService.fileData[applicantKey][parent][fields.name].valid" class="danger">
@@ -116,11 +116,11 @@
         <div *ngIf="readOnlyObj(applicantKey, parent);then textareaContlIf else textareaContlEls"></div>
 
         <ng-template #textareaContlIf>
-            <div> {{ displayValue(parent, parentChild, fields.name) }} </div>
+            <div> {{ displayValue(parent, parentChild, fields) }} </div>
         </ng-template>
 
         <ng-template #textareaContlEls>
-            <textarea [name]="fields.name" [value]="displayValue(parent, parentChild, fields.name)"
+            <textarea [name]="fields.name" [value]="displayValue(parent, parentChild, fields)"
                 (input)="change($event.target.value, fields, parent, parentChild);"> </textarea>
         </ng-template>
 
@@ -135,11 +135,11 @@
         <div *ngIf="readOnlyObj(applicantKey, parent);then dateContlIf else dateContlEls"></div>
 
         <ng-template #dateContlIf>
-            <div> {{ displayValue(parent, parentChild, fields.name) }}</div>
+            <div> {{ displayValue(parent, parentChild, fields) | date: 'MM/dd/yyyy' }}</div>
         </ng-template>
 
         <ng-template #dateContlEls>
-            <input type="date" class="form-control" [value]="displayValue(parent, parentChild, fields.name)"
+            <input type="date"  [max]="getToday()" class="form-control" [value]="displayValue(parent, parentChild, fields)"
                 [name]="fields.name" (change)="change($event.target.value, fields, parent, parentChild);" />
         </ng-template>
 
@@ -155,12 +155,12 @@
         <div *ngIf="readOnlyObj(applicantKey, parent);then dropdownContlIf else dropdownContlEls"></div>
 
         <ng-template #dropdownContlIf>
-            <div> {{ displayValue(parent, parentChild, fields.name) }}</div>
-            <div *ngIf="fields[displayValue(parent, parentChild, fields.name)]">
+            <div> {{ displayValue(parent, parentChild, fields) }}</div>
+            <div *ngIf="fields[displayValue(parent, parentChild, fields)]">
                 <div
                     *ngFor="let hiddenProp of fields[displayValue(parent, parentChild, fields.name)]; let i = index; trackBy: trackByFn">
                     <app-dyamic-template [fields]="hiddenProp" [applicantKey]="applicantKey"
-                        [child]="displayValue(parent, parentChild, fields.name)"></app-dyamic-template>
+                        [child]="displayValue(parent, parentChild, fields)"></app-dyamic-template>
                 </div>
             </div>
         </ng-template>
@@ -171,7 +171,7 @@
 
             <ng-template #dropdownChildContlIf>
 
-                <select [name]="fields.name" class="form-control" #selectVal
+                <select [id]="fields.name" [name]="fields.name" class="form-control" #selectVal
                     [(ngModel)]="commonService.fileData[applicantKey][parent][parentChild][fields.name].value"
                     (change)="change(selectVal.value, fields, parent, parentChild);">
                     <option *ngFor="let value of fields.list" [value]="value.text">{{ value.text }} </option>
@@ -181,7 +181,7 @@
 
             <ng-template #dropdownChildContlEls>
 
-                <select [name]="fields.name" class="form-control" #selectVal
+                <select [id]="fields.name" [name]="fields.name" class="form-control" #selectVal
                     [(ngModel)]="commonService.fileData[applicantKey][parent][fields.name].value"
                     (change)="change(selectVal.value, fields, parent, parentChild);">
                     <option *ngFor="let value of fields.list" [value]="value.text">{{ value.text }} </option>
@@ -206,7 +206,7 @@
 
     </div>
 
-    <div *ngSwitchCase="'CurrentSpouse'" [ngStyle]="{'width': '900px' }">
+    <!-- <div *ngSwitchCase="'CurrentSpouse'" [ngStyle]="{'width': '900px' }">
         <app-spouse-details [fields]="fields" [applicantKey]="applicantKey"></app-spouse-details>
     </div>
 
@@ -239,12 +239,12 @@
         <app-country-details [data]="commonService.fileData[applicantKey][parent].finalObj" [fields]="fields"
             [isCard]="commonService.fileData[applicantKey][parent].readOnly"
             (detailsEmit)="detailsEmit($event, parent, fields)" [applicantKey]="applicantKey"></app-country-details>
-    </div>
+    </div> -->
 
     <div *ngSwitchCase="'empSupportDocs'" [ngStyle]="{'width': '900px' }">
         <app-employement-support-documents [applicantKey]="applicantKey"></app-employement-support-documents>
     </div>
-
+<!-- 
     <div *ngSwitchCase="'periodOfStay'" [ngStyle]="{'width': '900px' }">
         <app-period-of-stay [applicantKey]="applicantKey"></app-period-of-stay>
     </div>
@@ -258,7 +258,7 @@
     </div>
 
     <div *ngSwitchCase="'i94Record'" [ngStyle]="{'width': '900px' }">
-        <app-i94-record [applicantKey]="applicantKey"></app-i94-record>
-    </div>
+        <app-i94-record [applicantKey]="applicantKey"></app-i94-record> 
+    </div> -->
 
 </div>

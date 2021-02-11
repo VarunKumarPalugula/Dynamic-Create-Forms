@@ -65,7 +65,7 @@ export class SettingsComponent implements OnInit {
   options: any = { month: 'numeric', day: 'numeric', year: 'numeric' };
   templateTableDta: any;
   filingTypes: any;
-  
+
   activeid;
   t;
   constructor(
@@ -80,7 +80,7 @@ export class SettingsComponent implements OnInit {
     private toaster: ToastrService,
     public commonService: CommonService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.accountbuildForm();
@@ -197,7 +197,7 @@ export class SettingsComponent implements OnInit {
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(100),
-        Validators.pattern('[a-zA-Z0-9]*$')
+        Validators.pattern('[a-zA-Z0-9]*$'),
       ]);
     } else {
       selectedroleControl.clearValidators();
@@ -694,7 +694,7 @@ export class SettingsComponent implements OnInit {
       this.primaryattorneyObj.PrimaryAttorneyId = 0;
     }
     let formattedDate = new Date(this.primaryattorneyObj.DateOfAccredition);
-    this.primaryattorneyObj.DateOfAccredition = formattedDate.toLocaleDateString("en-US", this.options);
+    this.primaryattorneyObj.DateOfAccredition = formattedDate.toLocaleDateString('en-US', this.options);
     this.adminService
       .primaryattorney(sessionStorage.getItem('OrganisationID'), this.primaryattorneyObj, this.token)
       .subscribe(
@@ -959,23 +959,20 @@ export class SettingsComponent implements OnInit {
   }
   getTemplates() {
     this.spinner.hide();
-    this.commonService.getSavedTemplates(sessionStorage.getItem('OrganisationID')).subscribe(
-      (res: any) => {
-        this.templatesData = res;
-        let arrays = this.templatesData.reduce(function(a, e) {
-          let estKey = (e['DisplayTemplateTitle']); 
-          (a[estKey] ? a[estKey] : (a[estKey] = null || [])).push(e);
-          return a;
-        }, {});
-      this.templateTableDta =  Object.values(arrays).map(x=> x[0])
-      } 
-    )
+    this.commonService.getSavedTemplates(sessionStorage.getItem('OrganisationID')).subscribe((res: any) => {
+      this.templatesData = res;
+      let arrays = this.templatesData.reduce(function (a, e) {
+        let estKey = e['DisplayTemplateTitle'];
+        (a[estKey] ? a[estKey] : (a[estKey] = null || [])).push(e);
+        return a;
+      }, {});
+      this.templateTableDta = Object.values(arrays).map((x) => x[0]);
+    });
   }
-  viewTemplate(templateId:any) {
+  viewTemplate(templateId: any) {
     this.router.navigate(['/admin/settings/template', templateId]);
   }
-  
-  
+
   //Get Fillings
   GetFillingTypes() {
     this.spinner.show();

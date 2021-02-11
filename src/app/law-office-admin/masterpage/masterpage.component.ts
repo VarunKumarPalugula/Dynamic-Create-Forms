@@ -49,7 +49,7 @@ export class MasterpageComponent implements OnInit {
   ReceiptForm: FormGroup;
   LCAForm: FormGroup;
   logOutConfrimation: any;
-  Shipmenttittle:any;
+  Shipmenttittle: any;
   FillingPermissions: any;
   constructor(
     config: NgbDropdownConfig,
@@ -176,31 +176,31 @@ export class MasterpageComponent implements OnInit {
   }
 
   GetFiledFilings() {
-      this.adminService.GetFiledFilings(sessionStorage.getItem('OrganisationID')).subscribe(
-        (res: any[]) => {
-          for (var i = 0; i < res.length; i++) {
-            if (res[i].FilingStatus == null) {
-              res[i].FilingStatus = 'Pending';
-            } else {
-              res[i].FilingStatus = res[i].FilingStatus;
-            }
-            this.fillingList.push(res[i]);
+    this.adminService.GetFiledFilings(sessionStorage.getItem('OrganisationID')).subscribe(
+      (res: any[]) => {
+        for (var i = 0; i < res.length; i++) {
+          if (res[i].FilingStatus == null) {
+            res[i].FilingStatus = 'Pending';
+          } else {
+            res[i].FilingStatus = res[i].FilingStatus;
           }
-          this.fillingList = res.reverse();
-          this.filingDropDownSettings = {
-            singleSelection: true,
-            idField: 'FillingId',
-            textField: 'FName',
-            selectAllText: 'Select All',
-            unSelectAllText: 'UnSelect All',
-            itemsShowLimit: this.fillingList.length,
-            allowSearchFilter: true,
-          };
-        },
-        (err) => {
-          this.toaster.error('error occured');
+          this.fillingList.push(res[i]);
         }
-      );
+        this.fillingList = res.reverse();
+        this.filingDropDownSettings = {
+          singleSelection: true,
+          idField: 'FillingId',
+          textField: 'FName',
+          selectAllText: 'Select All',
+          unSelectAllText: 'UnSelect All',
+          itemsShowLimit: this.fillingList.length,
+          allowSearchFilter: true,
+        };
+      },
+      (err) => {
+        this.toaster.error('error occured');
+      }
+    );
   }
 
   sendInvitation() {

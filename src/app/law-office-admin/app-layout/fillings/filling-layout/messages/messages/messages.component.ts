@@ -115,7 +115,7 @@ export class MessagesComponent implements OnInit {
     this.filingService.GetFilingAdminTeammembers(clientobj, this.token).subscribe(
       (res: any) => {
         this.adminteamMembersList = res;
-        this.adminteamMembersList = this.adminteamMembersList.filter(x=>x.Status == true);
+        this.adminteamMembersList = this.adminteamMembersList.filter((x) => x.Status == true);
         this.adminteamMembersDropsownSettings = {
           singleSelection: false,
           idField: 'AdminID',
@@ -230,7 +230,7 @@ export class MessagesComponent implements OnInit {
         Description: this.TopicForm.value.description,
         AdminIds: this.adminmemberids.toString(),
         LawOfficeClientIds: this.memberids.toString(),
-        IsUpdateAction: false
+        IsUpdateAction: false,
       };
       var tokenid = 'Authorization:Bearer ' + sessionStorage.getItem('A_AccessToken');
       this.filingService.CreateTopicForFiling(data, tokenid).subscribe(

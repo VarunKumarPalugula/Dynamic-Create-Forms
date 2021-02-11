@@ -142,7 +142,7 @@ import { CaseSubmissionsComponent } from './app-layout/fillings/filling-layout/c
     ApplicantProfileDetailsComponent,
     CaseSubmissionsComponent,
   ],
-  
+
   // schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     ConnectionService,

@@ -5,12 +5,12 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 @Component({
   selector: 'app-address-history-popup',
   templateUrl: './address-history-popup.component.html',
-  styleUrls: ['./address-history-popup.component.scss']
+  styleUrls: ['./address-history-popup.component.scss'],
 })
 export class AddressHistoryPopupComponent implements OnInit {
-  isAptSteFlrNumberDisabled= true
+  isAptSteFlrNumberDisabled = true;
   @Output() emitCloseModel = new EventEmitter();
-  
+
   @Input() isCard = false;
 
   @Input() set data(value: any) {
@@ -22,13 +22,9 @@ export class AddressHistoryPopupComponent implements OnInit {
 
   addressDetailsForm: FormGroup;
 
-  constructor(
-    private readonly formBuilder: FormBuilder,
-    private commonService: CommonService
-  ) { }
+  constructor(private readonly formBuilder: FormBuilder, private commonService: CommonService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   formGroupData() {
     this.addressDetailsForm = this.formBuilder.group({
@@ -43,7 +39,7 @@ export class AddressHistoryPopupComponent implements OnInit {
       Fax: [null],
       DayTimePhone: [null],
       MobilePhone: [null],
-      Email: [null]
+      Email: [null],
     });
   }
 
@@ -55,11 +51,11 @@ export class AddressHistoryPopupComponent implements OnInit {
     if (this.addressDetailsForm.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.addressDetailsForm.value)
+    this.emitCloseModel.emit(this.addressDetailsForm.value);
   }
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
+    this.emitCloseModel.emit(null);
   }
 
   changeAptSteFlr() {
@@ -74,7 +70,7 @@ export class AddressHistoryPopupComponent implements OnInit {
         Validators.required,
         Validators.minLength(4),
         Validators.maxLength(100),
-        Validators.pattern('[a-zA-Z0-9]*$')
+        Validators.pattern('[a-zA-Z0-9]*$'),
       ]);
     } else {
       selectedroleControl.clearValidators();
@@ -83,5 +79,4 @@ export class AddressHistoryPopupComponent implements OnInit {
     }
     selectedroleControl.updateValueAndValidity();
   }
-
 }

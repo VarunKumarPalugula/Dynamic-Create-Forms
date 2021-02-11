@@ -56,7 +56,7 @@ export class MembersComponent implements OnInit {
     private toaster: ToastrService,
     private permissionService: ClientpermissionService,
     public commonService: CommonService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.adminTeam();
@@ -109,7 +109,7 @@ export class MembersComponent implements OnInit {
       (res: any) => {
         this.adminTeamMembersListData = res.filter((r) => r.Status == true);
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -170,7 +170,9 @@ export class MembersComponent implements OnInit {
           var onlyInTeam = this.selectedTeamMembers.filter(comparerBlockedTeam(this.blockedTeamMembersList));
           var onlyInBlock = this.blockedTeamMembersList.filter(comparerBlockedTeam(this.selectedTeamMembers));
           this.selectedTeamMembers = onlyInTeam.concat(onlyInBlock);
-          this.selectedTeamMembers = this.selectedTeamMembers.filter((c) => c.TeamMemberStatus != 4 && c.Status == true);
+          this.selectedTeamMembers = this.selectedTeamMembers.filter(
+            (c) => c.TeamMemberStatus != 4 && c.Status == true
+          );
         },
         (err) => {
           this.spinner.hide();
@@ -217,7 +219,6 @@ export class MembersComponent implements OnInit {
         }
       );
     }
-
   }
 
   editTeamMembers() {

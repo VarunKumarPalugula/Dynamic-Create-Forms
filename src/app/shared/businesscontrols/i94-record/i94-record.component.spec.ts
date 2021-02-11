@@ -8,9 +8,8 @@ describe('I94RecordComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ I94RecordComponent ]
-    })
-    .compileComponents();
+      declarations: [I94RecordComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

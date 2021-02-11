@@ -5,27 +5,20 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-child-details',
   templateUrl: './child-details.component.html',
-  styleUrls: ['./child-details.component.scss']
+  styleUrls: ['./child-details.component.scss'],
 })
 export class ChildDetailsComponent implements OnInit {
-
-
   @Input() fields: any;
   @Input() applicantKey: any;
 
   addChildModal: any;
   index = 0;
 
-
-
   priorSpouseDetailsArray: any;
   childArray = [];
   maxChild = 3;
 
-  constructor(public dialog: MatDialog,
-    public commonService: CommonService,
-    public modalService: NgbModal) {
-  }
+  constructor(public dialog: MatDialog, public commonService: CommonService, public modalService: NgbModal) {}
 
   ngOnInit(): void {
     if (this.finalObj() && Object.keys(this.finalObj()).length) {
@@ -36,19 +29,22 @@ export class ChildDetailsComponent implements OnInit {
     }
   }
 
-
-
   openChildDetails(content, i) {
     this.index = i;
-    this.addChildModal = this.modalService.open(content, { centered: false, keyboard: false, size: 'lg', backdrop: 'static' });
+    this.addChildModal = this.modalService.open(content, {
+      centered: false,
+      keyboard: false,
+      size: 'lg',
+      backdrop: 'static',
+    });
   }
 
   closeModel(value, i) {
     if (value) {
       this.commonService.fileData[this.applicantKey]['Children Information']['finalObj'] = {
         ...this.commonService.fileData[this.applicantKey]['Children Information']['finalObj'],
-        [`child${i}`]: value
-      }
+        [`child${i}`]: value,
+      };
       this.commonService.fileData[this.applicantKey]['Children Information'].readOnly = false;
     }
     if (this.addChildModal != undefined) {
@@ -57,7 +53,9 @@ export class ChildDetailsComponent implements OnInit {
   }
 
   finalObj(i?) {
-    return i ? this.commonService.fileData[this.applicantKey]['Children Information']['finalObj'][`child${i}`] : this.commonService.fileData[this.applicantKey]['Children Information']['finalObj'];
+    return i
+      ? this.commonService.fileData[this.applicantKey]['Children Information']['finalObj'][`child${i}`]
+      : this.commonService.fileData[this.applicantKey]['Children Information']['finalObj'];
   }
 
   counter(i: number) {
@@ -72,6 +70,4 @@ export class ChildDetailsComponent implements OnInit {
     delete this.commonService.fileData[this.applicantKey]['Children Information']['finalObj'][`child${key}`];
     this.commonService.fileData[this.applicantKey]['Children Information'].readOnly = false;
   }
-
-
 }

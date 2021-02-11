@@ -1,75 +1,8 @@
-<div class="emp__support">
-    <div class="d__flex_between emp__support__div">
-        <div>
-            <div> Latest Resume </div>
-        </div>
-        <input hidden type="file" accept="image/*" #file1 (change)="uploadFile($event.target.files, 'resume', true)">
-        <button class="blue__button cursor__pointer" (click)="file1.click()"> Attach File
-        </button>
-        <div *ngFor="let file of resume">
-            {{ file }}
-            <button type="button" class="btn btn-outline-light text-dark btn-sm ml-10"><i
-                    class="fa fa-trash text-secondary" (click)="deletePopup(deleteFile, file, 'resume')"></i></button>
-        </div>
-    </div>
-    <div class="d__flex_between emp__support__div">
-        <div>
-            <div> Recent W2's </div>
-        </div>
-        <input hidden type="file" [disabled]="recentW2.length === 2" accept="image/*" #file2 (change)="uploadFile($event.target.files, 'recentW2', false)">
-        <button class="blue__button cursor__pointer" (click)="file2.click()"> Attach File
-        </button>
-        <div *ngFor="let file of recentW2">
-          {{ file }}
-          <button type="button" class="btn btn-outline-light text-dark btn-sm ml-10"><i
-                  class="fa fa-trash text-secondary" (click)="deletePopup(deleteFile, file, 'recentW2')"></i></button>
-      </div>
-    </div>
-    <div class="d__flex_between emp__support__div">
-        <div>
-            <div> 3 Recent Pay-Stubs </div>
-        </div>
-        <input hidden type="file" [disabled]="recentPayStubs.length === 3" accept="image/*" #file3 (change)="uploadFile($event.target.files, 'recentPayStubs', false)">
-        <button class="blue__button cursor__pointer" (click)="file3.click()"> Attach File
-        </button>
-        <div *ngFor="let file of recentPayStubs">
-          {{ file }}
-          <button type="button" class="btn btn-outline-light text-dark btn-sm ml-10"><i
-                  class="fa fa-trash text-secondary" (click)="deletePopup(deleteFile, file, 'recentPayStubs')"></i></button>
-      </div>
-    </div>
-    <div class="d__flex_between emp__support__div">
-        <div>
-            <div> EAD Cards </div>
-        </div>
-        <input hidden type="file" accept="image/*" #file4 (change)="uploadFile($event.target.files, 'eadCards', true)">
-        <button class="blue__button cursor__pointer" (click)="file4.click()"> Attach File
-        </button>
-        <div *ngFor="let file of eadCards">
-          {{ file }}
-          <button type="button" class="btn btn-outline-light text-dark btn-sm ml-10"><i
-                  class="fa fa-trash text-secondary" (click)="deletePopup(deleteFile, file, 'eadCards')"></i></button>
-      </div>
-    </div>
-</div>
-
-
-<ng-template #deleteFile let-d="dismiss" id="deleteFile">
-    <div class="lo-modal--header p-20">
-      <span class="modal-close close" (click)="closeModal()">
-        <i class="fa fa-times" aria-hidden="true"></i>
-      </span>
-    </div>
-    <div class="lo-modal-body p-30 pb-50 text-center">
-      <i class="fa fa-trash-alt fa-3x" aria-hidden="true"></i>
-      <p class="taskGroupArchiveTitle">Are you sure you want delete this Period of stay info we will also deleted along
-        with
-        the files if any?
-      </p>
-      <div class="text-align">
-        <div class="btn btn-outline fs-12 mt-10" (click)="closeModal()">No, keep it</div>
-        <div class="btn btn-danger ml-20 mt-10 fs-12" (click)="deleteFiles(selectDeleteFile)">Yes, Confirm
-        </div>
-      </div>
-    </div>
-  </ng-template>
+<app-file-upload [label]="'latest resume'" [list]="resume" [name]="'resume'" [single]="true" [fileExtension]="resumeExn" [parent]="'Employement Support Documents'"
+  [applicantKey]='applicantKey'></app-file-upload>
+<app-file-upload [label]="'Recent W2 s'" [list]="recentW2" [name]="'recentW2'" [single]="false" [parent]="'Employement Support Documents'"
+  [applicantKey]='applicantKey'></app-file-upload>
+<app-file-upload [label]="'3 Recent Pay-Stubs'" [list]="recentPayStubs" [name]="'recentPayStubs'" [single]="false" [parent]="'Employement Support Documents'"
+  [applicantKey]='applicantKey'></app-file-upload>
+<app-file-upload [label]="'EAD Cards'" [list]="eadCards" [name]="'eadCards'" [single]="true" [parent]="'Employement Support Documents'"
+  [applicantKey]='applicantKey'></app-file-upload>

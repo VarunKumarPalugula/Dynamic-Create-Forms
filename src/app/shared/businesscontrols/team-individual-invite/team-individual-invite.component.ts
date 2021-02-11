@@ -86,7 +86,7 @@ export class TeamIndividualInviteComponent implements OnInit {
   }
 
   sendClientInvitation() {
-    this.invity=[];
+    this.invity = [];
     this.data.Email = this.teamInviteForm.value.Email;
     this.data.FullName = this.teamInviteForm.value.FullName;
     this.data.JobCardTitle = this.teamInviteForm.value.JobCardTitle;
@@ -119,7 +119,7 @@ export class TeamIndividualInviteComponent implements OnInit {
   }
 
   sendAdminInvitation() {
-    this.invity=[];
+    this.invity = [];
     this.data.Email = this.teamInviteForm.value.Email;
     this.data.FullName = this.teamInviteForm.value.FullName;
     this.data.JobCardTitle = this.teamInviteForm.value.JobCardTitle;
@@ -137,7 +137,7 @@ export class TeamIndividualInviteComponent implements OnInit {
           this.emitConfirmation.emit(this.invity);
           this.data = {};
           this.message = 'invitaion send sucessfully';
-        }else if (this.inviationResponse && this.inviationResponse[0].Status === 0) {
+        } else if (this.inviationResponse && this.inviationResponse[0].Status === 0) {
           this.toaster.error(this.inviationResponse[0].Message);
         } else {
           this.toaster.error('invitation failed to send');
@@ -161,5 +161,5 @@ export class TeamIndividualInviteComponent implements OnInit {
       this.isValidFullName = false;
     }
   }
-  sendInvitation() { }
+  sendInvitation() {}
 }

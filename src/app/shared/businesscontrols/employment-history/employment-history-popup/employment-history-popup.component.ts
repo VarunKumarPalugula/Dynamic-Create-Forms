@@ -6,12 +6,12 @@ import { JsonSectionValidationService } from '@app/shared/service/json-section-v
 @Component({
   selector: 'app-employment-history-popup',
   templateUrl: './employment-history-popup.component.html',
-  styleUrls: ['./employment-history-popup.component.css']
+  styleUrls: ['./employment-history-popup.component.css'],
 })
 export class EmploymentHistoryPopupComponent implements OnInit {
   formErrors: any = {};
   @Output() emitCloseModel = new EventEmitter();
-  
+
   @Input() isCard = false;
 
   @Input() set data(value: any) {
@@ -27,34 +27,34 @@ export class EmploymentHistoryPopupComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     private commonService: CommonService,
     private dynamicValidationService: JsonSectionValidationService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.employmentDetailsForm.valueChanges.subscribe(
-      value => {
-          this.logValidationErrors()
-      }
-  );
+    this.employmentDetailsForm.valueChanges.subscribe((value) => {
+      this.logValidationErrors();
+    });
   }
   logValidationErrors() {
-    this.formErrors = this.dynamicValidationService.getValidationErrors(this.employmentDetailsForm, this.dynamicValidationService.validationMessages);
+    this.formErrors = this.dynamicValidationService.getValidationErrors(
+      this.employmentDetailsForm,
+      this.dynamicValidationService.validationMessages
+    );
   }
 
   formGroupData() {
     this.employmentDetailsForm = this.formBuilder.group({
       AddNameOfEmployerOrCompany: this.dynamicValidationService.dynamicForm.NameOfEmployerOrCompany,
-      AddStreetNumberAndName:this.dynamicValidationService.dynamicForm.StreetNumberAndName,
-      AddAptSteFlr:this.dynamicValidationService.dynamicForm.AptSteFlr,
-      AddNumber:this.dynamicValidationService.dynamicForm.Number,
-      AddCountry:this.dynamicValidationService.dynamicForm.PobCountry,
-      AddStateorProvince:this.dynamicValidationService.dynamicForm.PobState,
-      AddProvince:this.dynamicValidationService.dynamicForm.Province,
-      AddCityorTown:this.dynamicValidationService.dynamicForm.PobCityorTown,
-      AddZipCode:this.dynamicValidationService.dynamicForm.ZipCode,
-      AddYourOccupation:this.dynamicValidationService.dynamicForm.YourOccupation,
+      AddStreetNumberAndName: this.dynamicValidationService.dynamicForm.StreetNumberAndName,
+      AddAptSteFlr: this.dynamicValidationService.dynamicForm.AptSteFlr,
+      AddNumber: this.dynamicValidationService.dynamicForm.Number,
+      AddCountry: this.dynamicValidationService.dynamicForm.PobCountry,
+      AddStateorProvince: this.dynamicValidationService.dynamicForm.PobState,
+      AddProvince: this.dynamicValidationService.dynamicForm.Province,
+      AddCityorTown: this.dynamicValidationService.dynamicForm.PobCityorTown,
+      AddZipCode: this.dynamicValidationService.dynamicForm.ZipCode,
+      AddYourOccupation: this.dynamicValidationService.dynamicForm.YourOccupation,
       AddDob: this.dynamicValidationService.dynamicForm.Dob,
       AddDob1: this.dynamicValidationService.dynamicForm.Dob2,
-
     });
   }
 
@@ -66,13 +66,10 @@ export class EmploymentHistoryPopupComponent implements OnInit {
     if (this.employmentDetailsForm.invalid) {
       return;
     }
-    this.emitCloseModel.emit(this.employmentDetailsForm.value)
+    this.emitCloseModel.emit(this.employmentDetailsForm.value);
   }
 
   cancel(): void {
-      this.emitCloseModel.emit(null);
+    this.emitCloseModel.emit(null);
   }
-
-  
-
 }

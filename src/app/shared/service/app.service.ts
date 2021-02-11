@@ -3,14 +3,10 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { ApicallsService } from './apicalls.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppService {
-
-
-  constructor(private httpClient: HttpClient,
-    private global: ApicallsService) { }
-
+  constructor(private httpClient: HttpClient, private global: ApicallsService) {}
 
   getUIControlTemplateToShowSections() {
     return this.httpClient.get(this.global.getUIControlTemplateToShowSections);
@@ -22,9 +18,7 @@ export class AppService {
     return this.httpClient.get(this.global.getDefaultTemplates);
   }
   getUIControlTemplateResults(reqObj) {
-    return this.httpClient.post(
-      this.global.getUIControlTemplateResultsUrl, reqObj
-    );
+    return this.httpClient.post(this.global.getUIControlTemplateResultsUrl, reqObj);
   }
   getFilingTemplates(fillingtype, adminId, orgId) {
     return this.httpClient.get(
@@ -35,5 +29,4 @@ export class AppService {
   saveUIControlTemplateResults(data) {
     return this.httpClient.post(this.global.saveUIControlTemplateResults, data);
   }
-
 }

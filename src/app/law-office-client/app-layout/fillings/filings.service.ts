@@ -200,7 +200,7 @@ export class ClientFilingsService {
     return this.httpClient.post(this.globalApi.UploadedFileViewPermission, data, { headers: accesstoken });
   }
 
-  clientFileViewPermissions(data: any, accesstoken: any){
+  clientFileViewPermissions(data: any, accesstoken: any) {
     return this.httpClient.post(this.globalApi.clientUploadedFileViewPermission, data, { headers: accesstoken });
   }
   //#endregion
@@ -283,7 +283,7 @@ export class ClientFilingsService {
     );
   }
   // mark subtask reviewed
-  MarkTaskAsReviewed(OrgId, FilingId, TaskGroupId, TaskId, accesstoken,taskMarkAsReviewed) {
+  MarkTaskAsReviewed(OrgId, FilingId, TaskGroupId, TaskId, accesstoken, taskMarkAsReviewed) {
     return this.httpClient.post(
       this.globalApi.clientMarkTaskAsReviewed +
         '?OrgId=' +
@@ -293,7 +293,9 @@ export class ClientFilingsService {
         '&TaskGroupId=' +
         TaskGroupId +
         '&TaskId=' +
-        TaskId + '&IsTaskReviewed=' + taskMarkAsReviewed,
+        TaskId +
+        '&IsTaskReviewed=' +
+        taskMarkAsReviewed,
       '',
       { headers: accesstoken }
     );
@@ -309,13 +311,15 @@ export class ClientFilingsService {
         '&TaskGroupId=' +
         TaskGroupId +
         '&TaskId=' +
-        TaskId + '&IsTaskCompleted=' + IsTaskCompleted,
+        TaskId +
+        '&IsTaskCompleted=' +
+        IsTaskCompleted,
       ''
     );
   }
 
   // get subtasks
-  GetSubTasksInTask(OrgId: any, FilingId: any, TaskGroupId: any, TaskId: any,AdminID) {
+  GetSubTasksInTask(OrgId: any, FilingId: any, TaskGroupId: any, TaskId: any, AdminID) {
     return this.httpClient.get(
       this.globalApi.clientGetSubTasksInTask +
         '?AdminOrgId=' +
@@ -324,8 +328,10 @@ export class ClientFilingsService {
         FilingId +
         '&TaskGroupId=' +
         TaskGroupId +
-        '&TaskId=' + 
-        TaskId +'&AdminID=' + AdminID,
+        '&TaskId=' +
+        TaskId +
+        '&AdminID=' +
+        AdminID
     );
   }
   // Add Sub task for tasak
@@ -369,7 +375,9 @@ export class ClientFilingsService {
         '&TaskId=' +
         TaskId +
         '&SubTaskId=' +
-        SubTaskId + '&isSubtaskReviewed=' + subtaskReviewed,
+        SubTaskId +
+        '&isSubtaskReviewed=' +
+        subtaskReviewed,
       '',
       { headers: accesstoken }
     );
@@ -388,7 +396,9 @@ export class ClientFilingsService {
         '&TaskId=' +
         TaskId +
         '&SubTaskId=' +
-        SubTaskId + '&IsSubTaskCompleted=' + subTaskCompleted,
+        SubTaskId +
+        '&IsSubTaskCompleted=' +
+        subTaskCompleted,
       ''
     );
   }
@@ -410,9 +420,17 @@ export class ClientFilingsService {
     );
   }
 
-  GetCaseForms(OrgId: any, fillingId: any, caseId:any, accesstoken: any, FilingName: any) {
+  GetCaseForms(OrgId: any, fillingId: any, caseId: any, accesstoken: any, FilingName: any) {
     return this.httpClient.get(
-      this.globalApi.FetchingFormsFiling + '?OrgId=' + OrgId + '&fillingId=' + fillingId + '&caseId=' + caseId + '&FilingName=' + FilingName,
+      this.globalApi.FetchingFormsFiling +
+        '?OrgId=' +
+        OrgId +
+        '&fillingId=' +
+        fillingId +
+        '&caseId=' +
+        caseId +
+        '&FilingName=' +
+        FilingName,
       {
         headers: accesstoken,
       }
@@ -482,15 +500,9 @@ export class ClientFilingsService {
       }
     );
   }
-  getCaseSubs(orgId:any, FilingId:any, filingType: any, token:any) {
+  getCaseSubs(orgId: any, FilingId: any, filingType: any, token: any) {
     return this.httpClient.get(
-      this.globalApi.getCaseSubmissions +
-        '?OrgId=' +
-        orgId +
-        '&FilingId=' +
-        FilingId +
-        '&filingType=' +
-        filingType,
+      this.globalApi.getCaseSubmissions + '?OrgId=' + orgId + '&FilingId=' + FilingId + '&filingType=' + filingType,
       {
         headers: token,
       }

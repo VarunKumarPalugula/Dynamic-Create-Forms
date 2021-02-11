@@ -8,9 +8,8 @@ describe('I94RecordPopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ I94RecordPopupComponent ]
-    })
-    .compileComponents();
+      declarations: [I94RecordPopupComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

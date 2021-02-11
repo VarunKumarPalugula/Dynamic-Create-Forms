@@ -8,9 +8,8 @@ describe('PriorSpousePopupComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PriorSpousePopupComponent ]
-    })
-    .compileComponents();
+      declarations: [PriorSpousePopupComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

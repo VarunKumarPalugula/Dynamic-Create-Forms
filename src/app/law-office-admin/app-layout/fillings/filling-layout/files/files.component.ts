@@ -69,7 +69,7 @@ export class FilesComponent implements OnInit {
   public uploader: FileUploader = new FileUploader({});
   public hasBaseDropZoneOver = false;
   public hasAnotherDropZoneOver = false;
-  selectAll: boolean = false
+  selectAll: boolean = false;
   FillingPermissions: any = {};
   FileCreatedby: any = '';
   FileCreatedDate: any = '';
@@ -96,7 +96,7 @@ export class FilesComponent implements OnInit {
   Deletefileid: any;
   FolderForm: FormGroup;
   username: any = '';
-  caseId: number = 0
+  caseId: number = 0;
   constructor(
     private filingService: FilingsService,
     private router: Router,
@@ -170,7 +170,6 @@ export class FilesComponent implements OnInit {
   Modelsent(data: any) {
     this.sentModel = this.modalService.open(data, { centered: true });
   }
-
 
   ModelUploadFiledelete(uploadfiledelete, i) {
     //console.log(i)
@@ -348,7 +347,7 @@ export class FilesComponent implements OnInit {
           this.filesDiv = false;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -362,10 +361,14 @@ export class FilesComponent implements OnInit {
       (res: any) => {
         this.spinner.hide();
         this.folderName = '';
-        this.toaster.info(res['Message']);
+        if (res['Message'] == 'Folder Name Already Exists') {
+          this.toaster.info('The Folder Name Already exists. Please  Create With Different Name');
+        } else {
+          this.toaster.info(res['Message']);
+        }
         this.FoldersList();
       },
-      (error) => {  
+      (error) => {
         this.spinner.hide();
         this.toaster.error('Folder Creation Failed');
       }
@@ -435,14 +438,13 @@ export class FilesComponent implements OnInit {
     } else {
       this.adminClientsListData[index].selected = false;
     }
-    const selectedClient = this.adminClientsListData.filter(i => i.selected == true);
+    const selectedClient = this.adminClientsListData.filter((i) => i.selected == true);
     if (selectedClient.length == this.adminClientsListData.length) {
       this.allClients = true;
     } else {
       this.allClients = false;
     }
   }
-
 
   selectAllTeamMembers(event: any, userType: number) {
     if (event.target.checked === true) {
@@ -462,7 +464,7 @@ export class FilesComponent implements OnInit {
     } else {
       this.teamMembersList[index].selected = false;
     }
-    const selectedTeamList = this.teamMembersList.filter(i => i.selected == true);
+    const selectedTeamList = this.teamMembersList.filter((i) => i.selected == true);
     if (selectedTeamList.length == this.teamMembersList.length) {
       this.allTeam = true;
     } else {
@@ -470,11 +472,13 @@ export class FilesComponent implements OnInit {
     }
   }
 
-
   Modelprivacy(data: any, fileName: string, fileId: any, fileinfo: any) {
-    if (!this.commonService.checkNullorUndefined(fileinfo.FileAccessClientMemberIds) && fileinfo.FileAccessClientMemberIds.length) {
-      fileinfo.FileAccessClientMemberIds.forEach(element => {
-        let index = this.adminClientsListData.findIndex(c => c.LawOfficeClientID == element);
+    if (
+      !this.commonService.checkNullorUndefined(fileinfo.FileAccessClientMemberIds) &&
+      fileinfo.FileAccessClientMemberIds.length
+    ) {
+      fileinfo.FileAccessClientMemberIds.forEach((element) => {
+        let index = this.adminClientsListData.findIndex((c) => c.LawOfficeClientID == element);
         if (index != -1) {
           this.adminClientsListData[index].selected = true;
         }
@@ -483,9 +487,12 @@ export class FilesComponent implements OnInit {
         this.allClients = true;
       }
     }
-    if (!this.commonService.checkNullorUndefined(fileinfo.FileAccesAdminMemeberIds) && fileinfo.FileAccesAdminMemeberIds.length) {
-      fileinfo.FileAccesAdminMemeberIds.forEach(element => {
-        let index = this.teamMembersList.findIndex(c => c.AdminID == element);
+    if (
+      !this.commonService.checkNullorUndefined(fileinfo.FileAccesAdminMemeberIds) &&
+      fileinfo.FileAccesAdminMemeberIds.length
+    ) {
+      fileinfo.FileAccesAdminMemeberIds.forEach((element) => {
+        let index = this.teamMembersList.findIndex((c) => c.AdminID == element);
         if (index != -1) {
           this.teamMembersList[index].selected = true;
         }
@@ -501,8 +508,6 @@ export class FilesComponent implements OnInit {
     this.CreatedFileType = fileinfo.fileType;
     this.privacyModel = this.modalService.open(data, { size: 'lg' });
   }
-
-
 
   filePermissions() {
     this.members = [];
@@ -522,7 +527,7 @@ export class FilesComponent implements OnInit {
       }
     });
     console.log(this.members);
-    
+
     setTimeout(() => {
       this.modalService.dismissAll();
     }, 2000);
@@ -533,7 +538,7 @@ export class FilesComponent implements OnInit {
         this.toaster.info('Permissions updated to file');
         this.getFiles();
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -591,7 +596,7 @@ export class FilesComponent implements OnInit {
           window.open(Viewres.Message, '_blank');
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -611,7 +616,7 @@ export class FilesComponent implements OnInit {
           for (let i = 0; i < this.Files.length; i++) {
             this.Files[i].selected = false;
           }
-          this.selectAll = false
+          this.selectAll = false;
         },
         (err) => {
           this.toaster.error('error occured');
@@ -633,35 +638,35 @@ export class FilesComponent implements OnInit {
         this.DownloadSingleFile(res.Message, res.Message1);
         this.spinner.hide();
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
   SelectedOptionalFiles(fileId: string, fileName: string, fileType: string, event: any) {
     if (event.target.checked === true) {
       this.selectedIds.push({ fileId: fileId, filename: fileName, fileType: fileType });
-      if(this.selectedIds.length == this.Files.length) {
+      if (this.selectedIds.length == this.Files.length) {
         this.selectAll = true;
       } else {
         this.selectAll = false;
       }
-    }else {
+    } else {
       const index = this.selectedIds.findIndex((file) => file.fileId === fileId);
       this.selectedIds.splice(index, 1);
-      this.selectAll = false
+      this.selectAll = false;
     }
   }
 
   downloadMultipleFiles() {
     this.selectedIds = [];
-    let files = this.Files.filter(i => i.selected == true);
-    if ((files.length > 0)) {
-        for (let i = 0; i < files.length; i++) {
-          this.selectedIds.push({
-            fileId: files[i].FileId,
-            filename: files[i].FileName,
-            fileType: files[i].fileType,
-          });
+    let files = this.Files.filter((i) => i.selected == true);
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        this.selectedIds.push({
+          fileId: files[i].FileId,
+          filename: files[i].FileName,
+          fileType: files[i].fileType,
+        });
       }
       for (let i = 0; i < this.selectedIds.length; i++) {
         this.filingService.viewFile(this.orgId, this.filingId, this.selectedIds[i].fileId, this.token).subscribe(
@@ -669,13 +674,12 @@ export class FilesComponent implements OnInit {
             this.DownloadSingleFile(res.Message, res.Message1);
             this.spinner.hide();
           },
-          (error) => { }
+          (error) => {}
         );
       }
     } else {
       this.toaster.error('Please select atleast one file to download');
     }
-
   }
 
   uploadSection() {
@@ -700,7 +704,7 @@ export class FilesComponent implements OnInit {
         this.PrintSingleFile(res.Message);
         this.spinner.hide();
       },
-      (error) => { }
+      (error) => {}
     );
   }
 

@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
   providedIn: 'root',
 })
 export class ValidationService {
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {}
 
   validateform = {
     OrganisationName: [
@@ -172,10 +172,7 @@ export class ValidationService {
       '',
       [Validators.minLength(5), Validators.maxLength(20), Validators.pattern('^[a-zA-Z0-9 /-]*$')],
     ],
-    Shipmentnumber: [
-      '',
-      [Validators.required, Validators.pattern('^[0-9]*$')],
-    ],
+    Shipmentnumber: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
     Tittle: [
       '',
       [

@@ -12,7 +12,7 @@ export class AplicantService {
   constructor(private httpClient: HttpClient, private global: ApicallsService, private helper: HelperService) {}
 
   // Register applicant
-  Register(data: any, env:any) {
+  Register(data: any, env: any) {
     return this.httpClient.post(this.global.IndividualApplicantRegister + '?environment=' + env, data);
   }
 }

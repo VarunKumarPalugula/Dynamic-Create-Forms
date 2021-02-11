@@ -99,10 +99,10 @@ export class TaskListComponent implements OnInit {
   TopicForm: FormGroup;
   isTaskListempty: boolean = false;
   TaskDuseDate: Date;
-  TaskDuseDateAdmin: any
+  TaskDuseDateAdmin: any;
   username: any = '';
-  clientShowTittle: string = 'Client has not added any content yet'
-  applicantShowTittle: string = 'Applicant has not added any content yet'
+  clientShowTittle: string = 'Client has not added any content yet';
+  applicantShowTittle: string = 'Applicant has not added any content yet';
   adminId: any;
 
   taskMarkasCompleted: boolean;
@@ -114,7 +114,7 @@ export class TaskListComponent implements OnInit {
   subTaskCompleted: boolean;
 
   IsSubTaskReviewed: boolean = false;
-  subtaskReviewed: boolean
+  subtaskReviewed: boolean;
 
   selectedSubtaskAdminId: any;
   emitGetUIControlTemplateResults: Subscription;
@@ -141,7 +141,7 @@ export class TaskListComponent implements OnInit {
         this.initialObj = [];
         this.initialObj = res;
       }
-    })
+    });
   }
 
   ngOnInit() {
@@ -213,7 +213,6 @@ export class TaskListComponent implements OnInit {
     //   this.clientCommonService.getPosInformation();
     //   this.clientCommonService.getNonImmigrantInfo();
     // }
-
   }
 
   createformvalidation() {
@@ -343,7 +342,7 @@ export class TaskListComponent implements OnInit {
           this.configGetFilingAdminTeammembers(res);
           this.teamMembersList = teamMembersList.filter((s) => s.Status == true);
           this.assignMembers = [];
-          for (let i = 0; i < this.clientMembersList.length; i++) { }
+          for (let i = 0; i < this.clientMembersList.length; i++) {}
           this.assignMembers = this.assignMembers.concat(this.clientMembersList);
           this.assignMembers = this.assignMembers.concat(this.teamMembersList);
         }
@@ -379,23 +378,23 @@ export class TaskListComponent implements OnInit {
     this.selectedReviewer = event.item.Email;
     if (this.selectedReviewer) {
       this.TaskForm.patchValue({
-        ReviewerApproval: true
-      })
+        ReviewerApproval: true,
+      });
     }
   }
   typeHeadSelectFocus() {
-    const checkReviewer = this.assignMembers.find(e => e.Email === this.selectedReviewer)
+    const checkReviewer = this.assignMembers.find((e) => e.Email === this.selectedReviewer);
     if (this.commonService.checkNullorUndefined(checkReviewer)) {
       this.selectedReviewer = '';
       this.TaskForm.patchValue({
-        ReviewerApproval: false
-      })
+        ReviewerApproval: false,
+      });
     }
   }
 
   //Add task in TaskGroup
   taskInTaskGroup() {
-    debugger
+    debugger;
     if (this.selectedAssigne) {
       let assignee = this.assignMembers.find((a) => a.Email == this.selectedAssigne);
       if (!assignee) {
@@ -455,8 +454,8 @@ export class TaskListComponent implements OnInit {
           this.selectedAssigne = '';
           this.selectedReviewer = '';
           this.priviousId = '';
-          this.reviewerRespectiveFilingTeamTableID = ''
-          this.assigneeRespectiveFilingTeamTableID = ''
+          this.reviewerRespectiveFilingTeamTableID = '';
+          this.assigneeRespectiveFilingTeamTableID = '';
           this.closeTask('close click');
           this.toaster.success('Task added successfully.');
         } else if (response.Status == 0) {
@@ -587,7 +586,7 @@ export class TaskListComponent implements OnInit {
         this.taskGroupId,
         this.taskId,
         this.token,
-        this.IsTaskReviewed = this.taskMarkAsReviewed ? false : true
+        (this.IsTaskReviewed = this.taskMarkAsReviewed ? false : true)
       )
       .subscribe(
         (data: any) => {
@@ -647,7 +646,7 @@ export class TaskListComponent implements OnInit {
         this.taskGroupId,
         this.taskId,
         this.token,
-        this.taskMarkasCompleted = this.IsTaskCompleted ? false : true
+        (this.taskMarkasCompleted = this.IsTaskCompleted ? false : true)
       )
       .subscribe(
         (data: any) => {
@@ -673,7 +672,7 @@ export class TaskListComponent implements OnInit {
   //mark as comlete task popup
 
   markAsCompletePopUp(mark: any, IsTaskCompleted) {
-    this.IsTaskCompleted = IsTaskCompleted
+    this.IsTaskCompleted = IsTaskCompleted;
     this.markAsCompleteModel = this.modalService.open(mark, {
       centered: true,
       keyboard: false,
@@ -686,7 +685,6 @@ export class TaskListComponent implements OnInit {
   }
 
   editTask(task, taskpop) {
-
     this.TaskForm.reset();
     if (!task.IsTaskCompleted) {
       this.taskTittleName = 'Edit Task Item';
@@ -700,15 +698,15 @@ export class TaskListComponent implements OnInit {
 
       if (task.Reviewer != null) {
         this.TaskForm.patchValue({
-          ReviewerApproval: true
-        })
+          ReviewerApproval: true,
+        });
         this.selectedReviewer = task.Reviewer.Email;
         this.reviewerRespectiveFilingTeamTableID = task.Reviewer.RespectiveFilingTeamTableID;
         this.reviewerIsFilingClientTeamMember = task.Reviewer.IsFilingClientTeamMember;
       } else {
         this.TaskForm.patchValue({
-          ReviewerApproval: false
-        })
+          ReviewerApproval: false,
+        });
         this.selectedReviewer = '';
         this.reviewerRespectiveFilingTeamTableID = '';
         this.reviewerIsFilingClientTeamMember = false;
@@ -739,7 +737,7 @@ export class TaskListComponent implements OnInit {
         this.taskGroupId,
         this.taskId,
         this.token,
-        this.adminId = sessionStorage.getItem('LoguserId')
+        (this.adminId = sessionStorage.getItem('LoguserId'))
       )
       .subscribe(
         (res: any) => {
@@ -748,7 +746,7 @@ export class TaskListComponent implements OnInit {
             this.subTasks = res.sort((a, b) => a['SubTaskId'] - b['SubTaskId']);
             if (this.subTasks[0]['Title'] && this.subTasks[0]['Title'] === 'Foreign Addresses') {
               this.subTasks[0]['Title'] = 'foreign address';
-              this.subTasks[0]['Description'] = 'Please Fill in the foreign Address Section in settings'
+              this.subTasks[0]['Description'] = 'Please Fill in the foreign Address Section in settings';
             }
           }
         },
@@ -780,18 +778,18 @@ export class TaskListComponent implements OnInit {
     this.selectedSubTaskReviewer = event.item.Email;
     if (this.selectedSubTaskReviewer) {
       this.TaskForm.patchValue({
-        ReviewerApproval: true
-      })
+        ReviewerApproval: true,
+      });
     }
   }
   //typehead subtaskreviewerOnSelect
   typeHeadSelectFocusSubTask() {
-    const checkSubTaskReviewer = this.assignMembers.find(e => e.Email === this.selectedSubTaskReviewer)
+    const checkSubTaskReviewer = this.assignMembers.find((e) => e.Email === this.selectedSubTaskReviewer);
     if (this.commonService.checkNullorUndefined(checkSubTaskReviewer)) {
       this.selectedSubTaskReviewer = '';
       this.TaskForm.patchValue({
-        ReviewerApproval: false
-      })
+        ReviewerApproval: false,
+      });
     }
   }
   // add subtask popup
@@ -863,10 +861,12 @@ export class TaskListComponent implements OnInit {
       Reviewer: {
         Email: this.selectedSubTaskReviewer,
         FilingId: sessionStorage.getItem('FillingId'),
-        RespectiveFilingTeamTableID: this.selectedSubTaskReviewer ? this.reviewerSubTaskRespectiveFilingTeamTableID : undefined,
+        RespectiveFilingTeamTableID: this.selectedSubTaskReviewer
+          ? this.reviewerSubTaskRespectiveFilingTeamTableID
+          : undefined,
         //IsFilingClientTeamMember: this.reviewerSubTaskIsFilingClientTeamMember,
       },
-      ReviewerIsFilingClientTeamMember: this.reviewerSubTaskIsFilingClientTeamMember
+      ReviewerIsFilingClientTeamMember: this.reviewerSubTaskIsFilingClientTeamMember,
     };
     this.token = 'Authorization:Bearer ' + sessionStorage.getItem('A_AccessToken');
     this.adminService.SubTaskInTask(subTaskObj, this.token).subscribe(
@@ -892,7 +892,6 @@ export class TaskListComponent implements OnInit {
     );
   }
 
-
   //popup delete subtask
   DeleteSubTaskPopUp(deletePopUpTemp: any, subtask: any) {
     this.subtaskdata = subtask;
@@ -909,8 +908,6 @@ export class TaskListComponent implements OnInit {
   CloseSubTaskPop(value: string) {
     this.deleteSubTaskModel.close(value);
   }
-
-
 
   deleteSubTask() {
     this.spinner.show();
@@ -951,7 +948,7 @@ export class TaskListComponent implements OnInit {
         this.taskId,
         this.subTaskId,
         this.token,
-        this.isSubtaskReviewed = this.subtaskReviewed ? false : true
+        (this.isSubtaskReviewed = this.subtaskReviewed ? false : true)
       )
       .subscribe(
         (data: any) => {
@@ -976,7 +973,7 @@ export class TaskListComponent implements OnInit {
   }
   //markAsReviewedCompleteSubPopUpsubtaskReviewed
   markAsReviewedCompleteSubPopUp(markassubtaskreviewed, IsTaskCompleted, IsTaskReviewDone) {
-    this.subtaskReviewed = IsTaskReviewDone
+    this.subtaskReviewed = IsTaskReviewDone;
     if (IsTaskCompleted) {
       this.markAsSubTaskReviewedModel = this.modalService.open(markassubtaskreviewed, {
         centered: true,
@@ -1000,7 +997,7 @@ export class TaskListComponent implements OnInit {
         this.taskId,
         this.subTaskId,
         this.token,
-        this.IsSubTaskCompleted = this.subTaskCompleted ? false : true
+        (this.IsSubTaskCompleted = this.subTaskCompleted ? false : true)
       )
       .subscribe(
         (data: any) => {
@@ -1026,7 +1023,7 @@ export class TaskListComponent implements OnInit {
 
   //mark as comlete sub task popup
   markAsCompleteSubPopUp(mark: any, IsSubTaskCompleted) {
-    this.subTaskCompleted = IsSubTaskCompleted
+    this.subTaskCompleted = IsSubTaskCompleted;
     this.markAsSubTaskCompleteModel = this.modalService.open(mark, {
       centered: true,
       keyboard: false,
@@ -1103,7 +1100,6 @@ export class TaskListComponent implements OnInit {
     }
   }
   togglerSubTask(ev: any, id: any, SubTaskId, subtaskData: any) {
-
     this.subTaskId = SubTaskId;
     this.checkSubtaskReviewedCompleted(subtaskData);
     id = 'subtogg' + id + SubTaskId;
@@ -1263,10 +1259,10 @@ export class TaskListComponent implements OnInit {
     };
   }
 
-  onadminmemberSelect(eve) { }
-  onadminMemberSelectAll(eve) { }
+  onadminmemberSelect(eve) {}
+  onadminMemberSelectAll(eve) {}
 
-  onTeamMemberSelect(eve) { }
+  onTeamMemberSelect(eve) {}
   onTeamMemberSelectAll(eve) {
     this.memberids = [];
   }
@@ -1281,7 +1277,7 @@ export class TaskListComponent implements OnInit {
     });
   }
   navigateToMessages() {
-    this.router.navigate(['admin/fillings/messages'])
+    this.router.navigate(['admin/fillings/messages']);
     this.modalService.dismissAll();
   }
 
